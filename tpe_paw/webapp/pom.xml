@@ -50,6 +50,25 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- REST -->
+
+<!--        <dependency>-->
+<!--            <groupId>javax.ws.rs</groupId>-->
+<!--            <artifactId>javax.ws.rs-api</artifactId>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>org.glassfish.jersey.core</groupId>-->
+<!--            <artifactId>jersey-client</artifactId>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>org.glassfish.jersey.media</groupId>-->
+<!--            <artifactId>jersey-media-json-jackson</artifactId>-->
+<!--        </dependency>-->
+
+        <!-- REST end -->
+
         <dependency>
             <groupId>ar.edu.itba.paw</groupId>
             <artifactId>interfaces</artifactId>
