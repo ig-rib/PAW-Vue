@@ -9,7 +9,7 @@
     <name>tpe_paw</name>
 
     <properties>
-        <org.springframework.version>4.3.0.RELEASE</org.springframework.version>
+        <org.springframework.version>4.3.4.RELEASE</org.springframework.version>
         <servlet-api.version>2.5</servlet-api.version>
         <org.springframework.security.version>4.0.4.RELEASE</org.springframework.security.version>
         <jstl.version>1.2</jstl.version>
@@ -34,8 +34,8 @@
         <jersey.version>3.0-SNAPSHOT</jersey.version>
         <javax.ws.rs-api.version>2.1.1</javax.ws.rs-api.version>
         <jboss.logging.version>3.3.0.Final</jboss.logging.version>
-        <eclipse.persistence.moxy.version>3.0.0-M1</eclipse.persistence.moxy.version>
-        <hk2.version>3.0.0-M2</hk2.version>
+        <eclipse.persistence.moxy.version>2.7.4</eclipse.persistence.moxy.version>
+        <hk2.version>2.5.0-b05</hk2.version>
     </properties>
 
     <dependencyManagement>
@@ -76,10 +76,6 @@
                         <groupId>org.glassfish.hk2</groupId>
                         <artifactId>hk2</artifactId>
                     </exclusion>
-                        <exclusion>
-                            <artifactId>jboss-logging</artifactId>
-                            <groupId>org.jboss.logging</groupId>
-                        </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -88,8 +84,8 @@
                 <version>${hk2.version}</version> <!-- última versión compatible con Java 8 -->
                 <exclusions>
                     <exclusion>
-                        <artifactId>jboss-logging</artifactId>
-                        <groupId>org.jboss.logging</groupId>
+                        <artifactId>bean-validator</artifactId>
+                        <groupId>org.glassfish.hk2.external</groupId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -101,10 +97,6 @@
                     <exclusion>
                         <groupId>javax.validation</groupId>
                         <artifactId>validation-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>jboss-logging</artifactId>
-                        <groupId>org.jboss.logging</groupId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -119,10 +111,6 @@
                         <groupId>org.eclipse.persistence</groupId>
                         <artifactId>org.eclipse.persistence.moxy</artifactId>
                     </exclusion>
-                    <exclusion>
-                        <artifactId>jboss-logging</artifactId>
-                        <groupId>org.jboss.logging</groupId>
-                    </exclusion>
                 </exclusions>
             </dependency>
             <!-- Java 10 compatible -->
@@ -130,12 +118,6 @@
                 <groupId>org.eclipse.persistence</groupId>
                 <artifactId>org.eclipse.persistence.moxy</artifactId>
                 <version>${eclipse.persistence.moxy.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>jboss-logging</artifactId>
-                        <groupId>org.jboss.logging</groupId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.glassfish.jersey.media</groupId>
@@ -143,8 +125,8 @@
                 <version>${jersey.version}</version>
                 <exclusions>
                     <exclusion>
-                        <artifactId>jboss-logging</artifactId>
-                        <groupId>org.jboss.logging</groupId>
+                        <groupId>org.eclipse.persistence</groupId>
+                        <artifactId>org.eclipse.persistence.moxy</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -340,12 +322,6 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-entitymanager</artifactId>
                 <version>${org.hibernate.version}</version>
-<!--                <exclusions>-->
-<!--                    <exclusion>-->
-<!--                        <artifactId>jboss-logging</artifactId>-->
-<!--                        <groupId>org.jboss.logging</groupId>-->
-<!--                    </exclusion>-->
-<!--                </exclusions>-->
             </dependency>
             <dependency>
                 <groupId>org.hibernate.javax.persistence</groupId>
