@@ -151,7 +151,7 @@ export default {
     ]
   }),
   mounted () {
-    axios.get('http://localhost:9092/webapp_war_exploded/jersey-test')
+    axios.get('http://localhost:8080/webapp_war_exploded/jersey-test')
       .then(response => console.log(response))
       .catch(e => console.log(e))
   }
