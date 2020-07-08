@@ -19,7 +19,7 @@ const routes = [
     redirect: {
       name: 'feed'
     },
-    comopnent: Nothing,
+    component: Nothing,
     children: [
       {
         path: '',
