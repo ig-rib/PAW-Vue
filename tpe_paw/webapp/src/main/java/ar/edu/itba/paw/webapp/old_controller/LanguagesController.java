@@ -1,16 +1,13 @@
-package ar.edu.itba.paw.webapp.controller;
+package ar.edu.itba.paw.webapp.old_controller;
 
 import ar.edu.itba.paw.interfaces.service.*;
 import ar.edu.itba.paw.models.Language;
 import ar.edu.itba.paw.models.Snippet;
-import ar.edu.itba.paw.models.Tag;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
-import ar.edu.itba.paw.webapp.utility.Constants;
 import ar.edu.itba.paw.webapp.exception.ForbiddenAccessException;
 import ar.edu.itba.paw.webapp.exception.LanguageNotFoundException;
 import ar.edu.itba.paw.webapp.form.DeleteForm;
-import ar.edu.itba.paw.webapp.form.FavoriteForm;
 import ar.edu.itba.paw.webapp.form.ItemSearchForm;
 import ar.edu.itba.paw.webapp.form.SearchForm;
 import ar.edu.itba.paw.webapp.utility.MavHelper;
@@ -27,7 +24,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Optional;
 
 import static ar.edu.itba.paw.webapp.utility.Constants.LANGUAGE_PAGE_SIZE;

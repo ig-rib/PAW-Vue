@@ -1,8 +1,7 @@
-package ar.edu.itba.paw.webapp.controller;
+package ar.edu.itba.paw.webapp.old_controller;
 
 import ar.edu.itba.paw.interfaces.service.*;
 import ar.edu.itba.paw.models.Snippet;
-import ar.edu.itba.paw.models.Tag;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
 import ar.edu.itba.paw.webapp.utility.Constants;
