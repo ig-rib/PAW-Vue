@@ -92,6 +92,10 @@
 </template>
 
 <script>
+// import fetcher from '@/services/fetcher.js'
+import axiosFetcher from '@/services/axiosFetcher.js'
+import urls from '@/services/urls.js'
+
 export default {
   name: 'HelloWorld',
 
@@ -148,18 +152,9 @@ export default {
     ]
   }),
   mounted () {
-    window.fetch('http://localhost:8080/jersey-test',
-      {
-        method: 'GET'
-        // mode: 'no-cors'
-      })
-      .then(response => response.json())
-      .then(response => {
-        console.log(response)
-      })
-      .catch(e => {
-        console.log(e)
-      })
+    axiosFetcher.get(urls.test.jerseyTest, { id: 2 })
+      .then(response => console.log(response))
+      .catch(e => console.log('error in post'))
   }
 }
 </script>
