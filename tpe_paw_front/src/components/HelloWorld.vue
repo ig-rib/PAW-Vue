@@ -148,7 +148,7 @@ export default {
     ]
   }),
   mounted () {
-    window.fetch('http://localhost:9092/webapp_war_exploded/jersey-test',
+    window.fetch('http://localhost:8080/jersey-test',
       {
         method: 'GET'
         // mode: 'no-cors'
