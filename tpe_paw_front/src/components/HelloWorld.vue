@@ -146,6 +146,20 @@ export default {
         href: 'https://vuetifyjs.com/getting-started/frequently-asked-questions'
       }
     ]
-  })
+  }),
+  mounted () {
+    window.fetch('http://localhost:9092/webapp_war_exploded/jersey-test',
+      {
+        method: 'GET'
+        // mode: 'no-cors'
+      })
+      .then(response => response.json())
+      .then(response => {
+        console.log(response)
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }
 }
 </script>
