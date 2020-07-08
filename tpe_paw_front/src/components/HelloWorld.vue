@@ -93,7 +93,8 @@
 
 <script>
 // import fetcher from '@/services/fetcher.js'
-import axios from 'axios'
+import axiosFetcher from '@/services/axiosFetcher.js'
+import urls from '@/services/urls.js'
 
 export default {
   name: 'HelloWorld',
@@ -151,9 +152,8 @@ export default {
     ]
   }),
   mounted () {
-    axios.get('http://localhost:8080/webapp_war_exploded/jersey-test')
+    axiosFetcher(urls.user.active, { id: 2 })
       .then(response => console.log(response))
-      .catch(e => console.log(e))
   }
 }
 </script>
