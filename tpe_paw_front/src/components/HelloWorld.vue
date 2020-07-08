@@ -152,8 +152,9 @@ export default {
     ]
   }),
   mounted () {
-    axiosFetcher(urls.user.active, { id: 2 })
+    axiosFetcher.get(urls.test.jerseyTest, { id: 2 })
       .then(response => console.log(response))
+      .catch(e => console.log('error in post'))
   }
 }
 </script>
