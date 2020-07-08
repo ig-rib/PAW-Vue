@@ -19,9 +19,7 @@ const axiosFetcher = (url = '', pathVariables = {}, method = 'get', content = {}
     case 'get':
       return axios.get(url)
     case 'post':
-      return axios.post(url, JSON.stringify({
-        data: 'dataaaa'
-      }), config)
+      return axios.post(url, config)
     case 'put':
       return axios.put(url, config)
     case 'delete':
