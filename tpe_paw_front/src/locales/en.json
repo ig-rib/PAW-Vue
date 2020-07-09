@@ -1,3 +1,26 @@
 {
-  "message": "hello i18n !!"
+  "message": "hello i18n !!",
+  "feed": {
+    "title": "Feed"
+  },
+  "explore": {
+    "title": "Explore"
+  },
+  "languages": {
+    "title": "Languages"
+  },
+  "tags": {
+    "title": "Tags"
+  },
+  "snippets": { 
+    "feed": {
+      "title": "Snippets Feed",
+      "favorites": {
+        "title": "Favorites"
+      },
+      "following": {
+        "title": "Following"
+      }
+    }
+  }
 }
