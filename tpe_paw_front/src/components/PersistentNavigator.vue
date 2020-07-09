@@ -29,6 +29,9 @@
       absolute
       temporary
       v-model="navDrawer">
+      <h3>
+        {{`Snippit`}}
+      </h3>
       <v-list class="pt-0">
       <v-list-item
         v-for="item in paths"
@@ -61,17 +64,31 @@ export default {
       navDrawer: true,
       paths: [
         {
+          title: this.$t('feed.title'),
+          icon: 'mdi-home',
+          path: {
+            name: 'feed'
+          }
+        },
+        {
           title: this.$t('explore.title'),
-          icon: 'mdi-heart',
+          icon: 'mdi-magnify',
           path: {
             name: 'explore'
           }
         },
         {
           title: this.$t('languages.title'),
-          icon: 'mdi-magnify',
+          icon: 'mdi-coffee',
           path: {
             name: 'languages'
+          }
+        },
+        {
+          title: this.$t('tags.title'),
+          icon: 'mdi-tag',
+          path: {
+            name: 'tags'
           }
         }
       ]
