@@ -1,20 +1,35 @@
 <template>
   <div>
     <v-app-bar
-      absolute
-      color="grey"
+      color="lightgrey"
       elevate-on-scroll
       scroll-target="#scrolling-techniques-7"
+      height="68px"
     >
       <v-app-bar-nav-icon @click="navDrawer = !navDrawer"></v-app-bar-nav-icon>
 
       <v-toolbar-title>Title</v-toolbar-title>
 
       <v-spacer></v-spacer>
-
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
+      <v-card height="80%">
+        <v-layout fill-height>
+          <v-flex>
+            <v-text-field
+              height="100%"
+              class="nav-search-text-field"
+              dense
+              rounded
+              hide-details
+              v-model="searchQuery">
+            </v-text-field>
+          </v-flex>
+          <v-flex>
+            <v-btn height="100%">
+              <v-icon>mdi-magnify</v-icon>
+            </v-btn>
+          </v-flex>
+        </v-layout>
+      </v-card>
 
       <v-btn icon>
         <v-icon>mdi-heart</v-icon>
@@ -61,7 +76,7 @@
 export default {
   data () {
     return {
-      navDrawer: true,
+      navDrawer: false,
       paths: [
         {
           title: this.$t('feed.title'),
@@ -97,13 +112,24 @@ export default {
   methods: {
     goto (path) {
       this.$router.push(path)
+    },
+    search () {
+      //
     }
   }
 }
 </script>
 
 <style lang="scss">
-  // .v-navigation-drawer--close.v-navigation-drawer--temporary {
-  //   transform: translateX(-13vw) !important;
-  // }
+  .nav-search-text-field {
+    background: white;
+    height: 100%;
+    .v-text-field__slot {
+      display: flex;
+      align-items: center;
+    }
+  }
+  .nav-search-text-field div {
+    height: 100%;
+  }
 </style>
