@@ -43,10 +43,19 @@
 </template>
 
 <script>
+// import axiosFetcher from '@/services/axiosFetcher.js'
+// import urls from '@/services/urls'
+import languages from '@/services/languages.js'
+
 export default {
   name: 'App',
   data: () => ({
     //
-  })
+  }),
+  mounted () {
+    languages.getLanguages().then(response => {
+      console.log(response)
+    })
+  }
 }
 </script>

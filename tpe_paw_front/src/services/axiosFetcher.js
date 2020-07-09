@@ -7,7 +7,7 @@ import axios from 'axios'
  * @param {Object} content
  * @returns {Promise} Response
  */
-const axiosFetcher = (url = '', pathVariables = {}, method = 'get', content = {}) => {
+const axiosFetcher = (url = '', pathVariables = {}, method = 'get', data = {}) => {
   url = urlMaker(url, pathVariables)
   console.log('real url', url)
   const config = {
@@ -34,10 +34,10 @@ const axiosFetcher = (url = '', pathVariables = {}, method = 'get', content = {}
   // })
 }
 
-const get = (url, pathVariables, content) => axiosFetcher(url, pathVariables, 'get', content)
-const post = (url, pathVariables, content) => axiosFetcher(url, pathVariables, 'post', content)
-const put = (url, pathVariables, content) => axiosFetcher(url, pathVariables, 'put', content)
-const del = (url, pathVariables, content) => axiosFetcher(url, pathVariables, 'delete', content)
+const get = (url, pathVariables, data) => axiosFetcher(url, pathVariables, 'get', data)
+const post = (url, pathVariables, data) => axiosFetcher(url, pathVariables, 'post', data)
+const put = (url, pathVariables, data) => axiosFetcher(url, pathVariables, 'put', data)
+const del = (url, pathVariables, data) => axiosFetcher(url, pathVariables, 'delete', data)
 
 /**
  * @private
