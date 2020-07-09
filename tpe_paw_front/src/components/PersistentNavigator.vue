@@ -1,22 +1,53 @@
 <template>
   <div>
     <v-app-bar
+      pa-0
       color="lightgrey"
       elevate-on-scroll
       scroll-target="#scrolling-techniques-7"
       height="68px"
     >
       <v-layout fill-height class="nav-layout">
-        <v-flex shrink>
+        <!-- Hamburger button for navdrawer -->
+        <v-flex shrink v-if="$vuetify.breakpoint.mdAndDown">
           <v-app-bar-nav-icon @click="navDrawer = !navDrawer"></v-app-bar-nav-icon>
-
         </v-flex>
+
+        <!-- Title -->
         <v-flex md1 sm1>
           <v-toolbar-title>Title</v-toolbar-title>
         </v-flex>
-        <v-flex grow class="justify-center">
-          <!-- <v-spacer></v-spacer> -->
-          <v-card height="80%" :width="`${$vuetify.breakpoint.lgAndUp ? '60%' : '100%'}`">
+
+        <!-- Navigation for large screens -->
+
+        <v-flex v-if="$vuetify.breakpoint.lgAndUp" shrink>
+          <v-layout fill-height class="pt-0">
+            <v-flex
+              v-for="item in paths"
+              :key="item.title"
+            >
+              <v-btn
+                elevation="0"
+                :to="item.path"
+                class="nav-button"
+              >
+                <v-layout>
+                  <v-flex>
+                      <v-icon>{{ item.icon }}</v-icon>
+                  </v-flex>
+
+                  <v-flex>
+                    <div>{{ item.title }}</div>
+                  </v-flex>
+                </v-layout>
+              </v-btn>
+            </v-flex>
+          </v-layout>
+        </v-flex>
+
+        <!-- Search bar -->
+        <v-flex grow px-2>
+          <v-card height="70%" :width="`${$vuetify.breakpoint.lgAndUp ? '60%' : '100%'}`">
             <v-layout fill-height>
               <v-flex>
                 <v-text-field
@@ -39,6 +70,8 @@
             </v-layout>
           </v-card>
         </v-flex>
+
+        <!-- Registration/Login/User section -->
         <v-flex class="flex-move-end">
           <v-btn icon>
             <v-icon>mdi-heart</v-icon>
@@ -50,7 +83,7 @@
         </v-flex>
       </v-layout>
     </v-app-bar>
-    <v-navigation-drawer
+    <v-navigation-drawer v-if="$vuetify.breakpoint.mdAndDown"
       disable-resize-watcher
       absolute
       temporary
@@ -134,12 +167,13 @@ export default {
 
 <style lang="scss">
 @import '@/styles/alignmentUtils.scss';
-
+  div.v-toolbar__content {
+    padding: 0px;
+  }
   .nav-layout {
     .flex {
       display: flex;
       align-items: center;
-      margin: 0px 4px 0px 4px;
     }
   }
   .nav-search-text-field {
@@ -149,8 +183,15 @@ export default {
       display: flex;
       align-items: center;
     }
+    div {
+      height: 100%;
+    }
   }
-  .nav-search-text-field div {
-    height: 100%;
+  .nav-button {
+    height: 100% !important;
+    border-radius: 0px !important;
+    .a {
+      border-radius: 0px !important;
+    }
   }
 </style>
