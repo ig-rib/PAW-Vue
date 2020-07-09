@@ -1,3 +1,9 @@
 {
-  "message": "hello i18n !!"
+  "message": "hello i18n !!",
+  "explore": {
+    "title": "Explore"
+  },
+  "languages": {
+    "title": "Languages"
+  }
 }
