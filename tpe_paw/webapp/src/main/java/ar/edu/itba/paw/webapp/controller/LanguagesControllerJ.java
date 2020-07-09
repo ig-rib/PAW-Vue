@@ -51,7 +51,9 @@ public class LanguagesControllerJ {
         final List<LanguageDto> languagesDto = allLanguages.stream()
             .map(LanguageDto::fromLanguage).collect(Collectors.toList());
 
-        return Response.ok(new GenericEntity<List<LanguageDto>>(languagesDto) {}).build();
+        return Response.ok(new GenericEntity<List<LanguageDto>>(languagesDto) {})
+                .header("Access-Control-Allow-Origin", "*")
+                .build();
     }
 
 }

@@ -4,7 +4,14 @@
   <v-container>
     <div>
         <p> Languages </p>
-        <p> {{ languages }} </p>
+        <v-row>
+            <v-col v-for="lang in languages" :key="lang.id">
+                <div>
+                    <v-chip class="ma-2 language-chip" label>{{ lang.name }}</v-chip>
+                </div>
+            </v-col>
+        </v-row>
+
     </div>
   </v-container>
 </template>
@@ -20,15 +27,21 @@ export default {
     }
   },
   methods: {
-    getAllLanguages () {
-      languages.getLanguages()
-        .then(values => { languages = values })
-    }
+  },
+  mounted () {
+    // Promise
+    languages.getLanguages()
+      .then(values => { this.languages = values.data })
+      .catch(error => { console.log(error) })
   }
 }
 
 </script>
 
 <style lang="scss">
+
+.language-chip{
+    width: 100px;
+}
 
 </style>
