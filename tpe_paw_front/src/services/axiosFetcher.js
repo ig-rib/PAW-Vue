@@ -1,43 +1,81 @@
 import axios from 'axios'
 
 /**
+ * Wrapper for axios
  * @param {string} url
- * @param {Object} pathVariables
+ * @param {Object} params
+ * @param {Object} params.pathVariables Path variables to be replaced in url
+ * @param {Object} params.queryParams Query parameters
  * @param {string} method
- * @param {Object} content
+ * @param {Object} data
  * @returns {Promise} Response
  */
-const axiosFetcher = (url = '', pathVariables = {}, method = 'get', data = {}) => {
-  url = urlMaker(url, pathVariables)
+
+const axiosFetcher = (url = '', params = {}, method = 'get', data = {}) => {
+  url = urlMaker(url, params.pathVariables)
   console.log('real url', url)
   const config = {
     headers: {
       'Content-Type': 'application/json'
-    }
+    },
+    params: params.queryParams
   }
+  console.log(config)
   switch (method.toLowerCase()) {
     case 'get':
-      return axios.get(url)
+      return axios.get(url, config)
     case 'post':
-      return axios.post(url, config)
+      return axios.post(url, data, config)
     case 'put':
-      return axios.put(url, config)
+      return axios.put(url, data, config)
     case 'delete':
-      return axios.delete(url, config)
+      return axios.delete(url, data, config)
   }
-
-  // return axios({
-  //   method: method,
-  //   url: url,
-  //   headers: content.headers,
-  //   data: content
-  // })
 }
 
-const get = (url, pathVariables, data) => axiosFetcher(url, pathVariables, 'get', data)
-const post = (url, pathVariables, data) => axiosFetcher(url, pathVariables, 'post', data)
-const put = (url, pathVariables, data) => axiosFetcher(url, pathVariables, 'put', data)
-const del = (url, pathVariables, data) => axiosFetcher(url, pathVariables, 'delete', data)
+/**
+ * Perform get request
+ * @param {string} url
+ * @param {Object} params
+ * @param {Object} params.pathVariables Path variables to be replaced in url
+ * @param {Object} params.queryParams Query parameters
+ * @param {Object} data
+ * @returns {Promise} Response
+ */
+const get = (url, params = {}, data = {}) => axiosFetcher(url, params, 'get', data)
+
+/**
+ * Perform post request
+ * @param {string} url
+ * @param {Object} params
+ * @param {Object} params.pathVariables Path variables to be replaced in url
+ * @param {Object} params.queryParams Query parameters
+ * @param {Object} data
+ * @returns {Promise} Response
+ */
+const post = (url, params = {}, data = {}) => axiosFetcher(url, params, 'post', data)
+
+/**
+ * Perform put request
+ * @param {string} url
+ * @param {Object} params
+ * @param {Object} params.pathVariables Path variables to be replaced in url
+ * @param {Object} params.queryParams Query parameters
+ * @param {Object} data
+ * @returns {Promise} Response
+ */
+const put = (url, params = {}, data = {}) => axiosFetcher(url, params, 'put', data)
+
+/**
+ * Perform delete request
+ * @param {string} url
+ * @param {Object} params
+ * @param {Object} params.pathVariables Path variables to be replaced in url
+ * @param {Object} params.queryParams Query parameters
+ * @param {Object} data
+ * @returns {Promise} Response
+ */
+const del = (url, params = {}, data = {}) => axiosFetcher(url, params, 'delete', data)
 
 /**
  * @private

@@ -8,7 +8,7 @@
 import tags from '@/services/tags.js'
 export default {
   mounted () {
-    tags.getTags()
+    tags.getTags(1)
       .then(response => console.log(response))
   }
 }
