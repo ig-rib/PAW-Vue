@@ -9,7 +9,7 @@ public class TagDto {
     private String name;
     private Boolean snippetsUsingIsEmpty;
 
-    public static TagDto fromRole(Tag tag){
+    public static TagDto fromTag(Tag tag){
         TagDto dto = new TagDto();
 
         dto.id = tag.getId();
