@@ -5,5 +5,16 @@
   },
   "languages": {
     "title": "Languages"
+  },
+  "snippets": { 
+    "feed": {
+      "title": "Snippets Feed",
+      "favorites": {
+        "title": "Favorites"
+      },
+      "following": {
+        "title": "Following"
+      }
+    }
   }
 }

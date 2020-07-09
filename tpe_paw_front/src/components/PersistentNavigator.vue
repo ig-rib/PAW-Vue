@@ -25,9 +25,11 @@
       </v-btn>
     </v-app-bar>
     <v-navigation-drawer
-      fixed
+      disable-resize-watcher
+      absolute
+      temporary
       v-model="navDrawer">
-       <v-list dense class="pt-0">
+      <v-list class="pt-0">
       <v-list-item
         v-for="item in paths"
         :key="item.title"
@@ -82,3 +84,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  // .v-navigation-drawer--close.v-navigation-drawer--temporary {
+  //   transform: translateX(-13vw) !important;
+  // }
+</style>
