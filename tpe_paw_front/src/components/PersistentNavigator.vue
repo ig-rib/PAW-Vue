@@ -6,38 +6,49 @@
       scroll-target="#scrolling-techniques-7"
       height="68px"
     >
-      <v-app-bar-nav-icon @click="navDrawer = !navDrawer"></v-app-bar-nav-icon>
+      <v-layout fill-height class="nav-layout">
+        <v-flex shrink>
+          <v-app-bar-nav-icon @click="navDrawer = !navDrawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>Title</v-toolbar-title>
+        </v-flex>
+        <v-flex md1 sm1>
+          <v-toolbar-title>Title</v-toolbar-title>
+        </v-flex>
+        <v-flex grow class="justify-center">
+          <!-- <v-spacer></v-spacer> -->
+          <v-card height="80%" :width="`${$vuetify.breakpoint.lgAndUp ? '60%' : '100%'}`">
+            <v-layout fill-height>
+              <v-flex>
+                <v-text-field
+                  height="100%"
+                  class="nav-search-text-field"
+                  dense
+                  rounded
+                  hide-details
+                  v-model="searchQuery">
+                </v-text-field>
+              </v-flex>
+              <v-divider vertical></v-divider>
+              <v-flex shrink>
+                <v-btn
+                  height="100%"
+                  icon>
+                  <v-icon>mdi-magnify</v-icon>
+                </v-btn>
+              </v-flex>
+            </v-layout>
+          </v-card>
+        </v-flex>
+        <v-flex class="flex-move-end">
+          <v-btn icon>
+            <v-icon>mdi-heart</v-icon>
+          </v-btn>
 
-      <v-spacer></v-spacer>
-      <v-card height="80%">
-        <v-layout fill-height>
-          <v-flex>
-            <v-text-field
-              height="100%"
-              class="nav-search-text-field"
-              dense
-              rounded
-              hide-details
-              v-model="searchQuery">
-            </v-text-field>
-          </v-flex>
-          <v-flex>
-            <v-btn height="100%">
-              <v-icon>mdi-magnify</v-icon>
-            </v-btn>
-          </v-flex>
-        </v-layout>
-      </v-card>
-
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
+          <v-btn icon>
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </v-flex>
+      </v-layout>
     </v-app-bar>
     <v-navigation-drawer
       disable-resize-watcher
@@ -77,6 +88,7 @@ export default {
   data () {
     return {
       navDrawer: false,
+      searchQuery: '',
       paths: [
         {
           title: this.$t('feed.title'),
@@ -121,6 +133,15 @@ export default {
 </script>
 
 <style lang="scss">
+@import '@/styles/alignmentUtils.scss';
+
+  .nav-layout {
+    .flex {
+      display: flex;
+      align-items: center;
+      margin: 0px 4px 0px 4px;
+    }
+  }
   .nav-search-text-field {
     background: white;
     height: 100%;
