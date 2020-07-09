@@ -1,22 +1,65 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import PersistentNavigator from '@/components/PersistentNavigator.vue'
+import FeedMain from '@/views/feed/FeedMain.vue'
+import Nothing from '@/components/Nothing.vue'
+import ExploreMain from '@/views/explore/ExploreMain.vue'
+import LanguagesMain from '@/views/languages/LanguagesMain.vue'
+import SnippetDetail from '@/views/snippet/SnippetDetail.vue'
+import TagsMain from '@/views/tags/TagsMain.vue'
 
 Vue.use(VueRouter)
+
+const defaultLang = 'en'
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    redirect: '/' + defaultLang + '/feed'
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/:langauge',
+    name: 'nothing',
+    redirect: {
+      name: 'feed'
+    },
+    component: Nothing,
+    children: [
+      {
+        path: '',
+        redirect: {
+          name: 'feed'
+        },
+        component: PersistentNavigator,
+        children: [
+          {
+            path: 'feed',
+            name: 'feed',
+            component: FeedMain
+          },
+          {
+            path: 'explore',
+            name: 'explore',
+            component: ExploreMain
+          },
+          {
+            path: 'languages',
+            name: 'languages',
+            component: LanguagesMain
+          },
+          {
+            path: 'snippet/:id',
+            name: 'snippet-detail',
+            component: SnippetDetail
+          },
+          {
+            path: 'tags',
+            name: 'tags',
+            component: TagsMain
+          }
+        ]
+      }
+    ]
   }
 ]
 
