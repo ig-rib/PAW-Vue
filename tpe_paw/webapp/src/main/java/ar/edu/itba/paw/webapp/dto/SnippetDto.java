@@ -8,7 +8,7 @@ import java.time.Instant;
 public class SnippetDto {
 
     private Long id;
-    private User owner;
+    private Long ownerId;
     private String code;
     private String title;
     private String description;
@@ -20,7 +20,7 @@ public class SnippetDto {
         SnippetDto dto = new SnippetDto();
 
         dto.id = snippet.getId();
-        dto.owner = snippet.getOwner();
+        dto.ownerId = snippet.getOwner().getId();
         dto.code = snippet.getCode();
         dto.title = snippet.getTitle();
         dto.description = snippet.getDescription();
@@ -39,12 +39,12 @@ public class SnippetDto {
         this.id = id;
     }
 
-    public User getOwner() {
-        return owner;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 
     public String getCode() {

@@ -20,7 +20,7 @@ const urls = {
   tags: {
     getTags: localDomain + 'tags',
     searchTags: localDomain + 'tags/search',
-    getTag: localDomain + 'tags/:tagId',
+    getTagSnippets: localDomain + 'tags/:tagId',
     followTag: localDomain + 'tags/:tagId/follow',
     deleteTag: localDomain + 'tags/:tagId/delete'
   },
