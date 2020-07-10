@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.service.SnippetService;
 import ar.edu.itba.paw.interfaces.service.TagService;
+import ar.edu.itba.paw.webapp.dto.FollowDto;
 import ar.edu.itba.paw.webapp.dto.SnippetDto;
 import ar.edu.itba.paw.webapp.dto.TagDto;
 import ar.edu.itba.paw.webapp.dto.UserDto;
@@ -75,5 +76,13 @@ public class TagsController {
         if (page < pageCount)
             respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
         return respBuilder.build();
+    }
+
+    @POST
+    @Path("/{tagId}/follow")
+    @Consumes(value = {MediaType.APPLICATION_JSON})
+    public Response changeTagFollowStatus(final FollowDto followDto) {
+        Boolean follows = followDto.getFollow();
+        return Response.ok(followDto).build();
     }
 }

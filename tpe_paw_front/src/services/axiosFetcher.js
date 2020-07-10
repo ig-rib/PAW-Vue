@@ -12,8 +12,8 @@ import axios from 'axios'
  */
 
 const axiosFetcher = (url = '', params = {}, method = 'get', data = {}) => {
+  console.log('pathVariables', params.pathVariables, 'real url', url)
   url = urlMaker(url, params.pathVariables)
-  console.log('real url', url)
   const config = {
     headers: {
       'Content-Type': 'application/json'
