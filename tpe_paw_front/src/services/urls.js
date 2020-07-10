@@ -59,6 +59,9 @@ const urls = {
     getLanguage: localDomain + 'languages/:id',
     deleteLanguage: localDomain + 'languages/:id/delete'
   },
+  registration: {
+    login: localDomain + 'registration/login'
+  },
   test: {
     jerseyTest: localDomain + 'jersey-test'
   }

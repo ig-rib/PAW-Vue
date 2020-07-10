@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.annotations.Secured;
 import ar.edu.itba.paw.interfaces.service.SnippetService;
 import ar.edu.itba.paw.interfaces.service.TagService;
 import ar.edu.itba.paw.models.Tag;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
@@ -26,6 +28,9 @@ public class TagsController {
 
     @Context
     private UriInfo uriInfo;
+
+    @Context
+    private SecurityContext securityContext;
 
     @GET
     @Produces(value = MediaType.APPLICATION_JSON)
@@ -108,9 +113,13 @@ public class TagsController {
     }
 
     @DELETE
+    @Secured
     @Path("/{tagId}/delete")
-    public Response changeTagFollowStatus(@PathParam(value="tagId") long tagId) {
+    public Response changeTagFollowStatus(@PathParam(value="tagId") long tagId,
+                                          @Context SecurityContext securityContext1) {
         // this.tagService.removeTag(tagId);
+        Principal userPrincipal = securityContext1.getUserPrincipal();
+        String username = userPrincipal.getName();
         return Response.noContent().build();
     }
 }
