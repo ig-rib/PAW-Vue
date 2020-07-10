@@ -1,11 +1,14 @@
 <template>
   <v-container>
-    USER PROFILE MAIN
+    <div>
+    </div>
   </v-container>
 </template>
 
 <script>
-  export default {
 
-  }
 </script>
+
+<style lang="scss">
+
+</style>
