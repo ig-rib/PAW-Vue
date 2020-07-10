@@ -11,9 +11,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,6 +32,9 @@ public class LanguagesControllerJ {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LanguagesControllerJ.class);
 
+    @Context
+    private UriInfo uriInfo;
+
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response showAllLanguages(final @QueryParam("page") @DefaultValue("1") int page) {
@@ -47,13 +48,24 @@ public class LanguagesControllerJ {
 
         //TODO: add form value
         int languageCount = this.languageService.getAllLanguagesCount(true);
+        int pageCount = (languageCount/LANGUAGE_PAGE_SIZE) + (languageCount % LANGUAGE_PAGE_SIZE == 0 ? 0 : 1);
+
 
         final List<LanguageDto> languagesDto = allLanguages.stream()
             .map(LanguageDto::fromLanguage).collect(Collectors.toList());
 
-        return Response.ok(new GenericEntity<List<LanguageDto>>(languagesDto) {})
+        Response.ResponseBuilder responseBuilder =  Response.ok(new GenericEntity<List<LanguageDto>>(languagesDto) {})
                 .header("Access-Control-Allow-Origin", "*")
-                .build();
+                .header("Access-Control-Expose-Headers", "Link")
+                .header("Access-Control-Allow-Methods","GET, POST, PUT, DELETE")
+                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
+                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
+        if (page > 1)
+            responseBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
+        if (page < pageCount)
+            responseBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
+
+        return responseBuilder.build();
     }
 
 }
