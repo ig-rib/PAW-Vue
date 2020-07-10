@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 <template>
   <v-container>
     <div>
@@ -15,7 +13,7 @@
     <div class="text-center">
       <v-pagination
         v-model="pagination.page"
-        :length="pagination.length"
+        :length="pagination.length" 
         :total-visible="pagination.visible"
         circle
       ></v-pagination>
@@ -36,8 +34,8 @@ export default {
       pagination: {
           page: 1,
           length: 1,
-          visible: 7,
-      },
+          visible: 7
+      }
     }
   },
   methods: {
@@ -46,7 +44,7 @@ export default {
   },
   watch: {
       pagination: {
-          handler: function (){
+          handler: function () {
             languages.getLanguages(this.pagination.page)
             .then(values => {
                 this.languages = values.data 

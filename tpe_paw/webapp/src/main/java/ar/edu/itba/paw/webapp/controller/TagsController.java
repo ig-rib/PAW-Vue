@@ -68,7 +68,6 @@ public class TagsController {
         int pageCount = (snippetsCount/SNIPPET_PAGE_SIZE) + ((snippetsCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);
 
         Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {})
-                .header("Access-Control-Allow-Origin", "*")
                 .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
                 .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
         if (page > 1)
@@ -110,6 +109,7 @@ public class TagsController {
     @DELETE
     @Path("/{tagId}/delete")
     public Response changeTagFollowStatus(@PathParam(value="tagId") long tagId) {
+        //TODO: Implement and check roles
         // this.tagService.removeTag(tagId);
         return Response.noContent().build();
     }

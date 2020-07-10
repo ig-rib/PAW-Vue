@@ -1,5 +1,5 @@
 const parseLinks = (linksHeader) => {
-        let parsedLinks = linksHeader.split(',').reduce((acc, link) => {
+        const parsedLinks = linksHeader.split(',').reduce((acc, link) => {
             const match = link.match(/<(.*)>; rel="(\w*)"/)
             const url = match[1]
             const rel = match[2]
