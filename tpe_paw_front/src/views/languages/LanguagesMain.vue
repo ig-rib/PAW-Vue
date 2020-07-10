@@ -4,7 +4,7 @@
   <v-container>
     <div>
         <p> Languages </p>
-        <p> {{pageSize}} </p>
+        <p> {{links}} </p>
         <v-row>
             <v-col v-for="lang in languages" :key="lang.id">
                 <div>
@@ -16,7 +16,7 @@
     <div class="text-center">
       <v-pagination
         v-model="page"
-        :length="6"
+        :length="3"
       ></v-pagination>
     </div>
   </v-container>
@@ -30,10 +30,32 @@ export default {
   data () {
     return {
       languages: null,
-      pageSize: 0
+      links: 0,
+      page: 1,
     }
   },
   methods: {
+  },
+  computed: {
+  },
+  watch: {
+      page: function (){
+        anguages.getLanguages()
+        .then(values => {
+        this.languages = values.data 
+
+        // Parse link data
+        const linkHeaders = values.headers.link
+        this.links = linkHeaders.split(',').reduce((acc, link) => {
+            const match = link.match(/<(.*)>; rel="(\w*)"/)
+            const url = match[1]
+            const rel = match[2]
+            acc[rel] = url
+            return acc;
+        }, {})
+        })
+      .catch(error => { console.log(error) })
+      }
   },
   mounted () {
     // Promise
@@ -41,14 +63,15 @@ export default {
       .then(values => {
         this.languages = values.data 
 
-        let arrData = values.split("link:")
-        data = arrData.length == 2? arrData[1]: data;
-        let parsed_data = {}
-        arrData = data.split(",")
-        for (d of arrData){
-            linkInfo = /<([^>]+)>;\s+rel="([^"]+)"/ig.exec(d)
-            parsed_data[linkInfo[2]]=linkInfo[1]
-        }
+        // Parse link data
+        const linkHeaders = values.headers.link
+        this.links = linkHeaders.split(',').reduce((acc, link) => {
+            const match = link.match(/<(.*)>; rel="(\w*)"/)
+            const url = match[1]
+            const rel = match[2]
+            acc[rel] = url
+            return acc;
+        }, {})
         })
       .catch(error => { console.log(error) })
   }
