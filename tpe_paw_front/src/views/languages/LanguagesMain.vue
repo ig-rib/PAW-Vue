@@ -4,7 +4,6 @@
   <v-container>
     <div>
         <p> Languages </p>
-        <p> {{links}} </p>
         <v-row>
             <v-col v-for="lang in languages" :key="lang.id">
                 <div>
@@ -15,8 +14,10 @@
     </div>
     <div class="text-center">
       <v-pagination
-        v-model="page"
-        :length="3"
+        v-model="pagination.page"
+        :length="pagination.length"
+        :total-visible="pagination.visible"
+        circle
       ></v-pagination>
     </div>
   </v-container>
@@ -24,6 +25,7 @@
 
 <script>
 import languages from '@//services/languages.js'
+import helpers from '@//functions/helpers.js'
 
 export default {
   name: 'languages',
@@ -31,7 +33,11 @@ export default {
     return {
       languages: null,
       links: 0,
-      page: 1,
+      pagination: {
+          page: 1,
+          length: 1,
+          visible: 7,
+      },
     }
   },
   methods: {
@@ -39,40 +45,27 @@ export default {
   computed: {
   },
   watch: {
-      page: function (){
-        anguages.getLanguages()
-        .then(values => {
-        this.languages = values.data 
-
-        // Parse link data
-        const linkHeaders = values.headers.link
-        this.links = linkHeaders.split(',').reduce((acc, link) => {
-            const match = link.match(/<(.*)>; rel="(\w*)"/)
-            const url = match[1]
-            const rel = match[2]
-            acc[rel] = url
-            return acc;
-        }, {})
-        })
-      .catch(error => { console.log(error) })
+      pagination: {
+          handler: function (){
+            languages.getLanguages(this.pagination.page)
+            .then(values => {
+                this.languages = values.data 
+                this.links = helpers.parseLinks(values.headers.link)
+                this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10);
+            })
+            .catch(error => { console.log(error) })
+          },
+          deep: true
       }
   },
   mounted () {
     // Promise
-    languages.getLanguages()
+    languages.getLanguages(this.pagination.page)
       .then(values => {
-        this.languages = values.data 
-
-        // Parse link data
-        const linkHeaders = values.headers.link
-        this.links = linkHeaders.split(',').reduce((acc, link) => {
-            const match = link.match(/<(.*)>; rel="(\w*)"/)
-            const url = match[1]
-            const rel = match[2]
-            acc[rel] = url
-            return acc;
-        }, {})
-        })
+        this.languages = values.data
+        this.links = helpers.parseLinks(values.headers.link)
+        this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10);
+      })
       .catch(error => { console.log(error) })
   }
 }

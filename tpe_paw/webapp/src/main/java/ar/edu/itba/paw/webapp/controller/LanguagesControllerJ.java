@@ -55,9 +55,6 @@ public class LanguagesControllerJ {
             .map(LanguageDto::fromLanguage).collect(Collectors.toList());
 
         Response.ResponseBuilder responseBuilder =  Response.ok(new GenericEntity<List<LanguageDto>>(languagesDto) {})
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Expose-Headers", "Link")
-                .header("Access-Control-Allow-Methods","GET, POST, PUT, DELETE")
                 .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
                 .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
         if (page > 1)
