@@ -12,7 +12,6 @@ import axios from 'axios'
  */
 
 const axiosFetcher = (url = '', params = {}, method = 'get', data = {}) => {
-  console.log('pathVariables', params.pathVariables, 'real url', url)
   url = urlMaker(url, params.pathVariables)
   const config = {
     headers: {
@@ -20,7 +19,6 @@ const axiosFetcher = (url = '', params = {}, method = 'get', data = {}) => {
     },
     params: params.queryParams
   }
-  console.log(config)
   switch (method.toLowerCase()) {
     case 'get':
       return axios.get(url, config)
@@ -29,7 +27,7 @@ const axiosFetcher = (url = '', params = {}, method = 'get', data = {}) => {
     case 'put':
       return axios.put(url, data, config)
     case 'delete':
-      return axios.delete(url, data, config)
+      return axios.delete(url, config)
   }
 }
 
@@ -39,10 +37,9 @@ const axiosFetcher = (url = '', params = {}, method = 'get', data = {}) => {
  * @param {Object} params
  * @param {Object} params.pathVariables Path variables to be replaced in url
  * @param {Object} params.queryParams Query parameters
- * @param {Object} data
  * @returns {Promise} Response
  */
-const get = (url, params = {}, data = {}) => axiosFetcher(url, params, 'get', data)
+const get = (url, params = {}, data = {}) => axiosFetcher(url, params, 'get')
 
 /**
  * Perform post request
@@ -72,10 +69,9 @@ const put = (url, params = {}, data = {}) => axiosFetcher(url, params, 'put', da
  * @param {Object} params
  * @param {Object} params.pathVariables Path variables to be replaced in url
  * @param {Object} params.queryParams Query parameters
- * @param {Object} data
  * @returns {Promise} Response
  */
-const del = (url, params = {}, data = {}) => axiosFetcher(url, params, 'delete', data)
+const del = (url, params = {}, data = {}) => axiosFetcher(url, params, 'delete')
 
 /**
  * @private

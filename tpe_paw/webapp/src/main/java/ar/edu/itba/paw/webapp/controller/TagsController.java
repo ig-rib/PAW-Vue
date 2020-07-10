@@ -2,15 +2,15 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.service.SnippetService;
 import ar.edu.itba.paw.interfaces.service.TagService;
-import ar.edu.itba.paw.webapp.dto.FollowDto;
-import ar.edu.itba.paw.webapp.dto.SnippetDto;
-import ar.edu.itba.paw.webapp.dto.TagDto;
-import ar.edu.itba.paw.webapp.dto.UserDto;
+import ar.edu.itba.paw.models.Tag;
+import ar.edu.itba.paw.webapp.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static ar.edu.itba.paw.webapp.utility.Constants.SNIPPET_PAGE_SIZE;
@@ -29,7 +29,7 @@ public class TagsController {
 
     @GET
     @Produces(value = MediaType.APPLICATION_JSON)
-    public Response getAllTags(@QueryParam("page") @DefaultValue("1") int page) {
+    public Response getAllTags(@QueryParam("page") @DefaultValue("1") int page, ItemSearchDto itemSearchDto) {
 
         // TODO add showEmpty and showOnlyFollowing support
 
@@ -84,5 +84,33 @@ public class TagsController {
     public Response changeTagFollowStatus(final FollowDto followDto) {
         Boolean follows = followDto.getFollow();
         return Response.ok(followDto).build();
+    }
+
+    @POST
+    @Path("/search")
+    @Consumes(value = {MediaType.APPLICATION_JSON})
+    public Response searchTags(@QueryParam("page") @DefaultValue("1") int page, final ItemSearchDto itemSearchDto) {
+        List<TagDto> tags = tagService.findTagsByName(itemSearchDto.getName(), itemSearchDto.isShowEmpty(), itemSearchDto.isShowOnlyFollowing(), null, page, TAG_PAGE_SIZE)
+                .stream()
+                .map(TagDto::fromTag)
+                .collect(Collectors.toList());
+        int tagsCount = this.tagService.getAllTagsCountByName(itemSearchDto.getName(), itemSearchDto.isShowEmpty(), itemSearchDto.isShowOnlyFollowing(), null);
+        int pageCount = (tagsCount/TAG_PAGE_SIZE) + ((tagsCount % TAG_PAGE_SIZE == 0) ? 0 : 1);
+
+        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<TagDto>>(tags) {})
+                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
+                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
+        if (page > 1)
+            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
+        if (page < pageCount)
+            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
+        return respBuilder.build();
+    }
+
+    @DELETE
+    @Path("/{tagId}/delete")
+    public Response changeTagFollowStatus(@PathParam(value="tagId") long tagId) {
+        // this.tagService.removeTag(tagId);
+        return Response.noContent().build();
     }
 }

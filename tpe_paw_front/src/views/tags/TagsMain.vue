@@ -11,8 +11,10 @@ import axios from 'axios'
 
 export default {
   mounted () {
-    tags.followTag(450, true)
-      .then(response => console.log(response))
+    tags.deleteTag(450)
+      .then(r => console.log(r))
+    tags.searchTags(1, 'gre', false, false)
+      .then(r => console.log(r))
   }
 }
 </script>
