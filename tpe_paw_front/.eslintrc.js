@@ -18,6 +18,9 @@ module.exports = {
     "indent": 'off',
     "no-trailing-spaces": 'off',
     "semi": 'off',
+    "padded-blocks": 'warn',
+    "no-multiple-empty-lines": 'warn',
+    "keyword-spacing": 'warn',
     "space-before-function-paren": 'warn',
     "prefer-const": 'warn',
     "space-before-blocks": 'warn',
@@ -57,6 +60,7 @@ module.exports = {
     "no-undef": 'warn',
     "no-unused-vars": 'warn',
     "no-mixed-spaces-and-tabs": 'warn',
+    "spaced-comment": 'warn'
 
   },
   overrides: [
