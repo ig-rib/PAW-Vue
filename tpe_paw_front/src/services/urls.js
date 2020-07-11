@@ -22,6 +22,7 @@ const urls = {
     searchTags: localDomain + 'tags/search',
     getTagSnippets: localDomain + 'tags/:tagId',
     followTag: localDomain + 'tags/:tagId/follow',
+    unfollowTag: localDomain + 'tags/:tagId/unfollow',
     deleteTag: localDomain + 'tags/:tagId/delete'
   },
   // favorites: {
