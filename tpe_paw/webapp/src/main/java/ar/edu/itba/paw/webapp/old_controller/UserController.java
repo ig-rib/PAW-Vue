@@ -35,7 +35,7 @@ import static ar.edu.itba.paw.webapp.utility.Constants.SNIPPET_PAGE_SIZE;
 
 @Controller
 public class  UserController {
-    
+
     @Autowired
     private UserService userService;
     @Autowired

@@ -1,11 +1,11 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.annotations.Secured;
 import ar.edu.itba.paw.interfaces.service.SnippetService;
 import ar.edu.itba.paw.interfaces.service.TagService;
 import ar.edu.itba.paw.models.Tag;
 import ar.edu.itba.paw.webapp.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -34,7 +34,7 @@ public class TagsController {
 
     @GET
     @Produces(value = MediaType.APPLICATION_JSON)
-    public Response getAllTags(@QueryParam("page") @DefaultValue("1") int page, ItemSearchDto itemSearchDto) {
+    public Response getAllTags(@QueryParam("page") @DefaultValue("1") int page) {
 
         // TODO add showEmpty and showOnlyFollowing support
 
@@ -84,6 +84,7 @@ public class TagsController {
     }
 
     @POST
+//    @PreAuthorize("hasRole('ROLE_USER') OR hasRole('ROLE_ADMIN')")
     @Path("/{tagId}/follow")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response changeTagFollowStatus(final FollowDto followDto) {
@@ -113,7 +114,7 @@ public class TagsController {
     }
 
     @DELETE
-    @Secured
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Path("/{tagId}/delete")
     public Response changeTagFollowStatus(@PathParam(value="tagId") long tagId,
                                           @Context SecurityContext securityContext1) {

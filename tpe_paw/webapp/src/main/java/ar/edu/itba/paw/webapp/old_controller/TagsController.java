@@ -137,7 +137,7 @@ public class TagsController {
         String redirect = referer != null ? referer : ("/tags/" + tagId);
         return new ModelAndView("redirect:" + redirect);
     }
-    
+
     @RequestMapping(value = "/tags/{tagId}/delete",  method= RequestMethod.POST)
     public ModelAndView deleteTag(@PathVariable("tagId") long tagId, @ModelAttribute("deleteForm") final DeleteForm deleteForm) {
         User currentUser = this.loginAuthentication.getLoggedInUser();

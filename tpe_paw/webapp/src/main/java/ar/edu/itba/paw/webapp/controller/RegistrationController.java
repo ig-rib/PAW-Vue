@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfaces.annotations.Secured;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.dto.LoginDto;
 import ar.edu.itba.paw.webapp.dto.UserDto;

@@ -11,7 +11,7 @@
     <properties>
         <org.springframework.version>4.3.4.RELEASE</org.springframework.version>
         <servlet-api.version>2.5</servlet-api.version>
-        <org.springframework.security.version>4.0.4.RELEASE</org.springframework.security.version>
+        <org.springframework.security.version>5.0.9.RELEASE</org.springframework.security.version>
         <jstl.version>1.2</jstl.version>
         <org.postgresql.version>42.2.5</org.postgresql.version>
         <javax.validation-api.version>1.0.0.GA</javax.validation-api.version>
@@ -52,7 +52,6 @@
             <dependency>
                 <groupId>org.jboss.logging</groupId>
                 <artifactId>jboss-logging</artifactId>
-                <!--                TODO move-->
                 <version>${jboss.logging.version}</version>
             </dependency>
             <dependency>
@@ -145,6 +144,12 @@
                 <groupId>com.auth0</groupId>
                 <artifactId>java-jwt</artifactId>
                 <version>3.10.3</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.11.1</version>
             </dependency>
 
 
