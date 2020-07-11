@@ -9,16 +9,23 @@ module.exports = {
   ],
   parserOptions: {
     parser: 'babel-eslint',
-    emitWarnings: true
+    emitWarning: true,
   },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     "camelcase": 'warn', 
-    "indent": 'warn',
-    "no-trailing-spaces": 'warn',
+    "indent": 'off',
+    "no-trailing-spaces": 'off',
+    "semi": 'off',
+    "space-before-function-paren": 'warn',
+    "prefer-const": 'warn',
+    "space-before-blocks": 'warn',
     "space-infix-ops": 'warn',
     "comma-dangle": 'warn',
+    "keyword-spacing": 'warn',
+    "eol-last": 'warn',
+    "comma-spacing": "warn",
     "no-cond-assign": 'warn',
     "no-console": 'warn',
     "no-constant-condition": 'warn',
@@ -49,7 +56,8 @@ module.exports = {
     "no-delete-var": 'warn',
     "no-undef": 'warn',
     "no-unused-vars": 'warn',
-    "no-mixed-spaces-and-tabs": 'warn'
+    "no-mixed-spaces-and-tabs": 'warn',
+
   },
   overrides: [
     {
