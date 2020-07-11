@@ -34,9 +34,9 @@
 
               <!-- Title and description -->
               <v-list-item two-line>
-                <v-list-item-content> 
+                <v-list-item-content class="pa-0"> 
                   <v-list-item-title class="headline mb-1">{{ title }}</v-list-item-title>
-                  <v-list-item-subtitle class="ml-1">{{ description }}</v-list-item-subtitle>
+                  <p>{{ description }}</p>
                 </v-list-item-content>
               </v-list-item>
 
@@ -78,7 +78,7 @@ export default {
     }
   },
   methods: {
-  },
+  }
 }
 </script>
 

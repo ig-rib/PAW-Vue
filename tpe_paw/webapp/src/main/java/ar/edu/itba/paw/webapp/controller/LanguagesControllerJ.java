@@ -145,7 +145,6 @@ public class LanguagesControllerJ {
     @Path("/{langId}/delete")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     @Produces(value = {MediaType.APPLICATION_JSON})
-    //TODO: Check if should be path param
     public Response deleteLanguage (@PathParam("langId") long langId) {
         User currentUser = loginAuthentication.getLoggedInUser();
         if ( currentUser != null && roleService.isAdmin(currentUser.getId())){

@@ -60,6 +60,7 @@ module.exports = {
     "no-undef": 'warn',
     "no-unused-vars": 'warn',
     "no-mixed-spaces-and-tabs": 'warn',
+    "spaced-comment": 'warn'
 
   },
   overrides: [
