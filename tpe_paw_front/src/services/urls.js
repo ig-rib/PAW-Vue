@@ -1,4 +1,4 @@
-const localDomain = 'http://localhost:8080/webapp_war_exploded/'
+const localDomain = 'http://localhost:8080/'
 
 const urls = {
   user: {
