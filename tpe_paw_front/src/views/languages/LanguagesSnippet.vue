@@ -60,7 +60,6 @@ export default {
   watch: {
       pagination: {
           handler: function () {
-            // TODO: change 1 for id
             languages.getSnippetsForLanguage(this.langId, this.pagination.page)
             .then(values => {
                 this.snippets = values.data 
