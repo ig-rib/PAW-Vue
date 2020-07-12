@@ -63,34 +63,12 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**/active", "/user/**/deleted", "user/**/active/edit", "user/**/deleted/edit"). hasRole("USER")
                 .antMatchers("/tags/**/follow").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/tags/**/delete", "/languages/**/delete").hasRole("ADMIN")
-                .antMatchers("/**").permitAll()
-//            .and().formLogin()
-//                .loginPage("/login")
-//                .failureUrl("/login_error")
-//                .usernameParameter("username")
-//                .passwordParameter("password")
-//                .successHandler(new RefererRedirectionAuthenticationSuccessHandler())
-                //.defaultSuccessUrl("/", false)
-//            .and().rememberMe()
-//                .rememberMeParameter("rememberme")
-//                .userDetailsService(userDetails)
-//                .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
-//                .key(getRememberMeKey())
-//            .and().logout()
-//                .logoutUrl("/logout")
-//                .logoutSuccessUrl("/goodbye")
-//                .invalidateHttpSession(true)
-//                .deleteCookies("JSESSIONID")
+                .antMatchers("/**")
+                .permitAll()
                 .and()
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-//                .exceptionHandling()
-//                    .accessDeniedPage("/403")
         ;
-//            .and().csrf().disable();
-//        http.authorizeRequests()
-//                .antMatchers(HttpMethod.POST, "login").permitAll()
-//                .anyRequest().authenticated()
     }
 
     @Override
@@ -110,7 +88,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
         corsConfiguration.addExposedHeader("link");
-        corsConfiguration.addExposedHeader("authorization");
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
     }

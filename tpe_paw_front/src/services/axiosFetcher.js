@@ -19,19 +19,31 @@ const axiosFetcher = (url = '', params = {}, method = 'get', data = {}) => {
     },
     params: params.queryParams
   }
-  if (Store.getters.token != null) {
-    config.headers.Authorization = 'Bearer' + Store.getters.token
+  if (Store.getters.token.value != null) {
+    config.headers.Authorization = 'Bearer' + Store.getters.token.value
   }
+  let promise = null
   switch (method.toLowerCase()) {
     case 'get':
-      return axios.get(url, config)
+      promise = axios.get(url, config)
+      break;
     case 'post':
-      return axios.post(url, data, config)
+      promise = axios.post(url, data, config)
+      break;
     case 'put':
-      return axios.put(url, data, config)
+      promise = axios.put(url, data, config)
+      break;
     case 'delete':
-      return axios.delete(url, config)
+      promise = axios.delete(url, config)
+      break;
   }
+  return promise
+    .then(r => {
+      if (r.status === 401) {
+        Store.push({ name: 'feed' })
+      }
+      return Promise.resolve(r)
+    })
 }
 
 /**

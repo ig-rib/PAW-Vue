@@ -5,21 +5,31 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    token: ''
+    token: {
+      value: '',
+      expirationDate: null
+    }
   },
   mutations: {
-    setToken (state, newToken) {
-      state.token = newToken
+    setToken (state, tokenData) {
+      console.log('setToken', tokenData)
+      state.token.value = tokenData.token
+      state.token.expirationDate = tokenData.expirationDate
     }
   },
   getters: {
     token (state) {
       return state.token
+    },
+    loggedIn (state) {
+      return (state.token.value != null &&
+        state.token.expirationDate != null &&
+        new Date() < new Date(state.token.expirationDate))
     }
   },
   actions: {
-    setToken ({ commit }, newToken) {
-      commit('setToken', newToken)
+    setToken ({ commit }, tokenData) {
+      commit('setToken', tokenData)
     }
   },
   modules: {

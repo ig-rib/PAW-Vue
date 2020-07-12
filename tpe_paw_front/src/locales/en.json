@@ -22,5 +22,13 @@
         "title": "Following"
       }
     }
+  },
+  "registration": {
+    "login": {
+      "login": "Log In",
+      "username": "User Name",
+      "password": "Password",
+      "usernameOrPasswordInvalid": "User Name Or Password Invalid"
+    }
   }
 }

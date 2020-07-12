@@ -8,6 +8,7 @@ import LanguagesMain from '@/views/languages/LanguagesMain.vue'
 import LanguagesSnippet from '@/views/languages/LanguagesSnippet.vue'
 import SnippetDetail from '@/views/snippet/SnippetDetail.vue'
 import TagsMain from '@/views/tags/TagsMain.vue'
+import Login from '@/views/registration/Login.vue'
 
 Vue.use(VueRouter)
 
@@ -64,6 +65,11 @@ const routes = [
             component: TagsMain
           }
         ]
+      }, 
+      {
+        path: 'login',
+        name: 'login',
+        component: Login
       }
     ]
   }
