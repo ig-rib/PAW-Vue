@@ -12,11 +12,6 @@ export default {
     //
   }),
   mounted () {
-    registration.login('JaneRoe', 'password')
-      .then(r => {
-        console.log(r.headers.authorization.split('Bearer').pop())
-        this.$store.dispatch('setToken', r.headers.authorization.split('Bearer').pop())
-      })
   }
 }
 </script>

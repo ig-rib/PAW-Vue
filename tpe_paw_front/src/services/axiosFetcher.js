@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Store from '@/store'
+import Router from '@/router'
 /**
  * Wrapper for axios
  * @param {string} url
@@ -37,12 +38,19 @@ const axiosFetcher = (url = '', params = {}, method = 'get', data = {}) => {
       promise = axios.delete(url, config)
       break;
   }
+  // Handle errors
+  // Nth Could modularize implementation of 
+  // error handling with beforeAll/afterAll methods
+  // in every request
   return promise
     .then(r => {
-      if (r.status === 401) {
-        Store.push({ name: 'feed' })
-      }
       return Promise.resolve(r)
+    })
+    .catch(e => {
+      if (e.response.status === 401) {
+        Router.push({ name: 'login' })
+      }
+      return Promise.reject(r)
     })
 }
 
