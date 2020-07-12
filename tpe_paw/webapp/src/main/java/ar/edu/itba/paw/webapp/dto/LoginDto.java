@@ -4,6 +4,7 @@ public class LoginDto {
 
     private String username;
     private String password;
+    private String email;
 
     public String getUsername() {
         return username;
@@ -19,5 +20,13 @@ public class LoginDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

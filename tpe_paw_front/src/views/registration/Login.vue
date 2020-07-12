@@ -2,19 +2,20 @@
   <v-container>
     <v-card>
       <v-text-field
-        :label="$t('registration.login.username')"
+        :label="$t('registration.username')"
         outlined
         v-model="username">
       </v-text-field>
       <v-text-field
-        :label="$t('registration.login.password')"
+        type="password"
+        :label="$t('registration.password')"
         outlined
         v-model="password">
       </v-text-field>
       <div v-if="invalid" class="error-text">
-        {{ $t('registration.login.usernameOrPasswordInvalid') }}
+        {{ $t('registration.validations.usernameOrPasswordInvalid') }}
       </div>
-      <v-btn @click="login">{{ $t('registration.login.login') }}</v-btn>
+      <v-btn @click="login">{{ $t('registration.login') }}</v-btn>
     </v-card>
   </v-container>
 </template>

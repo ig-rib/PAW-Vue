@@ -50,7 +50,7 @@ const axiosFetcher = (url = '', params = {}, method = 'get', data = {}) => {
       if (e.response.status === 401) {
         Router.push({ name: 'login' })
       }
-      return Promise.reject(r)
+      return Promise.reject(e)
     })
 }
 

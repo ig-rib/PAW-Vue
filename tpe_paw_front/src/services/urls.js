@@ -61,7 +61,8 @@ const urls = {
     deleteLanguage: localDomain + 'languages/:id/delete'
   },
   registration: {
-    login: localDomain + 'login'
+    login: localDomain + 'login',
+    register: localDomain + 'register'
   },
   test: {
     jerseyTest: localDomain + 'jersey-test'

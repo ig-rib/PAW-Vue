@@ -6,6 +6,13 @@ const login = (username, password) => axiosFetcher.post(urls.registration.login,
     password
 })
 
+const register = (username, email, password) => axiosFetcher.post(urls.registration.register, {}, {
+    username,
+    email,
+    password
+})
+
 export default { 
-    login
+    login,
+    register
 }

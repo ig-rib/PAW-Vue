@@ -24,11 +24,19 @@
     }
   },
   "registration": {
-    "login": {
-      "login": "Log In",
-      "username": "User Name",
-      "password": "Password",
-      "usernameOrPasswordInvalid": "User Name Or Password Invalid"
-    }
+    "username": "User Name",
+    "password": "Password",
+    "login": "Log In",
+    "email": "Email",
+    "repeatPassword": "Repeat Password",
+    "register": "Register"
+  },
+  "validations": {
+    "invalidPassword": "Password must be at least 8 characters long",
+    "usernameOrPasswordInvalid": "User Name Or Password Invalid",
+    "userNameExists": "User Name already exists",
+    "invalidEmail": "Invalid Email",
+    "emailExists": "Email already exists",
+    "nonMatchingPasswords": "Passwords must be equal"
   }
 }
