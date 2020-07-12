@@ -2,7 +2,9 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.service.SnippetService;
 import ar.edu.itba.paw.interfaces.service.TagService;
+import ar.edu.itba.paw.interfaces.service.UserService;
 import ar.edu.itba.paw.models.Tag;
+import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,6 +14,7 @@ import javax.ws.rs.core.*;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -25,6 +28,8 @@ public class TagsController {
     private TagService tagService;
     @Autowired
     private SnippetService snippetService;
+    @Autowired
+    private UserService userService;
 
     @Context
     private UriInfo uriInfo;
@@ -34,16 +39,27 @@ public class TagsController {
 
     @GET
     @Produces(value = MediaType.APPLICATION_JSON)
-    public Response getAllTags(@QueryParam("page") @DefaultValue("1") int page) {
+    public Response getAllTags(@QueryParam("page") @DefaultValue("1") int page,
+                                @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
+                                @QueryParam("showOnlyFollowing") @DefaultValue("false") boolean showOnlyFollowing) {
+        // Find the user, check if it exists
+        Long userId = null;
+        Optional<User> userOpt;
+        // TODO(nth) should return unauthorized if showOnlyFollowing is true && userPrincipal is null
+        if (showOnlyFollowing && securityContext.getUserPrincipal() != null) {
+            userOpt = userService.findUserByUsername(securityContext.getUserPrincipal().getName());
+            if (!userOpt.isPresent())
+                return Response.serverError().build();
+            userId = userOpt.get().getId();
+        }
+        else showOnlyFollowing = false;
 
-        // TODO add showEmpty and showOnlyFollowing support
-
-        final List<TagDto> tags = tagService.getAllTags(true, false, null, page, TAG_PAGE_SIZE)
+        final List<TagDto> tags = tagService.getAllTags(showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)
                 .stream()
                 .map(TagDto::fromTag)
                 .collect(Collectors.toList());
 
-        int tagsCount = tagService.getAllTagsCount(true, false, null);
+        int tagsCount = tagService.getAllTagsCount(showEmpty, showOnlyFollowing, userId);
         int pageCount = (tagsCount/TAG_PAGE_SIZE) + ((tagsCount % TAG_PAGE_SIZE == 0) ? 0 : 1);
 
         Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<TagDto>>(tags) {})
@@ -83,23 +99,53 @@ public class TagsController {
     }
 
     @POST
-//    @PreAuthorize("hasRole('ROLE_USER') OR hasRole('ROLE_ADMIN')")
     @Path("/{tagId}/follow")
     @Consumes(value = {MediaType.APPLICATION_JSON})
-    public Response changeTagFollowStatus(final FollowDto followDto) {
-        Boolean follows = followDto.getFollow();
+    public Response followTag(@PathParam(value="tagId") final long tagId,
+                                          FollowDto followDto,
+                                          @Context SecurityContext securityContext) {
+        Optional<User> userOpt = userService.findUserByUsername(securityContext.getUserPrincipal().getName());
+        if (!userOpt.isPresent())
+            return Response.serverError().build();
+        tagService.followTag(userOpt.get().getId(), tagId);
+        return Response.ok(followDto).build();
+    }
+
+    @POST
+    @Path("/{tagId}/unfollow")
+    @Consumes(value = {MediaType.APPLICATION_JSON})
+    public Response unfollowTag(@PathParam(value="tagId") final long tagId,
+                                          FollowDto followDto) {
+        Optional<User> userOpt = userService.findUserByUsername(securityContext.getUserPrincipal().getName());
+        if (!userOpt.isPresent())
+            return Response.serverError().build();
+        tagService.unfollowTag(userOpt.get().getId(), tagId);
         return Response.ok(followDto).build();
     }
 
     @POST
     @Path("/search")
     @Consumes(value = {MediaType.APPLICATION_JSON})
-    public Response searchTags(@QueryParam("page") @DefaultValue("1") int page, final ItemSearchDto itemSearchDto) {
-        List<TagDto> tags = tagService.findTagsByName(itemSearchDto.getName(), itemSearchDto.isShowEmpty(), itemSearchDto.isShowOnlyFollowing(), null, page, TAG_PAGE_SIZE)
+    public Response searchTags(@QueryParam("page") @DefaultValue("1") int page,
+                               @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
+                               @QueryParam("showOnlyFollowing") @DefaultValue("false") boolean showOnlyFollowing,
+                               final ItemSearchDto itemSearchDto) {
+        // Find the user, check if it exists
+        Long userId = null;
+        Optional<User> userOpt;
+        if (showOnlyFollowing && securityContext.getUserPrincipal() != null) {
+            userOpt = userService.findUserByUsername(securityContext.getUserPrincipal().getName());
+            if (!userOpt.isPresent())
+                return Response.serverError().build();
+            userId = userOpt.get().getId();
+        }
+        else showOnlyFollowing = false;
+
+        List<TagDto> tags = tagService.findTagsByName(itemSearchDto.getName(), showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)
                 .stream()
                 .map(TagDto::fromTag)
                 .collect(Collectors.toList());
-        int tagsCount = this.tagService.getAllTagsCountByName(itemSearchDto.getName(), itemSearchDto.isShowEmpty(), itemSearchDto.isShowOnlyFollowing(), null);
+        int tagsCount = this.tagService.getAllTagsCountByName(itemSearchDto.getName(), showEmpty, showOnlyFollowing, userId);
         int pageCount = (tagsCount/TAG_PAGE_SIZE) + ((tagsCount % TAG_PAGE_SIZE == 0) ? 0 : 1);
 
         Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<TagDto>>(tags) {})
@@ -113,13 +159,9 @@ public class TagsController {
     }
 
     @DELETE
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Path("/{tagId}/delete")
-    public Response changeTagFollowStatus(@PathParam(value="tagId") long tagId,
-                                          @Context SecurityContext securityContext1) {
-        // this.tagService.removeTag(tagId);
-        Principal userPrincipal = securityContext1.getUserPrincipal();
-        String username = userPrincipal.getName();
+    public Response changeTagFollowStatus(@PathParam(value="tagId") long tagId) {
+        this.tagService.removeTag(tagId);
         return Response.noContent().build();
     }
 }

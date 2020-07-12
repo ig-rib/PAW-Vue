@@ -7,25 +7,46 @@ const getTags = (page) => axiosFetcher.get(urls.tags.getTags, {
   }
 })
 
-const followTag = (id, follow) => axiosFetcher.post(urls.tags.followTag, {
+const getTagSnippets = (tagId, page = 1, showEmpty = true, showOnlyFollowing = false) => axiosFetcher.get(urls.tags.getTagSnippets, {
+  queryParams: {
+    page,
+    showEmpty,
+    showOnlyFollowing
+  },
+  pathVariables: {
+    tagId
+  }
+})
+
+const followTag = (id) => axiosFetcher.post(urls.tags.followTag, {
   pathVariables: {
     tagId: id
   }
-}, {
-  follow: follow
+})
+
+const unfollowTag = (id) => axiosFetcher.post(urls.tags.unfollowTag, {
+  pathVariables: {
+    tagId: id
+  }
 })
 
 const deleteTag = (id) => axiosFetcher.del(urls.tags.deleteTag, { pathVariables: { tagId: id } })
 
-const searchTags = (page, name, isShowEmpty, isShowOnlyFollowing) => axiosFetcher.post(urls.tags.searchTags, { pathVariables: { page: page } }, {
-  name,
-  isShowEmpty,
-  isShowOnlyFollowing
+const searchTags = (page = 1, name, showEmpty = true, showOnlyFollowing = false) => axiosFetcher.post(urls.tags.searchTags, {
+  pathVariables: {
+    page,
+    showEmpty,
+    showOnlyFollowing
+  } 
+}, {
+  name
 })
 
 export default {
   getTags,
   followTag,
+  unfollowTag,
   deleteTag,
-  searchTags
+  searchTags,
+  getTagSnippets
 }
