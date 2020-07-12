@@ -1,14 +1,14 @@
 package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.models.Snippet;
-import ar.edu.itba.paw.models.User;
 
 import java.time.Instant;
 
 public class SnippetDto {
 
     private Long id;
-    private Long ownerId;
+    private UserDto owner;
+    private LanguageDto language;
     private String code;
     private String title;
     private String description;
@@ -20,7 +20,8 @@ public class SnippetDto {
         SnippetDto dto = new SnippetDto();
 
         dto.id = snippet.getId();
-        dto.ownerId = snippet.getOwner().getId();
+        dto.owner = UserDto.fromUser(snippet.getOwner());
+        dto.language = LanguageDto.fromLanguage(snippet.getLanguage());
         dto.code = snippet.getCode();
         dto.title = snippet.getTitle();
         dto.description = snippet.getDescription();
@@ -37,14 +38,6 @@ public class SnippetDto {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
     }
 
     public String getCode() {
@@ -93,5 +86,21 @@ public class SnippetDto {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public UserDto getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserDto owner) {
+        this.owner = owner;
+    }
+
+    public LanguageDto getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(LanguageDto language) {
+        this.language = language;
     }
 }

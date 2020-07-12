@@ -15,7 +15,7 @@
 
         <!-- Title -->
         <v-flex md1 sm1>
-          <v-toolbar-title>Title</v-toolbar-title>
+          <v-toolbar-title>Snippit</v-toolbar-title>
         </v-flex>
 
         <!-- Navigation for large screens -->
@@ -110,7 +110,6 @@
     </v-list>
     </v-navigation-drawer>
     <div>
-      <h1>persistent navigator</h1>
       <router-view></router-view>
     </div>
   </div>

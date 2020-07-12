@@ -7,6 +7,16 @@ const getLanguages = (page) => axiosFetcher.get(urls.languages.getLanguages, {
   }
 })
 
+const getSnippetsForLanguage = (id, page) => axiosFetcher.get(urls.languages.getLanguage, {
+  pathVariables: {
+    id: id
+  },
+  queryParams: {
+    page: page
+  }
+})
+
 export default {
-  getLanguages
+  getLanguages,
+  getSnippetsForLanguage
 }

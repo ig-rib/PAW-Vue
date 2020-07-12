@@ -5,6 +5,7 @@ import FeedMain from '@/views/feed/FeedMain.vue'
 import Nothing from '@/components/Nothing.vue'
 import ExploreMain from '@/views/explore/ExploreMain.vue'
 import LanguagesMain from '@/views/languages/LanguagesMain.vue'
+import LanguagesSnippet from '@/views/languages/LanguagesSnippet.vue'
 import SnippetDetail from '@/views/snippet/SnippetDetail.vue'
 import TagsMain from '@/views/tags/TagsMain.vue'
 
@@ -45,7 +46,12 @@ const routes = [
           {
             path: 'languages',
             name: 'languages',
-            component: LanguagesMain
+            component: LanguagesMain,
+          },
+          {
+            path: 'languages/:id',
+            name: 'languages-snippet',
+            component: LanguagesSnippet
           },
           {
             path: 'snippet/:id',
