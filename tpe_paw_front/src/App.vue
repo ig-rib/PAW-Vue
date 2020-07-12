@@ -5,12 +5,18 @@
 </template>
 
 <script>
-// import axiosFetcher from '@/services/axiosFetcher.js'
-// import urls from '@/services/urls'
+import registration from '@/services/registration.js'
 export default {
   name: 'App',
   data: () => ({
     //
-  })
+  }),
+  mounted () {
+    registration.login('JaneRoe', 'password')
+      .then(r => {
+        console.log(r.headers.authorization.split('Bearer').pop())
+        this.$store.dispatch('setToken', r.headers.authorization.split('Bearer').pop())
+      })
+  }
 }
 </script>

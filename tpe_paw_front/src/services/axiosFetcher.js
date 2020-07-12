@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import Store from '@/store'
 /**
  * Wrapper for axios
  * @param {string} url
@@ -18,6 +18,9 @@ const axiosFetcher = (url = '', params = {}, method = 'get', data = {}) => {
       'Content-Type': 'application/json'
     },
     params: params.queryParams
+  }
+  if (Store.getters.token != null) {
+    config.headers.Authorization = 'Bearer' + Store.getters.token
   }
   switch (method.toLowerCase()) {
     case 'get':

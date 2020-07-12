@@ -110,6 +110,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
         corsConfiguration.addExposedHeader("link");
+        corsConfiguration.addExposedHeader("authorization");
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
     }

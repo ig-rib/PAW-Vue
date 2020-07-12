@@ -1,4 +1,4 @@
-const localDomain = 'http://localhost:8080/webapp_war_exploded/'
+const localDomain = 'http://localhost:8080/'
 
 const urls = {
   user: {
@@ -61,7 +61,7 @@ const urls = {
     deleteLanguage: localDomain + 'languages/:id/delete'
   },
   registration: {
-    login: localDomain + 'registration/login'
+    login: localDomain + 'login'
   },
   test: {
     jerseyTest: localDomain + 'jersey-test'
