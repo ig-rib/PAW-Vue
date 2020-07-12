@@ -15,8 +15,6 @@
         {{ $t('registration.login.usernameOrPasswordInvalid') }}
       </div>
       <v-btn @click="login">{{ $t('registration.login.login') }}</v-btn>
-      <v-btn @click="test">TEST ENDPOINT</v-btn>
-      {{ $store.getters.token }}
     </v-card>
   </v-container>
 </template>
@@ -48,10 +46,6 @@ export default {
     blankFields () {
       this.username = ''
       this.password = ''
-    },
-    test () {
-      tags.followTag(450)
-        .then(r => console.log(r))
     }
   },
   mounted () {

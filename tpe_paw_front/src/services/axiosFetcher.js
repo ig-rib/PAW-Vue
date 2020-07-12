@@ -20,7 +20,7 @@ const axiosFetcher = (url = '', params = {}, method = 'get', data = {}) => {
     params: params.queryParams
   }
   if (Store.getters.token.value != null) {
-    config.headers.Authorization = 'Bearer' + Store.getters.token.value
+    config.headers.Authorization = 'Bearer ' + Store.getters.token.value
   }
   let promise = null
   switch (method.toLowerCase()) {
