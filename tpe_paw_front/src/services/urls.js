@@ -2,7 +2,8 @@ const localDomain = 'http://localhost:8080/'
 
 const urls = {
   user: {
-    getUserSnippets: localDomain + 'user/:id/snippets',
+    getActiveUserSnippets: localDomain + 'user/:id/active',
+    getDeletedUserSnippets: localDomain + 'user/:id/deleted',
     getUser: localDomain + 'user/:id',
     uploadProfilePhoto: localDomain + 'user/profile-photo'
   },

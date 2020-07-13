@@ -7,7 +7,7 @@ const getUser = (id) => axiosFetcher.get(urls.user.getUser, {
   }
 })
 
-const getUserSnippets = (page, id) => axiosFetcher.get(urls.user.getUserSnippets, {
+const getActiveUserSnippets = (id, page) => axiosFetcher.get(urls.user.getActiveUserSnippets, {
   queryParams: {
     page
   },
@@ -16,6 +16,14 @@ const getUserSnippets = (page, id) => axiosFetcher.get(urls.user.getUserSnippets
   }
 })
 
+const getDeletedUserSnippets = (id, page) => axiosFetcher.get(urls.user.getDeletedUserSnippets, {
+  queryParams: {
+    page
+  },
+  pathVariables: {
+    id
+  }
+})
 const uploadProfilePhoto = (id, encodedPhoto) => axiosFetcher.put(urls.user.uploadProfilePhoto, {
   pathVariables: {
     id
@@ -26,6 +34,7 @@ const uploadProfilePhoto = (id, encodedPhoto) => axiosFetcher.put(urls.user.uplo
 
 export default {
   getUser,
-  getUserSnippets,
+  getActiveUserSnippets,
+  getDeletedUserSnippets,
   uploadProfilePhoto
 }

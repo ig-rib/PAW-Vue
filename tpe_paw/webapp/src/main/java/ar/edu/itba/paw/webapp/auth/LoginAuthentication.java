@@ -21,6 +21,8 @@ public class LoginAuthentication {
 
     @Autowired
     private UserService userService;
+    @Context
+    private SecurityContext securityContext;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginAuthentication.class);
 

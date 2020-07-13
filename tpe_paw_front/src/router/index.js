@@ -14,6 +14,7 @@ import RegistrationSuper from '@/views/registration/RegistrationSuper.vue'
 import SendRecoveryEmail from '@/views/registration/SendRecoveryEmail.vue'
 import ResetPassword from '@/views/registration/ResetPassword.vue'
 import SendVerificationCode from '@/views/registration/SendVerificationCode.vue'
+import UserProfileMain from '@/views/user/UserProfileMain.vue'
 
 Vue.use(VueRouter)
 
@@ -105,6 +106,11 @@ const routes = [
                 component: SendVerificationCode
               }
             ]
+          },
+          {
+            path: 'user/:id',
+            name: 'user-profile',
+            component: UserProfileMain
           }
         ]
       }
