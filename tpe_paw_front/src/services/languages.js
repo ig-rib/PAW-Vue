@@ -16,11 +16,10 @@ const getSnippetsForLanguage = (id, page) => axiosFetcher.get(urls.languages.get
   }
 })
 
-const searchLanguage = (page = 1, name, showEmpty = true, showOnlyFollowing = false) => axiosFetcher.post(urls.languages.searchLanguages, {
+const searchLanguage = (page = 1, name, showEmpty = true) => axiosFetcher.post(urls.languages.searchLanguages, {
   queryParams: {
     page,
     showEmpty,
-    showOnlyFollowing,
     name
   } 
 })

@@ -1,13 +1,14 @@
 <template>
   <v-container>
     <!-- Search bar -->
-    <v-row>
+    <v-row align="start">
         <v-col>
-            <v-card height="100%" max-width=400>
+            <v-card height=55>
                 <v-row fill-height>
                     <v-col>
                         <v-text-field
                         v-model="languageInput"
+                        v-on:keydown.enter="searchLanguage"
                         label="Search for a language"
                         dense
                         rounded
@@ -28,6 +29,17 @@
                     </v-col>
                 </v-row>
             </v-card>
+        </v-col>
+        <v-col class="flex-grow-0">
+             <v-btn 
+             class="mt-3" rounded :outlined="!showEmpty" color="primary" small dark
+             v-on:click="showEmptyChange"
+             >
+                 Show empty
+                 <v-icon v-if="showEmpty">
+                     mdi-check
+                 </v-icon>
+             </v-btn>
         </v-col>
     </v-row>
     <div>
@@ -61,8 +73,9 @@ export default {
   data () {
     return {
       languages: null,
-      links: 0,
+      links: '',
       languageInput: '',
+      showEmpty: true,
       pagination: {
           page: 1,
           length: 1,
@@ -72,7 +85,7 @@ export default {
   },
   methods: {
       searchLanguage: function () {
-          languages.searchLanguage(this.pagination.page, this.languageInput, true, false)
+          languages.searchLanguage(this.pagination.page, this.languageInput, this.showEmpty)
           .then(values => {
               this.languages = values.data
               this.links = helpers.parseLinks(values.headers.link)
@@ -87,12 +100,15 @@ export default {
                 this.links = helpers.parseLinks(values.headers.link)
             })
             .catch(error => { console.log(error) })
+      },
+      showEmptyChange: function (){
+          this.showEmpty = !this.showEmpty
+          this.searchLanguage()
       }
   },
   computed: {
   },
   mounted () {
-    // Promise
     languages.getLanguages(this.pagination.page)
       .then(values => {
         this.languages = values.data
@@ -107,8 +123,7 @@ export default {
 
 <style lang="scss">
 
-.language-chip{
+.language-chip {
     width: 100px;
 }
-
 </style>
