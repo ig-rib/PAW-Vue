@@ -16,6 +16,7 @@
       <div class="text-center">
         <v-pagination
           v-model="pagination.page"
+          v-on:input="paginationChange"
           :length="pagination.length" 
           :total-visible="pagination.visible"
           circle
@@ -47,6 +48,16 @@ export default {
       
     }
   },
+  method: {
+      paginationChange: function () {
+          languages.getLanguages(this.pagination.page)
+            .then(values => {
+                this.languages = values.data 
+                this.links = helpers.parseLinks(values.headers.link)
+            })
+            .catch(error => { console.log(error) })
+      }
+  },
   mounted () {
     this.langId = this.$route.params.id
     languages.getSnippetsForLanguage(this.langId, this.pagination.page)
@@ -58,18 +69,7 @@ export default {
       .catch(error => { console.log(error) })
   },
   watch: {
-      pagination: {
-          handler: function () {
-            languages.getSnippetsForLanguage(this.langId, this.pagination.page)
-            .then(values => {
-                this.snippets = values.data 
-                this.links = helpers.parseLinks(values.headers.link)
-                this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10);
-            })
-            .catch(error => { console.log(error) })
-          },
-          deep: true
-      }
+   
   }
 
 }

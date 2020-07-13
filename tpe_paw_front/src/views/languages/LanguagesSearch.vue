@@ -1,5 +1,35 @@
 <template>
   <v-container>
+    <!-- Search bar -->
+    <v-row>
+        <v-col>
+            <v-card height="100%" max-width=400>
+                <v-row fill-height>
+                    <v-col>
+                        <v-text-field
+                        v-model="languageInput"
+                        label="Search for a language"
+                        dense
+                        rounded
+                        hide-details
+                        >
+                        </v-text-field>
+                    </v-col>
+                    <v-divider vertical></v-divider>
+                    <v-col class="flex-grow-0">
+                        <v-btn
+                        class="pr-2"
+                        height="100%"
+                        icon
+                        v-on:click="searchLanguage"
+                        >
+                            <v-icon>mdi-magnify</v-icon>
+                        </v-btn>
+                    </v-col>
+                </v-row>
+            </v-card>
+        </v-col>
+    </v-row>
     <div>
         <p> Languages </p>
         <v-row>
@@ -27,11 +57,12 @@ import languages from '@//services/languages.js'
 import helpers from '@//functions/helpers.js'
 
 export default {
-  name: 'languagesMain',
+  name: 'languagesSearch',
   data () {
     return {
       languages: null,
       links: 0,
+      languageInput: '',
       pagination: {
           page: 1,
           length: 1,
@@ -40,6 +71,15 @@ export default {
     }
   },
   methods: {
+      searchLanguage: function () {
+          languages.searchLanguage(this.pagination.page, this.languageInput, true, false)
+          .then(values => {
+              this.languages = values.data
+              this.links = helpers.parseLinks(values.headers.link)
+              this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10);
+          })
+          .catch(error => { console.log(error) })
+      },
       paginationChange: function () {
           languages.getLanguages(this.pagination.page)
             .then(values => {

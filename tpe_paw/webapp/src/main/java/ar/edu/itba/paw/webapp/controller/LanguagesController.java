@@ -5,14 +5,9 @@ import ar.edu.itba.paw.models.Language;
 import ar.edu.itba.paw.models.Snippet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
-import ar.edu.itba.paw.webapp.dto.ItemSearchDto;
 import ar.edu.itba.paw.webapp.dto.LanguageDto;
 import ar.edu.itba.paw.webapp.dto.SnippetDto;
-import ar.edu.itba.paw.webapp.exception.ForbiddenAccessException;
 import ar.edu.itba.paw.webapp.exception.LanguageNotFoundException;
-import ar.edu.itba.paw.webapp.form.DeleteForm;
-import ar.edu.itba.paw.webapp.form.ItemSearchForm;
-import ar.edu.itba.paw.webapp.utility.MavHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +15,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -41,7 +30,7 @@ import static ar.edu.itba.paw.webapp.utility.Constants.SNIPPET_PAGE_SIZE;
 
 @Component
 @Path("/languages")
-public class LanguagesControllerJ {
+public class LanguagesController {
 
     @Autowired private LanguageService languageService;
     @Autowired private SnippetService snippetService;
@@ -51,7 +40,7 @@ public class LanguagesControllerJ {
     @Autowired private UserService userService;
     @Autowired private MessageSource messageSource;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LanguagesControllerJ.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LanguagesController.class);
 
     @Context
     private UriInfo uriInfo;

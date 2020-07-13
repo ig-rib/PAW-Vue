@@ -6,6 +6,8 @@ import Nothing from '@/components/Nothing.vue'
 import ExploreMain from '@/views/explore/ExploreMain.vue'
 import LanguagesMain from '@/views/languages/LanguagesMain.vue'
 import LanguagesSnippet from '@/views/languages/LanguagesSnippet.vue'
+import LanguagesSuper from '@/views/languages/LanguagesSuper.vue'
+import LanguagesSearch from '@/views/languages/LanguagesSearch.vue'
 import SnippetDetail from '@/views/snippet/SnippetDetail.vue'
 import TagsMain from '@/views/tags/TagsMain.vue'
 import Login from '@/views/registration/Login.vue'
@@ -57,12 +59,25 @@ const routes = [
           {
             path: 'languages',
             name: 'languages',
-            component: LanguagesMain
-          },
-          {
-            path: 'languages/:id',
-            name: 'languages-snippet',
-            component: LanguagesSnippet
+            component: LanguagesSuper,
+            children: [
+              {
+                path: '',
+                name: 'languages-main',
+                component: LanguagesMain
+              },
+              {
+                path: 'search',
+                name: 'languagesSearch',
+                component: LanguagesSearch
+              },
+              {
+                path: ':id',
+                name: 'languagesSnippet',
+                component: LanguagesSnippet
+              }
+              
+            ]
           },
           {
             path: 'snippet/:id',
