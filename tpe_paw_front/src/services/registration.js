@@ -26,11 +26,19 @@ const resetPassword = (id, password, repeatPassword, token) => axiosFetcher.put(
   password,
   token,
   repeatPassword
-}) 
+})
+
+const verifyEmail = () => axiosFetcher.get(urls.registration.verifyEmail)
+
+const sendVerificationCode = (code) => axiosFetcher.post(urls.registration.verifyEmail, {}, {
+  code
+})
 
 export default { 
   login,
   register,
   sendRecoveryEmail,
-  resetPassword
+  resetPassword,
+  verifyEmail,
+  sendVerificationCode
 }

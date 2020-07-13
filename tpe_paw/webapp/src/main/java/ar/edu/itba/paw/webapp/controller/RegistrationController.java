@@ -6,6 +6,9 @@ import ar.edu.itba.paw.interfaces.service.UserService;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.dto.*;
 import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
+import ar.edu.itba.paw.webapp.form.EmailVerificationForm;
+import ar.edu.itba.paw.webapp.form.SearchForm;
+import ar.edu.itba.paw.webapp.validations.ValidatorHelper;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
@@ -18,12 +21,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.time.Instant;
 import java.util.Optional;
 
@@ -44,6 +55,8 @@ public class RegistrationController {
     private MessageSource messageSource;
     @Autowired
     private EmailService emailService;
+    @Context
+    private SecurityContext securityContext;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
 
@@ -64,6 +77,43 @@ public class RegistrationController {
                     .build();
         }
         userService.register(registrationData.getUsername(), passwordEncoder.encode(registrationData.getPassword()), registrationData.getEmail(), Instant.now(), LocaleContextHolder.getLocale());
+        return Response.accepted().build();
+    }
+
+    @GET
+    @Path(value = "/verify-email")
+    public Response verifyEmail() {
+        User currentUser = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+        if (currentUser == null){
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+        }
+        try {
+            this.emailService.sendVerificationEmail(currentUser);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage() + "Failed to send verification email to user {}", currentUser.getUsername());
+        }
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path(value = "/verify-email")
+    public Response completeVerifyEmail(VerificationDto verificationDto) {
+        User currentUser = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+        if (currentUser == null){
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+        }
+        // Checking the code sent by the user is valid
+        if (!this.cryptoService.checkValidTOTP(currentUser, verificationDto.getCode())) {
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.400.invalidVerificationCode", null, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorMessageDto).build();
+        }
+
+        this.userService.verifyUserEmail(currentUser.getId());
         return Response.accepted().build();
     }
 

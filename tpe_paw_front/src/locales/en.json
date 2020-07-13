@@ -31,7 +31,9 @@
     "repeatPassword": "Repeat Password",
     "register": "Register",
     "resetPassword": "Reset Password",
-    "sendRecoveryEmail": "Send"
+    "sendRecoveryEmail": "Send",
+    "verificationCode": "Verification Code",
+    "sendVerificationCode": "Send"
   },
   "validations": {
     "invalidPassword": "Password must be at least 8 characters long",

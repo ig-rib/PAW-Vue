@@ -1,20 +1,20 @@
 <template>
   <v-container>
-      <v-text-field
-        :label="$t('registration.username')"
-        outlined
-        v-model="username">
-      </v-text-field>
-      <v-text-field
-        type="password"
-        :label="$t('registration.password')"
-        outlined
-        v-model="password">
-      </v-text-field>
-      <div v-if="invalid" class="error-text">
-        {{ $t('registration.validations.usernameOrPasswordInvalid') }}
-      </div>
-      <v-btn @click="login">{{ $t('registration.login') }}</v-btn>
+    <v-text-field
+      :label="$t('registration.username')"
+      outlined
+      v-model="username">
+    </v-text-field>
+    <v-text-field
+      type="password"
+      :label="$t('registration.password')"
+      outlined
+      v-model="password">
+    </v-text-field>
+    <div v-if="invalid" class="error-text">
+      {{ $t('registration.validations.usernameOrPasswordInvalid') }}
+    </div>
+    <v-btn @click="login">{{ $t('registration.login') }}</v-btn>
   </v-container>
 </template>
 
@@ -34,6 +34,7 @@ export default {
       registration.login(this.username, this.password)
         .then(r => {
           this.invalid = false
+          console.log(r.data)
           this.$store.dispatch('setToken', r.data)
           })
         .catch(e => {

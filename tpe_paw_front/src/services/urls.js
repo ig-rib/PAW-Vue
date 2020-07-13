@@ -18,7 +18,7 @@ const urls = {
     verifyEmail: localDomain + 'verify-email',
     resendEmailVerification: localDomain + 'resend-email-verification',
     sendRecoveryEmail: localDomain + 'send-recovery-email',
-    resetPassword: localDomain + 'reset-password'
+    resetPassword: localDomain + 'reset-password',
   },
   tags: {
     getTags: localDomain + 'tags',
