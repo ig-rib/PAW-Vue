@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.Language;
 import ar.edu.itba.paw.models.Snippet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
+import ar.edu.itba.paw.webapp.dto.ItemSearchDto;
 import ar.edu.itba.paw.webapp.dto.LanguageDto;
 import ar.edu.itba.paw.webapp.dto.SnippetDto;
 import ar.edu.itba.paw.webapp.exception.ForbiddenAccessException;
@@ -84,11 +85,13 @@ public class LanguagesControllerJ {
     @POST
     @Path("/search")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response searchInAllLanguages(final ItemSearchForm searchForm,
-                                         final @QueryParam("page") @DefaultValue("1") int page){
+    public Response searchInAllLanguages(@QueryParam("page") @DefaultValue("1") int page,
+                                         @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
+                                         @QueryParam("showOnlyFollowing") @DefaultValue("false") boolean showOnlyFollowing,
+                                         @QueryParam("name") String name){
 
-        Collection<Language> allLanguages = this.languageService.findAllLanguagesByName(searchForm.getName(), searchForm.isShowEmpty(), page, LANGUAGE_PAGE_SIZE);
-        int languageCount = this.languageService.getAllLanguagesCountByName(searchForm.getName(), searchForm.isShowEmpty());
+        Collection<Language> allLanguages = this.languageService.findAllLanguagesByName(name, showEmpty, page, LANGUAGE_PAGE_SIZE);
+        int languageCount = this.languageService.getAllLanguagesCountByName(name, showEmpty);
 
         for (Language language : allLanguages) {
             this.snippetService.analizeSnippetsUsing(language);

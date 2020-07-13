@@ -1,13 +1,21 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.service.RoleService;
 import ar.edu.itba.paw.interfaces.service.SnippetService;
 import ar.edu.itba.paw.interfaces.service.TagService;
 import ar.edu.itba.paw.interfaces.service.UserService;
 import ar.edu.itba.paw.models.Tag;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
 import ar.edu.itba.paw.webapp.dto.*;
+import ar.edu.itba.paw.webapp.exception.ForbiddenAccessException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -30,10 +38,17 @@ public class TagsController {
     private SnippetService snippetService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private LoginAuthentication loginAuthentication;
+    @Autowired
+    private RoleService roleService;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ar.edu.itba.paw.webapp.old_controller.TagsController.class);
 
     @Context
     private UriInfo uriInfo;
 
+    //TODO: See if better to use loginAuthentication directly
     @Context
     private SecurityContext securityContext;
 
@@ -76,8 +91,8 @@ public class TagsController {
     @GET
     @Path("/{tagId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response showSnippetsForTag(@QueryParam("page") @DefaultValue("1") int page,
-        @PathParam(value="tagId") long tagId) {
+    public Response showSnippetsForTag( @QueryParam("page") @DefaultValue("1") int page,
+                                        @PathParam(value="tagId") long tagId) {
 
         final List<SnippetDto> snippets = snippetService.findSnippetsForTag(tagId, page, SNIPPET_PAGE_SIZE)
                 .stream()
@@ -97,12 +112,12 @@ public class TagsController {
         return respBuilder.build();
     }
 
+    //TODO: Check follow/unfollow repsonse and how info is received
     @POST
     @Path("/{tagId}/follow")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response followTag(@PathParam(value="tagId") final long tagId,
-                                          FollowDto followDto,
-                                          @Context SecurityContext securityContext) {
+                                          FollowDto followDto) {
         Optional<User> userOpt = userService.findUserByUsername(securityContext.getUserPrincipal().getName());
         if (!userOpt.isPresent())
             return Response.serverError().build();
@@ -128,7 +143,7 @@ public class TagsController {
     public Response searchTags(@QueryParam("page") @DefaultValue("1") int page,
                                @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
                                @QueryParam("showOnlyFollowing") @DefaultValue("false") boolean showOnlyFollowing,
-                               final ItemSearchDto itemSearchDto) {
+                               @QueryParam("name") String name) {
         // Find the user, check if it exists
         Long userId = null;
         Optional<User> userOpt;
@@ -140,11 +155,11 @@ public class TagsController {
         }
         else showOnlyFollowing = false;
 
-        List<TagDto> tags = tagService.findTagsByName(itemSearchDto.getName(), showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)
+        List<TagDto> tags = tagService.findTagsByName(name, showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)
                 .stream()
                 .map(TagDto::fromTag)
                 .collect(Collectors.toList());
-        int tagsCount = this.tagService.getAllTagsCountByName(itemSearchDto.getName(), showEmpty, showOnlyFollowing, userId);
+        int tagsCount = this.tagService.getAllTagsCountByName(name, showEmpty, showOnlyFollowing, userId);
         int pageCount = (tagsCount/TAG_PAGE_SIZE) + ((tagsCount % TAG_PAGE_SIZE == 0) ? 0 : 1);
 
         Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<TagDto>>(tags) {})
@@ -159,8 +174,15 @@ public class TagsController {
 
     @DELETE
     @Path("/{tagId}/delete")
-    public Response changeTagFollowStatus(@PathParam(value="tagId") long tagId) {
-        this.tagService.removeTag(tagId);
-        return Response.noContent().build();
+    public Response deleteTag(@PathParam(value="tagId") long tagId) {
+        User currentUser = this.loginAuthentication.getLoggedInUser();
+        if ( currentUser != null && roleService.isAdmin(currentUser.getId())){
+            this.tagService.removeTag(tagId);
+            LOGGER.debug("Admin deleted tag with id {}", tagId);
+        } else {
+            LOGGER.warn("No user logged in or logged in user not admin but attempting to delete tag {}", tagId);
+            return Response.status(HttpStatus.FORBIDDEN.value()).build();
+        }
+        return Response.ok().build();
     }
 }
