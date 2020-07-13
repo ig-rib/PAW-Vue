@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import registration from '@/services/registration.js'
 export default {
   name: 'App',
   data: () => ({

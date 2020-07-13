@@ -1,33 +1,33 @@
 <template>
   <v-container>
-    <v-card>
-      <v-text-field
-        :label="$t('registration.username')"
-        outlined
-        v-model="username">
-      </v-text-field>
-      <v-text-field
-        :label="$t('registration.email')"
-        outlined
-        :rules="[rules.email]"
-        v-model="email">
-      </v-text-field>
-      <v-text-field
-        :label="$t('registration.password')"
-        outlined
-        :rules="[rules.password]"
-        v-model="password">
-      </v-text-field>
-      <v-text-field
-        :label="$t('registration.repeatPassword')"
-        outlined
-        :rules="[rules.equalsPassword]"
-        v-model="repeatPassword">
-      </v-text-field>
-      <v-btn @click="register">{{$t('registration.register')}}</v-btn>
-      <v-card-text class="error-text" v-if="usesExistingEmail">{{ $t('validations.emailExists') }}</v-card-text>
-      <v-card-text class="error-text" v-if="usesExistingUname">{{ $t('validations.userNameExists') }}</v-card-text>
-    </v-card>
+    <v-text-field
+      :label="$t('registration.username')"
+      outlined
+      v-model="username">
+    </v-text-field>
+    <v-text-field
+      :label="$t('registration.email')"
+      outlined
+      :rules="[rules.email]"
+      v-model="email">
+    </v-text-field>
+    <v-text-field
+      type="password"
+      :label="$t('registration.password')"
+      outlined
+      :rules="[rules.password]"
+      v-model="password">
+    </v-text-field>
+    <v-text-field
+      type="password"
+      :label="$t('registration.repeatPassword')"
+      outlined
+      :rules="[rules.equalsPassword]"
+      v-model="repeatPassword">
+    </v-text-field>
+    <v-btn @click="register">{{$t('registration.register')}}</v-btn>
+    <v-card-text class="error-text" v-if="usesExistingEmail">{{ $t('validations.emailExists') }}</v-card-text>
+    <v-card-text class="error-text" v-if="usesExistingUname">{{ $t('validations.userNameExists') }}</v-card-text>
   </v-container>
 </template>
 

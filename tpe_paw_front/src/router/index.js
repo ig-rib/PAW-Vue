@@ -10,12 +10,20 @@ import SnippetDetail from '@/views/snippet/SnippetDetail.vue'
 import TagsMain from '@/views/tags/TagsMain.vue'
 import Login from '@/views/registration/Login.vue'
 import Register from '@/views/registration/Register.vue'
+import RegistrationSuper from '@/views/registration/RegistrationSuper.vue'
+import SendRecoveryEmail from '@/views/registration/SendRecoveryEmail.vue'
+import ResetPassword from '@/views/registration/ResetPassword.vue'
 
 Vue.use(VueRouter)
 
 const defaultLang = 'en'
 
 const routes = [
+  {
+    path: '/reset-password',
+    name: 'redirect-reset-password',
+    redirect: '/' + defaultLang + '/registration/reset-password'
+  },
   {
     path: '/',
     redirect: '/' + defaultLang + '/feed'
@@ -48,7 +56,7 @@ const routes = [
           {
             path: 'languages',
             name: 'languages',
-            component: LanguagesMain,
+            component: LanguagesMain
           },
           {
             path: 'languages/:id',
@@ -66,14 +74,31 @@ const routes = [
             component: TagsMain
           },
           {
-            path: 'login',
-            name: 'login',
-            component: Login
-          },
-          {
-            path: 'register',
-            name: 'register',
-            component: Register
+            path: 'registration',
+            name: 'registration',
+            component: RegistrationSuper,
+            children: [
+              {
+                path: 'login',
+                name: 'login',
+                component: Login
+              },
+              {
+                path: 'register',
+                name: 'register',
+                component: Register
+              },
+              {
+                path: 'send-recovery-email',
+                name: 'send-recovery-email',
+                component: SendRecoveryEmail
+              },
+              {
+                path: 'reset-password',
+                name: 'reset-password',
+                component: ResetPassword
+              }
+            ]
           }
         ]
       }
@@ -82,6 +107,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  mode: 'history',
   routes
 })
 

@@ -1,12 +1,13 @@
 <template>
   <v-container>
-    TAGS MAIN
+    <v-card>
+      <router-view></router-view>
+    </v-card>
   </v-container>
 </template>
 
 <script>
 export default {
-  mounted () {
-  }
+  name: 'RegistrationSuper'
 }
 </script>

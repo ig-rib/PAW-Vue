@@ -28,6 +28,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 @EnableWebSecurity
 @ComponentScan({ "ar.edu.itba.paw.webapp.auth"})
@@ -54,7 +55,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/goodbye", "/login", "/login_error", "/signup").anonymous()
+                .antMatchers("/goodbye", "/login", "/login_error", "/signup", "/send-recovery-email").anonymous()
                 .antMatchers("/recover-password", "/reset-password").anonymous()
                 .antMatchers("/verify-email", "/resend-email-verification").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/admin/add").hasRole("ADMIN")
@@ -90,6 +91,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     CorsConfigurationSource corsConfigurationSource() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS", "PUT", "DELETE"));
         corsConfiguration.addExposedHeader("link");
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;

@@ -29,7 +29,9 @@
     "login": "Log In",
     "email": "Email",
     "repeatPassword": "Repeat Password",
-    "register": "Register"
+    "register": "Register",
+    "resetPassword": "Reset Password",
+    "sendRecoveryEmail": "Send"
   },
   "validations": {
     "invalidPassword": "Password must be at least 8 characters long",

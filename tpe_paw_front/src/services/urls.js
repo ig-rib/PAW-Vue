@@ -14,8 +14,11 @@ const urls = {
   },
   registration: {
     login: localDomain + 'login',
+    register: localDomain + 'register',
     verifyEmail: localDomain + 'verify-email',
-    resendEmailVerification: localDomain + 'resend-email-verification'
+    resendEmailVerification: localDomain + 'resend-email-verification',
+    sendRecoveryEmail: localDomain + 'send-recovery-email',
+    resetPassword: localDomain + 'reset-password'
   },
   tags: {
     getTags: localDomain + 'tags',
@@ -25,20 +28,6 @@ const urls = {
     unfollowTag: localDomain + 'tags/:tagId/unfollow',
     deleteTag: localDomain + 'tags/:tagId/delete'
   },
-  // favorites: {
-  //   // For feed (could move to user)
-  //   favorites: localDomain + 'favorites',
-  //   searchFollowing:
-  // },
-  // following: {
-  //   following: localDomain + 'following'
-  // },
-  // upvoted: {
-  //   upvoted: localDomain + 'upvoted'
-  // },
-  // flagged: {
-  //   flagged: localDomain + 'flagged',
-  // },
   search: {
     search: localDomain + 'search' // context should be supplied in body
   },
@@ -59,10 +48,6 @@ const urls = {
     searchLanguages: localDomain + 'languages/search',
     getLanguage: localDomain + 'languages/:id',
     deleteLanguage: localDomain + 'languages/:id/delete'
-  },
-  registration: {
-    login: localDomain + 'login',
-    register: localDomain + 'register'
   },
   test: {
     jerseyTest: localDomain + 'jersey-test'

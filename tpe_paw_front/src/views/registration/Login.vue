@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <v-card>
       <v-text-field
         :label="$t('registration.username')"
         outlined
@@ -16,13 +15,11 @@
         {{ $t('registration.validations.usernameOrPasswordInvalid') }}
       </div>
       <v-btn @click="login">{{ $t('registration.login') }}</v-btn>
-    </v-card>
   </v-container>
 </template>
 
 <script>
 import registration from '@/services/registration.js'
-import tags from '@/services/tags.js'
 
 export default {
   data () {

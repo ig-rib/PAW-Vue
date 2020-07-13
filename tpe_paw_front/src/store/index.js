@@ -12,7 +12,6 @@ export default new Vuex.Store({
   },
   mutations: {
     setToken (state, tokenData) {
-      console.log('setToken', tokenData)
       state.token.value = tokenData.token
       state.token.expirationDate = tokenData.expirationDate
     }

@@ -9,7 +9,6 @@ import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
-import jdk.internal.org.xml.sax.ErrorHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.Instant;
 import java.util.Optional;
+
+import static ar.edu.itba.paw.webapp.utility.Constants.FRONT_BASE_URL_LOCAL;
 
 @Path("/")
 @Controller
@@ -75,10 +76,8 @@ public class RegistrationController {
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{recoveryDto.getEmail()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        // Getting the URL for the server
-        final String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
         try {
-            this.emailService.sendRecoveryEmail(user, baseUrl);
+            this.emailService.sendRecoveryEmail(user, FRONT_BASE_URL_LOCAL);
         } catch (Exception e) {
             LOGGER.error(e.getMessage() + "Failed to send recovery email to user {}", recoveryDto.getEmail());
             return Response.serverError().build();
@@ -87,9 +86,8 @@ public class RegistrationController {
     }
 
     @PUT
-    @Path("/change-password")
+    @Path("/reset-password")
     public Response changePassword(@QueryParam("id") final long id,
-                                        @QueryParam("token") final String token,
                                       ResetPasswordDto resetPasswordDto) {
         Optional<User> userOpt = userService.findUserById(id);
         if(!userOpt.isPresent()) {
@@ -98,7 +96,7 @@ public class RegistrationController {
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
         User user = userOpt.get();
-        boolean pass = this.cryptoService.checkValidRecoverToken(user, token);
+        boolean pass = this.cryptoService.checkValidRecoverToken(user, resetPasswordDto.getToken());
         /* If link is no longer valid */
         if (!pass) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
