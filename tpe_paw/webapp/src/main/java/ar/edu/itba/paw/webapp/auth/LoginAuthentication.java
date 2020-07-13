@@ -23,28 +23,8 @@ public class LoginAuthentication {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginAuthentication.class);
 
-    public void setLoginRedirect(HttpServletRequest request) {
-        String referrer = request.getHeader(Constants.REFERER);
-        if (referrer != null && !referrer.contains(Constants.SIGNUP)) {
-            request.getSession().setAttribute(Constants.REDIRECT_ATTRIBUTE, referrer);
-        }
-    }
-
-    private String getLoggedInUsername() {
+    public String getLoggedInUsername() {
         final SecurityContext securityContext = SecurityContextHolder.getContext();
-
-        if (securityContext != null) {
-            final Object userDetails = securityContext.getAuthentication().getPrincipal();
-            if (userDetails instanceof UserDetails) {
-                return ((UserDetails) userDetails).getUsername();
-            }
-        }
-        return null;
-    }
-
-    private String getLoggedInUsernameWithSession(HttpServletRequest request) {
-        HttpSession session = request.getSession(true);
-        final SecurityContext securityContext = (SecurityContext)session.getAttribute("SPRING_SECURITY_CONTEXT");
 
         if (securityContext != null) {
             final Object userDetails = securityContext.getAuthentication().getPrincipal();
@@ -57,14 +37,6 @@ public class LoginAuthentication {
 
     public User getLoggedInUser() {
         final String username = this.getLoggedInUsername();
-        if (username == null) {
-            return null;
-        }
-        return this.findUser(username);
-    }
-
-    public User getLoggedInUser(HttpServletRequest request) {
-        final String username = this.getLoggedInUsernameWithSession(request);
         if (username == null) {
             return null;
         }

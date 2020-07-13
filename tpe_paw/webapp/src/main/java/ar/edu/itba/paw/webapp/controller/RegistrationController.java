@@ -4,32 +4,15 @@ import ar.edu.itba.paw.interfaces.service.CryptoService;
 import ar.edu.itba.paw.interfaces.service.EmailService;
 import ar.edu.itba.paw.interfaces.service.UserService;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
 import ar.edu.itba.paw.webapp.dto.*;
-import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
-import ar.edu.itba.paw.webapp.form.EmailVerificationForm;
-import ar.edu.itba.paw.webapp.form.SearchForm;
-import ar.edu.itba.paw.webapp.validations.ValidatorHelper;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTCreationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -43,7 +26,6 @@ import static ar.edu.itba.paw.webapp.utility.Constants.FRONT_BASE_URL_LOCAL;
 @Path("/")
 @Controller
 public class RegistrationController {
-
 
     @Autowired
     private UserService userService;
