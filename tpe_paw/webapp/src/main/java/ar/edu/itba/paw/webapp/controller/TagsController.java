@@ -63,7 +63,6 @@ public class TagsController {
         int pageCount = (tagsCount/TAG_PAGE_SIZE) + ((tagsCount % TAG_PAGE_SIZE == 0) ? 0 : 1);
 
         Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<TagDto>>(tags) {})
-                .header("Access-Control-Allow-Origin", "*")
                 .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
                 .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
         if (page > 1)
