@@ -30,6 +30,8 @@ public interface UserService {
 
     void changeProfilePhoto(final long userId, final byte[] photo);
 
+    void changeProfilePhotoBase64(final long userId, final String encodedPhoto);
+
     void changeDescription(final long userId, final String description);
 
     Collection<User> getAllUsers();

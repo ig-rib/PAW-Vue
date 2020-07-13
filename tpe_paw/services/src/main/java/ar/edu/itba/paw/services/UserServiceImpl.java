@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Optional;
@@ -76,6 +77,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changeProfilePhoto(long userId, byte[] photo) {
         this.userDao.changeProfilePhoto(userId, photo);
+    }
+
+    @Override
+    public void changeProfilePhotoBase64(long userId, String encodedPhoto) {
+        this.userDao.changeProfilePhoto(userId, Base64.getDecoder().decode(encodedPhoto));
     }
 
     @Transactional

@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.dto;
 import ar.edu.itba.paw.models.User;
 
 import java.time.Instant;
+import java.util.Base64;
 
 public class UserDto {
     private long id;
@@ -21,6 +22,9 @@ public class UserDto {
 
         dto.id = user.getId();
         dto.username = user.getUsername();
+        if (user.getIcon() != null) {
+            dto.icon = Base64.getEncoder().encode(user.getIcon());
+        }
 
         return dto;
     }
