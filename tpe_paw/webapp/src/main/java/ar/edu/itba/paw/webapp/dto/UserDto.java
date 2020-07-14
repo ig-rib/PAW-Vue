@@ -10,6 +10,7 @@ public class UserDto {
     private String username;
     private String email;
     private String password;
+    private String description;
     private int reputation;
     private Instant dateJoined;
     private byte[] icon;
@@ -25,6 +26,7 @@ public class UserDto {
         if (user.getIcon() != null) {
             dto.icon = Base64.getEncoder().encode(user.getIcon());
         }
+        dto.description = user.getDescription();
 
         return dto;
     }
@@ -107,5 +109,13 @@ public class UserDto {
 
     public void setRegion(String region) {
         this.region = region;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -12,12 +12,16 @@ export default new Vuex.Store({
     token: {
       value: '',
       expirationDate: null
-    }
+    },
+    user: () => {}
   },
   mutations: {
     setToken (state, tokenData) {
       state.token.value = tokenData.token
       state.token.expirationDate = tokenData.expirationDate
+    },
+    setUser (state, userData) {
+      state.user = userData
     }
   },
   getters: {
@@ -33,6 +37,9 @@ export default new Vuex.Store({
   actions: {
     setToken ({ commit }, tokenData) {
       commit('setToken', tokenData)
+    },
+    setUser ({ commit }, userData) {
+      commit('setUser', userData)
     }
   },
   modules: {

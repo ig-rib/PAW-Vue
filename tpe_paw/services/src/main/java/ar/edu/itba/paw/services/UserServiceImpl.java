@@ -79,6 +79,7 @@ public class UserServiceImpl implements UserService {
         this.userDao.changeProfilePhoto(userId, photo);
     }
 
+    @Transactional
     @Override
     public void changeProfilePhotoBase64(long userId, String encodedPhoto) {
         this.userDao.changeProfilePhoto(userId, Base64.getDecoder().decode(encodedPhoto));

@@ -32,9 +32,19 @@ const uploadProfilePhoto = (id, encodedPhoto) => axiosFetcher.put(urls.user.uplo
   encodedPhoto
 })
 
+const updateUserData = (id, description, username) => axiosFetcher.put(urls.user.updateUserData, {
+  pathVariables: {
+    id
+  }
+}, {
+  description
+  // username
+})
+
 export default {
   getUser,
   getActiveUserSnippets,
   getDeletedUserSnippets,
-  uploadProfilePhoto
+  uploadProfilePhoto,
+  updateUserData
 }

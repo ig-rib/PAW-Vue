@@ -9,6 +9,7 @@ import ar.edu.itba.paw.webapp.dto.ErrorMessageDto;
 import ar.edu.itba.paw.webapp.dto.ProfilePhotoDto;
 import ar.edu.itba.paw.webapp.dto.SnippetDto;
 import ar.edu.itba.paw.webapp.dto.UserDto;
+import ar.edu.itba.paw.webapp.form.ProfilePhotoForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,5 +139,23 @@ public class UserController {
         }
         userService.changeProfilePhotoBase64(currentUser.getId(), profilePhotoDto.getEncodedPhoto());
         return Response.accepted().build();
+    }
+
+    @PUT
+    @Path("/{id}/user-data")
+    public Response updateUserData(@PathParam(value="id") final long id, UserDto userDto) {
+        User user = userService.findUserById(id).orElse(null);
+        if (user == null){
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+        }
+        User currentUser = userService.findUserByUsername((securityContext.getUserPrincipal() != null) ? securityContext.getUserPrincipal().getName() : null).orElse(null);
+        if (currentUser == null || !user.equals(currentUser)) {
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{(securityContext.getUserPrincipal() != null) ? securityContext.getUserPrincipal().getName() : null}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.FORBIDDEN).entity(errorMessageDto).build();
+        }
+        userService.changeDescription(id, userDto.getDescription());
     }
 }
