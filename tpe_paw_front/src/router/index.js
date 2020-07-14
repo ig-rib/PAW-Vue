@@ -10,6 +10,9 @@ import LanguagesSuper from '@/views/languages/LanguagesSuper.vue'
 import LanguagesSearch from '@/views/languages/LanguagesSearch.vue'
 import SnippetDetail from '@/views/snippet/SnippetDetail.vue'
 import TagsMain from '@/views/tags/TagsMain.vue'
+import TagsSearch from '@/views/tags/TagsSearch.vue'
+import TagsSnippet from '@/views/tags/TagsSnippet.vue'
+import TagsSuper from '@/views/tags/TagsSuper.vue'
 import Login from '@/views/registration/Login.vue'
 import Register from '@/views/registration/Register.vue'
 import RegistrationSuper from '@/views/registration/RegistrationSuper.vue'
@@ -68,12 +71,12 @@ const routes = [
               },
               {
                 path: 'search',
-                name: 'languagesSearch',
+                name: 'languages-search',
                 component: LanguagesSearch
               },
               {
                 path: ':id',
-                name: 'languagesSnippet',
+                name: 'languages-snippet',
                 component: LanguagesSnippet
               }
               
@@ -87,7 +90,24 @@ const routes = [
           {
             path: 'tags',
             name: 'tags',
-            component: TagsMain
+            component: TagsSuper,
+            children: [
+              {
+                path: '',
+                name: 'tags-main',
+                component: TagsMain
+              },
+              {
+                path: 'search',
+                name: 'tags-search',
+                component: TagsSearch
+              },
+              {
+                path: ':id',
+                name: 'tags-snippet',
+                component: TagsSnippet
+              }
+            ]
           },
           {
             path: 'registration',

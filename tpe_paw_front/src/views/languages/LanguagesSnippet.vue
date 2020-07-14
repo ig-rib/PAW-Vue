@@ -48,7 +48,7 @@ export default {
       
     }
   },
-  method: {
+  methods: {
       paginationChange: function () {
           languages.getLanguages(this.pagination.page)
             .then(values => {
