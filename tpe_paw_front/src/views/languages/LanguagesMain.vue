@@ -30,8 +30,8 @@ export default {
   name: 'languagesMain',
   data () {
     return {
-      languages: null,
-      links: 0,
+      languages: [],
+      links: [],
       pagination: {
           page: 1,
           length: 1,

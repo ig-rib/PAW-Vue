@@ -33,13 +33,12 @@ const unfollowTag = (id) => axiosFetcher.post(urls.tags.unfollowTag, {
 const deleteTag = (id) => axiosFetcher.del(urls.tags.deleteTag, { pathVariables: { tagId: id } })
 
 const searchTags = (page = 1, name, showEmpty = true, showOnlyFollowing = false) => axiosFetcher.post(urls.tags.searchTags, {
-  pathVariables: {
+  queryParams: {
     page,
     showEmpty,
-    showOnlyFollowing
+    showOnlyFollowing,
+    name
   } 
-}, {
-  name
 })
 
 export default {

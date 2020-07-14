@@ -144,7 +144,7 @@ public class LanguagesController {
             LOGGER.debug("Admin removed language with id {}", langId);
         } else {
             LOGGER.error("No user logged in or logged in user not admin but language {} is trying to be deleted", langId);
-            return Response.status(HttpStatus.FORBIDDEN.value()).build();
+            return Response.status(HttpStatus.UNAUTHORIZED.value()).build();
         }
         return Response.ok().build();
     }

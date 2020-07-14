@@ -7,14 +7,21 @@
                 <div>
                     <v-chip class="ma-2 tag-chip" label>
                       {{ tag.name }}
-                      <v-chip
-                        class="ma-1"
-                        color="indigo darken-3"
-                        outlined
-                        v-on:click="followTag(tag.id)"
+                      <!-- If tag is followed -->
+                      <v-chip 
+                        v-if="tag.userFollowing"
+                        class="ma-1" color="primary"
+                        v-on:click="unfollowTag(tag)"
                       >
-                        <v-icon left>mdi-check-circle-outline</v-icon>
-                        Follow
+                      {{ $t('tags.following') }}
+                      </v-chip>
+                      <!-- If tags is not folloed -->
+                      <v-chip 
+                        v-else
+                        class="ma-1" color="indigo darken-3" outlined
+                        v-on:click="followTag(tag)"
+                      >
+                      {{ $t('tags.follow') }}
                       </v-chip>
                     </v-chip>
                 </div>
@@ -41,8 +48,8 @@ export default {
   name: 'tagsMain',
   data () {
     return {
-      tags: null,
-      links: 0,
+      tags: [],
+      links: [],
       pagination: {
           page: 1,
           length: 1,
@@ -59,10 +66,23 @@ export default {
             })
             .catch(error => { console.log(error) })
       },
-      followTag: function (id) {
-          //TODO: Check if user logged in
-          tagService.followTag(id)
+      followTag: function (tag) {
+          // TODO: Verify no logged out user handling is necessary.
+          tagService.followTag(tag.id)
+            .then(
+              tag.userFollowing = true
+            )
+            .catch()
+      },
+      unfollowTag: function (tag) {
+          // TODO: Verify no logged out user handling is necessary.
+          tagService.unfollowTag(tag.id)
+            .then(
+              tag.userFollowing = false
+            )
+            .catch()
       }
+
   },
   computed: {
   },

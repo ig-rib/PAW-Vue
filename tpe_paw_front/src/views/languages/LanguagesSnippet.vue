@@ -38,8 +38,8 @@ export default {
     data () {
     return {
       langId: -1,
-      language: null,
-      snippets: null,
+      language: [],
+      snippets: [],
       pagination: {
           page: 1,
           length: 1,

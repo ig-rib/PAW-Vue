@@ -72,8 +72,8 @@ export default {
   name: 'languagesSearch',
   data () {
     return {
-      languages: null,
-      links: '',
+      languages: [],
+      links: [],
       languageInput: '',
       showEmpty: true,
       pagination: {
@@ -94,7 +94,7 @@ export default {
           .catch(error => { console.log(error) })
       },
       paginationChange: function () {
-          languages.getLanguages(this.pagination.page)
+          languages.searchLanguage(this.pagination.page, this.languageInput, this.showEmpty)
             .then(values => {
                 this.languages = values.data 
                 this.links = helpers.parseLinks(values.headers.link)
