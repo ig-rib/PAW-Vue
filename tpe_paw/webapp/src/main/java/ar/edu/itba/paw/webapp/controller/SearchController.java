@@ -89,149 +89,120 @@ public class SearchController {
     private static final String TAGS = "tags/";
     private static final String USER = "user/";
 
-    @POST
+    // GET version of endopints
+
+    @GET
     @Path("/search")
-    public Response searchInHome(final SearchDto searchDto, final @QueryParam("page") @DefaultValue("1") int page) {
-        List<SnippetDto> snippets = this.findByCriteria(searchDto.getType(), searchDto.getQuery(), SnippetDao.Locations.HOME, searchDto.getSort(), null, null, page)
+    public Response searchInHome(final @QueryParam("q") String query,
+                                               final @QueryParam("t") String type,
+                                               final @QueryParam("uid") String userId,
+                                               final @QueryParam("s") String sort,
+                                               final @QueryParam("page") @DefaultValue("1") int page) {
+        List<SnippetDto> snippets = this.findByCriteria(type, query, SnippetDao.Locations.HOME, sort, null, null, page)
                 .stream()
                 .map(SnippetDto::fromSnippet)
                 .collect(Collectors.toList());
-        int totalSnippetCount = this.getSnippetByCriteriaCount(searchDto.getType(), searchDto.getQuery(), SnippetDao.Locations.HOME, null, null);
+        int totalSnippetCount = this.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.HOME, null, null);
 
-        int pageCount = (totalSnippetCount/SNIPPET_PAGE_SIZE) + ((totalSnippetCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);
-
-        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
-        if (page > 1)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
-        if (page < pageCount)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
-
-        return respBuilder.build();
+        return generateResponseWithLinks(page, snippets, totalSnippetCount);
     }
 
-    @POST
+    @GET
     @Path("/favorites/search")
-    public Response searchInFavorites(final SearchDto searchDto, final @QueryParam("page") @DefaultValue("1") int page) {
+    public Response searchInFavorites(final @QueryParam("q") String query,
+                                               final @QueryParam("t") String type,
+                                               final @QueryParam("uid") String userId,
+                                               final @QueryParam("s") String sort,
+                                               final @QueryParam("page") @DefaultValue("1") int page) {
 
-        // User already logged in at this point, so no need to check if userPrincipal is null
         User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        List<SnippetDto> snippets = this.findByCriteria(searchDto.getType(), searchDto.getQuery(), SnippetDao.Locations.HOME, searchDto.getSort(), user.getId(), null, page)
+        List<SnippetDto> snippets = this.findByCriteria(type, query, SnippetDao.Locations.HOME, sort, user.getId(), null, page)
                 .stream()
                 .map(SnippetDto::fromSnippet)
                 .collect(Collectors.toList());
-                int totalSnippetCount = this.getSnippetByCriteriaCount(searchDto.getType(), searchDto.getQuery(), SnippetDao.Locations.FAVORITES, user.getId(), null);
-        int pageCount = (totalSnippetCount/SNIPPET_PAGE_SIZE) + ((totalSnippetCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);
-
-        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
-        if (page > 1)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
-        if (page < pageCount)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
-
-        return respBuilder.build();
+        int totalSnippetCount = this.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.FAVORITES, user.getId(), null);
+        return generateResponseWithLinks(page, snippets, totalSnippetCount);
     }
 
-    @POST
+    @GET
     @Path("/following/search")
-    public Response searchInFollowing(final SearchDto searchDto, final @QueryParam("page") @DefaultValue("1") int page) {
+    public Response searchInFollowing(final @QueryParam("q") String query,
+                                               final @QueryParam("t") String type,
+                                               final @QueryParam("uid") String userId,
+                                               final @QueryParam("s") String sort,
+                                               final @QueryParam("page") @DefaultValue("1") int page) {
 
-        // User already logged in at this point, so no need to check if userPrincipal is null
         User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        List<SnippetDto> snippets = this.findByCriteria(searchDto.getType(), searchDto.getQuery(), SnippetDao.Locations.FOLLOWING, searchDto.getSort(), user.getId(), null, page)
+        List<SnippetDto> snippets = this.findByCriteria(type, query, SnippetDao.Locations.FOLLOWING, sort, user.getId(), null, page)
                 .stream()
                 .map(SnippetDto::fromSnippet)
                 .collect(Collectors.toList());
-        int totalSnippetCount = this.getSnippetByCriteriaCount(searchDto.getType(), searchDto.getQuery(), SnippetDao.Locations.FOLLOWING, user.getId(), null);
-        int pageCount = (totalSnippetCount/SNIPPET_PAGE_SIZE) + ((totalSnippetCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);
-
-        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
-        if (page > 1)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
-        if (page < pageCount)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
-
-        return respBuilder.build();
+        int totalSnippetCount = this.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.FOLLOWING, user.getId(), null);
+        return generateResponseWithLinks(page, snippets, totalSnippetCount);
     }
 
-    @POST
+    @GET
     @Path("/upvoted/search")
-    public Response searchInUpvoted(final SearchDto searchDto, final @QueryParam("page") @DefaultValue("1") int page) {
+    public Response searchInUpvoted(final @QueryParam("q") String query,
+                                               final @QueryParam("t") String type,
+                                               final @QueryParam("uid") String userId,
+                                               final @QueryParam("s") String sort,
+                                               final @QueryParam("page") @DefaultValue("1") int page) {
 
-        // User already logged in at this point, so no need to check if userPrincipal is null
         User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        List<SnippetDto> snippets = this.findByCriteria(searchDto.getType(), searchDto.getQuery(), SnippetDao.Locations.UPVOTED, searchDto.getSort(), user.getId(), null, page)
+        List<SnippetDto> snippets = this.findByCriteria(type, query, SnippetDao.Locations.UPVOTED, sort, user.getId(), null, page)
                 .stream()
                 .map(SnippetDto::fromSnippet)
                 .collect(Collectors.toList());
-        int totalSnippetCount = this.getSnippetByCriteriaCount(searchDto.getType(), searchDto.getQuery(), SnippetDao.Locations.UPVOTED, user.getId(), null);
-        int pageCount = (totalSnippetCount/SNIPPET_PAGE_SIZE) + ((totalSnippetCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);
-
-        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
-        if (page > 1)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
-        if (page < pageCount)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
-
-        return respBuilder.build();
+        int totalSnippetCount = this.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.UPVOTED, user.getId(), null);
+        return generateResponseWithLinks(page, snippets, totalSnippetCount);
     }
 
-    @POST
+    @GET
     @Path("/flagged/search")
-    public Response searchInFlagged(final SearchDto searchDto, final @QueryParam("page") @DefaultValue("1") int page) {
+    public Response searchInFlagged(final @QueryParam("q") String query,
+                                               final @QueryParam("t") String type,
+                                               final @QueryParam("uid") String userId,
+                                               final @QueryParam("s") String sort,
+                                               final @QueryParam("page") @DefaultValue("1") int page) {
 
-        // User already logged in at this point, so no need to check if userPrincipal is null
         User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        List<SnippetDto> snippets = this.findByCriteria(searchDto.getType(), searchDto.getQuery(), SnippetDao.Locations.FLAGGED, searchDto.getSort(), null, null, page)
+        List<SnippetDto> snippets = this.findByCriteria(type, query, SnippetDao.Locations.FLAGGED, sort, null, null, page)
                 .stream()
                 .map(SnippetDto::fromSnippet)
                 .collect(Collectors.toList());
-        int totalSnippetCount = this.getSnippetByCriteriaCount(searchDto.getType(), searchDto.getQuery(), SnippetDao.Locations.FLAGGED, null, null);
-        int pageCount = (totalSnippetCount/SNIPPET_PAGE_SIZE) + ((totalSnippetCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);
-
-        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
-        if (page > 1)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
-        if (page < pageCount)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
-
-        return respBuilder.build();
+        int totalSnippetCount = this.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.FLAGGED, null, null);
+        return generateResponseWithLinks(page, snippets, totalSnippetCount);
     }
 
-    @POST
+    @GET
     @Path("/languages/{langId}/search")
-    public Response searchInLanguage(final SearchDto searchDto,
-                                    final @QueryParam("page") @DefaultValue("1") int page,
-                                    final @PathParam(value = "langId") long langId) {
+    public Response searchInLanguage(final @QueryParam("q") String query,
+                                               final @QueryParam("t") String type,
+                                               final @QueryParam("uid") String userId,
+                                               final @QueryParam("s") String sort,
+                                               final @QueryParam("page") @DefaultValue("1") int page,
+                                     final @PathParam(value = "langId") long langId) {
 
         Language language = this.languageService.findById(langId).orElse(null);
         if (language == null) {
@@ -245,29 +216,22 @@ public class SearchController {
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        List<SnippetDto> snippets = this.findByCriteria(searchDto.getType(), searchDto.getQuery(), SnippetDao.Locations.LANGUAGES, searchDto.getSort(), null, langId, page)
+        List<SnippetDto> snippets = this.findByCriteria(type, query, SnippetDao.Locations.LANGUAGES, sort, null, langId, page)
                 .stream()
                 .map(SnippetDto::fromSnippet)
                 .collect(Collectors.toList());
-        int totalSnippetCount = this.getSnippetByCriteriaCount(searchDto.getType(), searchDto.getQuery(), SnippetDao.Locations.LANGUAGES, null, langId);
-        int pageCount = (totalSnippetCount/SNIPPET_PAGE_SIZE) + ((totalSnippetCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);
-
-        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
-        if (page > 1)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
-        if (page < pageCount)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
-
-        return respBuilder.build();
+        int totalSnippetCount = this.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.LANGUAGES, null, langId);
+        return generateResponseWithLinks(page, snippets, totalSnippetCount);
     }
 
-    @POST
+    @GET
     @Path("/tags/{tagId}/search")
-    public Response searchInTag(final SearchDto searchDto,
-                                    final @QueryParam("page") @DefaultValue("1") int page,
-                                    final @PathParam(value = "tagId") long tagId) {
+    public Response searchInTag(final @QueryParam("q") String query,
+                                               final @QueryParam("t") String type,
+                                               final @QueryParam("uid") String userId,
+                                               final @QueryParam("s") String sort,
+                                               final @QueryParam("page") @DefaultValue("1") int page,
+                                final @PathParam(value = "tagId") long tagId) {
 
         Tag tag = this.tagService.findTagById(tagId).orElse(null);
         if (tag == null) {
@@ -281,51 +245,37 @@ public class SearchController {
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        List<SnippetDto> snippets = this.findByCriteria(searchDto.getType(), searchDto.getQuery(), SnippetDao.Locations.TAGS, searchDto.getSort(), null, tagId, page)
+        List<SnippetDto> snippets = this.findByCriteria(type, query, SnippetDao.Locations.TAGS, sort, null, tagId, page)
                 .stream()
                 .map(SnippetDto::fromSnippet)
                 .collect(Collectors.toList());
-        int totalSnippetCount = this.getSnippetByCriteriaCount(searchDto.getType(), searchDto.getQuery(), SnippetDao.Locations.TAGS, null, tagId);
-        int pageCount = (totalSnippetCount/SNIPPET_PAGE_SIZE) + ((totalSnippetCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);
-
-        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
-        if (page > 1)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
-        if (page < pageCount)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
-
-        return respBuilder.build();
+        int totalSnippetCount = this.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.TAGS, null, tagId);
+        return generateResponseWithLinks(page, snippets, totalSnippetCount);
     }
 
-    @POST
+    @GET
     @Path("/user/{id}/active/search")
-    public Response searchInActiveUserSnippets(final SearchDto searchDto,
+    public Response searchInActiveUserSnippets(final @QueryParam("q") String query,
+                                               final @QueryParam("t") String type,
+                                               final @QueryParam("uid") String userId,
+                                               final @QueryParam("s") String sort,
                                                final @QueryParam("page") @DefaultValue("1") int page,
                                                final @PathParam(value = "id") long id) {
-        List<SnippetDto> snippets = this.findByCriteria(searchDto.getType(), searchDto.getQuery(), SnippetDao.Locations.USER, searchDto.getSort(), id, null, page)
+        List<SnippetDto> snippets = this.findByCriteria(type, query, SnippetDao.Locations.USER, sort, id, null, page)
                 .stream()
                 .map(SnippetDto::fromSnippet)
                 .collect(Collectors.toList());
-        int totalSnippetCount = this.getSnippetByCriteriaCount(searchDto.getType(), searchDto.getQuery(), SnippetDao.Locations.USER, id, null);
-        int pageCount = (totalSnippetCount/SNIPPET_PAGE_SIZE) + ((totalSnippetCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);
-
-        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
-        if (page > 1)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
-        if (page < pageCount)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
-
-        return respBuilder.build();
+        int totalSnippetCount = this.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.USER, id, null);
+        return generateResponseWithLinks(page, snippets, totalSnippetCount);
     }
 
-    @POST
+    @GET
     @Path("/user/{id}/deleted/search")
-    public Response searchInDeletedUserSnippets(final SearchDto searchDto,
-                                                final @QueryParam("page") @DefaultValue("1") int page,
+    public Response searchInDeletedUserSnippets(final @QueryParam("q") String query,
+                                               final @QueryParam("t") String type,
+                                               final @QueryParam("uid") String userId,
+                                               final @QueryParam("s") String sort, 
+                                               final @QueryParam("page") @DefaultValue("1") int page,
                                                 final @PathParam(value = "id") long id) {
         User user = userService.findUserById(id).orElse(null);
         if (user == null){
@@ -339,22 +289,12 @@ public class SearchController {
             errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{(securityContext.getUserPrincipal() != null) ? securityContext.getUserPrincipal().getName() : null}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.FORBIDDEN).entity(errorMessageDto).build();
         }
-        List<SnippetDto> snippets = this.findByCriteria(searchDto.getType(), searchDto.getQuery(), SnippetDao.Locations.DELETED, searchDto.getSort(), id, null, page)
+        List<SnippetDto> snippets = this.findByCriteria(type, query, SnippetDao.Locations.DELETED, sort, id, null, page)
                 .stream()
                 .map(SnippetDto::fromSnippet)
                 .collect(Collectors.toList());
-        int totalSnippetCount = this.getSnippetByCriteriaCount(searchDto.getType(), searchDto.getQuery(), SnippetDao.Locations.DELETED, id, null);
-        int pageCount = (totalSnippetCount/SNIPPET_PAGE_SIZE) + ((totalSnippetCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);
-
-        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
-        if (page > 1)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
-        if (page < pageCount)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
-
-        return respBuilder.build();
+        int totalSnippetCount = this.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.DELETED, id, null);
+        return generateResponseWithLinks(page, snippets, totalSnippetCount);
     }
 
     private Collection<Snippet> findByCriteria(String type, String query, SnippetDao.Locations location, String sort, Long userId, Long resourceId, int page) {
@@ -371,6 +311,20 @@ public class SearchController {
                     page,
                     SNIPPET_PAGE_SIZE);
         }
+    }
+
+    private Response generateResponseWithLinks(@DefaultValue("1") @QueryParam("page") int page, List<SnippetDto> snippets, int totalSnippetCount) {
+        int pageCount = (totalSnippetCount/SNIPPET_PAGE_SIZE) + ((totalSnippetCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);
+
+        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {})
+                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
+                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
+        if (page > 1)
+            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
+        if (page < pageCount)
+            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
+
+        return respBuilder.build();
     }
 
     private int getSnippetByCriteriaCount(String type, String query, SnippetDao.Locations location, Long userId, Long resourceId) {

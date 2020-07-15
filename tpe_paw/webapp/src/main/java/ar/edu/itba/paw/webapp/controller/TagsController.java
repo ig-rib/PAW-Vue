@@ -43,8 +43,8 @@ public class TagsController {
 
     @GET
     @Produces(value = MediaType.APPLICATION_JSON)
-    public Response getAllTags(@QueryParam("page") @DefaultValue("1") int page,
-                                @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
+    public Response getAllTags(final @QueryParam("page") @DefaultValue("1") int page,
+                                final @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
                                 @QueryParam("showOnlyFollowing") @DefaultValue("false") boolean showOnlyFollowing) {
         // Find the user, check if it exists
         Long userId = null;
@@ -80,8 +80,8 @@ public class TagsController {
     @GET
     @Path("/{tagId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response showSnippetsForTag(@QueryParam("page") @DefaultValue("1") int page,
-        @PathParam(value="tagId") long tagId) {
+    public Response showSnippetsForTag(final @QueryParam("page") @DefaultValue("1") int page,
+        final @PathParam(value="tagId") long tagId) {
 
         final List<SnippetDto> snippets = snippetService.findSnippetsForTag(tagId, page, SNIPPET_PAGE_SIZE)
                 .stream()
@@ -105,7 +105,7 @@ public class TagsController {
     @Path("/{tagId}/follow")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response followTag(@PathParam(value="tagId") final long tagId,
-                                          FollowDto followDto,
+                                          final FollowDto followDto,
                                           @Context SecurityContext securityContext) {
         User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
         if (user == null){
@@ -121,7 +121,7 @@ public class TagsController {
     @Path("/{tagId}/unfollow")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response unfollowTag(@PathParam(value="tagId") final long tagId,
-                                          FollowDto followDto) {
+                                          final FollowDto followDto) {
         User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
@@ -132,13 +132,13 @@ public class TagsController {
         return Response.ok(followDto).build();
     }
 
-    @POST
+    @GET
     @Path("/search")
     @Consumes(value = {MediaType.APPLICATION_JSON})
-    public Response searchTags(@QueryParam("page") @DefaultValue("1") int page,
-                               @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
+    public Response searchTags(final @QueryParam("page") @DefaultValue("1") int page,
+                               final @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
                                @QueryParam("showOnlyFollowing") @DefaultValue("false") boolean showOnlyFollowing,
-                               final ItemSearchDto itemSearchDto) {
+                               final @QueryParam("q") String query) {
         // Find the user, check if it exists
         Long userId = null;
         Optional<User> userOpt;
@@ -150,11 +150,11 @@ public class TagsController {
         }
         else showOnlyFollowing = false;
 
-        List<TagDto> tags = tagService.findTagsByName(itemSearchDto.getName(), showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)
+        List<TagDto> tags = tagService.findTagsByName(query, showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)
                 .stream()
                 .map(TagDto::fromTag)
                 .collect(Collectors.toList());
-        int tagsCount = this.tagService.getAllTagsCountByName(itemSearchDto.getName(), showEmpty, showOnlyFollowing, userId);
+        int tagsCount = this.tagService.getAllTagsCountByName(query, showEmpty, showOnlyFollowing, userId);
         int pageCount = (tagsCount/TAG_PAGE_SIZE) + ((tagsCount % TAG_PAGE_SIZE == 0) ? 0 : 1);
 
         Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<TagDto>>(tags) {})
@@ -169,7 +169,7 @@ public class TagsController {
 
     @DELETE
     @Path("/{tagId}/delete")
-    public Response changeTagFollowStatus(@PathParam(value="tagId") long tagId) {
+    public Response changeTagFollowStatus(final @PathParam(value="tagId") long tagId) {
         this.tagService.removeTag(tagId);
         return Response.noContent().build();
     }
