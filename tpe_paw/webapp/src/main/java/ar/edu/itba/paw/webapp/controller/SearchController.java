@@ -26,10 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -77,9 +74,9 @@ public class SearchController {
     private LanguageService languageService;
     @Autowired
     private UserService userService;
-    @Autowired
+    @Context
     private UriInfo uriInfo;
-    @Autowired
+    @Context
     private SecurityContext securityContext;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ar.edu.itba.paw.webapp.old_controller.SearchController.class);
