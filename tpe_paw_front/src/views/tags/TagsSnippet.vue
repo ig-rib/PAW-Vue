@@ -27,7 +27,7 @@
 
 <script>
 import SnippetComponent from '@//components/Snippet.vue'
-import languages from '@//services/languages.js'
+import tags from '@//services/tags.js'
 import helpers from '@//functions/helpers.js'
 
 export default {
@@ -37,8 +37,9 @@ export default {
     },
     data () {
     return {
-      langId: -1,
+      tagId: -1,
       snippets: [],
+      links: [],
       pagination: {
           page: 1,
           length: 1,
@@ -49,17 +50,17 @@ export default {
   },
   methods: {
       paginationChange: function () {
-          languages.getSnippetsForLanguage(this.langId, this.pagination.page)
+          tags.getTagSnippets(this.tagId, this.pagination.page)
             .then(values => {
-                this.snippets = values.data 
+                this.snippts = values.data 
                 this.links = helpers.parseLinks(values.headers.link)
             })
             .catch(error => { console.log(error) })
       }
   },
   mounted () {
-    this.langId = this.$route.params.id
-    languages.getSnippetsForLanguage(this.langId, this.pagination.page)
+    this.tagId = this.$route.params.id
+    tags.getTagSnippets(this.tagId, this.pagination.page)
       .then(values => {
         this.snippets = values.data
         this.links = helpers.parseLinks(values.headers.link)

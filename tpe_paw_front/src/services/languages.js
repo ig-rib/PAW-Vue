@@ -16,7 +16,25 @@ const getSnippetsForLanguage = (id, page) => axiosFetcher.get(urls.languages.get
   }
 })
 
+const searchLanguage = (page = 1, name, showEmpty = true) => axiosFetcher.post(urls.languages.searchLanguages, {
+  queryParams: {
+    page,
+    showEmpty,
+    name
+  } 
+})
+
+const deleteLanguage = (id) => axiosFetcher.del(urls.languages.deleteLanguage, {
+   pathVariables: { 
+     id: id 
+    } 
+})
+
+
+
 export default {
   getLanguages,
-  getSnippetsForLanguage
+  getSnippetsForLanguage,
+  searchLanguage,
+  deleteLanguage
 }

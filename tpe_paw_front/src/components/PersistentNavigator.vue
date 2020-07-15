@@ -140,14 +140,14 @@ export default {
           title: this.$t('languages.title'),
           icon: 'mdi-coffee',
           path: {
-            name: 'languages'
+            name: 'languages-main'
           }
         },
         {
           title: this.$t('tags.title'),
           icon: 'mdi-tag',
           path: {
-            name: 'tags'
+            name: 'tags-main'
           }
         }
       ]

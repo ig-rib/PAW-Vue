@@ -8,6 +8,7 @@ public class TagDto {
     private Long id;
     private String name;
     private Boolean snippetsUsingIsEmpty;
+    private Boolean isUserFollowing;
 
     public static TagDto fromTag(Tag tag){
         TagDto dto = new TagDto();
@@ -42,4 +43,14 @@ public class TagDto {
     public void setSnippetsUsingIsEmpty(Boolean snippetsUsingIsEmpty) {
         this.snippetsUsingIsEmpty = snippetsUsingIsEmpty;
     }
+
+    public Boolean getUserFollowing() {
+        return isUserFollowing;
+    }
+
+    public void setUserFollowing(Boolean userFollowing) {
+        isUserFollowing = userFollowing;
+    }
+
+
 }
