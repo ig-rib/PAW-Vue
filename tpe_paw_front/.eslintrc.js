@@ -57,11 +57,11 @@ module.exports = {
     "no-octal": 'warn',
     "no-redeclare": 'warn',
     "no-delete-var": 'warn',
-    "no-undef": 'warn',
+    "no-undef": 'error',
     "no-unused-vars": 'warn',
     "no-mixed-spaces-and-tabs": 'warn',
-    "spaced-comment": 'warn'
-
+    "spaced-comment": 'warn',
+    "key-spacing": 'warn',
   },
   overrides: [
     {
