@@ -157,5 +157,6 @@ public class UserController {
             return Response.status(Response.Status.FORBIDDEN).entity(errorMessageDto).build();
         }
         userService.changeDescription(id, userDto.getDescription());
+        return Response.accepted().build();
     }
 }

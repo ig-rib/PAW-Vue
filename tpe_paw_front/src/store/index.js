@@ -32,6 +32,9 @@ export default new Vuex.Store({
       return (state.token.value != null &&
         state.token.expirationDate != null &&
         new Date() < new Date(state.token.expirationDate))
+    },
+    user (state) {
+      return state.user
     }
   },
   actions: {

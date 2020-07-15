@@ -13,8 +13,13 @@
     <v-btn @click="uploadPhoto">
       UPLOAD PHOTO
     </v-btn>
+    <v-text-field v-model="description"></v-text-field>
+    <v-btn @click="updateDescription">
+      UPDATE DESCRIPTION
+    </v-btn>
     <input type="file" @change="readImage" accept="image/*">
     {{ image64 }}
+    {{ this.$store.getters.user}}
   </v-container>
 </template>
 
@@ -24,7 +29,9 @@ import user from '@/services/user.js'
     data () {
       return {
         editing: false,
-        image64: ''
+        image64: '',
+        description: '',
+        oldDescription: ''
       }
     },
     methods: {
@@ -51,15 +58,34 @@ import user from '@/services/user.js'
       uploadPhoto () {
         user.uploadProfilePhoto(75, this.image64)
           .then()
+      },
+      updateDescription () {
+        user.updateUserData(75, this.description)
+          .then(r => this.updateOldDescription())
+          .catch(e => this.resetUserData())
+      },
+      resetUserData () {
+        this.description = this.oldDescription
+      },
+      updateOldDescription () {
+        this.oldDescription = this.description
       }
     },
     computed: {
       renderableImage () {
         return this.image64
+      },
+      currentUser () {
+        return this.$store.getters.user
       }
     },
     mounted () {
-      // user.getUserEntity(this.$router.)
+      // Unconditionally get and store user
+      user.getUser(this.$router.currentRoute.params.id)
+        .then(r => { 
+          this.$store.dispatch('setUser', r.data)
+          this.oldDescription = this.description = this.$store.getters.user.description
+        })
     }
   }
 </script>
