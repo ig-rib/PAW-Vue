@@ -7,6 +7,8 @@ import ar.edu.itba.paw.models.Tag;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import javax.ws.rs.*;
@@ -30,6 +32,8 @@ public class TagsController {
     private SnippetService snippetService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private MessageSource messageSource;
 
     @Context
     private UriInfo uriInfo;
@@ -103,10 +107,13 @@ public class TagsController {
     public Response followTag(@PathParam(value="tagId") final long tagId,
                                           FollowDto followDto,
                                           @Context SecurityContext securityContext) {
-        Optional<User> userOpt = userService.findUserByUsername(securityContext.getUserPrincipal().getName());
-        if (!userOpt.isPresent())
-            return Response.serverError().build();
-        tagService.followTag(userOpt.get().getId(), tagId);
+        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+        if (user == null){
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+        }
+        tagService.followTag(user.getId(), tagId);
         return Response.ok(followDto).build();
     }
 
@@ -115,10 +122,13 @@ public class TagsController {
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response unfollowTag(@PathParam(value="tagId") final long tagId,
                                           FollowDto followDto) {
-        Optional<User> userOpt = userService.findUserByUsername(securityContext.getUserPrincipal().getName());
-        if (!userOpt.isPresent())
-            return Response.serverError().build();
-        tagService.unfollowTag(userOpt.get().getId(), tagId);
+        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+        if (user == null){
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+        }
+        tagService.unfollowTag(user.getId(), tagId);
         return Response.ok(followDto).build();
     }
 

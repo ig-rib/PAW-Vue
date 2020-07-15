@@ -9,7 +9,6 @@ import ar.edu.itba.paw.webapp.dto.ErrorMessageDto;
 import ar.edu.itba.paw.webapp.dto.ProfilePhotoDto;
 import ar.edu.itba.paw.webapp.dto.SnippetDto;
 import ar.edu.itba.paw.webapp.dto.UserDto;
-import ar.edu.itba.paw.webapp.form.ProfilePhotoForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +40,7 @@ public class UserController {
     @Context
     private UriInfo uriInfo;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ar.edu.itba.paw.webapp.old_controller.UserController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ar.edu.itba.paw.webapp.old_controller.alredy_migrated.UserController.class);
 
     @GET
     @Path("/{id}/active")

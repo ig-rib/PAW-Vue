@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.old_controller;
+package ar.edu.itba.paw.webapp.old_controller.alredy_migrated;
 
 import ar.edu.itba.paw.interfaces.service.*;
 import ar.edu.itba.paw.models.Snippet;
