@@ -79,7 +79,7 @@ public class SearchController {
     @Context
     private SecurityContext securityContext;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ar.edu.itba.paw.webapp.old_controller.SearchController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
     private static final String HOME = "";
     private static final String FOLLOWING = "following/";
     private static final String FAVORITES = "favorites/";
