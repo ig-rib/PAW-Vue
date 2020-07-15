@@ -105,7 +105,7 @@ export default {
       search: {
         input: '',
         showEmpty: true,
-        showOnlyFollowing: false,
+        showOnlyFollowing: false
       },
       pagination: {
           page: 1,
@@ -139,7 +139,7 @@ export default {
             )
             .catch()
       },
-      searchTags: function() {
+      searchTags: function () {
         tagService.searchTags(this.pagination.page, this.search.input, this.search.showEmpty, this.search.showOnlyFollowing)
           .then(values => {
             console.log(values.data)
