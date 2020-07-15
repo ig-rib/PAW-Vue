@@ -38,7 +38,6 @@ export default {
     data () {
     return {
       langId: -1,
-      language: [],
       snippets: [],
       pagination: {
           page: 1,
@@ -50,9 +49,9 @@ export default {
   },
   methods: {
       paginationChange: function () {
-          languages.getLanguages(this.pagination.page)
+          languages.getSnippetsForLanguage(this.langId, this.pagination.page)
             .then(values => {
-                this.languages = values.data 
+                this.snippets = values.data 
                 this.links = helpers.parseLinks(values.headers.link)
             })
             .catch(error => { console.log(error) })

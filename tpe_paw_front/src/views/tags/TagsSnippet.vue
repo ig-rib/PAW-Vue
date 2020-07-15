@@ -1,9 +1,81 @@
 <template>
-    <router-view></router-view>
+  <v-container>
+      <v-row>
+        <v-col v-for="snippet in snippets" :key="snippet.id">
+          <SnippetComponent
+            :title="snippet.title"
+            :description="snippet.description"
+            :code="snippet.code"
+            :language="snippet.language.name"
+            :owner="snippet.owner.username"
+            :date="snippet.dateCreated"  
+          />
+          <!-- TODO: format date correctly-->
+        </v-col>
+      </v-row>
+      <div class="text-center">
+        <v-pagination
+          v-model="pagination.page"
+          v-on:input="paginationChange"
+          :length="pagination.length" 
+          :total-visible="pagination.visible"
+          circle
+        ></v-pagination>
+      </div>
+  </v-container>
 </template>
 
 <script>
+import SnippetComponent from '@//components/Snippet.vue'
+import tags from '@//services/tags.js'
+import helpers from '@//functions/helpers.js'
+
 export default {
-  name: 'TagsSnippet'
+    name: 'languagesSnippet',
+    components: {
+        SnippetComponent
+    },
+    data () {
+    return {
+      tagId: -1,
+      snippets: [],
+      links: [],
+      pagination: {
+          page: 1,
+          length: 1,
+          visible: 7
+      }
+      
+    }
+  },
+  methods: {
+      paginationChange: function () {
+          tags.getTagSnippets(this.tagId, this.pagination.page)
+            .then(values => {
+                this.snippts = values.data 
+                this.links = helpers.parseLinks(values.headers.link)
+            })
+            .catch(error => { console.log(error) })
+      }
+  },
+  mounted () {
+    this.tagId = this.$route.params.id
+    tags.getTagSnippets(this.tagId, this.pagination.page)
+      .then(values => {
+        this.snippets = values.data
+        this.links = helpers.parseLinks(values.headers.link)
+        this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10);
+      })
+      .catch(error => { console.log(error) })
+  },
+  watch: {
+   
+  }
+
 }
+
 </script>
+
+<style lang="scss">
+
+</style>

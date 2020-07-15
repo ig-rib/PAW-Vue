@@ -7,11 +7,9 @@ const getTags = (page) => axiosFetcher.get(urls.tags.getTags, {
   }
 })
 
-const getTagSnippets = (tagId, page = 1, showEmpty = true, showOnlyFollowing = false) => axiosFetcher.get(urls.tags.getTagSnippets, {
+const getTagSnippets = (tagId, page = 1) => axiosFetcher.get(urls.tags.getTagSnippets, {
   queryParams: {
     page,
-    showEmpty,
-    showOnlyFollowing
   },
   pathVariables: {
     tagId
@@ -40,6 +38,7 @@ const searchTags = (page = 1, name, showEmpty = true, showOnlyFollowing = false)
     name
   } 
 })
+
 
 export default {
   getTags,
