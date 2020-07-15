@@ -45,6 +45,10 @@ public class LanguagesController {
     @Context
     private UriInfo uriInfo;
 
+    //TODO: See if better to use loginAuthentication directly
+    @Context
+    private SecurityContext securityContext;
+
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response showAllLanguages(final @QueryParam("page") @DefaultValue("1") int page) {
@@ -138,8 +142,16 @@ public class LanguagesController {
     @Consumes(value = {MediaType.APPLICATION_JSON})
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response deleteLanguage (@PathParam("langId") long langId) {
-        User currentUser = loginAuthentication.getLoggedInUser();
-        if ( currentUser != null && roleService.isAdmin(currentUser.getId())){
+        Long userId = null;
+        Optional<User> userOpt = Optional.empty();
+        if (securityContext.getUserPrincipal() != null) {
+            userOpt = userService.findUserByUsername(securityContext.getUserPrincipal().getName());
+            if(userOpt.isPresent()){
+                userId = userOpt.get().getId();
+            }
+        }
+
+        if ( userOpt.isPresent() && roleService.isAdmin(userId)){
             this.languageService.removeLanguage(langId);
             LOGGER.debug("Admin removed language with id {}", langId);
         } else {

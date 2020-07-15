@@ -191,8 +191,16 @@ public class TagsController {
     @DELETE
     @Path("/{tagId}/delete")
     public Response deleteTag(@PathParam(value="tagId") long tagId) {
-        User currentUser = this.loginAuthentication.getLoggedInUser();
-        if ( currentUser != null && roleService.isAdmin(currentUser.getId())){
+        Long userId = null;
+        Optional<User> userOpt = Optional.empty();
+        if (securityContext.getUserPrincipal() != null) {
+            userOpt = userService.findUserByUsername(securityContext.getUserPrincipal().getName());
+            if(userOpt.isPresent()){
+                userId = userOpt.get().getId();
+            }
+        }
+
+        if ( userOpt.isPresent()  && roleService.isAdmin(userId)){
             this.tagService.removeTag(tagId);
             LOGGER.debug("Admin deleted tag with id {}", tagId);
         } else {
