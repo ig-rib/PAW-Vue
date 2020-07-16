@@ -6,8 +6,13 @@ import Nothing from '@/components/Nothing.vue'
 import ExploreMain from '@/views/explore/ExploreMain.vue'
 import LanguagesMain from '@/views/languages/LanguagesMain.vue'
 import LanguagesSnippet from '@/views/languages/LanguagesSnippet.vue'
+import LanguagesSuper from '@/views/languages/LanguagesSuper.vue'
+import LanguagesSearch from '@/views/languages/LanguagesSearch.vue'
 import SnippetDetail from '@/views/snippet/SnippetDetail.vue'
 import TagsMain from '@/views/tags/TagsMain.vue'
+import TagsSearch from '@/views/tags/TagsSearch.vue'
+import TagsSnippet from '@/views/tags/TagsSnippet.vue'
+import TagsSuper from '@/views/tags/TagsSuper.vue'
 import Login from '@/views/registration/Login.vue'
 import Register from '@/views/registration/Register.vue'
 import RegistrationSuper from '@/views/registration/RegistrationSuper.vue'
@@ -58,12 +63,25 @@ const routes = [
           {
             path: 'languages',
             name: 'languages',
-            component: LanguagesMain
-          },
-          {
-            path: 'languages/:id',
-            name: 'languages-snippet',
-            component: LanguagesSnippet
+            component: LanguagesSuper,
+            children: [
+              {
+                path: '',
+                name: 'languages-main',
+                component: LanguagesMain
+              },
+              {
+                path: 'search',
+                name: 'languages-search',
+                component: LanguagesSearch
+              },
+              {
+                path: ':id',
+                name: 'languages-snippet',
+                component: LanguagesSnippet
+              }
+              
+            ]
           },
           {
             path: 'snippet/:id',
@@ -73,7 +91,24 @@ const routes = [
           {
             path: 'tags',
             name: 'tags',
-            component: TagsMain
+            component: TagsSuper,
+            children: [
+              {
+                path: '',
+                name: 'tags-main',
+                component: TagsMain
+              },
+              {
+                path: 'search',
+                name: 'tags-search',
+                component: TagsSearch
+              },
+              {
+                path: ':id',
+                name: 'tags-snippet',
+                component: TagsSnippet
+              }
+            ]
           },
           {
             path: 'registration',

@@ -1,19 +1,28 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.service.RoleService;
 import ar.edu.itba.paw.interfaces.service.SnippetService;
 import ar.edu.itba.paw.interfaces.service.TagService;
 import ar.edu.itba.paw.interfaces.service.UserService;
 import ar.edu.itba.paw.models.Tag;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
 import ar.edu.itba.paw.webapp.dto.*;
+import ar.edu.itba.paw.webapp.exception.ForbiddenAccessException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -34,10 +43,16 @@ public class TagsController {
     private UserService userService;
     @Autowired
     private MessageSource messageSource;
+    private LoginAuthentication loginAuthentication;
+    @Autowired
+    private RoleService roleService;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TagsController.class);
 
     @Context
     private UriInfo uriInfo;
 
+    //TODO: See if better to use loginAuthentication directly
     @Context
     private SecurityContext securityContext;
 
@@ -46,22 +61,30 @@ public class TagsController {
     public Response getAllTags(final @QueryParam("page") @DefaultValue("1") int page,
                                 final @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
                                 @QueryParam("showOnlyFollowing") @DefaultValue("false") boolean showOnlyFollowing) {
+
+        //TODO: Modularize repeated code in searchTags
+
         // Find the user, check if it exists
         Long userId = null;
-        Optional<User> userOpt;
-        // TODO(nth) should return unauthorized if showOnlyFollowing is true && userPrincipal is null
-        if (showOnlyFollowing && securityContext.getUserPrincipal() != null) {
+        Optional<User> userOpt = Optional.empty();
+        if (securityContext.getUserPrincipal() != null) {
             userOpt = userService.findUserByUsername(securityContext.getUserPrincipal().getName());
-            if (!userOpt.isPresent())
-                return Response.serverError().build();
-            userId = userOpt.get().getId();
+            if(userOpt.isPresent()){
+                userId = userOpt.get().getId();
+            }
         }
-        else showOnlyFollowing = false;
 
-        final List<TagDto> tags = tagService.getAllTags(showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)
-                .stream()
-                .map(TagDto::fromTag)
-                .collect(Collectors.toList());
+        // Check if showOnlyFollowing is activated --> If user is not logged return unauthorized.
+        if (showOnlyFollowing && !userOpt.isPresent())
+                return Response.status(HttpStatus.UNAUTHORIZED.value()).build();
+
+        //TODO: See if better just to store the following data in the user.
+        final List<TagDto> tags = new ArrayList<>();
+        for(Tag t: tagService.getAllTags(showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)){
+            TagDto tagDto = TagDto.fromTag(t);
+            tagDto.setUserFollowing(userOpt.isPresent() && tagService.userFollowsTag(userId, t.getId()));
+            tags.add(tagDto);
+        }
 
         int tagsCount = tagService.getAllTagsCount(showEmpty, showOnlyFollowing, userId);
         int pageCount = (tagsCount/TAG_PAGE_SIZE) + ((tagsCount % TAG_PAGE_SIZE == 0) ? 0 : 1);
@@ -82,7 +105,6 @@ public class TagsController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response showSnippetsForTag(final @QueryParam("page") @DefaultValue("1") int page,
         final @PathParam(value="tagId") long tagId) {
-
         final List<SnippetDto> snippets = snippetService.findSnippetsForTag(tagId, page, SNIPPET_PAGE_SIZE)
                 .stream()
                 .map(SnippetDto::fromSnippet)
@@ -101,6 +123,7 @@ public class TagsController {
         return respBuilder.build();
     }
 
+    //TODO: Check follow/unfollow repsonse and how info is received
     @POST
     @Path("/{tagId}/follow")
     @Consumes(value = {MediaType.APPLICATION_JSON})
@@ -138,23 +161,36 @@ public class TagsController {
     public Response searchTags(final @QueryParam("page") @DefaultValue("1") int page,
                                final @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
                                @QueryParam("showOnlyFollowing") @DefaultValue("false") boolean showOnlyFollowing,
-                               final @QueryParam("q") String query) {
+                               final @QueryParam("q") String query,
+                               final @QueryParam("name") String name) {
         // Find the user, check if it exists
         Long userId = null;
-        Optional<User> userOpt;
-        if (showOnlyFollowing && securityContext.getUserPrincipal() != null) {
+        Optional<User> userOpt = Optional.empty();
+        if (securityContext.getUserPrincipal() != null) {
             userOpt = userService.findUserByUsername(securityContext.getUserPrincipal().getName());
-            if (!userOpt.isPresent())
-                return Response.serverError().build();
-            userId = userOpt.get().getId();
+            if(userOpt.isPresent()){
+                userId = userOpt.get().getId();
+            }
         }
-        else showOnlyFollowing = false;
+        if (showOnlyFollowing && !userOpt.isPresent())
+            return Response.status(HttpStatus.UNAUTHORIZED.value()).build();
 
-        List<TagDto> tags = tagService.findTagsByName(query, showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)
-                .stream()
-                .map(TagDto::fromTag)
-                .collect(Collectors.toList());
-        int tagsCount = this.tagService.getAllTagsCountByName(query, showEmpty, showOnlyFollowing, userId);
+//        List<TagDto> tags = tagService.findTagsByName(query, showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)
+//                .stream()
+//                .map(TagDto::fromTag)
+//                .collect(Collectors.toList());
+//        int tagsCount = this.tagService.getAllTagsCountByName(query, showEmpty, showOnlyFollowing, userId);
+        // Check if showOnlyFollowing is activated --> If user is not logged return unauthorized.
+
+        //TODO: See if better just to store the following data in the user.
+        final List<TagDto> tags = new ArrayList<>();
+        for(Tag t: tagService.findTagsByName(name, showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)){
+            TagDto tagDto = TagDto.fromTag(t);
+            tagDto.setUserFollowing(userOpt.isPresent() && tagService.userFollowsTag(userId, t.getId()));
+            tags.add(tagDto);
+        }
+
+        int tagsCount = tagService.getAllTagsCountByName(name, showEmpty, showOnlyFollowing, userId);
         int pageCount = (tagsCount/TAG_PAGE_SIZE) + ((tagsCount % TAG_PAGE_SIZE == 0) ? 0 : 1);
 
         Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<TagDto>>(tags) {})
@@ -169,8 +205,23 @@ public class TagsController {
 
     @DELETE
     @Path("/{tagId}/delete")
-    public Response changeTagFollowStatus(final @PathParam(value="tagId") long tagId) {
-        this.tagService.removeTag(tagId);
-        return Response.noContent().build();
+    public Response deleteTag(@PathParam(value="tagId") long tagId) {
+        Long userId = null;
+        Optional<User> userOpt = Optional.empty();
+        if (securityContext.getUserPrincipal() != null) {
+            userOpt = userService.findUserByUsername(securityContext.getUserPrincipal().getName());
+            if(userOpt.isPresent()){
+                userId = userOpt.get().getId();
+            }
+        }
+
+        if ( userOpt.isPresent()  && roleService.isAdmin(userId)){
+            this.tagService.removeTag(tagId);
+            LOGGER.debug("Admin deleted tag with id {}", tagId);
+        } else {
+            LOGGER.warn("No user logged in or logged in user not admin but attempting to delete tag {}", tagId);
+            return Response.status(HttpStatus.UNAUTHORIZED.value()).build();
+        }
+        return Response.ok().build();
     }
 }

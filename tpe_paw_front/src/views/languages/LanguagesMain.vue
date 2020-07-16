@@ -13,6 +13,7 @@
     <div class="text-center">
       <v-pagination
         v-model="pagination.page"
+        v-on:input="paginationChange"
         :length="pagination.length" 
         :total-visible="pagination.visible"
         circle
@@ -26,11 +27,11 @@ import languages from '@//services/languages.js'
 import helpers from '@//functions/helpers.js'
 
 export default {
-  name: 'languages',
+  name: 'languagesMain',
   data () {
     return {
-      languages: null,
-      links: 0,
+      languages: [],
+      links: [],
       pagination: {
           page: 1,
           length: 1,
@@ -39,22 +40,16 @@ export default {
     }
   },
   methods: {
-  },
-  computed: {
-  },
-  watch: {
-      pagination: {
-          handler: function () {
-            languages.getLanguages(this.pagination.page)
+      paginationChange: function () {
+          languages.getLanguages(this.pagination.page)
             .then(values => {
                 this.languages = values.data 
                 this.links = helpers.parseLinks(values.headers.link)
-                this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10);
             })
             .catch(error => { console.log(error) })
-          },
-          deep: true
       }
+  },
+  computed: {
   },
   mounted () {
     // Promise

@@ -10,7 +10,12 @@
     "title": "Languages"
   },
   "tags": {
-    "title": "Tags"
+    "title": "Tags",
+    "follow": "Follow",
+    "following": "Following",
+    "search" : "Search for a tag",
+    "showEmpty": "Show empty",
+    "showOnlyFollowing": "Show following"
   },
   "snippets": { 
     "feed": {
