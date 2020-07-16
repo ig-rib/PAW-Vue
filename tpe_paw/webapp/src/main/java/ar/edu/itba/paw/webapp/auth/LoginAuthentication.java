@@ -27,15 +27,14 @@ public class LoginAuthentication {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginAuthentication.class);
 
     public String getLoggedInUsername() {
-        final SecurityContext securityContext = SecurityContextHolder.getContext();
-
-        if (securityContext != null) {
-            final Object userDetails = securityContext.getAuthentication().getPrincipal();
-            if (userDetails instanceof UserDetails) {
-                return ((UserDetails) userDetails).getUsername();
-            }
-        }
-        return null;
+        return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        if (securityContext != null) {
+//            final Object userDetails = securityContext.getAuthentication().getPrincipal();
+//            if (userDetails instanceof UserDetails) {
+//                return ((UserDetails) userDetails).getUsername();
+//            }
+//        }
+//        return null;
     }
 
     public User getLoggedInUser() {

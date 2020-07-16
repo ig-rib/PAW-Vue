@@ -29,7 +29,7 @@ import static ar.edu.itba.paw.webapp.utility.Constants.SNIPPET_PAGE_SIZE;
 //TODO: Repeated code: modularize
 
 @Component
-@Path("/languages")
+@Path("/")
 public class LanguagesController {
 
     @Autowired private LanguageService languageService;
@@ -50,6 +50,7 @@ public class LanguagesController {
     private SecurityContext securityContext;
 
     @GET
+    @Path("/languages")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response showAllLanguages(final @QueryParam("page") @DefaultValue("1") int page) {
 
@@ -76,7 +77,7 @@ public class LanguagesController {
     }
 
     @POST
-    @Path("/search")
+    @Path("languages/search")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response searchInAllLanguages(@QueryParam("page") @DefaultValue("1") int page,
                                          @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
@@ -106,7 +107,7 @@ public class LanguagesController {
     }
 
     @GET
-    @Path("/{langId}")
+    @Path("languages/{langId}")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response showSnippetsForLang(@PathParam(value="langId") long langId,
@@ -138,7 +139,7 @@ public class LanguagesController {
     }
 
     @POST
-    @Path("/{langId}/delete")
+    @Path("languages/{langId}/delete")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response deleteLanguage (@PathParam("langId") long langId) {

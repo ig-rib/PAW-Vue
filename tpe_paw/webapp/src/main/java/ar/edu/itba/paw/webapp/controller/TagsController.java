@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 import static ar.edu.itba.paw.webapp.utility.Constants.SNIPPET_PAGE_SIZE;
 import static ar.edu.itba.paw.webapp.utility.Constants.TAG_PAGE_SIZE;
 
-@Path("/tags")
+@Path("/")
 public class TagsController {
 
     @Autowired
@@ -43,7 +43,6 @@ public class TagsController {
     private UserService userService;
     @Autowired
     private MessageSource messageSource;
-    private LoginAuthentication loginAuthentication;
     @Autowired
     private RoleService roleService;
 
@@ -57,6 +56,7 @@ public class TagsController {
     private SecurityContext securityContext;
 
     @GET
+    @Path("/tags")
     @Produces(value = MediaType.APPLICATION_JSON)
     public Response getAllTags(final @QueryParam("page") @DefaultValue("1") int page,
                                 final @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
@@ -101,7 +101,7 @@ public class TagsController {
     }
 
     @GET
-    @Path("/{tagId}")
+    @Path("tags/{tagId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response showSnippetsForTag(final @QueryParam("page") @DefaultValue("1") int page,
         final @PathParam(value="tagId") long tagId) {
@@ -125,7 +125,7 @@ public class TagsController {
 
     //TODO: Check follow/unfollow repsonse and how info is received
     @POST
-    @Path("/{tagId}/follow")
+    @Path("tags/{tagId}/follow")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response followTag(@PathParam(value="tagId") final long tagId,
                                           final FollowDto followDto,
@@ -141,7 +141,7 @@ public class TagsController {
     }
 
     @POST
-    @Path("/{tagId}/unfollow")
+    @Path("tags/{tagId}/unfollow")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response unfollowTag(@PathParam(value="tagId") final long tagId,
                                           final FollowDto followDto) {
@@ -156,7 +156,7 @@ public class TagsController {
     }
 
     @GET
-    @Path("/search")
+    @Path("tags/search")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response searchTags(final @QueryParam("page") @DefaultValue("1") int page,
                                final @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
@@ -204,7 +204,7 @@ public class TagsController {
     }
 
     @DELETE
-    @Path("/{tagId}/delete")
+    @Path("tags/{tagId}/delete")
     public Response deleteTag(@PathParam(value="tagId") long tagId) {
         Long userId = null;
         Optional<User> userOpt = Optional.empty();
