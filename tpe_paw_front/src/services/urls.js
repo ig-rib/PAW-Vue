@@ -28,7 +28,15 @@ const urls = {
     deleteTag: localDomain + 'tags/:tagId/delete'
   },
   search: {
-    search: localDomain + 'search' // context should be supplied in body
+    searchHome: localDomain + 'search',
+    searchFavorites: localDomain + 'favorites/search',
+    searchFollowing: localDomain + 'following/search',
+    searchUpvoted: localDomain + 'upvoted/search',
+    searchFlagged: localDomain + 'flagged/search',
+    searchInLanguage: localDomain + 'langugages/:id/search',
+    searchInTag: localDomain + 'tags/:id/search',
+    searchInActiveUserSnippets: localDomain + 'user/:id/active/search',
+    searchInDeletedUserSnippets: localDomain + 'user/:id/deleted/search'
   },
   explore: {
     search: localDomain + 'explore/search'

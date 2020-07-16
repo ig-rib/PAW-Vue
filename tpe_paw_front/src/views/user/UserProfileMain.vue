@@ -81,6 +81,7 @@ import user from '@/services/user.js'
     },
     mounted () {
       // Unconditionally get and store user
+      console.log(this.$router.currentRoute)
       user.getUser(this.$router.currentRoute.params.id)
         .then(r => { 
           this.$store.dispatch('setUser', r.data)
