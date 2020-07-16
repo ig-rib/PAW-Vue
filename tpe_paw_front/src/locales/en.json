@@ -23,6 +23,21 @@
       }
     }
   },
+  "search": {
+    "type": {
+      "all": "All",
+      "tag": "Tag",
+      "title": "Title",
+      "content": "Content",
+      "username": "Username",
+      "language": "Language"
+    },
+    "order": {
+      "asc": "Ascending",
+      "desc": "Descending",
+      "no": "No specific order"
+    }
+  },
   "registration": {
     "username": "User Name",
     "password": "Password",
