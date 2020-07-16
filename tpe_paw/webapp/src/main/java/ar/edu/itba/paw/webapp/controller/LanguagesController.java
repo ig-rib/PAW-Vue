@@ -75,7 +75,7 @@ public class LanguagesController {
         return responseBuilder.build();
     }
 
-    @POST
+    @GET
     @Path("/search")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response searchInAllLanguages(@QueryParam("page") @DefaultValue("1") int page,

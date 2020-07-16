@@ -100,7 +100,7 @@ export default {
                 this.links = helpers.parseLinks(values.headers.link)
             })
             .catch(error => { console.log(error) })
-      }
+      },
       showEmptyChange: function (){
           this.showEmpty = !this.showEmpty
           this.searchLanguage()

@@ -160,8 +160,7 @@ public class TagsController {
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response searchTags(final @QueryParam("page") @DefaultValue("1") int page,
                                final @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
-                               @QueryParam("showOnlyFollowing") @DefaultValue("false") boolean showOnlyFollowing,
-                               final @QueryParam("q") String query,
+                               final @QueryParam("showOnlyFollowing") @DefaultValue("false") boolean showOnlyFollowing,
                                final @QueryParam("name") String name) {
         // Find the user, check if it exists
         Long userId = null;
@@ -175,12 +174,12 @@ public class TagsController {
         if (showOnlyFollowing && !userOpt.isPresent())
             return Response.status(HttpStatus.UNAUTHORIZED.value()).build();
 
+        // Check if showOnlyFollowing is activated --> If user is not logged return unauthorized.
 //        List<TagDto> tags = tagService.findTagsByName(query, showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)
 //                .stream()
 //                .map(TagDto::fromTag)
 //                .collect(Collectors.toList());
 //        int tagsCount = this.tagService.getAllTagsCountByName(query, showEmpty, showOnlyFollowing, userId);
-        // Check if showOnlyFollowing is activated --> If user is not logged return unauthorized.
 
         //TODO: See if better just to store the following data in the user.
         final List<TagDto> tags = new ArrayList<>();
