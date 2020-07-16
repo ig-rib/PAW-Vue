@@ -47,28 +47,47 @@
 
         <!-- Search bar -->
         <v-flex grow px-2>
-          <v-card height="70%" :width="`${$vuetify.breakpoint.lgAndUp ? '60%' : '100%'}`">
-            <v-layout fill-height>
-              <v-flex>
-                <v-text-field
-                  height="100%"
-                  class="nav-search-text-field"
-                  dense
-                  rounded
-                  hide-details
-                  v-model="searchQuery">
-                </v-text-field>
-              </v-flex>
-              <v-divider vertical></v-divider>
-              <v-flex shrink>
-                <v-btn
-                  height="100%"
-                  icon>
-                  <v-icon>mdi-magnify</v-icon>
-                </v-btn>
-              </v-flex>
-            </v-layout>
-          </v-card>
+          <v-layout>
+            <v-flex>
+              <v-card height="70%" :width="`${$vuetify.breakpoint.lgAndUp ? '60%' : '100%'}`">
+                <v-layout fill-height>
+                  <v-flex>
+                    <v-text-field
+                      height="100%"
+                      class="nav-search-text-field"
+                      dense
+                      rounded
+                      hide-details
+                      v-model="searchQuery">
+                    </v-text-field>
+                  </v-flex>
+                  <v-divider vertical></v-divider>
+                  <v-flex shrink>
+                    <v-btn
+                      height="100%"
+                      @click="search"
+                      icon>
+                      <v-icon>mdi-magnify</v-icon>
+                    </v-btn>
+                  </v-flex>
+                </v-layout>
+              </v-card>
+            </v-flex>
+            <v-flex>
+              <v-select 
+              :items="searchTypes"
+              item-text="name"
+              item-value="value"
+              v-model="searchType"></v-select>
+            </v-flex>
+            <v-flex>
+              <v-select
+              :items="searchOrders"
+              item-text="name"
+              item-value="value"
+              v-model="searchOrder"></v-select>
+            </v-flex>
+          </v-layout>
         </v-flex>
 
         <!-- Registration/Login/User section -->
@@ -116,11 +135,15 @@
 </template>
 
 <script>
+import search from '@/services/search.js'
+
 export default {
   data () {
     return {
       navDrawer: false,
       searchQuery: '',
+      searchType: '',
+      searchOrder: '',
       paths: [
         {
           title: this.$t('feed.title'),
@@ -153,13 +176,27 @@ export default {
       ]
     }
   },
+  computed: {
+    searchTypes () {
+      return Object.values(search.constants.type)
+    },
+    searchOrders () {
+      return Object.values(search.constants.order)
+    }
+  },
   methods: {
     goto (path) {
       this.$router.push(path)
     },
     search () {
-      //
+      search.searchInLocation(this.$router.currentRoute.path, {
+        q: this.searchQuery
+
+      })
     }
+  },
+  mounted () {
+    console.log(Object.values(search.constants.type))
   }
 }
 </script>

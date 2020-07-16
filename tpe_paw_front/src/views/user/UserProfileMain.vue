@@ -1,25 +1,16 @@
 <template>
   <v-container>
-    <img :src="`data:image/*;base64,${renderableImage}`" alt="" srcset="">
-    <v-btn @click="getActiveUserSnippets">
-      GET ACTIVE USER SNIPPETS
-    </v-btn>
-    <v-btn @click="getDeletedUserSnippets">
-      GET DELETED USER SNIPPETS
-    </v-btn>
-    <v-btn @click="getUserEntity">
-      GET USER ENTITY
-    </v-btn>
-    <v-btn @click="uploadPhoto">
-      UPLOAD PHOTO
-    </v-btn>
-    <v-text-field v-model="description"></v-text-field>
-    <v-btn @click="updateDescription">
-      UPDATE DESCRIPTION
-    </v-btn>
-    <input type="file" @change="readImage" accept="image/*">
-    {{ image64 }}
-    {{ this.$store.getters.user}}
+    <v-layout>
+      <v-flex sm3 md3 lg3>
+        <img :src="renderableImage" alt="" srcset="">
+      </v-flex>
+      <v-flex>
+        INFO
+      </v-flex>
+    </v-layout>
+    <v-layout>
+
+    </v-layout>
   </v-container>
 </template>
 
@@ -31,7 +22,8 @@ import user from '@/services/user.js'
         editing: false,
         image64: '',
         description: '',
-        oldDescription: ''
+        oldDescription: '',
+        user: () => {}
       }
     },
     methods: {
@@ -73,7 +65,7 @@ import user from '@/services/user.js'
     },
     computed: {
       renderableImage () {
-        return this.image64
+        return `data:image/png;base64,${this.user.icon}`
       },
       currentUser () {
         return this.$store.getters.user
@@ -84,7 +76,7 @@ import user from '@/services/user.js'
       console.log(this.$router.currentRoute)
       user.getUser(this.$router.currentRoute.params.id)
         .then(r => { 
-          this.$store.dispatch('setUser', r.data)
+          this.user = r.data
           this.oldDescription = this.description = this.$store.getters.user.description
         })
     }
