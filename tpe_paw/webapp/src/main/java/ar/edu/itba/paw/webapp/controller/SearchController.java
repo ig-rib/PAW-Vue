@@ -54,6 +54,7 @@ public class SearchController {
     private final static Map<String, SnippetDao.Orders> ordersMap;
     static {
         final Map<String, SnippetDao.Orders> orders = new HashMap<>();
+        orders.put(null, SnippetDao.Orders.NO);
         orders.put("asc", SnippetDao.Orders.ASC);
         orders.put("desc", SnippetDao.Orders.DESC);
         orders.put("no", SnippetDao.Orders.NO);
@@ -90,7 +91,7 @@ public class SearchController {
     // GET version of endopints
 
     @GET
-    @Path("/search")
+    @Path("feed/search")
     public Response searchInHome(final @QueryParam("q") String query,
                                                final @QueryParam("t") String type,
                                                final @QueryParam("uid") String userId,
