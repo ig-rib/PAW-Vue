@@ -127,6 +127,19 @@
         </v-layout>
       </v-list-item>
     </v-list>
+    <v-layout v-if="!$store.getters.loggedIn">
+      <v-flex>
+        <v-btn @click="goToLogin">LOGIN</v-btn>
+      </v-flex>
+    </v-layout>
+    <v-layout v-else>
+      <v-flex>
+        <v-btn @click="goToProfile">PROFILE</v-btn>
+      </v-flex>
+      <v-flex>
+        <v-btn @click="logout">LOGOUT</v-btn>
+      </v-flex>
+    </v-layout>
     </v-navigation-drawer>
     <div>
       <router-view></router-view>
@@ -194,6 +207,17 @@ export default {
         t: this.searchType,
         s: this.searchOrder
       })
+    },
+    goToLogin () {
+      this.$router.push({
+        name: 'login'
+      })
+    },
+    goToProfile () {
+
+    },
+    logout () {
+      this.$store.dispatch('logout')
     }
   }
 }

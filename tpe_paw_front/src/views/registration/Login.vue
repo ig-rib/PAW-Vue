@@ -26,7 +26,8 @@ export default {
     return {
       username: '',
       password: '',
-      invalid: false
+      invalid: false,
+      prevRoute: null
     }
   },
   methods: {
@@ -34,8 +35,16 @@ export default {
       registration.login(this.username, this.password)
         .then(r => {
           this.invalid = false
-          console.log(r.data)
           this.$store.dispatch('setToken', r.data)
+          if (this.prevRoute == null) {
+            this.$router.push({
+              name: 'feed'
+            })
+          } else {
+            this.$router.push({
+              name: this.prevRoute.name
+            })
+          }
           })
         .catch(e => {
           this.invalid = true
@@ -47,7 +56,14 @@ export default {
       this.password = ''
     }
   },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      console.log('beforeRouteEnter: from', from)
+      vm.prevRoute = from
+    })
+  },
   mounted () {
+    console.log(this.prevRoute)
   }
 }
 </script>

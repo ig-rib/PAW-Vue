@@ -43,6 +43,9 @@ export default new Vuex.Store({
     },
     setUser ({ commit }, userData) {
       commit('setUser', userData)
+    },
+    logout () {
+      window.sessionStorage.clear()
     }
   },
   modules: {
