@@ -8,7 +8,13 @@
     </v-text-field>
     <v-btn :disabled="validEmail" @click="sendRecoveryEmail">
       {{ $t('registration.sendRecoveryEmail') }}
-      </v-btn>
+    </v-btn>
+    <v-layout>
+      <v-btn text @click="goToLogin">{{ $t('registration.knowYourPassword') }} {{ $t('registration.goToLogin') }}</v-btn>
+    </v-layout>
+    <v-layout>
+      <v-btn text @click="goToRegister">{{ $t('registration.noAccount') }} {{ $t('registration.goToRegister') }}</v-btn>
+    </v-layout>
   </v-container>
 </template>
 
@@ -32,6 +38,16 @@ export default {
         .finally(() => {
           this.email = ''
         })
+    },
+    goToLogin () {
+      this.$router.push({
+        name: 'login'
+      })
+    },
+    goToRegister () {
+      this.$router.push({
+        name: 'register'
+      })
     }
 },
   computed: {

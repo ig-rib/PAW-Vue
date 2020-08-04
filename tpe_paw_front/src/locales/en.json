@@ -59,7 +59,8 @@
     "hasAccount": "Already have an account?",
     "goToLogin": "Go to login",
     "forgotPassword": "Forgot Password?",
-    "goToPassRecovery": "Recover password here"
+    "goToPassRecovery": "Recover password here",
+    "knowYourPassword": "Know your password?"
   },
   "validations": {
     "invalidPassword": "Password must be at least 8 characters long",
