@@ -53,7 +53,13 @@
     "resetPassword": "Reset Password",
     "sendRecoveryEmail": "Send",
     "verificationCode": "Verification Code",
-    "sendVerificationCode": "Send"
+    "sendVerificationCode": "Send",
+    "noAccount": "No Account?",
+    "goToRegister": "Register here",
+    "hasAccount": "Already have an account?",
+    "goToLogin": "Go to login",
+    "forgotPassword": "Forgot Password?",
+    "goToPassRecovery": "Recover password here"
   },
   "validations": {
     "invalidPassword": "Password must be at least 8 characters long",

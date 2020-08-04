@@ -15,6 +15,12 @@
       {{ $t('registration.validations.usernameOrPasswordInvalid') }}
     </div>
     <v-btn @click="login">{{ $t('registration.login') }}</v-btn>
+    <v-layout>
+      <v-btn text @click="goToRegister">{{ $t('registration.noAccount') }} {{ $t('registration.goToRegister') }}</v-btn>
+    </v-layout>
+    <v-layout>
+      <v-btn text @click="goToPassRecovery">{{ $t('registration.forgotPassword') }} {{ $t('registration.goToPassRecovery') }}</v-btn>
+    </v-layout>
   </v-container>
 </template>
 
@@ -54,6 +60,16 @@ export default {
     blankFields () {
       this.username = ''
       this.password = ''
+    },
+    goToRegister () {
+      this.$router.push({
+        name: 'register'
+      })
+    },
+    goToPassRecovery () {
+      this.$router.push({
+        name:'send-recovery-email'
+      })
     }
   },
   beforeRouteEnter (to, from, next) {
