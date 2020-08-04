@@ -73,11 +73,10 @@ import user from '@/services/user.js'
     },
     mounted () {
       // Unconditionally get and store user
-      console.log(this.$router.currentRoute)
       user.getUser(this.$router.currentRoute.params.id)
         .then(r => { 
           this.user = r.data
-          this.oldDescription = this.description = this.$store.getters.user.description
+          this.oldDescription = this.description = this.user.description
         })
     }
   }

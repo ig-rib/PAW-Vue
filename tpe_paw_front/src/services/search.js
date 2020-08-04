@@ -58,14 +58,13 @@ const constants = {
  */
 const searchInLocation = (location, params) => {
   // Remove the locale part of uri
-  console.log(location)
   let resultArray = location.split('/')
   resultArray.shift()
   resultArray.shift()
   const pathSuffix = resultArray.join('/')
-  console.log(pathSuffix)
+  console.log('params', params)
   return axiosFetcher.get(urls.localDomain + pathSuffix + '/search', {
-    queryParms: params
+    queryParams: params
   })
 }
 export default {

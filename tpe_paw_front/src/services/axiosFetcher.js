@@ -13,7 +13,6 @@ import Router from '@/router'
  */
 
 const axiosFetcher = (url = '', params = {}, method = 'get', data = {}) => {
-  console.log('pathVariables', params.pathVariables, 'url', url)
   url = urlMaker(url, params.pathVariables)
   const config = {
     headers: {

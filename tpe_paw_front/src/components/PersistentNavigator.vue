@@ -190,13 +190,11 @@ export default {
     },
     search () {
       search.searchInLocation(this.$router.currentRoute.path, {
-        q: this.searchQuery
-
+        q: this.searchQuery,
+        t: this.searchType,
+        s: this.searchOrder
       })
     }
-  },
-  mounted () {
-    console.log(Object.values(search.constants.type))
   }
 }
 </script>
