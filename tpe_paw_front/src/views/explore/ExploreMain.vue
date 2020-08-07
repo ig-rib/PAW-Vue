@@ -157,13 +157,13 @@ export default {
   data () {
     return {
       exploreParams: {
-        orderBy: '',
-        sort: '',
-        includeFlagged: '',
-        snippetTitle: '',
-        language: '',
-        tag: '',
-        username: '',
+        orderBy: null,
+        sort: null,
+        includeFlagged: null,
+        snippetTitle: null,
+        language: null,
+        tag: null,
+        username: null,
         fromDate: null,
         toDate: null,
         minRep: null,

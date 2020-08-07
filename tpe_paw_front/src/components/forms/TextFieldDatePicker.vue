@@ -43,11 +43,6 @@ export default {
       this.$emit('input', this.dateValue)
     }
   },
-  watch: {
-    value: (newVal, oldVal) => {
-      this.dateValue = newVal
-    }
-  },
   computed: {
     displayedDate () {
       return this.dateValue
