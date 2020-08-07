@@ -81,14 +81,14 @@
             </v-layout>
             <v-layout>
               <v-flex>
-                FROM DATE PICKER
                 <tf-date-picker
+                  v-model="fromDate"
                   :label="$t('explore.from')"
                 ></tf-date-picker>
               </v-flex>
               <v-flex>
-                TO DATE PICKER
                 <tf-date-picker
+                  v-model="toDate"
                   :label="$t('explore.to')"
                 ></tf-date-picker>
               </v-flex>
