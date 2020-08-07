@@ -65,7 +65,6 @@ public class SnippetExploreController {
     @GET
     @Path("/search")
     public Response exploreSearch(    final @QueryParam("t") String type,
-                                      final @QueryParam("uid") String userId,
                                       final @QueryParam("s") @DefaultValue("no") String sort,
                                       final @QueryParam("page") @DefaultValue("1") int page,
                                       final @QueryParam("minDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date minDate,

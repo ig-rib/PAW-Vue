@@ -62,12 +62,19 @@ const searchInLocation = (location, params) => {
   resultArray.shift()
   resultArray.shift()
   const pathSuffix = resultArray.join('/')
-  console.log('params', params)
   return axiosFetcher.get(urls.localDomain + pathSuffix + '/search', {
     queryParams: params
   })
 }
+
+const explore = params => {
+  return axiosFetcher.get(urls.explore.search, {
+    queryParams: params
+  })
+}
+
 export default {
   constants,
-  searchInLocation
+  searchInLocation,
+  explore
 }

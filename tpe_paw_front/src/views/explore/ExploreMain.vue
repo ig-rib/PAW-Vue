@@ -13,14 +13,14 @@
                   {{ $t('explore.order.orderBy') }}
                 </v-layout>
                 <v-layout>
-                  <v-select v-model="orderBy"></v-select>
+                  <v-select v-model="exploreParams.orderBy"></v-select>
                 </v-layout>
               </v-flex>
               <v-flex>
                 <v-layout>
                   {{ $t('explore.order.sort')}}
                 </v-layout>
-                <v-layout v-model="sort"></v-layout>
+                <v-layout v-model="exploreParams.sort"></v-layout>
               </v-flex>
             </v-layout>
           </v-layout>
@@ -30,7 +30,7 @@
               {{ $t('explore.flagged.title') }}
             </v-layout>
             <v-layout>
-              <v-checkbox v-model="includeFlagged"
+              <v-checkbox v-model="exploreParams.includeFlagged"
                 :label="$t('explore.flagged.includeFlagged')"
                 ></v-checkbox>
             </v-layout>
@@ -41,7 +41,7 @@
               {{ $t('explore.title.title') }}
             </v-layout>
             <v-layout>
-              <v-text-field v-model="snippetTitle"
+              <v-text-field v-model="exploreParams.snippetTitle"
                 :label="$t('explore.title.label')"></v-text-field>
             </v-layout>
           </v-layout>
@@ -52,7 +52,7 @@
                 {{ $t('explore.language') }}
               </v-layout>
               <v-layout>
-                <v-select v-model="language"></v-select>
+                <v-select v-model="exploreParams.language"></v-select>
               </v-layout>
             </v-flex>
             <v-flex>
@@ -60,7 +60,7 @@
                 {{ $t('explore.tag')}}
               </v-layout>
               <v-layout>
-                <v-select v-model="tag"></v-select>
+                <v-select v-model="exploreParams.tag"></v-select>
               </v-layout>
             </v-flex>
           </v-layout>
@@ -70,7 +70,7 @@
               {{ $t('explore.username') }}
             </v-layout>
             <v-layout>
-              <v-text-field v-model="username"
+              <v-text-field v-model="exploreParams.username"
                 :label="$t('explore.username')"></v-text-field>
             </v-layout>
           </v-layout>
@@ -82,13 +82,13 @@
             <v-layout>
               <v-flex>
                 <tf-date-picker
-                  v-model="fromDate"
+                  v-model="exploreParams.fromDate"
                   :label="$t('explore.from')"
                 ></tf-date-picker>
               </v-flex>
               <v-flex>
                 <tf-date-picker
-                  v-model="toDate"
+                  v-model="exploreParams.toDate"
                   :label="$t('explore.to')"
                 ></tf-date-picker>
               </v-flex>
@@ -103,13 +103,13 @@
               <v-flex>
                 <v-text-field
                   :label="$t('explore.min')"
-                  v-model="repMin"
+                  v-model="exploreParams.minRep"
                 ></v-text-field>
               </v-flex>
               <v-flex>
                 <v-text-field
                   :label="$t('explore.max')"
-                  v-model="repMax"
+                  v-model="exploreParams.maxRep"
                 ></v-text-field>
               </v-flex>
             </v-layout>
@@ -123,43 +123,79 @@
               <v-flex>
                 <v-text-field
                   :label="$t('explore.min')"
-                  v-model="votesMin"
+                  v-model="exploreParams.minVotes"
                 ></v-text-field>
               </v-flex>
               <v-flex>
                 <v-text-field
                   :label="$t('explore.max')"
-                  v-model="votesMax"
+                  v-model="exploreParams.maxVotes"
                 ></v-text-field>
               </v-flex>
             </v-layout>
           </v-layout>
+          <v-layout>
+            <v-btn @click="exploreSearch">
+              {{ $t('explore.explore') }}
+            </v-btn>
+          </v-layout>
         </v-card>
       </v-flex>
       <v-flex>
-
+        SNIPPETS HERE
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+import search from '@/services/search.js'
+import languages from '@/services/languages.js'
+import tags from '@/services/tags.js'
+
 export default {
   data () {
     return {
-      orderBy: '',
-      sort: '',
-      includeFlagged: '',
-      snippetTitle: '',
-      language: '',
-      tag: '',
-      username: '',
-      fromDate: null,
-      toDate: null,
-      repMin: null,
-      repMax: null,
-      votesMin: null,
-      votesMax: null
+      exploreParams: {
+        orderBy: '',
+        sort: '',
+        includeFlagged: '',
+        snippetTitle: '',
+        language: '',
+        tag: '',
+        username: '',
+        fromDate: null,
+        toDate: null,
+        minRep: null,
+        maxRep: null,
+        minVotes: null,
+        maxVotes: null
+      },
+      languages: () => {},
+      tags: () => {},
+      loadingSearchOptions: false,
+      loadingSnippets: false
+    }
+  },
+  methods: {
+    exploreSearch () {
+      search.explore({
+          t: this.exploreParams.orderBy,
+          s: this.exploreParams.sort,
+          minDate: this.exploreParams.fromDate,
+          maxDate: this.exploreParams.toDate,
+          minRep: this.exploreParams.minRep,
+          maxRep: this.exploreParams.maxRep,
+          minVotes: this.exploreParams.minVotes,
+          maxVotes: this.exploreParams.maxVotes,
+          langId: this.exploreParams.language,
+          tagId: this.exploreParams.tag,
+          uname: this.exploreParams.userame,
+          title: this.exploreParams.snippetTitle,
+          field: this.exploreParams.orderBy,
+          includeFlagged: this.exploreParams.includeFlagged
+        }
+      )
     }
   }
 }
