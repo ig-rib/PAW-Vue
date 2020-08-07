@@ -166,7 +166,7 @@ export default {
           }
         },
         {
-          title: this.$t('explore.title'),
+          title: this.$t('explore.explore'),
           icon: 'mdi-magnify',
           path: {
             name: 'explore'

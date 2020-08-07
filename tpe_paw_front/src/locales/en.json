@@ -4,7 +4,36 @@
     "title": "Feed"
   },
   "explore": {
-    "title": "Explore"
+    "explore": "Explore",
+    "order": {
+      "title": "Order",
+      "orderBy": "Order By",
+      "sort": "Sort"
+    },
+    "flagged": {
+      "title": "Flagged",
+      "includeFlagged": "Include Flagged"
+    },
+    "title": {
+      "title": "Title",
+      "label": "Snippet Title"
+    },
+    "language": "Language",
+    "tag": "Tag",
+    "username": "Username",
+    "dateUploaded": "Date Uploaded",
+    "userReputation": {
+      "title": "User Reputation",
+      "label": "Reputation"
+    },
+    "snippetVotes": {
+      "title": "Snippet Votes",
+      "label": "Votes"
+    },
+    "from": "From",
+    "to": "To",
+    "min": "Min",
+    "max": "Max"
   },
   "languages": {
     "title": "Languages"
@@ -69,5 +98,10 @@
     "invalidEmail": "Invalid Email",
     "emailExists": "Email already exists",
     "nonMatchingPasswords": "Passwords must be equal"
+  },
+  "components": {
+    "tfDatePicker": {
+      "defaultLabel": "Select Date"
+    }
   }
 }
