@@ -41,7 +41,7 @@ public class SearchController {
     private final static Map<String, SnippetDao.Types> typesMap;
     static {
         final Map<String, SnippetDao.Types> types = new HashMap<>();
-        types.put(null, SnippetDao.Types.ALL);
+//        types.put(null, SnippetDao.Types.ALL);
         types.put("all", SnippetDao.Types.ALL);
         types.put("tag", SnippetDao.Types.TAG);
         types.put("title", SnippetDao.Types.TITLE);
@@ -54,7 +54,7 @@ public class SearchController {
     private final static Map<String, SnippetDao.Orders> ordersMap;
     static {
         final Map<String, SnippetDao.Orders> orders = new HashMap<>();
-        orders.put(null, SnippetDao.Orders.NO);
+//        orders.put(null, SnippetDao.Orders.NO);
         orders.put("asc", SnippetDao.Orders.ASC);
         orders.put("desc", SnippetDao.Orders.DESC);
         orders.put("no", SnippetDao.Orders.NO);
@@ -278,19 +278,19 @@ public class SearchController {
     }
 
     private Collection<Snippet> findByCriteria(String type, String query, SnippetDao.Locations location, String sort, Long userId, Long resourceId, int page) {
-        if (!typesMap.containsKey(type) || !ordersMap.containsKey(sort)) {
-            return Collections.emptyList();
-        } else {
+//        if (!typesMap.containsKey(type) || !ordersMap.containsKey(sort)) {
+//            return Collections.emptyList();
+//        } else {
             return this.snippetService.findSnippetByCriteria(
-                    typesMap.get(type),
+                    typesMap.getOrDefault(type, SnippetDao.Types.ALL),
                     query == null ? "" : query,
                     location,
-                    ordersMap.get(sort),
+                    ordersMap.getOrDefault(sort, SnippetDao.Orders.NO),
                     userId,
                     resourceId,
                     page,
                     SNIPPET_PAGE_SIZE);
-        }
+//        }
     }
 
     private Response generateResponseWithLinks(@DefaultValue("1") @QueryParam("page") int page, List<SnippetDto> snippets, int totalSnippetCount) {
@@ -309,7 +309,7 @@ public class SearchController {
 
     private int getSnippetByCriteriaCount(String type, String query, SnippetDao.Locations location, Long userId, Long resourceId) {
         return this.snippetService.getSnippetByCriteriaCount(
-                typesMap.get(type),
+                typesMap.getOrDefault(type, SnippetDao.Types.ALL),
                 query == null ? "" : query,
                 location,
                 userId,
