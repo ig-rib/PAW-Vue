@@ -13,11 +13,10 @@
       <template slot="afterList" v-if="hasNext">
         <v-btn
           @click="loadMore">
-          LOAD MORE
+          {{ $t('components.tagSelect.loadMore')}}
         </v-btn>
       </template>
     </v-multiselect>
-    {{links}}
   </v-container>
 </template>
 <script>
@@ -40,6 +39,7 @@ export default {
     }
   },
   methods: {
+    // TODO handle all request errors
     updateSelectionSet (query) {
       this.tagQuery = query
       tags.searchTags(1, query, true, false).then(r => {
@@ -50,9 +50,7 @@ export default {
     loadMore () {
       axiosFetcher.get(this.links.next).then(r => {
         if (r.data.length > 0) {
-          console.log(r.data)
           this.tags.push(...r.data)
-          console.log(this.tags)
         }
         this.links = parseLinks(r.headers.link)
       })

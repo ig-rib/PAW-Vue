@@ -102,6 +102,9 @@
   "components": {
     "tfDatePicker": {
       "defaultLabel": "Select Date"
+    },
+    "tagSelect": {
+      "loadMore": "Load More"
     }
   }
 }
