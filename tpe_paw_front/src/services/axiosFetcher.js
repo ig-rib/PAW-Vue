@@ -23,7 +23,7 @@ const axiosFetcher = (url = '', params = {}, method = 'get', data = {}) => {
   if (Store.getters.token.value != null) {
     config.headers.Authorization = 'Bearer ' + Store.getters.token.value
   }
-  console.log('pathVariables', params.pathVariables, 'url', url, 'config', config)
+  // console.log('pathVariables', params.pathVariables, 'url', url, 'config', config)
   let promise = null
   switch (method.toLowerCase()) {
     case 'get':

@@ -36,6 +36,30 @@ insert into tags(name) values('performance');
 insert into tags(name) values('math');
 insert into tags(name) values('machine-learning');
 insert into tags(name) values('style');
+insert into tags(name) values('t1');
+insert into tags(name) values('t2');
+insert into tags(name) values('t3');
+insert into tags(name) values('t4');
+insert into tags(name) values('t5');
+insert into tags(name) values('t6');
+insert into tags(name) values('t7');
+insert into tags(name) values('t8');
+insert into tags(name) values('t9');
+insert into tags(name) values('t10');
+insert into tags(name) values('t11');
+insert into tags(name) values('t12');
+insert into tags(name) values('t13');
+insert into tags(name) values('t14');
+insert into tags(name) values('t15');
+insert into tags(name) values('t16');
+insert into tags(name) values('t17');
+insert into tags(name) values('t18');
+insert into tags(name) values('t19');
+insert into tags(name) values('t20');
+insert into tags(name) values('t21');
+insert into tags(name) values('t22');
+insert into tags(name) values('t23');
+
 
 insert into snippets(user_id, title, description, code, date_created, language_id) values((select id from users where username='JohnDoe'),'Implementation of merge sort','This is an implementation of merge sort in java',
 'class MergeSort

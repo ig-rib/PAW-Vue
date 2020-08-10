@@ -60,7 +60,9 @@
                 {{ $t('explore.tag')}}
               </v-layout>
               <v-layout>
-                <v-select v-model="exploreParams.tag"></v-select>
+                <tag-select
+                  v-model="exploreParams.tag"
+                ></tag-select>
               </v-layout>
             </v-flex>
           </v-layout>
@@ -151,7 +153,6 @@
 <script>
 import search from '@/services/search.js'
 import languages from '@/services/languages.js'
-import tags from '@/services/tags.js'
 
 export default {
   data () {
@@ -172,7 +173,6 @@ export default {
         maxVotes: null
       },
       languages: () => {},
-      tags: () => {},
       loadingSearchOptions: false,
       loadingSnippets: false
     }
