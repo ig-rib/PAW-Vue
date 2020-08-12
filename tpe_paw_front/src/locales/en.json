@@ -103,8 +103,16 @@
     "tfDatePicker": {
       "defaultLabel": "Select Date"
     },
+    "shared": {
+      "pagination": {
+        "loadMore": "Load More"
+      }
+    },
     "tagSelect": {
-      "loadMore": "Load More"
+      "selectTag": "Select A Tag"
+    },
+    "languageSelect": {
+      "selectLanguage": "Select A Language"
     }
   }
 }

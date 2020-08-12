@@ -7,11 +7,13 @@ import i18n from './i18n'
 
 import TextFieldDatePicker from './components/forms/TextFieldDatePicker.vue'
 import TagSelect from './components/forms/TagSelect.vue'
+import LanguageSelect from './components/forms/LanguageSelect.vue'
 
 Vue.config.productionTip = false
 
 Vue.component('tf-date-picker', TextFieldDatePicker)
 Vue.component('tag-select', TagSelect)
+Vue.component('language-select', LanguageSelect)
 
 new Vue({
   router,

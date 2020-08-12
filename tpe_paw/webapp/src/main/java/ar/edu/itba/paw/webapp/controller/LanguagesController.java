@@ -76,12 +76,11 @@ public class LanguagesController {
         return responseBuilder.build();
     }
 
-    @POST
+    @GET
     @Path("languages/search")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response searchInAllLanguages(@QueryParam("page") @DefaultValue("1") int page,
                                          @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
-                                         @QueryParam("showOnlyFollowing") @DefaultValue("false") boolean showOnlyFollowing,
                                          @QueryParam("name") String name){
 
         Collection<Language> allLanguages = this.languageService.findAllLanguagesByName(name, showEmpty, page, LANGUAGE_PAGE_SIZE);
@@ -96,12 +95,12 @@ public class LanguagesController {
                 .map(LanguageDto::fromLanguage).collect(Collectors.toList());
 
         Response.ResponseBuilder responseBuilder =  Response.ok(new GenericEntity<List<LanguageDto>>(languagesDto) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
+                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).queryParam("showEmpty", showEmpty).queryParam("name", name).build(), "first")
+                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).queryParam("showEmpty", showEmpty).queryParam("name", name).build(), "last");
         if (page > 1)
-            responseBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
+            responseBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).queryParam("showEmpty", showEmpty).queryParam("name", name).build(), "prev");
         if (page < pageCount)
-            responseBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
+            responseBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).queryParam("showEmpty", showEmpty).queryParam("name", name).build(), "next");
 
         return responseBuilder.build();
     }

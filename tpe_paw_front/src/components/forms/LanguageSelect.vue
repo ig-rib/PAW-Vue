@@ -1,12 +1,12 @@
 <template>
   <v-container>
     <v-multiselect
-      v-model="selectedTag"
-      :options="tags"
+      v-model="selectedLang"
+      :options="languages"
       @search-change="updateSelectionSet"
       :close-on-select="true"
-      :clear-on-select="false"
-      :placeholder="$t('components.tagSelect.selectTag')"
+      :cler-on-select="false"
+      :placeholder="$t('components.languageSelect.selectLanguage')"
       label="name"
       track-by="id"
     >
@@ -20,7 +20,7 @@
   </v-container>
 </template>
 <script>
-import tags from '@/services/tags'
+import languages from '@/services/languages'
 import Multiselect from 'vue-multiselect'
 import { parseLinks } from '@/functions/helpers.js'
 import axiosFetcher from '@/services/axiosFetcher.js'
@@ -32,40 +32,40 @@ export default {
   props: ['value'],
   data () {
     return {
-      tags: [],
-      tagQuery: '',
-      selectedTag: '',
+      languages: [],
+      langQuery: '',
+      selectedLang: '',
       links: () => {}
     }
   },
   methods: {
     // TODO handle all request errors
     updateSelectionSet (query) {
-      this.tagQuery = query
-      tags.searchTags(1, query, true, false).then(r => {
-        this.tags = r.data
+      this.langQuery = query
+      languages.searchLanguage(1, query, true).then(r => {
+        this.languages = r.data
         this.links = parseLinks(r.headers.link)
       })
     },
     loadMore () {
       axiosFetcher.get(this.links.next).then(r => {
         if (r.data.length > 0) {
-          this.tags.push(...r.data)
+          this.languages.push(...r.data)
         }
         this.links = parseLinks(r.headers.link)
       })
     }
   },
   watch: {
-    selectedTag: {
+    selectedLang: {
       handler: function (val, oldVal) {
         this.$emit('input', val.id)
       }
     }
   },
   mounted () {
-    tags.searchTags(1, this.tagQuery, true, false).then(r => {
-      this.tags = r.data
+    languages.searchLanguage(1, this.langQuery, true).then(r => {
+      this.languages = r.data
       this.links = parseLinks(r.headers.link)
     })
   },

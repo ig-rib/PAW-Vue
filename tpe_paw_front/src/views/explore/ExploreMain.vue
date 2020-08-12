@@ -13,14 +13,24 @@
                   {{ $t('explore.order.orderBy') }}
                 </v-layout>
                 <v-layout>
-                  <v-select v-model="exploreParams.orderBy"></v-select>
+                  <v-select
+                    v-model="exploreParams.orderBy"
+                    :items="types"
+                    item-text="name"
+                    item-value="value"></v-select>
                 </v-layout>
               </v-flex>
               <v-flex>
                 <v-layout>
                   {{ $t('explore.order.sort')}}
                 </v-layout>
-                <v-layout v-model="exploreParams.sort"></v-layout>
+                <v-layout>
+                  <v-select
+                    v-model="exploreParams.sort"
+                    :items="sortOrders"
+                    item-text="name"
+                    item-value="value"></v-select>
+                </v-layout>
               </v-flex>
             </v-layout>
           </v-layout>
@@ -52,7 +62,9 @@
                 {{ $t('explore.language') }}
               </v-layout>
               <v-layout>
-                <v-select v-model="exploreParams.language"></v-select>
+                <language-select
+                  v-model="exploreParams.language"
+                ></language-select>
               </v-layout>
             </v-flex>
             <v-flex>
@@ -196,6 +208,14 @@ export default {
           includeFlagged: this.exploreParams.includeFlagged
         }
       )
+    }
+  },
+  computed: {
+    sortOrders () {
+      return Object.values(search.constants.order)
+    },
+    types () {
+      return Object.values(search.constants.type)
     }
   }
 }
