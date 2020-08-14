@@ -1,35 +1,20 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.service.*;
-import ar.edu.itba.paw.models.*;
+import ar.edu.itba.paw.models.Snippet;
+import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
 import ar.edu.itba.paw.webapp.dto.ErrorMessageDto;
 import ar.edu.itba.paw.webapp.dto.SnippetDto;
-import ar.edu.itba.paw.webapp.utility.Constants;
-import ar.edu.itba.paw.webapp.exception.ElementDeletionException;
-import ar.edu.itba.paw.webapp.exception.ForbiddenAccessException;
 import ar.edu.itba.paw.webapp.exception.SnippetNotFoundException;
-import ar.edu.itba.paw.webapp.form.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Optional;
 
 @Path("/snippets")
@@ -105,7 +90,10 @@ public class SnippetController {
         if (user == null) {
             return buildErrorResponse("error.403.snippet", Response.Status.FORBIDDEN, securityContext.getUserPrincipal().getName());
         } else {
-            Snippet snippet = this.getSnippet(id);
+            Snippet snippet = snippetService.findSnippetById(id).orElse(null);
+            if(snippet == null){
+                return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, securityContext.getUserPrincipal().getName());
+            }
             this.voteService.performVote(snippet.getOwner().getId(), user.getId(), id, selected, type);
         }
         return Response.ok().build();
@@ -144,7 +132,10 @@ public class SnippetController {
         //TODO: Check from where we gonna obtain the base url of the report.
         // Getting the url of the server
         //final String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
-        Snippet snippet = this.getSnippet(id);
+        Snippet snippet = snippetService.findSnippetById(id).orElse(null);
+        if(snippet == null){
+            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, securityContext.getUserPrincipal().getName());
+        }
         User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
 
         if (user == null || user.equals(snippet.getOwner())) {
@@ -164,58 +155,69 @@ public class SnippetController {
         return Response.ok().build();
     }
 
-    @RequestMapping(value="/snippet/{id}/report/dismiss", method={RequestMethod.POST})
-    public ModelAndView reportSnippet(
-            @ModelAttribute("snippetId") @PathVariable("id") long id,
-            @ModelAttribute("dismissReportForm") final DeleteForm dismissReportForm
-    ) {
-        User currentUser = loginAuthentication.getLoggedInUser();
-        Snippet snippet = this.getSnippet(id);
+    //TODO: Check if delete is appropiate for this operation.
+    @DELETE
+    @Path("{id}/report/delete")
+    public Response reportSnippet(@PathParam(value="id") long id) {
+        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+        Snippet snippet = snippetService.findSnippetById(id).orElse(null);
+        if(snippet == null){
+            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, securityContext.getUserPrincipal().getName());
+        }
 
-        if (currentUser == null || !currentUser.equals(snippet.getOwner())) {
-            throw new ForbiddenAccessException(messageSource.getMessage("error.403.snippet.report.dismiss", null, LocaleContextHolder.getLocale()));
+        if (user == null || !user.equals(snippet.getOwner())) {
+            return buildErrorResponse("error.403.report.dismiss", Response.Status.FORBIDDEN, null);
         }
         this.reportService.dismissReportsForSnippet(id);
-        return new ModelAndView("redirect:/snippet/" + id);
+        return Response.ok().build();
     }
 
-    @RequestMapping(value="/snippet/{id}/flag", method=RequestMethod.POST)
-    public ModelAndView flagSnippet(
-            @ModelAttribute("snippetId") @PathVariable("id") long id,
-            @ModelAttribute("adminFlagForm") final FlagSnippetForm adminFlagForm
+    @PUT
+    @Path(value="/{id}/flag")
+    public Response flagSnippet(
+            @PathParam(value="id") long id,
+            @QueryParam(value="isFlagged") boolean isFlagged,
+            @QueryParam(value="baseUrl") String baseUrl
     ) {
-        User currentUser = this.loginAuthentication.getLoggedInUser();
-        if (currentUser == null || !roleService.isAdmin(currentUser.getId())) {
-            throw new ForbiddenAccessException(messageSource.getMessage("error.403.snippet.flag", null, LocaleContextHolder.getLocale()));
+        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+
+        if (user == null || !roleService.isAdmin(user.getId())) {
+            return buildErrorResponse("error.403.snippet.flag", Response.Status.UNAUTHORIZED, null);
         } else {
-            Snippet snippet = this.getSnippet(id);
+            Snippet snippet = snippetService.findSnippetById(id).orElse(null);
+            if(snippet == null){
+                return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, securityContext.getUserPrincipal().getName());
+            }
 
             // Getting the url of the server
-            final String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+            //TODO: Check how to handle baseUrl
+            //final String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
             try {
                 // Updating the flagged variable of snippet
-                this.snippetService.updateFlagged(snippet, snippet.getOwner(), adminFlagForm.isFlagged(), baseUrl);
+                this.snippetService.updateFlagged(snippet, snippet.getOwner(), isFlagged, baseUrl);
             } catch (Exception e) {
                 LOGGER.error(e.getMessage() + "Failed to flag snippet {}", snippet.getId());
+                return buildErrorResponse("error.500", Response.Status.INTERNAL_SERVER_ERROR, null);
             }
             LOGGER.debug("Marked snippet {} as flagged by admin", id);
 
         }
-        return new ModelAndView("redirect:/snippet/" + id);
-    }
-
-    private Snippet getSnippet(final long snippetId) {
-        Optional<Snippet> retrievedSnippet = this.snippetService.findSnippetById(snippetId);
-        if (!retrievedSnippet.isPresent()) {
-            logAndThrow(snippetId);
-        }
-        return retrievedSnippet.get();
+        return Response.ok().build();
     }
 
     private Response buildErrorResponse(String errorMessage, Response.StatusType errorStatus, Object errorObject){
         ErrorMessageDto errorMessageDto = new ErrorMessageDto();
         errorMessageDto.setMessage(messageSource.getMessage(errorMessage, new Object[]{errorObject}, LocaleContextHolder.getLocale()));
         return Response.status(errorStatus).entity(errorMessageDto).build();
+    }
+
+    @Deprecated
+    private Snippet getSnippet(final long snippetId) {
+        Optional<Snippet> retrievedSnippet = this.snippetService.findSnippetById(snippetId);
+        if (!retrievedSnippet.isPresent()) {
+            logAndThrow(snippetId);
+        }
+        return retrievedSnippet.get();
     }
 
     @Deprecated
