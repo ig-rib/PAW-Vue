@@ -142,16 +142,9 @@ public class LanguagesController {
     @Consumes(value = {MediaType.APPLICATION_JSON})
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response deleteLanguage (@PathParam("langId") long langId) {
-        Long userId = null;
-        Optional<User> userOpt = Optional.empty();
-        if (securityContext.getUserPrincipal() != null) {
-            userOpt = userService.findUserByUsername(securityContext.getUserPrincipal().getName());
-            if(userOpt.isPresent()){
-                userId = userOpt.get().getId();
-            }
-        }
+        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
 
-        if ( userOpt.isPresent() && roleService.isAdmin(userId)){
+        if (user != null && roleService.isAdmin(user.getId())){
             this.languageService.removeLanguage(langId);
             LOGGER.debug("Admin removed language with id {}", langId);
         } else {

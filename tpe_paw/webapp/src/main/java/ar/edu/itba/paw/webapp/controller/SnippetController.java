@@ -3,6 +3,8 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.service.*;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
+import ar.edu.itba.paw.webapp.dto.ErrorMessageDto;
+import ar.edu.itba.paw.webapp.dto.SnippetDto;
 import ar.edu.itba.paw.webapp.utility.Constants;
 import ar.edu.itba.paw.webapp.exception.ElementDeletionException;
 import ar.edu.itba.paw.webapp.exception.ForbiddenAccessException;
@@ -28,7 +30,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
@@ -36,6 +38,7 @@ import java.util.Optional;
 @Path("/snippets")
 public class SnippetController {
 
+    @Autowired private UserService userService;
     @Autowired private RoleService roleService;
     @Autowired private SnippetService snippetService;
     @Autowired private VoteService voteService;
@@ -47,37 +50,27 @@ public class SnippetController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ar.edu.itba.paw.webapp.old_controller.SnippetController.class);
 
+    @Context
+    private UriInfo uriInfo;
+
+    @Context
+    private SecurityContext securityContext;
+
     @GET
     @Path("/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public ModelAndView snippetDetail(@PathParam(value="id") long id) {
-        final ModelAndView mav = new ModelAndView("snippet/snippetDetail");
-        boolean showFavorite = true;
+    public Response snippetDetail(@PathParam(value="id") long id) {
+        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
 
-        Snippet snippet = this.getSnippet(id);
-
-        User currentUser = this.loginAuthentication.getLoggedInUser();
-        mav.addObject("currentUser", currentUser);
-        if (currentUser != null){
-            Collection<Tag> allFollowedTags = this.tagService.getFollowedTagsForUser(currentUser.getId());
-            Collection<Tag> userTags = this.tagService.getMostPopularFollowedTagsForUser(currentUser.getId(), Constants.MENU_FOLLOWING_TAG_AMOUNT);
-            mav.addObject("userTags", userTags);
-            mav.addObject("userTagsCount", userTags.isEmpty() ? 0 : allFollowedTags.size() - userTags.size());
-            mav.addObject("userRoles", this.roleService.getUserRoles(currentUser.getId()));
-
-            // Vote
-            Optional<Vote> vote = this.voteService.getVote(currentUser.getId(), snippet.getId());
-
-        } else {
-            mav.addObject("userRoles", Collections.emptyList());
+        Snippet snippet = snippetService.findSnippetById(id).orElse(null);
+        if(snippet == null){
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.snippet", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
 
-        mav.addObject("snippet", snippet);
-        mav.addObject("showReportedWarning", this.reportService.showReportedWarning(snippet, currentUser));
-        mav.addObject("showFavorite", showFavorite || !snippet.isDeleted());
-        mav.addObject("voteCount", this.voteService.getVoteBalance(snippet.getId()));
-        mav.addObject("searchContext","");
-        return mav;
+        SnippetDto snippetDto = SnippetDto.fromSnippet(snippet);
+        return Response.ok(snippetDto).build();
     }
 
     @RequestMapping(value="/snippet/{id}/delete", method=RequestMethod.POST)
@@ -165,7 +158,6 @@ public class SnippetController {
             @Valid @ModelAttribute("reportForm") final ReportForm reportForm,
             final BindingResult errors
     ) {
-
         // Getting the url of the server
         final String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
         Snippet snippet = this.getSnippet(id);
