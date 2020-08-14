@@ -26,10 +26,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.Collection;
 import java.util.Collections;
@@ -64,119 +61,107 @@ public class SnippetController {
 
         Snippet snippet = snippetService.findSnippetById(id).orElse(null);
         if(snippet == null){
-            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.snippet", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
-            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, securityContext.getUserPrincipal().getName());
         }
 
         SnippetDto snippetDto = SnippetDto.fromSnippet(snippet);
         return Response.ok(snippetDto).build();
     }
 
-    @RequestMapping(value="/snippet/{id}/delete", method=RequestMethod.POST)
-    public ModelAndView deleteSnippet(
-            @ModelAttribute("snippetId") @PathVariable("id") long id,
-            @ModelAttribute("deleteForm") final DeleteForm deleteForm
-    ) {
-        User currentUser = this.loginAuthentication.getLoggedInUser();
+    @DELETE
+    @Path("/{id}")
+    public Response deleteSnippet(@PathParam(value="id") long id) {
+        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
         Optional<Snippet> snippet = this.snippetService.findSnippetById(id);
 
+        //TODO: Check what should we respond in the body in case of an error
         if (!snippet.isPresent()) {
-            logAndThrow(id);
+            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, securityContext.getUserPrincipal().getName());
         }
-        if (currentUser == null || currentUser.getUsername().compareTo(snippet.get().getOwner().getUsername()) != 0) {
-            throw new ForbiddenAccessException(messageSource.getMessage("error.403.snippet.delete", null, LocaleContextHolder.getLocale()));
+        if (user == null || user.getUsername().compareTo(snippet.get().getOwner().getUsername()) != 0) {
+            return buildErrorResponse("error.403.snippet", Response.Status.FORBIDDEN, securityContext.getUserPrincipal().getName());
         } else {
-            if (!this.snippetService.deleteOrRestoreSnippet(snippet.get(), currentUser.getId(), deleteForm.isDelete())) {
+            //TODO: Adapt to be able to restore snippet
+            if (!this.snippetService.deleteOrRestoreSnippet(snippet.get(), user.getId(), true)) {
                 /* Operation was unsuccessful */
-                throw new ElementDeletionException(messageSource.getMessage("error.409.deletion.snippet", null, LocaleContextHolder.getLocale()));
+                return buildErrorResponse("error.409.snippet", Response.Status.CONFLICT, securityContext.getUserPrincipal().getName());
             }
         }
-        return new ModelAndView("redirect:/snippet/" + id);
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 
-    @RequestMapping(value="/snippet/{id}/vote/positive", method=RequestMethod.POST)
-    public ModelAndView votePositive(
-            @ModelAttribute("snippetId") @PathVariable("id") long id,
-            @ModelAttribute("positiveVoteForm") final VoteForm positiveVoteForm
+    @PUT
+    @Path("/{id}/votes")
+    @Consumes(value = {MediaType.APPLICATION_JSON})
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response votePositive(
+            @PathParam(value="id") long id,
+            final @QueryParam("type") boolean type,
+            final @QueryParam("selected") boolean selected
     ) {
-        final ModelAndView mav = new ModelAndView("redirect:/snippet/" + id);
-        User currentUser = this.loginAuthentication.getLoggedInUser();
-        if (currentUser == null) {
-            throw new ForbiddenAccessException(messageSource.getMessage("error.403.snippet.vote", null, LocaleContextHolder.getLocale()));
+
+        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+
+        if (user == null) {
+            return buildErrorResponse("error.403.snippet", Response.Status.FORBIDDEN, securityContext.getUserPrincipal().getName());
         } else {
             Snippet snippet = this.getSnippet(id);
-            this.voteService.performVote(snippet.getOwner().getId(), currentUser.getId(), id, positiveVoteForm.isVoteSelected(), true);
+            this.voteService.performVote(snippet.getOwner().getId(), user.getId(), id, selected, type);
         }
-        return mav;
+        return Response.ok().build();
     }
 
-    @RequestMapping(value="/snippet/{id}/vote/negative", method=RequestMethod.POST)
-    public ModelAndView voteNegative(
-            @ModelAttribute("snippetId") @PathVariable("id") long id,
-            @ModelAttribute("negativeVoteForm") final VoteForm negativeVoteForm
+
+    @PUT
+    @Path("/{id}/favorite")
+    @Consumes(value = {MediaType.APPLICATION_JSON})
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response favSnippet(
+            @PathParam(value="id") long id,
+            final @QueryParam("type") boolean favorite
     ) {
-        final ModelAndView mav = new ModelAndView("redirect:/snippet/" + id);
-        User currentUser = this.loginAuthentication.getLoggedInUser();
-        if (currentUser == null) {
-            throw new ForbiddenAccessException(messageSource.getMessage("error.403.snippet.vote", null, LocaleContextHolder.getLocale()));
+        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+
+        if (user == null) {
+            return buildErrorResponse("error.403.snippet.fav", Response.Status.FORBIDDEN, null);
         } else {
-            Snippet snippet = this.getSnippet(id);
-            this.voteService.performVote(snippet.getOwner().getId(), currentUser.getId(), id, negativeVoteForm.isVoteSelected(), false);
+            this.favService.updateFavorites(user.getId(), id, favorite);
+            LOGGER.debug("User {} updated favorite on snippet {}", user.getUsername(), id);
         }
-        return mav;
+
+        return Response.ok().build();
     }
 
-    @RequestMapping(value="/snippet/{id}/fav", method=RequestMethod.POST)
-    public ModelAndView favSnippet(
-            @ModelAttribute("snippetId") @PathVariable("id") long id,
-            @ModelAttribute("favForm") final FavoriteForm favForm,
-            HttpServletRequest request
+    @PUT
+    @Path("/{id}/report")
+    @Consumes(value = {MediaType.APPLICATION_JSON})
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response reportSnippet(
+            @PathParam(value="id") long id,
+            @QueryParam(value="detail") String detail,
+            @QueryParam(value="baseUrl") String baseUrl
     ) {
-        User currentUser = this.loginAuthentication.getLoggedInUser();
-        if (currentUser == null) {
-            throw new ForbiddenAccessException(messageSource.getMessage("error.403.snippet.fav", null, LocaleContextHolder.getLocale()));
-        } else {
-            this.favService.updateFavorites(currentUser.getId(), id, favForm.getFavorite());
-            LOGGER.debug("User {} updated favorite on snippet {}", currentUser.getUsername(), id);
-        }
-        String referer = request.getHeader(Constants.REFERER);
-        String redirect = referer != null ? referer : ("/snippet/" + id);
-        return new ModelAndView("redirect:" + redirect);
-    }
-
-    @RequestMapping(value="/snippet/{id}/report", method={RequestMethod.POST})
-    public ModelAndView reportSnippet(
-            @ModelAttribute("snippetId") @PathVariable("id") long id,
-            @ModelAttribute("searchForm") final SearchForm searchForm,
-            @ModelAttribute("adminFlagForm") final FlagSnippetForm adminFlagForm,
-            @ModelAttribute("deleteForm") final DeleteForm deleteForm,
-            @ModelAttribute("favForm") final FavoriteForm favForm,
-            @ModelAttribute("positiveVoteForm") final VoteForm positiveVoteForm,
-            @ModelAttribute("negativeVoteForm") final VoteForm negativeVoteForm,
-            @ModelAttribute("dismissReportForm") final DeleteForm dismissReportForm,
-            @Valid @ModelAttribute("reportForm") final ReportForm reportForm,
-            final BindingResult errors
-    ) {
+        //TODO: Check from where we gonna obtain the base url of the report.
         // Getting the url of the server
-        final String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+        //final String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
         Snippet snippet = this.getSnippet(id);
-        User currentUser = this.loginAuthentication.getLoggedInUser();
+        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
 
-        if (currentUser == null || currentUser.equals(snippet.getOwner())) {
-            throw new ForbiddenAccessException(messageSource.getMessage("error.403.snippet.report.owner", null, LocaleContextHolder.getLocale()));
-        } else if (!this.reportService.canReport(currentUser)) {
-            throw new ForbiddenAccessException(messageSource.getMessage("error.403.snippet.report.reputation", null, LocaleContextHolder.getLocale()));
+        if (user == null || user.equals(snippet.getOwner())) {
+            return buildErrorResponse("error.403.snippet.report.owner", Response.Status.FORBIDDEN, null);
+        } else if (!this.reportService.canReport(user)) {
+            return buildErrorResponse("error.403.snippet.report.reputation", Response.Status.FORBIDDEN, null);
         }
 
         try {
-            reportService.reportSnippet(currentUser, snippet, reportForm.getReportDetail(), baseUrl);
+            reportService.reportSnippet(user, snippet, detail, baseUrl);
         } catch (Exception e) {
             LOGGER.error(e.getMessage() + "Failed report snippet: user {} about their snippet {}", snippet.getOwner().getUsername(), snippet.getId());
+            return buildErrorResponse("error.500.snippet.report.failure", Response.Status.INTERNAL_SERVER_ERROR,snippet.getOwner().getUsername());
         }
-        LOGGER.debug("User {} reported snippet {} with message {}", currentUser.getUsername(), id, reportForm.getReportDetail());
+        LOGGER.debug("User {} reported snippet {} with message {}", user.getUsername(), id, reportService);
 
-        return new ModelAndView("redirect:/snippet/" + id);
+        return Response.ok().build();
     }
 
     @RequestMapping(value="/snippet/{id}/report/dismiss", method={RequestMethod.POST})
@@ -227,6 +212,13 @@ public class SnippetController {
         return retrievedSnippet.get();
     }
 
+    private Response buildErrorResponse(String errorMessage, Response.StatusType errorStatus, Object errorObject){
+        ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+        errorMessageDto.setMessage(messageSource.getMessage(errorMessage, new Object[]{errorObject}, LocaleContextHolder.getLocale()));
+        return Response.status(errorStatus).entity(errorMessageDto).build();
+    }
+
+    @Deprecated
     private void logAndThrow(final long snippetId) {
         LOGGER.warn("No snippet found for id {}", snippetId);
         throw new SnippetNotFoundException(messageSource.getMessage("error.404.snippet", new Object[]{snippetId}, LocaleContextHolder.getLocale()));
