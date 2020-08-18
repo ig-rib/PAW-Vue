@@ -46,9 +46,9 @@
         </v-flex>
 
         <!-- Search bar -->
-        <v-flex id="search-bar-flex" grow px-2>
+        <v-flex id="search-bar-flex" px-2>
           <v-layout>
-            <v-flex grow>
+            <v-flex lg6 grow>
               <v-card height="70%" width="100%">
                 <v-layout fill-height>
                   <v-flex>
@@ -274,6 +274,9 @@ export default {
     }
     .v-text-field__details, .v-messages.theme--light {
       visibility: hidden;
+    }
+    .v-select__selections {
+      max-width: 50px;
     }
     .search-select-flex .v-input__control {
       height: 0px;

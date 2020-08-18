@@ -34,15 +34,14 @@
         v-on:input="paginationChange"
         :length="pagination.length" 
         :total-visible="pagination.visible"
-        circle
       ></v-pagination>
     </div>
   </v-container>
 </template>
 
 <script>
-import tagService from '@//services/tags.js'
-import helpers from '@//functions/helpers.js'
+import tagService from '@/services/tags.js'
+import helpers from '@/functions/helpers.js'
 
 export default {
   name: 'tagsMain',
@@ -87,9 +86,16 @@ export default {
   computed: {
   },
   mounted () {
-    tagService.getTags(this.pagination.page)
+    const queryParams = this.$route.query
+    for (const key in tagService.queryParamTemplate) {
+      if (queryParams[key] == null) {
+        queryParams[key] = tagService.queryParamTemplate[key]
+      }
+    }
+    tagService.searchTags(queryParams)
       .then(values => {
         this.tags = values.data
+        this.pagination.page = parseInt(queryParams.page)
         this.links = helpers.parseLinks(values.headers.link)
         this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10);
       })
