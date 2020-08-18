@@ -58,6 +58,8 @@
     }
   },
   "search": {
+    "selectType": "Select Type",
+    "selectOrder": "Select Sorting Order",
     "type": {
       "all": "All",
       "tag": "Tag",

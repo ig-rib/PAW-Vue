@@ -164,7 +164,6 @@
 
 <script>
 import search from '@/services/search.js'
-import languages from '@/services/languages.js'
 
 export default {
   data () {
@@ -184,30 +183,33 @@ export default {
         minVotes: null,
         maxVotes: null
       },
-      languages: () => {},
       loadingSearchOptions: false,
       loadingSnippets: false
     }
   },
   methods: {
     exploreSearch () {
-      search.explore({
-          t: this.exploreParams.orderBy,
-          s: this.exploreParams.sort,
-          minDate: this.exploreParams.fromDate,
-          maxDate: this.exploreParams.toDate,
-          minRep: this.exploreParams.minRep,
-          maxRep: this.exploreParams.maxRep,
-          minVotes: this.exploreParams.minVotes,
-          maxVotes: this.exploreParams.maxVotes,
-          langId: this.exploreParams.language,
-          tagId: this.exploreParams.tag,
-          uname: this.exploreParams.userame,
-          title: this.exploreParams.snippetTitle,
-          field: this.exploreParams.orderBy,
-          includeFlagged: this.exploreParams.includeFlagged
-        }
-      )
+      const queryParams = {
+        t: this.exploreParams.orderBy,
+        s: this.exploreParams.sort,
+        minDate: this.exploreParams.fromDate,
+        maxDate: this.exploreParams.toDate,
+        minRep: this.exploreParams.minRep,
+        maxRep: this.exploreParams.maxRep,
+        minVotes: this.exploreParams.minVotes,
+        maxVotes: this.exploreParams.maxVotes,
+        langId: this.exploreParams.language,
+        tagId: this.exploreParams.tag,
+        uname: this.exploreParams.userame,
+        title: this.exploreParams.snippetTitle,
+        field: this.exploreParams.orderBy,
+        includeFlagged: this.exploreParams.includeFlagged
+      }
+      // TODO handle results
+      search.explore(queryParams)
+      this.$router.replace({
+        query: queryParams
+      })
     }
   },
   computed: {

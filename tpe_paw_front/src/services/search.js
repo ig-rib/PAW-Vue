@@ -58,7 +58,7 @@ const constants = {
  */
 const searchInLocation = (location, params) => {
   // Remove the locale part of uri
-  let resultArray = location.split('/')
+  let resultArray = location.replace(/\/$/, '').split('/')
   resultArray.shift()
   resultArray.shift()
   const pathSuffix = resultArray.join('/')

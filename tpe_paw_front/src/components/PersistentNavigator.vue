@@ -46,10 +46,10 @@
         </v-flex>
 
         <!-- Search bar -->
-        <v-flex grow px-2>
+        <v-flex id="search-bar-flex" grow px-2>
           <v-layout>
-            <v-flex>
-              <v-card height="70%" :width="`${$vuetify.breakpoint.lgAndUp ? '60%' : '100%'}`">
+            <v-flex grow>
+              <v-card height="70%" width="100%">
                 <v-layout fill-height>
                   <v-flex>
                     <v-text-field
@@ -73,19 +73,27 @@
                 </v-layout>
               </v-card>
             </v-flex>
-            <v-flex>
-              <v-select 
+            <v-flex class="search-select-flex" shrink px-2>
+              <v-select
               :items="searchTypes"
               item-text="name"
               item-value="value"
-              v-model="searchType"></v-select>
+              v-model="searchType"
+              :label="$t('search.selectType')"
+              dense
+              solo
+              flat></v-select>
             </v-flex>
-            <v-flex>
+            <v-flex class="search-select-flex" shrink px-2>
               <v-select
               :items="searchOrders"
               item-text="name"
               item-value="value"
-              v-model="searchOrder"></v-select>
+              :label="$t('search.selectOrder')"
+              v-model="searchOrder"
+              dense
+              solo
+              flat></v-select>
             </v-flex>
           </v-layout>
         </v-flex>
@@ -207,6 +215,13 @@ export default {
         t: this.searchType,
         s: this.searchOrder
       })
+      this.$router.replace({
+        query: {
+          q: this.searchQuery,
+          t: this.searchType,
+          s: this.searchOrder
+        }
+      })
     },
     goToLogin () {
       this.$router.push({
@@ -251,6 +266,17 @@ export default {
     border-radius: 0px !important;
     .a {
       border-radius: 0px !important;
+    }
+  }
+  #search-bar-flex {
+    & > .layout {
+      height: 100%;
+    }
+    .v-text-field__details, .v-messages.theme--light {
+      visibility: hidden;
+    }
+    .search-select-flex .v-input__control {
+      height: 0px;
     }
   }
 </style>
