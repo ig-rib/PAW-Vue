@@ -4,7 +4,36 @@
     "title": "Feed"
   },
   "explore": {
-    "title": "Explore"
+    "explore": "Explore",
+    "order": {
+      "title": "Order",
+      "orderBy": "Order By",
+      "sort": "Sort"
+    },
+    "flagged": {
+      "title": "Flagged",
+      "includeFlagged": "Include Flagged"
+    },
+    "title": {
+      "title": "Title",
+      "label": "Snippet Title"
+    },
+    "language": "Language",
+    "tag": "Tag",
+    "username": "Username",
+    "dateUploaded": "Date Uploaded",
+    "userReputation": {
+      "title": "User Reputation",
+      "label": "Reputation"
+    },
+    "snippetVotes": {
+      "title": "Snippet Votes",
+      "label": "Votes"
+    },
+    "from": "From",
+    "to": "To",
+    "min": "Min",
+    "max": "Max"
   },
   "languages": {
     "title": "Languages"
@@ -28,9 +57,30 @@
       }
     }
   },
+  "search": {
+    "showOnlyFollowing": "Show Only Following",
+    "showEmpty": "Show empty",
+    "selectType": "Type",
+    "selectOrder": "Order",
+    "type": {
+      "all": "All",
+      "tag": "Tag",
+      "title": "Title",
+      "content": "Content",
+      "username": "Username",
+      "language": "Language"
+    },
+    "order": {
+      "asc": "Ascending",
+      "desc": "Descending",
+      "no": "No specific order"
+    }
+  },
   "registration": {
     "username": "User Name",
     "password": "Password",
+    "profile": "Profile",
+    "logout": "Log Out",
     "login": "Log In",
     "email": "Email",
     "repeatPassword": "Repeat Password",
@@ -38,7 +88,14 @@
     "resetPassword": "Reset Password",
     "sendRecoveryEmail": "Send",
     "verificationCode": "Verification Code",
-    "sendVerificationCode": "Send"
+    "sendVerificationCode": "Send",
+    "noAccount": "No Account?",
+    "goToRegister": "Register here",
+    "hasAccount": "Already have an account?",
+    "goToLogin": "Go to login",
+    "forgotPassword": "Forgot Password?",
+    "goToPassRecovery": "Recover password here",
+    "knowYourPassword": "Know your password?"
   },
   "validations": {
     "invalidPassword": "Password must be at least 8 characters long",
@@ -47,5 +104,21 @@
     "invalidEmail": "Invalid Email",
     "emailExists": "Email already exists",
     "nonMatchingPasswords": "Passwords must be equal"
+  },
+  "components": {
+    "tfDatePicker": {
+      "defaultLabel": "Select Date"
+    },
+    "shared": {
+      "pagination": {
+        "loadMore": "Load More"
+      }
+    },
+    "tagSelect": {
+      "selectTag": "Select A Tag"
+    },
+    "languageSelect": {
+      "selectLanguage": "Select A Language"
+    }
   }
 }

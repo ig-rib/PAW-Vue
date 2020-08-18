@@ -28,6 +28,12 @@
     <v-btn @click="register">{{$t('registration.register')}}</v-btn>
     <v-card-text class="error-text" v-if="usesExistingEmail">{{ $t('validations.emailExists') }}</v-card-text>
     <v-card-text class="error-text" v-if="usesExistingUname">{{ $t('validations.userNameExists') }}</v-card-text>
+    <v-layout>
+      <v-btn text @click="goToLogin">{{ $t('registration.hasAccount') }} {{ $t('registration.goToLogin') }}</v-btn>
+    </v-layout>
+    <v-layout>
+      <v-btn text @click="goToPassRecovery">{{ $t('registration.forgotPassword') }} {{ $t('registration.goToPassRecovery') }}</v-btn>
+    </v-layout>
   </v-container>
 </template>
 
@@ -57,6 +63,16 @@ export default {
           this.usesExistingUname = data.usernameExists
           this.usesExistingEmail = data.emailExists
         })
+    },
+    goToLogin () {
+      this.$router.push({
+        name: 'login'
+      })
+    },
+    goToPassRecovery () {
+      this.$router.push({
+        name:'send-recovery-email'
+      })
     }
   },
   computed: {

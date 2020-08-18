@@ -56,6 +56,7 @@ public class SnippetExploreController {
     private final static Map<String, SnippetDao.Orders> ordersMap;
     static {
         final Map<String, SnippetDao.Orders> orders = new HashMap<>();
+        orders.put(null, SnippetDao.Orders.NO);
         orders.put("asc", SnippetDao.Orders.ASC);
         orders.put("desc", SnippetDao.Orders.DESC);
         orders.put("no", SnippetDao.Orders.NO);
@@ -65,17 +66,18 @@ public class SnippetExploreController {
     @GET
     @Path("/search")
     public Response exploreSearch(    final @QueryParam("t") String type,
-                                      final @QueryParam("uid") String userId,
-                                      final @QueryParam("s") @DefaultValue("no") String sort,
+                                      final @QueryParam("s") String sort,
                                       final @QueryParam("page") @DefaultValue("1") int page,
-                                      final @QueryParam("minDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date minDate,
-                                      final @QueryParam("maxDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date maxDate,
+//                                      final @QueryParam("minDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date minDate,
+//                                      final @QueryParam("maxDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date maxDate,
+                                      final @QueryParam("minDate") Date minDate,
+                                      final @QueryParam("maxDate") Date maxDate,
                                       final @QueryParam("minRep") Integer minRep,
                                       final @QueryParam("maxRep") Integer maxRep,
                                       final @QueryParam("minVotes") Integer minVotes,
                                       final @QueryParam("maxVotes") Integer maxVotes,
-                                      final @QueryParam("langId") @DefaultValue("-1") Long langId,
-                                      final @QueryParam("tagId") @DefaultValue("-1") Long tagId,
+                                      final @QueryParam("langId") Long langId,
+                                      final @QueryParam("tagId") Long tagId,
                                       final @QueryParam("uname") String username,
                                       final @QueryParam("title") String title,
                                       final @QueryParam("field") String field,
@@ -95,7 +97,7 @@ public class SnippetExploreController {
                 minVotes, maxVotes,
                 langId, tagId,
                 title, username,
-                ordersMap.get(sort), typesMap.get(field), includeFlagged, page, SNIPPET_PAGE_SIZE)
+                ordersMap.getOrDefault(sort, SnippetDao.Orders.NO), typesMap.getOrDefault(field, SnippetDao.Types.ALL), includeFlagged, page, SNIPPET_PAGE_SIZE)
                 .stream()
                 .map(SnippetDto::fromSnippet)
                 .collect(Collectors.toList());

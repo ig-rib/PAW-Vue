@@ -1,6 +1,13 @@
 import urls from './urls'
 import axiosFetcher from './axiosFetcher'
 
+const queryParamTemplate = {
+  q: '',
+  page: 1,
+  showEmpty: 'true',
+  showOnlyFollowing: 'false'
+} 
+
 const getTags = (page) => axiosFetcher.get(urls.tags.getTags, {
   queryParams: {
     page: page
@@ -30,6 +37,7 @@ const unfollowTag = (id) => axiosFetcher.post(urls.tags.unfollowTag, {
 
 const deleteTag = (id) => axiosFetcher.del(urls.tags.deleteTag, { pathVariables: { tagId: id } })
 
+<<<<<<< HEAD
 const searchTags = (page = 1, name, showEmpty = true, showOnlyFollowing = false) => axiosFetcher.get(urls.tags.searchTags, {
   queryParams: {
     page,
@@ -38,6 +46,18 @@ const searchTags = (page = 1, name, showEmpty = true, showOnlyFollowing = false)
     name
   } 
 })
+=======
+const searchTags = params => {
+  for (const key in queryParamTemplate) {
+    if (params[key] == null) {
+      params[key] = queryParamTemplate[key]
+    }
+  }
+  return axiosFetcher.get(urls.tags.searchTags, {
+    queryParams: params
+  })
+}
+>>>>>>> develop
 
 export default {
   getTags,
@@ -45,5 +65,5 @@ export default {
   unfollowTag,
   deleteTag,
   searchTags,
-  getTagSnippets
+  getTagSnippets,
 }

@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfaces.service.SnippetService;
 import ar.edu.itba.paw.interfaces.service.TagService;
 import ar.edu.itba.paw.interfaces.service.UserService;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
 import ar.edu.itba.paw.webapp.dto.ErrorMessageDto;
 import ar.edu.itba.paw.webapp.dto.ProfilePhotoDto;
 import ar.edu.itba.paw.webapp.dto.SnippetDto;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 
 import static ar.edu.itba.paw.webapp.utility.Constants.SNIPPET_PAGE_SIZE;
 
-@Path("/user")
+@Path("/")
 public class UserController {
 
     @Autowired
@@ -35,23 +36,23 @@ public class UserController {
     private RoleService roleService;
     @Autowired
     private MessageSource messageSource;
-    @Context
-    private SecurityContext securityContext;
+    @Autowired
+    private LoginAuthentication loginAuthentication;
     @Context
     private UriInfo uriInfo;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ar.edu.itba.paw.webapp.old_controller.alredy_migrated.UserController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @GET
-    @Path("/{id}/active")
+    @Path("user/{id}/active")
     public Response activeUserSnippets(
             final @PathParam(value="id") long id,
             final @QueryParam(value = "page") @DefaultValue("1") int page
     ) {
-        User user = userService.findUserById(id).orElse(null);
+        User user = loginAuthentication.getLoggedInUser();
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
 
@@ -73,7 +74,7 @@ public class UserController {
     }
 
     @GET
-    @Path("/{id}/deleted")
+    @Path("user/{id}/deleted")
     public Response deletedUserSnippets(
             final @PathParam(value="id") long id,
             final @QueryParam(value = "page") @DefaultValue("1") int page
@@ -81,13 +82,13 @@ public class UserController {
         User user = userService.findUserById(id).orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{id}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        User currentUser = userService.findUserByUsername((securityContext.getUserPrincipal() != null) ? securityContext.getUserPrincipal().getName() : null).orElse(null);
+        User currentUser =  loginAuthentication.getLoggedInUser();
         if (currentUser == null || !user.equals(currentUser)) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{(securityContext.getUserPrincipal() != null) ? securityContext.getUserPrincipal().getName() : null}, LocaleContextHolder.getLocale()));
+            errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.FORBIDDEN).entity(errorMessageDto).build();
         }
 
@@ -109,12 +110,12 @@ public class UserController {
     }
 
     @GET
-    @Path("/{id}")
+    @Path("user/{id}")
     public Response getUser(final @PathParam(value="id") long id) {
-        User user = userService.findUserById(id).orElse(null);
+        User user = loginAuthentication.getLoggedInUser();
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
         UserDto userDto = UserDto.fromUser(user);
@@ -122,18 +123,18 @@ public class UserController {
     }
 
     @PUT
-    @Path("/{id}/profile-photo")
+    @Path("user/{id}/profile-photo")
     public Response uploadPhoto(@PathParam(value="id") final long id, ProfilePhotoDto profilePhotoDto) {
         User user = userService.findUserById(id).orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{id}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        User currentUser = userService.findUserByUsername((securityContext.getUserPrincipal() != null) ? securityContext.getUserPrincipal().getName() : null).orElse(null);
+        User currentUser =  loginAuthentication.getLoggedInUser();
         if (currentUser == null || !user.equals(currentUser)) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{(securityContext.getUserPrincipal() != null) ? securityContext.getUserPrincipal().getName() : null}, LocaleContextHolder.getLocale()));
+            errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.FORBIDDEN).entity(errorMessageDto).build();
         }
         userService.changeProfilePhotoBase64(currentUser.getId(), profilePhotoDto.getEncodedPhoto());
@@ -141,18 +142,18 @@ public class UserController {
     }
 
     @PUT
-    @Path("/{id}/user-data")
+    @Path("user/{id}/user-data")
     public Response updateUserData(@PathParam(value="id") final long id, UserDto userDto) {
         User user = userService.findUserById(id).orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{id}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        User currentUser = userService.findUserByUsername((securityContext.getUserPrincipal() != null) ? securityContext.getUserPrincipal().getName() : null).orElse(null);
+        User currentUser =  loginAuthentication.getLoggedInUser();
         if (currentUser == null || !user.equals(currentUser)) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{(securityContext.getUserPrincipal() != null) ? securityContext.getUserPrincipal().getName() : null}, LocaleContextHolder.getLocale()));
+            errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.FORBIDDEN).entity(errorMessageDto).build();
         }
         userService.changeDescription(id, userDto.getDescription());

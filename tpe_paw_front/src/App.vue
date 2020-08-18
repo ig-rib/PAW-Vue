@@ -14,3 +14,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+@import "@/styles/multiselect.scss";
+</style>

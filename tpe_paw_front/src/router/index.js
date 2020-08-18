@@ -80,7 +80,6 @@ const routes = [
                 name: 'languages-snippet',
                 component: LanguagesSnippet
               }
-              
             ]
           },
           {
@@ -157,5 +156,4 @@ const router = new VueRouter({
   mode: 'history',
   routes
 })
-
 export default router

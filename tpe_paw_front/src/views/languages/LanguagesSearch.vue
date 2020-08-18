@@ -101,7 +101,11 @@ export default {
             })
             .catch(error => { console.log(error) })
       },
+<<<<<<< HEAD
       showEmptyChange: function (){
+=======
+      showEmptyChange: function () {
+>>>>>>> develop
           this.showEmpty = !this.showEmpty
           this.searchLanguage()
       }

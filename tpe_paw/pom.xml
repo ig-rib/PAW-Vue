@@ -28,7 +28,7 @@
         <org.hsqldb.version>2.3.1</org.hsqldb.version>
         <velocity.version>1.7</velocity.version>
         <commons.codec.verion>1.14</commons.codec.verion>
-        <junit.version>4.11</junit.version>
+        <junit.version>4.12</junit.version>
         <org.hibernate.version>5.4.1.Final</org.hibernate.version>
         <org.hibernate.jpa.version>1.0.0.Final</org.hibernate.jpa.version>
         <jersey.version>3.0-SNAPSHOT</jersey.version>

@@ -29,7 +29,7 @@ import static ar.edu.itba.paw.webapp.utility.Constants.SNIPPET_PAGE_SIZE;
 //TODO: Repeated code: modularize
 
 @Component
-@Path("/languages")
+@Path("/")
 public class LanguagesController {
 
     @Autowired private LanguageService languageService;
@@ -50,6 +50,7 @@ public class LanguagesController {
     private SecurityContext securityContext;
 
     @GET
+    @Path("/languages")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response showAllLanguages(final @QueryParam("page") @DefaultValue("1") int page) {
 
@@ -76,15 +77,18 @@ public class LanguagesController {
     }
 
     @GET
+<<<<<<< HEAD
     @Path("/search")
+=======
+    @Path("languages/search")
+>>>>>>> develop
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response searchInAllLanguages(@QueryParam("page") @DefaultValue("1") int page,
                                          @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
-                                         @QueryParam("showOnlyFollowing") @DefaultValue("false") boolean showOnlyFollowing,
-                                         @QueryParam("name") String name){
+                                         @QueryParam("q") String q){
 
-        Collection<Language> allLanguages = this.languageService.findAllLanguagesByName(name, showEmpty, page, LANGUAGE_PAGE_SIZE);
-        int languageCount = this.languageService.getAllLanguagesCountByName(name, showEmpty);
+        Collection<Language> allLanguages = this.languageService.findAllLanguagesByName(q, showEmpty, page, LANGUAGE_PAGE_SIZE);
+        int languageCount = this.languageService.getAllLanguagesCountByName(q, showEmpty);
 
         for (Language language : allLanguages) {
             this.snippetService.analizeSnippetsUsing(language);
@@ -95,18 +99,18 @@ public class LanguagesController {
                 .map(LanguageDto::fromLanguage).collect(Collectors.toList());
 
         Response.ResponseBuilder responseBuilder =  Response.ok(new GenericEntity<List<LanguageDto>>(languagesDto) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
+                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).queryParam("showEmpty", showEmpty).queryParam("name", q).build(), "first")
+                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).queryParam("showEmpty", showEmpty).queryParam("name", q).build(), "last");
         if (page > 1)
-            responseBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
+            responseBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).queryParam("showEmpty", showEmpty).queryParam("name", q).build(), "prev");
         if (page < pageCount)
-            responseBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
+            responseBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).queryParam("showEmpty", showEmpty).queryParam("name", q).build(), "next");
 
         return responseBuilder.build();
     }
 
     @GET
-    @Path("/{langId}")
+    @Path("languages/{langId}")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response showSnippetsForLang(@PathParam(value="langId") long langId,
@@ -138,7 +142,7 @@ public class LanguagesController {
     }
 
     @POST
-    @Path("/{langId}/delete")
+    @Path("languages/{langId}/delete")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response deleteLanguage (@PathParam("langId") long langId) {

@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 import static ar.edu.itba.paw.webapp.utility.Constants.SNIPPET_PAGE_SIZE;
 import static ar.edu.itba.paw.webapp.utility.Constants.TAG_PAGE_SIZE;
 
-@Path("/tags")
+@Path("/")
 public class TagsController {
 
     @Autowired
@@ -43,7 +43,6 @@ public class TagsController {
     private UserService userService;
     @Autowired
     private MessageSource messageSource;
-    private LoginAuthentication loginAuthentication;
     @Autowired
     private RoleService roleService;
 
@@ -57,6 +56,7 @@ public class TagsController {
     private SecurityContext securityContext;
 
     @GET
+    @Path("/tags")
     @Produces(value = MediaType.APPLICATION_JSON)
     public Response getAllTags(final @QueryParam("page") @DefaultValue("1") int page,
                                 final @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
@@ -101,7 +101,7 @@ public class TagsController {
     }
 
     @GET
-    @Path("/{tagId}")
+    @Path("tags/{tagId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response showSnippetsForTag(final @QueryParam("page") @DefaultValue("1") int page,
         final @PathParam(value="tagId") long tagId) {
@@ -125,7 +125,7 @@ public class TagsController {
 
     //TODO: Check follow/unfollow repsonse and how info is received
     @POST
-    @Path("/{tagId}/follow")
+    @Path("tags/{tagId}/follow")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response followTag(@PathParam(value="tagId") final long tagId,
                                           final FollowDto followDto,
@@ -141,7 +141,7 @@ public class TagsController {
     }
 
     @POST
-    @Path("/{tagId}/unfollow")
+    @Path("tags/{tagId}/unfollow")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response unfollowTag(@PathParam(value="tagId") final long tagId,
                                           final FollowDto followDto) {
@@ -156,12 +156,17 @@ public class TagsController {
     }
 
     @GET
-    @Path("/search")
+    @Path("tags/search")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response searchTags(final @QueryParam("page") @DefaultValue("1") int page,
                                final @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
+<<<<<<< HEAD
                                final @QueryParam("showOnlyFollowing") @DefaultValue("false") boolean showOnlyFollowing,
                                final @QueryParam("name") String name) {
+=======
+                               @QueryParam("showOnlyFollowing") @DefaultValue("false") boolean showOnlyFollowing,
+                               final @QueryParam("q") String q) {
+>>>>>>> develop
         // Find the user, check if it exists
         Long userId = null;
         Optional<User> userOpt = Optional.empty();
@@ -183,27 +188,27 @@ public class TagsController {
 
         //TODO: See if better just to store the following data in the user.
         final List<TagDto> tags = new ArrayList<>();
-        for(Tag t: tagService.findTagsByName(name, showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)){
+        for(Tag t: tagService.findTagsByName(q, showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)){
             TagDto tagDto = TagDto.fromTag(t);
             tagDto.setUserFollowing(userOpt.isPresent() && tagService.userFollowsTag(userId, t.getId()));
             tags.add(tagDto);
         }
 
-        int tagsCount = tagService.getAllTagsCountByName(name, showEmpty, showOnlyFollowing, userId);
+        int tagsCount = tagService.getAllTagsCountByName(q, showEmpty, showOnlyFollowing, userId);
         int pageCount = (tagsCount/TAG_PAGE_SIZE) + ((tagsCount % TAG_PAGE_SIZE == 0) ? 0 : 1);
 
         Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<TagDto>>(tags) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
+                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).queryParam("showEmpty", showEmpty).queryParam("showOnlyFollowing", showOnlyFollowing).queryParam("name", q).build(), "first")
+                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).queryParam("showEmpty", showEmpty).queryParam("showOnlyFollowing", showOnlyFollowing).queryParam("name", q).build(), "last");
         if (page > 1)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
+            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).queryParam("showEmpty", showEmpty).queryParam("showOnlyFollowing", showOnlyFollowing).queryParam("name", q).build(), "prev");
         if (page < pageCount)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
+            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).queryParam("showEmpty", showEmpty).queryParam("showOnlyFollowing", showOnlyFollowing).queryParam("name", q).build(), "next");
         return respBuilder.build();
     }
 
     @DELETE
-    @Path("/{tagId}/delete")
+    @Path("tags/{tagId}/delete")
     public Response deleteTag(@PathParam(value="tagId") long tagId) {
         Long userId = null;
         Optional<User> userOpt = Optional.empty();

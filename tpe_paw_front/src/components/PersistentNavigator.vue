@@ -46,29 +46,76 @@
         </v-flex>
 
         <!-- Search bar -->
-        <v-flex grow px-2>
-          <v-card height="70%" :width="`${$vuetify.breakpoint.lgAndUp ? '60%' : '100%'}`">
-            <v-layout fill-height>
-              <v-flex>
-                <v-text-field
-                  height="100%"
-                  class="nav-search-text-field"
-                  dense
-                  rounded
-                  hide-details
-                  v-model="searchQuery">
-                </v-text-field>
+        <v-flex id="search-bar-flex" px-2>
+          <v-layout>
+            <v-flex lg6 grow>
+              <v-card height="70%" width="100%">
+                <v-layout fill-height>
+                  <v-flex>
+                    <v-text-field
+                      @keyup.enter="search"
+                      height="100%"
+                      class="nav-search-text-field"
+                      dense
+                      rounded
+                      hide-details
+                      v-model="searchQuery">
+                    </v-text-field>
+                  </v-flex>
+                  <v-divider vertical></v-divider>
+                  <v-flex shrink>
+                    <v-btn
+                      height="100%"
+                      @click="search"
+                      icon>
+                      <v-icon>mdi-magnify</v-icon>
+                    </v-btn>
+                  </v-flex>
+                </v-layout>
+              </v-card>
+            </v-flex>
+            <template v-if="resultType == 'snippet'">
+              <v-flex class="search-select-flex" shrink px-2>
+                <v-select
+                :items="searchTypes"
+                item-text="name"
+                item-value="value"
+                v-model="searchType"
+                :label="$t('search.selectType')"
+                dense
+                solo
+                flat></v-select>
               </v-flex>
-              <v-divider vertical></v-divider>
-              <v-flex shrink>
-                <v-btn
-                  height="100%"
-                  icon>
-                  <v-icon>mdi-magnify</v-icon>
-                </v-btn>
+              <v-flex class="search-select-flex" shrink px-2>
+                <v-select
+                :items="searchOrders"
+                item-text="name"
+                item-value="value"
+                :label="$t('search.selectOrder')"
+                v-model="searchOrder"
+                dense
+                solo
+                flat></v-select>
               </v-flex>
-            </v-layout>
-          </v-card>
+            </template>
+            <template v-else>
+              <!-- <v-flex>
+                <v-layout column> -->
+              <v-flex px-2 shrink class="search-checkbox">
+                <v-checkbox
+                  v-model="showEmpty"
+                  :label="$t('search.showEmpty')"></v-checkbox>
+              </v-flex>
+              <v-flex px-2 shrink class="search-checkbox" v-if="resultType == 'tag' && $store.getters.loggedIn">
+                <v-checkbox
+                  v-model="showOnlyFollowing"
+                  :label="$t('search.showOnlyFollowing')"
+                  ></v-checkbox>
+              </v-flex>
+                <!-- </v-layout>
+              </v-flex> -->
+            </template>
+          </v-layout>
         </v-flex>
 
         <!-- Registration/Login/User section -->
@@ -108,19 +155,40 @@
         </v-layout>
       </v-list-item>
     </v-list>
+    <v-layout v-if="!$store.getters.loggedIn">
+      <v-flex>
+        <v-btn @click="goToLogin">{{ $t('registration.login') }}</v-btn>
+      </v-flex>
+    </v-layout>
+    <v-layout v-else>
+      <v-flex>
+        <v-btn @click="goToProfile">{{ $t('registration.profile') }}</v-btn>
+      </v-flex>
+      <v-flex>
+        <v-btn @click="logout">{{ $t('registration.logout') }}</v-btn>
+      </v-flex>
+    </v-layout>
     </v-navigation-drawer>
     <div>
-      <router-view></router-view>
+      <router-view ref="persistentNavigatorRouterView"></router-view>
     </div>
   </div>
 </template>
 
 <script>
+import search from '@/services/search.js'
+import tags from '@/services/tags.js'
+import languages from '@/services/languages.js'
+
 export default {
   data () {
     return {
       navDrawer: false,
       searchQuery: '',
+      searchType: '',
+      searchOrder: '',
+      showEmpty: true,
+      showOnlyFollowing: false,
       paths: [
         {
           title: this.$t('feed.title'),
@@ -130,7 +198,7 @@ export default {
           }
         },
         {
-          title: this.$t('explore.title'),
+          title: this.$t('explore.explore'),
           icon: 'mdi-magnify',
           path: {
             name: 'explore'
@@ -153,12 +221,133 @@ export default {
       ]
     }
   },
+  computed: {
+    searchTypes () {
+      return Object.values(search.constants.type)
+    },
+    searchOrders () {
+      return Object.values(search.constants.order)
+    },
+    // TODO make name clearer
+    resultType () {
+      const routeName = this.$route.name
+      switch (routeName) {
+        case 'languages-main':
+          return 'language'
+        case 'tags-main':
+          return 'tag'
+        default:
+          return 'snippet'
+      }
+    }
+  },
   methods: {
     goto (path) {
       this.$router.push(path)
     },
     search () {
-      //
+      let params
+      if (this.resultType === 'snippet') {
+        params = {
+          q: this.searchQuery,
+          t: this.searchType,
+          s: this.searchOrder
+        }
+      } else {
+        params = {
+          q: this.searchQuery,
+          showEmpty: this.showEmpty,
+          showOnlyFollowing: this.showOnlyFollowing
+        }
+      }
+      this.performSearch(params)
+    },
+    performSearch (params) {
+      this.$router.replace({
+        query: params
+      })
+      switch (this.resultType) {
+        case 'snippet':
+          return search.searchInLocation(this.$router.currentRoute.path, params)
+            .then(r => {
+              this.$refs.persistentNavigatorRouterView.$emit('searchResults', r)
+            })
+        case 'tag':
+          return tags.searchTags(params)
+            .then(r => {
+              this.$refs.persistentNavigatorRouterView.$emit('searchResults', r)
+            })
+        case 'language':
+          return languages.searchLanguages(params)
+            .then(r => {
+                this.$refs.persistentNavigatorRouterView.$emit('searchResults', r)
+              })
+      }
+    },
+    goToLogin () {
+      this.$router.push({
+        name: 'login'
+      })
+    },
+    goToProfile () {
+
+    },
+    logout () {
+      this.$store.dispatch('logout')
+      this.$router.go()
+    }
+  },
+  // Decided to update contents as soon as checkboxes are
+  // clicked, since user would need to re-enter the search
+  // query (including the 'empty query' case) otherwise, making it
+  // less friendly.
+  watch: {
+    showEmpty: {
+      handler: function (newVal, oldVal) {
+        let params = {}
+        Object.assign(params, this.$route.query)
+        params.showEmpty = newVal
+        this.performSearch(params)
+          .then(r => {
+            // TODO handle data
+            console.log(params)
+            // this.$router.query.showEmpty = newVal
+          })
+          .catch(e => {
+            // Restores old value,
+            this.showEmpty = oldVal
+            // TODO let user know why
+          })
+      }
+    },
+    showOnlyFollowing: {
+      handler: function (newVal, oldVal) {
+        let params = {}
+        Object.assign(params, this.$route.query)
+        params.showOnlyFollowing = newVal
+        this.performSearch(params)
+          .then(r => {
+            // TODO handle data
+            console.log(params)
+            // this.$router.query.showOnlyFollowing = newVal
+          })
+          .catch(e => {
+            // Restores old value,
+            this.showEmpty = oldVal
+            // TODO let user know why
+          })
+      }
+    }
+  },
+  mounted () {
+    const query = this.$store.query
+    if (query != null) {
+      if (query.showEmpty != null) {
+        this.showEmpty = query.showEmpty
+      }
+      if (query.showOnlyFollowing != null) {
+        this.showOnlyFollowing = query.showOnlyFollowing
+      }
     }
   }
 }
@@ -191,6 +380,24 @@ export default {
     border-radius: 0px !important;
     .a {
       border-radius: 0px !important;
+    }
+  }
+  #search-bar-flex {
+    & > .layout {
+      height: 100%;
+    }
+    .v-text-field__details, .v-messages.theme--light {
+      visibility: hidden;
+      min-height: 0px;
+    }
+    .v-input__control > .v-input__slot {
+      margin-bottom: 0px;
+    }
+    .v-select__selections {
+      max-width: 50px;
+    }
+    .search-select-flex .v-input__control {
+      height: 0px;
     }
   }
 </style>

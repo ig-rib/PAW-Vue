@@ -41,7 +41,7 @@ public class SearchController {
     private final static Map<String, SnippetDao.Types> typesMap;
     static {
         final Map<String, SnippetDao.Types> types = new HashMap<>();
-        types.put(null, SnippetDao.Types.ALL);
+//        types.put(null, SnippetDao.Types.ALL);
         types.put("all", SnippetDao.Types.ALL);
         types.put("tag", SnippetDao.Types.TAG);
         types.put("title", SnippetDao.Types.TITLE);
@@ -54,6 +54,7 @@ public class SearchController {
     private final static Map<String, SnippetDao.Orders> ordersMap;
     static {
         final Map<String, SnippetDao.Orders> orders = new HashMap<>();
+//        orders.put(null, SnippetDao.Orders.NO);
         orders.put("asc", SnippetDao.Orders.ASC);
         orders.put("desc", SnippetDao.Orders.DESC);
         orders.put("no", SnippetDao.Orders.NO);
@@ -76,8 +77,6 @@ public class SearchController {
     private UserService userService;
     @Context
     private UriInfo uriInfo;
-    @Context
-    private SecurityContext securityContext;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
     private static final String HOME = "";
@@ -92,7 +91,7 @@ public class SearchController {
     // GET version of endopints
 
     @GET
-    @Path("/search")
+    @Path("feed/search")
     public Response searchInHome(final @QueryParam("q") String query,
                                                final @QueryParam("t") String type,
                                                final @QueryParam("uid") String userId,
@@ -114,11 +113,10 @@ public class SearchController {
                                                final @QueryParam("uid") String userId,
                                                final @QueryParam("s") String sort,
                                                final @QueryParam("page") @DefaultValue("1") int page) {
-
-        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+        User user = loginAuthentication.getLoggedInUser();
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
         List<SnippetDto> snippets = this.findByCriteria(type, query, SnippetDao.Locations.HOME, sort, user.getId(), null, page)
@@ -137,10 +135,10 @@ public class SearchController {
                                                final @QueryParam("s") String sort,
                                                final @QueryParam("page") @DefaultValue("1") int page) {
 
-        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+        User user = loginAuthentication.getLoggedInUser();
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
         List<SnippetDto> snippets = this.findByCriteria(type, query, SnippetDao.Locations.FOLLOWING, sort, user.getId(), null, page)
@@ -159,10 +157,10 @@ public class SearchController {
                                                final @QueryParam("s") String sort,
                                                final @QueryParam("page") @DefaultValue("1") int page) {
 
-        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+        User user = loginAuthentication.getLoggedInUser();
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
         List<SnippetDto> snippets = this.findByCriteria(type, query, SnippetDao.Locations.UPVOTED, sort, user.getId(), null, page)
@@ -181,12 +179,6 @@ public class SearchController {
                                                final @QueryParam("s") String sort,
                                                final @QueryParam("page") @DefaultValue("1") int page) {
 
-        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
-        if (user == null){
-            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
-            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
-        }
         List<SnippetDto> snippets = this.findByCriteria(type, query, SnippetDao.Locations.FLAGGED, sort, null, null, page)
                 .stream()
                 .map(SnippetDto::fromSnippet)
@@ -210,12 +202,6 @@ public class SearchController {
             errorMessageDto.setMessage(messageSource.getMessage("error.404.language", new Object[]{langId}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
-        if (user == null){
-            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
-            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
-        }
         List<SnippetDto> snippets = this.findByCriteria(type, query, SnippetDao.Locations.LANGUAGES, sort, null, langId, page)
                 .stream()
                 .map(SnippetDto::fromSnippet)
@@ -237,12 +223,6 @@ public class SearchController {
         if (tag == null) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.404.tag", new Object[]{tagId}, LocaleContextHolder.getLocale()));
-            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
-        }
-        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
-        if (user == null){
-            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
         List<SnippetDto> snippets = this.findByCriteria(type, query, SnippetDao.Locations.TAGS, sort, null, tagId, page)
@@ -277,16 +257,16 @@ public class SearchController {
                                                final @QueryParam("s") String sort, 
                                                final @QueryParam("page") @DefaultValue("1") int page,
                                                 final @PathParam(value = "id") long id) {
-        User user = userService.findUserById(id).orElse(null);
+        User user = loginAuthentication.getLoggedInUser();
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        User currentUser = userService.findUserByUsername((securityContext.getUserPrincipal() != null) ? securityContext.getUserPrincipal().getName() : null).orElse(null);
+        User currentUser = loginAuthentication.getLoggedInUser();
         if (currentUser == null || !user.equals(currentUser)) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{(securityContext.getUserPrincipal() != null) ? securityContext.getUserPrincipal().getName() : null}, LocaleContextHolder.getLocale()));
+            errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.FORBIDDEN).entity(errorMessageDto).build();
         }
         List<SnippetDto> snippets = this.findByCriteria(type, query, SnippetDao.Locations.DELETED, sort, id, null, page)
@@ -298,19 +278,19 @@ public class SearchController {
     }
 
     private Collection<Snippet> findByCriteria(String type, String query, SnippetDao.Locations location, String sort, Long userId, Long resourceId, int page) {
-        if (!typesMap.containsKey(type) || !ordersMap.containsKey(sort)) {
-            return Collections.emptyList();
-        } else {
+//        if (!typesMap.containsKey(type) || !ordersMap.containsKey(sort)) {
+//            return Collections.emptyList();
+//        } else {
             return this.snippetService.findSnippetByCriteria(
-                    typesMap.get(type),
+                    typesMap.getOrDefault(type, SnippetDao.Types.ALL),
                     query == null ? "" : query,
                     location,
-                    ordersMap.get(sort),
+                    ordersMap.getOrDefault(sort, SnippetDao.Orders.NO),
                     userId,
                     resourceId,
                     page,
                     SNIPPET_PAGE_SIZE);
-        }
+//        }
     }
 
     private Response generateResponseWithLinks(@DefaultValue("1") @QueryParam("page") int page, List<SnippetDto> snippets, int totalSnippetCount) {
@@ -329,7 +309,7 @@ public class SearchController {
 
     private int getSnippetByCriteriaCount(String type, String query, SnippetDao.Locations location, Long userId, Long resourceId) {
         return this.snippetService.getSnippetByCriteriaCount(
-                typesMap.get(type),
+                typesMap.getOrDefault(type, SnippetDao.Types.ALL),
                 query == null ? "" : query,
                 location,
                 userId,
