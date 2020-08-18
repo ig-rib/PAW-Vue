@@ -73,28 +73,47 @@
                 </v-layout>
               </v-card>
             </v-flex>
-            <v-flex class="search-select-flex" shrink px-2>
-              <v-select
-              :items="searchTypes"
-              item-text="name"
-              item-value="value"
-              v-model="searchType"
-              :label="$t('search.selectType')"
-              dense
-              solo
-              flat></v-select>
-            </v-flex>
-            <v-flex class="search-select-flex" shrink px-2>
-              <v-select
-              :items="searchOrders"
-              item-text="name"
-              item-value="value"
-              :label="$t('search.selectOrder')"
-              v-model="searchOrder"
-              dense
-              solo
-              flat></v-select>
-            </v-flex>
+            <template v-if="resultType == 'snippet'">
+              <v-flex class="search-select-flex" shrink px-2>
+                <v-select
+                :items="searchTypes"
+                item-text="name"
+                item-value="value"
+                v-model="searchType"
+                :label="$t('search.selectType')"
+                dense
+                solo
+                flat></v-select>
+              </v-flex>
+              <v-flex class="search-select-flex" shrink px-2>
+                <v-select
+                :items="searchOrders"
+                item-text="name"
+                item-value="value"
+                :label="$t('search.selectOrder')"
+                v-model="searchOrder"
+                dense
+                solo
+                flat></v-select>
+              </v-flex>
+            </template>
+            <template v-else>
+              <!-- <v-flex>
+                <v-layout column> -->
+              <v-flex px-2 shrink class="search-checkbox">
+                <v-checkbox
+                  v-model="showEmpty"
+                  :label="$t('search.showEmpty')"></v-checkbox>
+              </v-flex>
+              <v-flex px-2 shrink class="search-checkbox" v-if="resultType == 'tag' && $store.getters.loggedIn">
+                <v-checkbox
+                  v-model="showOnlyFollowing"
+                  :label="$t('search.showOnlyFollowing')"
+                  ></v-checkbox>
+              </v-flex>
+                <!-- </v-layout>
+              </v-flex> -->
+            </template>
           </v-layout>
         </v-flex>
 
@@ -137,15 +156,15 @@
     </v-list>
     <v-layout v-if="!$store.getters.loggedIn">
       <v-flex>
-        <v-btn @click="goToLogin">LOGIN</v-btn>
+        <v-btn @click="goToLogin">{{ $t('registration.login') }}</v-btn>
       </v-flex>
     </v-layout>
     <v-layout v-else>
       <v-flex>
-        <v-btn @click="goToProfile">PROFILE</v-btn>
+        <v-btn @click="goToProfile">{{ $t('registration.profile') }}</v-btn>
       </v-flex>
       <v-flex>
-        <v-btn @click="logout">LOGOUT</v-btn>
+        <v-btn @click="logout">{{ $t('registration.logout') }}</v-btn>
       </v-flex>
     </v-layout>
     </v-navigation-drawer>
@@ -165,6 +184,8 @@ export default {
       searchQuery: '',
       searchType: '',
       searchOrder: '',
+      showEmpty: true,
+      showOnlyFollowing: false,
       paths: [
         {
           title: this.$t('feed.title'),
@@ -203,6 +224,18 @@ export default {
     },
     searchOrders () {
       return Object.values(search.constants.order)
+    },
+    // TODO make name clearer
+    resultType () {
+      let routeName = this.$route.name
+      switch (routeName) {
+        case 'languages-main':
+          return 'language'
+        case 'tags-main':
+          return 'tag'
+        default:
+          return 'snippet'
+      }
     }
   },
   methods: {
@@ -234,6 +267,15 @@ export default {
     logout () {
       this.$store.dispatch('logout')
       this.$router.go()
+    }
+  },
+  mounted () {
+    const query = this.$store.query
+    if (query.showEmpty != null) {
+      this.showEmpty = query.showEmpty
+    }
+    if (query.showOnlyFollowing != null) {
+      this.showOnlyFollowing = query.showOnlyFollowing
     }
   }
 }
@@ -274,6 +316,10 @@ export default {
     }
     .v-text-field__details, .v-messages.theme--light {
       visibility: hidden;
+      min-height: 0px;
+    }
+    .v-input__control > .v-input__slot {
+      margin-bottom: 0px;
     }
     .v-select__selections {
       max-width: 50px;

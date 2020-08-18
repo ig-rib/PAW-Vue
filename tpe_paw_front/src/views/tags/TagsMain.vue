@@ -95,7 +95,7 @@ export default {
     tagService.searchTags(queryParams)
       .then(values => {
         this.tags = values.data
-        this.pagination.page = parseInt(queryParams.page)
+        this.pagination.page = parseInt(queryParams.page) || 1
         this.links = helpers.parseLinks(values.headers.link)
         this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10);
       })
