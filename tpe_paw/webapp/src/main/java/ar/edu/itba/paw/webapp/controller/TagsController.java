@@ -160,13 +160,8 @@ public class TagsController {
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response searchTags(final @QueryParam("page") @DefaultValue("1") int page,
                                final @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
-<<<<<<< HEAD
-                               final @QueryParam("showOnlyFollowing") @DefaultValue("false") boolean showOnlyFollowing,
-                               final @QueryParam("name") String name) {
-=======
                                @QueryParam("showOnlyFollowing") @DefaultValue("false") boolean showOnlyFollowing,
                                final @QueryParam("q") String q) {
->>>>>>> develop
         // Find the user, check if it exists
         Long userId = null;
         Optional<User> userOpt = Optional.empty();

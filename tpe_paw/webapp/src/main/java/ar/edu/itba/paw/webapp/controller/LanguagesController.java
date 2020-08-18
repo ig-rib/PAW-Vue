@@ -77,11 +77,7 @@ public class LanguagesController {
     }
 
     @GET
-<<<<<<< HEAD
-    @Path("/search")
-=======
     @Path("languages/search")
->>>>>>> develop
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response searchInAllLanguages(@QueryParam("page") @DefaultValue("1") int page,
                                          @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
