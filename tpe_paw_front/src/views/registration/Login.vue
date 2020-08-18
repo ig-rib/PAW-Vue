@@ -42,13 +42,16 @@ export default {
         .then(r => {
           this.invalid = false
           this.$store.dispatch('setToken', r.data)
-          if (this.prevRoute == null) {
+          // Go to feed if user doesn't have a relevant navigation
+          // history in this website
+          if (this.prevRoute == null || this.prevRoute.name === 'register') {
             this.$router.push({
               name: 'feed'
             })
           } else {
             this.$router.push({
-              name: this.prevRoute.name
+              name: this.prevRoute.name,
+              query: this.prevRoute.query
             })
           }
           })

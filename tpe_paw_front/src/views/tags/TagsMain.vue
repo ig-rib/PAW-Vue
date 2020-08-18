@@ -34,15 +34,15 @@
         v-on:input="paginationChange"
         :length="pagination.length" 
         :total-visible="pagination.visible"
-        circle
       ></v-pagination>
     </div>
   </v-container>
 </template>
 
 <script>
-import tagService from '@//services/tags.js'
-import helpers from '@//functions/helpers.js'
+import tagService from '@/services/tags.js'
+import helpers from '@/functions/helpers.js'
+import search from '@/services/search'
 
 export default {
   name: 'tagsMain',
@@ -53,47 +53,50 @@ export default {
       pagination: {
           page: 1,
           length: 1,
-          visible: 7
+          visible: 6
       }
     }
   },
   methods: {
-      paginationChange: function () {
-          tagService.getTags(this.pagination.page)
-            .then(values => {
-                this.tags = values.data 
-                this.links = helpers.parseLinks(values.headers.link)
-            })
-            .catch(error => { console.log(error) })
-      },
-      followTag: function (tag) {
-          // TODO: Verify no logged out user handling is necessary.
-          tagService.followTag(tag.id)
-            .then(
-              tag.userFollowing = true
-            )
-            .catch()
-      },
-      unfollowTag: function (tag) {
-          // TODO: Verify no logged out user handling is necessary.
-          tagService.unfollowTag(tag.id)
-            .then(
-              tag.userFollowing = false
-            )
-            .catch()
-      }
-
-  },
-  computed: {
+    paginationChange: function () {
+      const queryParams = {}
+      Object.assign(queryParams, this.$route.query)
+      queryParams.page = this.pagination.page
+      tagService.searchTags(queryParams)
+        .then(values => {
+          this.tags = values.data 
+          this.links = helpers.parseLinks(values.headers.link)
+        })
+        .catch(error => { console.log(error) })
+    },
+    followTag: function (tag) {
+      // TODO: Verify no logged out user handling is necessary.
+      tagService.followTag(tag.id)
+        .then(
+          tag.userFollowing = true
+        )
+    },
+    unfollowTag: function (tag) {
+      // TODO: Verify no logged out user handling is necessary.
+      tagService.unfollowTag(tag.id)
+        .then(
+          tag.userFollowing = false
+        )
+    },
+    handleSearchResponse (response) {
+      this.tags = response.data
+      this.links = helpers.parseLinks(response.headers.link)
+      this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10);
+    }
   },
   mounted () {
-    tagService.getTags(this.pagination.page)
-      .then(values => {
-        this.tags = values.data
-        this.links = helpers.parseLinks(values.headers.link)
-        this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10);
+    const queryParams = this.$route.query
+    tagService.searchTags(queryParams)
+      .then(response => {
+        this.pagination.page = parseInt(queryParams.page) || 1
+        this.handleSearchResponse(response)    
       })
-      .catch(error => { console.log(error) })
+    this.$on('searchResults', r => this.handleSearchResponse(r))
   }
 }
 

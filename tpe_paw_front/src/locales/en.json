@@ -58,6 +58,10 @@
     }
   },
   "search": {
+    "showOnlyFollowing": "Show Only Following",
+    "showEmpty": "Show empty",
+    "selectType": "Type",
+    "selectOrder": "Order",
     "type": {
       "all": "All",
       "tag": "Tag",
@@ -75,6 +79,8 @@
   "registration": {
     "username": "User Name",
     "password": "Password",
+    "profile": "Profile",
+    "logout": "Log Out",
     "login": "Log In",
     "email": "Email",
     "repeatPassword": "Repeat Password",

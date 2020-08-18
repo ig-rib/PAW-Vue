@@ -80,7 +80,6 @@ const routes = [
                 name: 'languages-snippet',
                 component: LanguagesSnippet
               }
-              
             ]
           },
           {

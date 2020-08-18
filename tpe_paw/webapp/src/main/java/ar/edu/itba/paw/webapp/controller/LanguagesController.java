@@ -81,10 +81,10 @@ public class LanguagesController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response searchInAllLanguages(@QueryParam("page") @DefaultValue("1") int page,
                                          @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
-                                         @QueryParam("name") String name){
+                                         @QueryParam("q") String q){
 
-        Collection<Language> allLanguages = this.languageService.findAllLanguagesByName(name, showEmpty, page, LANGUAGE_PAGE_SIZE);
-        int languageCount = this.languageService.getAllLanguagesCountByName(name, showEmpty);
+        Collection<Language> allLanguages = this.languageService.findAllLanguagesByName(q, showEmpty, page, LANGUAGE_PAGE_SIZE);
+        int languageCount = this.languageService.getAllLanguagesCountByName(q, showEmpty);
 
         for (Language language : allLanguages) {
             this.snippetService.analizeSnippetsUsing(language);
@@ -95,12 +95,12 @@ public class LanguagesController {
                 .map(LanguageDto::fromLanguage).collect(Collectors.toList());
 
         Response.ResponseBuilder responseBuilder =  Response.ok(new GenericEntity<List<LanguageDto>>(languagesDto) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).queryParam("showEmpty", showEmpty).queryParam("name", name).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).queryParam("showEmpty", showEmpty).queryParam("name", name).build(), "last");
+                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).queryParam("showEmpty", showEmpty).queryParam("name", q).build(), "first")
+                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).queryParam("showEmpty", showEmpty).queryParam("name", q).build(), "last");
         if (page > 1)
-            responseBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).queryParam("showEmpty", showEmpty).queryParam("name", name).build(), "prev");
+            responseBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).queryParam("showEmpty", showEmpty).queryParam("name", q).build(), "prev");
         if (page < pageCount)
-            responseBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).queryParam("showEmpty", showEmpty).queryParam("name", name).build(), "next");
+            responseBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).queryParam("showEmpty", showEmpty).queryParam("name", q).build(), "next");
 
         return responseBuilder.build();
     }

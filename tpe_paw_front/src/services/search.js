@@ -45,6 +45,13 @@ const constants = {
   }
 }
 
+const snippetQueryParamTemplate = {
+  q: '',
+  s: '',
+  t: '',
+  page: 1
+}
+
 /**
  * Search in location
  * @param {string} location
@@ -57,8 +64,13 @@ const constants = {
  * @returns {Promise} Response
  */
 const searchInLocation = (location, params) => {
+  for (const key in snippetQueryParamTemplate) {
+    if (params[key] == null) {
+      params[key] = snippetQueryParamTemplate[key]
+    }
+  }
   // Remove the locale part of uri
-  let resultArray = location.split('/')
+  const resultArray = location.replace(/\/$/, '').split('/')
   resultArray.shift()
   resultArray.shift()
   const pathSuffix = resultArray.join('/')

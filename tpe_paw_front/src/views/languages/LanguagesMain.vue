@@ -1,14 +1,14 @@
 <template>
   <v-container>
     <div>
-        <p> Languages </p>
-        <v-row>
-            <v-col v-for="lang in languages" :key="lang.id">
-                <div>
-                    <v-chip class="ma-2 language-chip" label>{{ lang.name }}</v-chip>
-                </div>
-            </v-col>
-        </v-row>
+      <p>{{$t('languages.title')}}</p>
+      <v-row>
+        <v-col v-for="lang in languages" :key="lang.id">
+          <div>
+            <v-chip class="ma-2 language-chip" label>{{ lang.name }}</v-chip>
+          </div>
+        </v-col>
+      </v-row>
     </div>
     <div class="text-center">
       <v-pagination
@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import languages from '@//services/languages.js'
-import helpers from '@//functions/helpers.js'
+import languages from '@/services/languages.js'
+import helpers from '@/functions/helpers.js'
 
 export default {
   name: 'languagesMain',
@@ -40,26 +40,31 @@ export default {
     }
   },
   methods: {
-      paginationChange: function () {
-          languages.getLanguages(this.pagination.page)
-            .then(values => {
-                this.languages = values.data 
-                this.links = helpers.parseLinks(values.headers.link)
-            })
-            .catch(error => { console.log(error) })
-      }
-  },
-  computed: {
+    paginationChange () {
+      const queryParams = {}
+      Object.assign(queryParams, this.$route.query)
+      queryParams.page = this.pagination.page
+      languages.searchLanguages(queryParams)
+        .then(values => {
+          this.languages = values.data 
+          this.links = helpers.parseLinks(values.headers.link)
+        })
+        .catch(error => { console.log(error) })
+    },
+    handleSearchResponse (response) {
+      this.languages = response.data
+      this.links = helpers.parseLinks(response.headers.link)
+      this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10);
+    }
   },
   mounted () {
-    // Promise
-    languages.getLanguages(this.pagination.page)
-      .then(values => {
-        this.languages = values.data
-        this.links = helpers.parseLinks(values.headers.link)
-        this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10);
+    const queryParams = this.$route.query
+    languages.searchLanguages(queryParams)
+      .then(response => {
+        this.pagination.page = parseInt(queryParams.page) || 1
+        this.handleSearchResponse(response)
       })
-      .catch(error => { console.log(error) })
+    this.$on('searchResults', r => this.handleSearchResponse(r))
   }
 }
 
