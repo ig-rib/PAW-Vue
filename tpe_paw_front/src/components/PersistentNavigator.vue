@@ -176,6 +176,8 @@
 
 <script>
 import search from '@/services/search.js'
+import tags from '@/services/tags.js'
+import languages from '@/services/languages.js'
 
 export default {
   data () {
@@ -227,7 +229,7 @@ export default {
     },
     // TODO make name clearer
     resultType () {
-      let routeName = this.$route.name
+      const routeName = this.$route.name
       switch (routeName) {
         case 'languages-main':
           return 'language'
@@ -243,18 +245,34 @@ export default {
       this.$router.push(path)
     },
     search () {
-      search.searchInLocation(this.$router.currentRoute.path, {
-        q: this.searchQuery,
-        t: this.searchType,
-        s: this.searchOrder
-      })
-      this.$router.replace({
-        query: {
+      let params
+      if (this.resultType === 'snippet') {
+        params = {
           q: this.searchQuery,
           t: this.searchType,
           s: this.searchOrder
         }
-      })
+      } else {
+        params = {
+          q: this.searchQuery,
+          showEmpty: this.showEmpty,
+          showOnlyFollowing: this.showOnlyFollowing
+        }
+      }
+      this.performSearch(params)
+    },
+    performSearch (params) {
+      this.$router.replace({
+        query: params
+      }).catch(() => {})
+      switch (this.resultType) {
+        case 'snippet':
+          return search.searchInLocation(this.$router.currentRoute.path, params)
+        case 'tag':
+          return tags.searchTags(params)
+        case 'language':
+          return languages.searchLanguage(params)
+      }
     },
     goToLogin () {
       this.$router.push({
@@ -269,13 +287,56 @@ export default {
       this.$router.go()
     }
   },
+  // Perhaps updating contents as soon as 
+  // checkboxes are ticked or not is not even
+  // a nth feature. Many sites don't do it like that.
+  // Leaving this just in case
+
+  watch: {
+    showEmpty: {
+      handler: function (newVal, oldVal) {
+        let params = this.$route.query
+        params.showEmpty = newVal.toString()
+        this.performSearch(params)
+          .then(r => {
+            // TODO handle data
+            console.log(params)
+            // this.$router.query.showEmpty = newVal
+          })
+          .catch(e => {
+            // Restores old value,
+            this.showEmpty = oldVal
+            // TODO let user know why
+          })
+      }
+    }
+  //   showOnlyFollowing: {
+  //     handler: function (newVal, oldVal) {
+  //       let params = this.$route.query
+  //       params.showEmpty = newVal
+  //       this.performSearch(params)
+  //         .then(r => {
+  //           // TODO handle data
+  //           console.log(params)
+  //           // this.$router.query.showOnlyFollowing = newVal
+  //         })
+  //         .catch(e => {
+  //           // Restores old value,
+  //           this.showEmpty = oldVal
+  //           // TODO let user know why
+  //         })
+  //     }
+  //   }
+  },
   mounted () {
     const query = this.$store.query
-    if (query.showEmpty != null) {
-      this.showEmpty = query.showEmpty
-    }
-    if (query.showOnlyFollowing != null) {
-      this.showOnlyFollowing = query.showOnlyFollowing
+    if (query != null) {
+      if (query.showEmpty != null) {
+        this.showEmpty = query.showEmpty
+      }
+      if (query.showOnlyFollowing != null) {
+        this.showOnlyFollowing = query.showOnlyFollowing
+      }
     }
   }
 }

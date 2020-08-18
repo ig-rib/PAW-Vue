@@ -42,6 +42,7 @@
 <script>
 import tagService from '@/services/tags.js'
 import helpers from '@/functions/helpers.js'
+import search from '@/services/search'
 
 export default {
   name: 'tagsMain',
@@ -87,11 +88,6 @@ export default {
   },
   mounted () {
     const queryParams = this.$route.query
-    for (const key in tagService.queryParamTemplate) {
-      if (queryParams[key] == null) {
-        queryParams[key] = tagService.queryParamTemplate[key]
-      }
-    }
     tagService.searchTags(queryParams)
       .then(values => {
         this.tags = values.data

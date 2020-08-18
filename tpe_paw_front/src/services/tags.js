@@ -37,9 +37,16 @@ const unfollowTag = (id) => axiosFetcher.post(urls.tags.unfollowTag, {
 
 const deleteTag = (id) => axiosFetcher.del(urls.tags.deleteTag, { pathVariables: { tagId: id } })
 
-const searchTags = params => axiosFetcher.get(urls.tags.searchTags, {
-  queryParams: params
-})
+const searchTags = params => {
+  for (const key in queryParamTemplate) {
+    if (params[key] == null) {
+      params[key] = queryParamTemplate[key]
+    }
+  }
+  return axiosFetcher.get(urls.tags.searchTags, {
+    queryParams: params
+  })
+}
 
 export default {
   getTags,
@@ -48,5 +55,4 @@ export default {
   deleteTag,
   searchTags,
   getTagSnippets,
-  queryParamTemplate
 }
