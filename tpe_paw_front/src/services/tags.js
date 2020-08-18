@@ -3,7 +3,7 @@ import axiosFetcher from './axiosFetcher'
 
 const queryParamTemplate = {
   q: '',
-  page: '',
+  page: 1,
   showEmpty: 'true',
   showOnlyFollowing: 'false'
 } 

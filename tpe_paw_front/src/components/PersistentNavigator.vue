@@ -53,6 +53,7 @@
                 <v-layout fill-height>
                   <v-flex>
                     <v-text-field
+                      @keyup.enter="search"
                       height="100%"
                       class="nav-search-text-field"
                       dense
@@ -169,7 +170,7 @@
     </v-layout>
     </v-navigation-drawer>
     <div>
-      <router-view></router-view>
+      <router-view ref="persistentNavigatorRouterView"></router-view>
     </div>
   </div>
 </template>
@@ -264,14 +265,23 @@ export default {
     performSearch (params) {
       this.$router.replace({
         query: params
-      }).catch(() => {})
+      })
       switch (this.resultType) {
         case 'snippet':
           return search.searchInLocation(this.$router.currentRoute.path, params)
+            .then(r => {
+              this.$refs.persistentNavigatorRouterView.$emit('searchResults', r)
+            })
         case 'tag':
           return tags.searchTags(params)
+            .then(r => {
+              this.$refs.persistentNavigatorRouterView.$emit('searchResults', r)
+            })
         case 'language':
           return languages.searchLanguage(params)
+            .then(r => {
+                this.$refs.persistentNavigatorRouterView.$emit('searchResults', r)
+              })
       }
     },
     goToLogin () {
@@ -287,16 +297,16 @@ export default {
       this.$router.go()
     }
   },
-  // Perhaps updating contents as soon as 
-  // checkboxes are ticked or not is not even
-  // a nth feature. Many sites don't do it like that.
-  // Leaving this just in case
-
+  // Decided to update contents as soon as checkboxes are
+  // clicked, since user would need to re-enter the search
+  // query (including the 'empty query' case) otherwise, making it
+  // less friendly.
   watch: {
     showEmpty: {
       handler: function (newVal, oldVal) {
-        let params = this.$route.query
-        params.showEmpty = newVal.toString()
+        let params = {}
+        Object.assign(params, this.$route.query)
+        params.showEmpty = newVal
         this.performSearch(params)
           .then(r => {
             // TODO handle data
@@ -309,24 +319,25 @@ export default {
             // TODO let user know why
           })
       }
+    },
+    showOnlyFollowing: {
+      handler: function (newVal, oldVal) {
+        let params = {}
+        Object.assign(params, this.$route.query)
+        params.showOnlyFollowing = newVal
+        this.performSearch(params)
+          .then(r => {
+            // TODO handle data
+            console.log(params)
+            // this.$router.query.showOnlyFollowing = newVal
+          })
+          .catch(e => {
+            // Restores old value,
+            this.showEmpty = oldVal
+            // TODO let user know why
+          })
+      }
     }
-  //   showOnlyFollowing: {
-  //     handler: function (newVal, oldVal) {
-  //       let params = this.$route.query
-  //       params.showEmpty = newVal
-  //       this.performSearch(params)
-  //         .then(r => {
-  //           // TODO handle data
-  //           console.log(params)
-  //           // this.$router.query.showOnlyFollowing = newVal
-  //         })
-  //         .catch(e => {
-  //           // Restores old value,
-  //           this.showEmpty = oldVal
-  //           // TODO let user know why
-  //         })
-  //     }
-  //   }
   },
   mounted () {
     const query = this.$store.query

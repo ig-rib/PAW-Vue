@@ -53,49 +53,52 @@ export default {
       pagination: {
           page: 1,
           length: 1,
-          visible: 7
+          visible: 6
       }
     }
   },
   methods: {
-      paginationChange: function () {
-          tagService.getTags(this.pagination.page)
-            .then(values => {
-                this.tags = values.data 
-                this.links = helpers.parseLinks(values.headers.link)
-            })
-            .catch(error => { console.log(error) })
-      },
-      followTag: function (tag) {
-          // TODO: Verify no logged out user handling is necessary.
-          tagService.followTag(tag.id)
-            .then(
-              tag.userFollowing = true
-            )
-            .catch()
-      },
-      unfollowTag: function (tag) {
-          // TODO: Verify no logged out user handling is necessary.
-          tagService.unfollowTag(tag.id)
-            .then(
-              tag.userFollowing = false
-            )
-            .catch()
-      }
-
+    paginationChange: function () {
+      const queryParams = {}
+      Object.assign(queryParams, this.$route.query)
+      queryParams.page = this.pagination.page
+      tagService.searchTags(queryParams)
+        .then(values => {
+          this.tags = values.data 
+          this.links = helpers.parseLinks(values.headers.link)
+        })
+        .catch(error => { console.log(error) })
+    },
+    followTag: function (tag) {
+      // TODO: Verify no logged out user handling is necessary.
+      tagService.followTag(tag.id)
+        .then(
+          tag.userFollowing = true
+        )
+    },
+    unfollowTag: function (tag) {
+      // TODO: Verify no logged out user handling is necessary.
+      tagService.unfollowTag(tag.id)
+        .then(
+          tag.userFollowing = false
+        )
+    },
+    handleSearchResponse (response) {
+      this.tags = response.data
+      this.links = helpers.parseLinks(response.headers.link)
+      this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10);
+    }
   },
   computed: {
   },
   mounted () {
     const queryParams = this.$route.query
     tagService.searchTags(queryParams)
-      .then(values => {
-        this.tags = values.data
+      .then(response => {
         this.pagination.page = parseInt(queryParams.page) || 1
-        this.links = helpers.parseLinks(values.headers.link)
-        this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10);
+        this.handleSearchResponse(response)    
       })
-      .catch(error => { console.log(error) })
+    this.$on('searchResults', (r) => this.handleSearchResponse(r))
   }
 }
 

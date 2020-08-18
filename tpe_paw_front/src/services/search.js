@@ -48,7 +48,8 @@ const constants = {
 const snippetQueryParamTemplate = {
   q: '',
   s: '',
-  t: ''
+  t: '',
+  page: 1
 }
 
 /**
