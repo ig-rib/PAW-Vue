@@ -278,7 +278,7 @@ export default {
               this.$refs.persistentNavigatorRouterView.$emit('searchResults', r)
             })
         case 'language':
-          return languages.searchLanguage(params)
+          return languages.searchLanguages(params)
             .then(r => {
                 this.$refs.persistentNavigatorRouterView.$emit('searchResults', r)
               })

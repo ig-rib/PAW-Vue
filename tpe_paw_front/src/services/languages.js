@@ -22,7 +22,7 @@ const getSnippetsForLanguage = (id, page) => axiosFetcher.get(urls.languages.get
   }
 })
 
-const searchLanguage = (params) => {
+const searchLanguages = (params) => {
   for (const key in queryParamTemplate) {
     if (params[key] == null) {
       params[key] = queryParamTemplate[key]
@@ -43,6 +43,6 @@ const deleteLanguage = (id) => axiosFetcher.del(urls.languages.deleteLanguage, {
 export default {
   getLanguages,
   getSnippetsForLanguage,
-  searchLanguage,
+  searchLanguages,
   deleteLanguage
 }

@@ -89,8 +89,6 @@ export default {
       this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10);
     }
   },
-  computed: {
-  },
   mounted () {
     const queryParams = this.$route.query
     tagService.searchTags(queryParams)
@@ -98,7 +96,7 @@ export default {
         this.pagination.page = parseInt(queryParams.page) || 1
         this.handleSearchResponse(response)    
       })
-    this.$on('searchResults', (r) => this.handleSearchResponse(r))
+    this.$on('searchResults', r => this.handleSearchResponse(r))
   }
 }
 
