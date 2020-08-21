@@ -2,10 +2,10 @@
   <v-container>
     <v-layout>
       <v-flex>
-        {{ $t('tagSnippets.title') }}
+        {{ $t('languageSnippets.title') }}
       </v-flex>
     </v-layout>
-    <snippet-grid ref="tagSnippets"></snippet-grid>
+    <snippet-grid ref="languageSnippets"></snippet-grid>
   </v-container>
 </template>
 
@@ -17,7 +17,7 @@ import helpers from '@/functions/helpers.js'
 export default {
     name: 'TagsSnippets',
     mounted () {
-    this.$on('searchResults', (r) => this.$refs.tagSnippets.$emit('searchResults', r))
+      this.$on('searchResults', (r) => this.$refs.languageSnippets.$emit('searchResults', r))
   }
 }
 

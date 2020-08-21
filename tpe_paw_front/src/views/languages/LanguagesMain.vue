@@ -5,7 +5,7 @@
       <v-row>
         <v-col v-for="lang in languages" :key="lang.id">
           <div>
-            <v-chip class="ma-2 language-chip" label>{{ lang.name }}</v-chip>
+            <v-chip @click="goToLanguageSnippets(lang)" class="ma-2 language-chip" label>{{ lang.name }}</v-chip>
           </div>
         </v-col>
       </v-row>
@@ -55,6 +55,15 @@ export default {
       this.languages = response.data
       this.links = helpers.parseLinks(response.headers.link)
       this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10);
+    },
+    goToLanguageSnippets (lang) {
+      this.$router.push({
+        name: 'language-snippets',
+        params: {
+          id: lang.id
+        },
+        selectedLang: lang
+      })
     }
   },
   mounted () {

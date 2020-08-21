@@ -263,6 +263,7 @@ export default {
       this.performSearch(params)
     },
     performSearch (params) {
+      console.log('persistent-navigator params', params)
       this.$router.replace({
         query: params
       })
@@ -342,8 +343,8 @@ export default {
   mounted () {
     const query = this.$store.query
     if (query != null) {
-      if (query.showEmpty != null) {
-        this.showEmpty = query.showEmpty
+      if (query.showEmpty === false) {
+        this.showEmpty = false
       }
       if (query.showOnlyFollowing != null) {
         this.showOnlyFollowing = query.showOnlyFollowing

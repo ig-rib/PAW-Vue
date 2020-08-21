@@ -1,9 +1,8 @@
 <template>
   <v-container> 
-      <v-card max-width="420">
+      <v-card @click="goToSnippetDetail">
           <!-- User and language -->
           <v-container fill-height fluid>
-            
               <v-row class="pt-0" align="start" justify="space-between">
                   <v-col class="pt-0" cols="8">
                     <v-list-item two-line>
@@ -22,10 +21,11 @@
                       mdi-heart
                     </v-icon>
                     <v-chip
-                        class="mt-2"
-                        color="light-blue"
-                        label
-                        text-color="white"
+                      class="mt-2"
+                      color="light-blue"
+                      label
+                      text-color="white"
+                      @click="goToLanguageSnippets(snippetData.language.id)"
                     >
                         {{ snippetData.language.name }}
                     </v-chip>
@@ -73,6 +73,23 @@ export default {
     }
   },
   methods: {
+    goToLanguageSnippets (langId) {
+      this.$router.push({
+        name: 'language-snippets',
+        params: {
+          id: langId
+        }
+      })
+      event.stopPropagation()
+    },
+    goToSnippetDetail () {
+      this.$router.push({
+        name: 'snippet-detail',
+        params: {
+          id: this.snippetData.id
+        }
+      })
+    }
   }
 }
 </script>

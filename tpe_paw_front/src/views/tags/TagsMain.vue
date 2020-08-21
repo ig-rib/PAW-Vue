@@ -5,25 +5,25 @@
         <v-row>
             <v-col v-for="tag in tags" :key="tag.id">
                 <div>
-                    <v-chip class="ma-2 tag-chip" label>
-                      {{ tag.name }}
-                      <!-- If tag is followed -->
-                      <v-chip 
-                        v-if="tag.userFollowing"
-                        class="ma-1" color="primary"
-                        v-on:click="unfollowTag(tag)"
-                      >
-                      {{ $t('tags.following') }}
-                      </v-chip>
-                      <!-- If tags is not folloed -->
-                      <v-chip 
-                        v-else
-                        class="ma-1" color="indigo darken-3" outlined
-                        v-on:click="followTag(tag)"
-                      >
-                      {{ $t('tags.follow') }}
-                      </v-chip>
+                  <v-chip @click="goToTagSnippets(tag.id)" class="ma-2 tag-chip" label>
+                    {{ tag.name }}
+                    <!-- If tag is followed -->
+                    <v-chip 
+                      v-if="tag.userFollowing"
+                      class="ma-1" color="primary"
+                      v-on:click="unfollowTag(tag)"
+                    >
+                    {{ $t('tags.following') }}
                     </v-chip>
+                    <!-- If tags is not followed -->
+                    <v-chip 
+                      v-else
+                      class="ma-1" color="indigo darken-3" outlined
+                      v-on:click="followTag(tag)"
+                    >
+                    {{ $t('tags.follow') }}
+                    </v-chip>
+                  </v-chip>
                 </div>
             </v-col>
         </v-row>
@@ -51,9 +51,9 @@ export default {
       tags: [],
       links: [],
       pagination: {
-          page: 1,
-          length: 1,
-          visible: 7
+        page: 1,
+        length: 1,
+        visible: 7
       }
     }
   },
@@ -62,6 +62,9 @@ export default {
       const queryParams = {}
       Object.assign(queryParams, this.$route.query)
       queryParams.page = this.pagination.page
+      this.$router.replace({
+        query: queryParams
+      })
       tagService.searchTags(queryParams)
         .then(values => {
           this.tags = values.data 
@@ -75,6 +78,7 @@ export default {
         .then(
           tag.userFollowing = true
         )
+      event.stopPropagation()
     },
     unfollowTag: function (tag) {
       // TODO: Verify no logged out user handling is necessary.
@@ -82,11 +86,20 @@ export default {
         .then(
           tag.userFollowing = false
         )
+      event.stopPropagation()
     },
     handleSearchResponse (response) {
       this.tags = response.data
       this.links = helpers.parseLinks(response.headers.link)
       this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10)
+    },
+    goToTagSnippets (tagId) {
+      this.$router.push({
+        name: 'tag-snippets',
+        params: {
+          id: tagId
+        }
+      })
     }
   },
   mounted () {
@@ -96,7 +109,10 @@ export default {
         this.pagination.page = parseInt(queryParams.page) || 1
         this.handleSearchResponse(response)    
       })
-    this.$on('searchResults', r => this.handleSearchResponse(r))
+    this.$on('searchResults', r => {
+      this.pagination.page = parseInt(queryParams.page) || 1
+      this.handleSearchResponse(r)
+    })
   }
 }
 

@@ -54,6 +54,10 @@ export default {
       const queryParams = {}
       Object.assign(queryParams, this.$router.query)
       queryParams.page = this.pagination.page
+      console.log(queryParams)
+      // this.$router.replace({
+      //   query: queryParams
+      // })
       searchService.searchInLocation(this.$router.currentRoute.path, queryParams)
         .then(r => {
           this.handleSearchResponse(r)
@@ -85,7 +89,10 @@ export default {
         this.pagination.page = parseInt(queryParams.page) || 1
         this.handleSearchResponse(r)
         })
-    this.$on('searchResults', r => this.handleSearchResponse(r))
+    this.$on('searchResults', r => {
+      this.pagination.page = parseInt(queryParams.page) || 1
+      this.handleSearchResponse(r)
+    })
   }
 }
 </script>

@@ -5,7 +5,7 @@ import FeedMain from '@/views/feed/FeedMain.vue'
 import Nothing from '@/components/Nothing.vue'
 import ExploreMain from '@/views/explore/ExploreMain.vue'
 import LanguagesMain from '@/views/languages/LanguagesMain.vue'
-import LanguagesSnippet from '@/views/languages/LanguagesSnippet.vue'
+import LanguageSnippets from '@/views/languages/LanguageSnippets.vue'
 import LanguagesSuper from '@/views/languages/LanguagesSuper.vue'
 import LanguagesSearch from '@/views/languages/LanguagesSearch.vue'
 import SnippetDetail from '@/views/snippet/SnippetDetail.vue'
@@ -77,8 +77,8 @@ const routes = [
               },
               {
                 path: ':id',
-                name: 'languages-snippet',
-                component: LanguagesSnippet
+                name: 'language-snippets',
+                component: LanguageSnippets
               }
             ]
           },
