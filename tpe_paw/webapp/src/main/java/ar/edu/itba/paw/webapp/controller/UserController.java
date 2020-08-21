@@ -112,7 +112,7 @@ public class UserController {
     @GET
     @Path("user/{id}")
     public Response getUser(final @PathParam(value="id") long id) {
-        User user = loginAuthentication.getLoggedInUser();
+        User user = userService.findUserById(id).orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));

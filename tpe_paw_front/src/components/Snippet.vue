@@ -11,8 +11,8 @@
                           <v-icon dark>mdi-account-circle</v-icon>
                       </v-avatar>
                       <v-list-item-content> 
-                        <v-list-item-title class="headline mb-1">{{ owner }}</v-list-item-title>
-                        <v-list-item-subtitle>{{ date }}</v-list-item-subtitle>
+                        <v-list-item-title class="headline mb-1">{{ snippetData.owner.username }}</v-list-item-title>
+                        <v-list-item-subtitle>{{ snippetData.date }}</v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
                   </v-col>
@@ -27,7 +27,7 @@
                         label
                         text-color="white"
                     >
-                        {{ language }}
+                        {{ snippetData.language.name }}
                     </v-chip>
                   </v-col>
               </v-row>
@@ -35,8 +35,8 @@
               <!-- Title and description -->
               <v-list-item two-line>
                 <v-list-item-content class="pa-0"> 
-                  <v-list-item-title class="headline mb-1">{{ title }}</v-list-item-title>
-                  <p>{{ description }}</p>
+                  <v-list-item-title class="headline mb-1">{{ snippetData.title }}</v-list-item-title>
+                  <p>{{ snippetData.description }}</p>
                 </v-list-item-content>
               </v-list-item>
 
@@ -46,7 +46,8 @@
                 name="input-7-1"
                 filled
                 label="Code preview"
-                :value="code"
+                readonly
+                :value="snippetData.code"
               ></v-textarea>
 
           </v-container>
@@ -63,13 +64,7 @@ export default {
     // TagComponent
   },
   props: {
-      title: String,
-      description: String,
-      code: String,
-      language: String,
-      favorite: Boolean,
-      date: Date,
-      owner: String
+    snippetData: Object
   },
 
   data () {

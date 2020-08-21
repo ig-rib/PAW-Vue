@@ -2,12 +2,18 @@ package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.models.Snippet;
 
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 import java.time.Instant;
+
+import static ar.edu.itba.paw.webapp.utility.Constants.BACK_BASE_URL_LOCAL;
+import static ar.edu.itba.paw.webapp.utility.Constants.FRONT_BASE_URL_LOCAL;
 
 public class SnippetDto {
 
     private Long id;
-    private UserDto owner;
+    private URI owner;
     private LanguageDto language;
     private String code;
     private String title;
@@ -20,7 +26,8 @@ public class SnippetDto {
         SnippetDto dto = new SnippetDto();
 
         dto.id = snippet.getId();
-        dto.owner = UserDto.fromUser(snippet.getOwner());
+        // No use in bringing uriInfo, need to create URI from scratch
+        dto.owner = UriBuilder.fromPath(BACK_BASE_URL_LOCAL).path("user").path(String.valueOf(snippet.getOwner().getId())).build();
         dto.language = LanguageDto.fromLanguage(snippet.getLanguage());
         dto.code = snippet.getCode();
         dto.title = snippet.getTitle();
@@ -88,11 +95,11 @@ public class SnippetDto {
         this.deleted = deleted;
     }
 
-    public UserDto getOwner() {
+    public URI getOwner() {
         return owner;
     }
 
-    public void setOwner(UserDto owner) {
+    public void setOwner(URI owner) {
         this.owner = owner;
     }
 

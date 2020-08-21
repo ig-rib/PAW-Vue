@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.utility;
 
 public final class Constants {
     public static final String FRONT_BASE_URL_LOCAL = "http://localhost:8081";
+    public static final String BACK_BASE_URL_LOCAL = "http://localhost:8080";
 
     public static final int SNIPPET_PAGE_SIZE = 6;
     public static final int TAG_PAGE_SIZE = 20;

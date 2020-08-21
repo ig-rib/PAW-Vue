@@ -10,11 +10,15 @@
 </template>
 
 <script>
+import SnippetComponent from '@/components/Snippet.vue'
+import tags from '@/services/tags.js'
+import helpers from '@/functions/helpers.js'
 
 export default {
-  name: 'Feed',
-  mounted () {
+    name: 'TagsSnippets',
+    mounted () {
     this.$on('searchResults', (r) => this.$refs.feedSnippets.$emit('searchResults', r))
   }
 }
+
 </script>

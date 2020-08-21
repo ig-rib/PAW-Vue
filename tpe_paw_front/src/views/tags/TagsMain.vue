@@ -31,7 +31,7 @@
     <div class="text-center">
       <v-pagination
         v-model="pagination.page"
-        v-on:input="paginationChange"
+        @input="paginationChange"
         :length="pagination.length" 
         :total-visible="pagination.visible"
       ></v-pagination>
@@ -53,12 +53,12 @@ export default {
       pagination: {
           page: 1,
           length: 1,
-          visible: 6
+          visible: 7
       }
     }
   },
   methods: {
-    paginationChange: function () {
+    paginationChange () {
       const queryParams = {}
       Object.assign(queryParams, this.$route.query)
       queryParams.page = this.pagination.page
@@ -86,7 +86,7 @@ export default {
     handleSearchResponse (response) {
       this.tags = response.data
       this.links = helpers.parseLinks(response.headers.link)
-      this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10);
+      this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10)
     }
   },
   mounted () {

@@ -11,7 +11,7 @@ import LanguagesSearch from '@/views/languages/LanguagesSearch.vue'
 import SnippetDetail from '@/views/snippet/SnippetDetail.vue'
 import TagsMain from '@/views/tags/TagsMain.vue'
 import TagsSearch from '@/views/tags/TagsSearch.vue'
-import TagsSnippet from '@/views/tags/TagsSnippet.vue'
+import TagSnippets from '@/views/tags/TagSnippets.vue'
 import TagsSuper from '@/views/tags/TagsSuper.vue'
 import Login from '@/views/registration/Login.vue'
 import Register from '@/views/registration/Register.vue'
@@ -104,8 +104,8 @@ const routes = [
               },
               {
                 path: ':id',
-                name: 'tags-snippet',
-                component: TagsSnippet
+                name: 'tag-snippets',
+                component: TagSnippets
               }
             ]
           },

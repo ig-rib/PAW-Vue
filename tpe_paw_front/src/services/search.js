@@ -2,6 +2,9 @@ import urls from './urls'
 import axiosFetcher from './axiosFetcher'
 import i18n from '@/i18n'
 
+// todo move to snippets.js, rename
+// every dedicated search endpoint
+
 const constants = {
   type: {
     all: {
