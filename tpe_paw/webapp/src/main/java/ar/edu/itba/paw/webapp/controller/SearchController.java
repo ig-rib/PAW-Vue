@@ -17,6 +17,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -92,7 +93,13 @@ public class SearchController {
                 .collect(Collectors.toList());
         int totalSnippetCount = this.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.HOME, null, null);
 
-        return generateResponseWithLinks(page, snippets, totalSnippetCount);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("q", query);
+        queryParams.put("t", type);
+        queryParams.put("uid", userId);
+        queryParams.put("s", sort);
+
+        return generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount);
     }
 
     @GET
@@ -113,7 +120,14 @@ public class SearchController {
                 .map(SnippetDto::fromSnippet)
                 .collect(Collectors.toList());
         int totalSnippetCount = this.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.FAVORITES, user.getId(), null);
-        return generateResponseWithLinks(page, snippets, totalSnippetCount);
+
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("q", query);
+        queryParams.put("t", type);
+        queryParams.put("uid", userId);
+        queryParams.put("s", sort);
+
+        return generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount);
     }
 
     @GET
@@ -135,7 +149,13 @@ public class SearchController {
                 .map(SnippetDto::fromSnippet)
                 .collect(Collectors.toList());
         int totalSnippetCount = this.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.FOLLOWING, user.getId(), null);
-        return generateResponseWithLinks(page, snippets, totalSnippetCount);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("q", query);
+        queryParams.put("t", type);
+        queryParams.put("uid", userId);
+        queryParams.put("s", sort);
+
+        return generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount);
     }
 
     @GET
@@ -157,7 +177,13 @@ public class SearchController {
                 .map(SnippetDto::fromSnippet)
                 .collect(Collectors.toList());
         int totalSnippetCount = this.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.UPVOTED, user.getId(), null);
-        return generateResponseWithLinks(page, snippets, totalSnippetCount);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("q", query);
+        queryParams.put("t", type);
+        queryParams.put("uid", userId);
+        queryParams.put("s", sort);
+
+        return generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount);
     }
 
     @GET
@@ -173,7 +199,13 @@ public class SearchController {
                 .map(SnippetDto::fromSnippet)
                 .collect(Collectors.toList());
         int totalSnippetCount = this.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.FLAGGED, null, null);
-        return generateResponseWithLinks(page, snippets, totalSnippetCount);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("q", query);
+        queryParams.put("t", type);
+        queryParams.put("uid", userId);
+        queryParams.put("s", sort);
+
+        return generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount);
     }
 
     @GET
@@ -196,7 +228,14 @@ public class SearchController {
                 .map(SnippetDto::fromSnippet)
                 .collect(Collectors.toList());
         int totalSnippetCount = this.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.LANGUAGES, null, langId);
-        return generateResponseWithLinks(page, snippets, totalSnippetCount);
+
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("q", query);
+        queryParams.put("t", type);
+        queryParams.put("uid", userId);
+        queryParams.put("s", sort);
+
+        return generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount);
     }
 
     @GET
@@ -219,8 +258,14 @@ public class SearchController {
                 .map(SnippetDto::fromSnippet)
                 .collect(Collectors.toList());
         int totalSnippetCount = this.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.TAGS, null, tagId);
-        return generateResponseWithLinks(page, snippets, totalSnippetCount);
-    }
+
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("q", query);
+        queryParams.put("t", type);
+        queryParams.put("uid", userId);
+        queryParams.put("s", sort);
+
+        return generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount);    }
 
     @GET
     @Path("/user/{id}/active/search")
@@ -235,7 +280,14 @@ public class SearchController {
                 .map(SnippetDto::fromSnippet)
                 .collect(Collectors.toList());
         int totalSnippetCount = this.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.USER, id, null);
-        return generateResponseWithLinks(page, snippets, totalSnippetCount);
+
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("q", query);
+        queryParams.put("t", type);
+        queryParams.put("uid", userId);
+        queryParams.put("s", sort);
+
+        return generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount);
     }
 
     @GET
@@ -263,7 +315,14 @@ public class SearchController {
                 .map(SnippetDto::fromSnippet)
                 .collect(Collectors.toList());
         int totalSnippetCount = this.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.DELETED, id, null);
-        return generateResponseWithLinks(page, snippets, totalSnippetCount);
+
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("q", query);
+        queryParams.put("t", type);
+        queryParams.put("uid", userId);
+        queryParams.put("s", sort);
+
+        return generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount);
     }
 
     private Collection<Snippet> findByCriteria(String type, String query, SnippetDao.Locations location, String sort, Long userId, Long resourceId, int page) {
@@ -282,16 +341,24 @@ public class SearchController {
 //        }
     }
 
-    private Response generateResponseWithLinks(@DefaultValue("1") @QueryParam("page") int page, List<SnippetDto> snippets, int totalSnippetCount) {
+    private Response generateResponseWithLinks(int page, Map<String, Object> queryParams, List<SnippetDto> snippets, int totalSnippetCount) {
         int pageCount = (totalSnippetCount/SNIPPET_PAGE_SIZE) + ((totalSnippetCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);
 
+        UriBuilder basePath = uriInfo.getAbsolutePathBuilder();
+        queryParams.forEach((key, value) -> {
+            if (value != null) {
+                basePath.queryParam(key, value);
+            }
+        });
+
         Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
+                .link(UriBuilder.fromUri(basePath.build()).queryParam("page", 1).build(), "first")
+                .link(UriBuilder.fromUri(basePath.build()).queryParam("page",pageCount).build(), "last");
+
         if (page > 1)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
+            respBuilder.link(UriBuilder.fromUri(basePath.build()).queryParam("page", page-1).build(), "prev");
         if (page < pageCount)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
+            respBuilder.link(UriBuilder.fromUri(basePath.build()).queryParam("page", page+1).build(), "next");
 
         return respBuilder.build();
     }
