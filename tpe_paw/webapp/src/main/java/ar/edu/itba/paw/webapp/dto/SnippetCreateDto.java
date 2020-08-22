@@ -9,7 +9,7 @@ public class SnippetCreateDto {
     private long languageId;
     private String description;
     private String code;
-    private Collection<Tag> tags;
+    private Collection<Long> tags;
 
     public String getTitle() {
         return title;
@@ -43,11 +43,11 @@ public class SnippetCreateDto {
         this.code = code;
     }
 
-    public Collection<Tag> getTags() {
+    public Collection<Long> getTags() {
         return tags;
     }
 
-    public void setTags(Collection<Tag> tags) {
+    public void setTags(Collection<Long> tags) {
         this.tags = tags;
     }
 }

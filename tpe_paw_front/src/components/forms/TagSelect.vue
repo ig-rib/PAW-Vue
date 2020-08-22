@@ -1,14 +1,15 @@
 <template>
   <v-container>
     <v-multiselect
-      v-model="selectedTag"
+      v-model="selectedTags"
       :options="tags"
       @search-change="updateSelectionSet"
-      :close-on-select="true"
+      :close-on-select="closeOnSelect"
       :clear-on-select="false"
       :placeholder="$t('components.tagSelect.selectTag')"
       label="name"
       track-by="id"
+      :multiple="multiple"
     >
       <template slot="afterList" v-if="hasNext">
         <v-btn
@@ -29,12 +30,22 @@ export default {
   components: {
     'v-multiselect': Multiselect
   },
-  props: ['value'],
+  props: {
+    value: Object,
+    multiple: {
+      type: Boolean,
+      default: false
+    },
+    closeOnSelect: {
+      type: Boolean,
+      default: true
+    }
+  },
   data () {
     return {
       tags: [],
       tagQuery: '',
-      selectedTag: '',
+      selectedTags: [],
       links: () => {}
     }
   },
@@ -57,9 +68,9 @@ export default {
     }
   },
   watch: {
-    selectedTag: {
+    selectedTags: {
       handler: function (val, oldVal) {
-        this.$emit('input', val.id)
+        this.$emit('input', val)
       }
     }
   },

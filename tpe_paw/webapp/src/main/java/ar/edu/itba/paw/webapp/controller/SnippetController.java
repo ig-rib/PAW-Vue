@@ -168,7 +168,7 @@ public class SnippetController {
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
         long snippetId = snippetService.createSnippet(user, snippetDto.getTitle(), snippetDto.getDescription(), snippetDto.getCode(), Instant.now(), snippetDto.getLanguageId(), Collections.emptyList());
-        return Response.created(uriInfo.getBaseUriBuilder().path(String.valueOf(snippetId)).build()).build();
+        return Response.created(uriInfo.getBaseUriBuilder().path("snippet").path(String.valueOf(snippetId)).build()).build();
     }
 
     //TODO: Check if delete is appropiate for this operation.

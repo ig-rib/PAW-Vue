@@ -27,8 +27,10 @@
       <v-layout>
         <v-flex>
           <tag-select
-          v-model="tag"
-          :label="$t('snippets.createSnippet.tags')"></tag-select>
+            multiple
+            v-model="tags"
+            :closeOnSelect="false"
+            :label="$t('snippets.createSnippet.tags')"></tag-select>
         </v-flex>
         <v-flex>
           <v-btn @click="saveSnippet">
@@ -50,7 +52,7 @@ export default {
       languageId: null,
       description: '',
       code: '',
-      tag: null
+      tags: []
     }
   },
   methods: {
@@ -60,7 +62,7 @@ export default {
         languageId: this.languageId,
         description: this.description,
         code: this.code,
-        tag: this.tag
+        tags: this.tags.map(tag => tag.name)
       })
     }
   }
