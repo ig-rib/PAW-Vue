@@ -201,19 +201,19 @@ export default {
         maxVotes: this.exploreParams.maxVotes,
         langId: this.exploreParams.language,
         tagId: this.exploreParams.tag,
-        uname: this.exploreParams.userame,
+        uname: this.exploreParams.username,
         title: this.exploreParams.snippetTitle,
         field: this.exploreParams.orderBy,
         includeFlagged: this.exploreParams.includeFlagged
       }
       // TODO handle results
+      this.$router.replace({
+        query: queryParams
+      })
       search.explore(queryParams)
         .then(r => {
           this.$refs.exploreSnippets.$emit('searchResults', r)
         })
-      this.$router.replace({
-        query: queryParams
-      })
     }
   },
   computed: {
