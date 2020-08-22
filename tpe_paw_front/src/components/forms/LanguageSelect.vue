@@ -42,12 +42,13 @@ export default {
     // TODO handle all request errors
     updateSelectionSet (query) {
       this.langQuery = query
-      languages.searchLanguage(1, query, true).then(r => {
+      languages.searchLanguages({ q: query }, true).then(r => {
         this.languages = r.data
         this.links = parseLinks(r.headers.link)
       })
     },
     loadMore () {
+      console.log(this.links.next)
       axiosFetcher.get(this.links.next).then(r => {
         if (r.data.length > 0) {
           this.languages.push(...r.data)
@@ -64,7 +65,7 @@ export default {
     }
   },
   mounted () {
-    languages.searchLanguage(1, this.langQuery, true).then(r => {
+    languages.searchLanguages({ q: this.langQuery }, true).then(r => {
       this.languages = r.data
       this.links = parseLinks(r.headers.link)
     })

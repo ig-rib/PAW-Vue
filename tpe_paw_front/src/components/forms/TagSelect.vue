@@ -42,7 +42,7 @@ export default {
     // TODO handle all request errors
     updateSelectionSet (query) {
       this.tagQuery = query
-      tags.searchTags(1, query, true, false).then(r => {
+      tags.searchTags({ q: query }, true, false).then(r => {
         this.tags = r.data
         this.links = parseLinks(r.headers.link)
       })
@@ -64,7 +64,7 @@ export default {
     }
   },
   mounted () {
-    tags.searchTags(1, this.tagQuery, true, false).then(r => {
+    tags.searchTags({ q: this.tagQuery }, true, false).then(r => {
       this.tags = r.data
       this.links = parseLinks(r.headers.link)
     })
