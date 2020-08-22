@@ -1,6 +1,14 @@
 <template>
   <v-container>
     <v-layout>
+      <v-pagination
+        v-model="pagination.page"
+        @input="paginationChange"
+        :length="pagination.length" 
+        :total-visible="pagination.visible"
+      ></v-pagination>
+    </v-layout>
+    <v-layout>
       <v-layout v-if="status !== 'loading'" row>
         <v-flex md4 sm4 v-for="snippet in completeSnippets" :key="snippet.id">
           <snippet
@@ -16,6 +24,7 @@
         :total-visible="pagination.visible"
       ></v-pagination>
     </v-layout>
+    {{ $router.query }}
   </v-container>
 </template>
 
@@ -52,12 +61,12 @@ export default {
   methods: {
     paginationChange () {
       const queryParams = {}
-      Object.assign(queryParams, this.$router.query)
+      Object.assign(queryParams, this.$route.query)
       queryParams.page = this.pagination.page
-      console.log(queryParams)
-      // this.$router.replace({
-      //   query: queryParams
-      // })
+      console.log('snippet-grid paginationchange queryparams:', queryParams)
+      this.$router.replace({
+        query: queryParams
+      })
       searchService.searchInLocation(this.$router.currentRoute.path, queryParams)
         .then(r => {
           this.handleSearchResponse(r)

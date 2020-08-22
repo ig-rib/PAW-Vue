@@ -249,17 +249,17 @@ export default {
       let params
       if (this.resultType === 'snippet') {
         params = {
-          q: this.searchQuery,
           t: this.searchType,
           s: this.searchOrder
         }
       } else {
         params = {
-          q: this.searchQuery,
           showEmpty: this.showEmpty,
           showOnlyFollowing: this.showOnlyFollowing
         }
       }
+      params.q = this.searchQuery,
+      params.page = 1
       this.performSearch(params)
     },
     performSearch (params) {
