@@ -20,6 +20,7 @@ import SendRecoveryEmail from '@/views/registration/SendRecoveryEmail.vue'
 import ResetPassword from '@/views/registration/ResetPassword.vue'
 import SendVerificationCode from '@/views/registration/SendVerificationCode.vue'
 import UserProfileMain from '@/views/user/UserProfileMain.vue'
+import CreateSnippet from '@/views/snippet/CreateSnippet.vue'
 
 Vue.use(VueRouter)
 
@@ -81,6 +82,11 @@ const routes = [
                 component: LanguageSnippets
               }
             ]
+          },
+          {
+            path: 'snippet/create',
+            name: 'create-snippet',
+            component: CreateSnippet
           },
           {
             path: 'snippet/:id',

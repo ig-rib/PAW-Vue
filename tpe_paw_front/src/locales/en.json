@@ -47,7 +47,8 @@
     "showEmpty": "Show empty",
     "showOnlyFollowing": "Show following"
   },
-  "snippets": { 
+  "snippets": {
+    "createSnippet": "Create Snippet",
     "feed": {
       "title": "Snippets Feed",
       "favorites": {

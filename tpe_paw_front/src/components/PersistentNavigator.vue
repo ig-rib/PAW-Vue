@@ -119,7 +119,11 @@
             </template>
           </v-layout>
         </v-flex>
-
+        <v-flex shrink v-if="$store.getters.loggedIn">
+          <v-btn :to="{name: 'create-snippet'}">
+            {{ $t('snippets.createSnippet') }}
+          </v-btn>
+        </v-flex>
         <!-- Registration/Login/User section -->
         <v-flex shrink v-if="$vuetify.breakpoint.lgAndUp">
           <v-layout v-if="!$store.getters.loggedIn">
