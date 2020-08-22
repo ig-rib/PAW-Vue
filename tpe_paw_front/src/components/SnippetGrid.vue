@@ -1,13 +1,13 @@
 <template>
   <v-container>
-    <v-layout>
+    <div class="text-center">
       <v-pagination
         v-model="pagination.page"
         @input="paginationChange"
         :length="pagination.length" 
         :total-visible="pagination.visible"
       ></v-pagination>
-    </v-layout>
+    </div>
     <v-layout>
       <v-layout v-if="status !== 'loading'" row>
         <v-flex md4 sm4 v-for="snippet in completeSnippets" :key="snippet.id">
@@ -16,14 +16,14 @@
         </v-flex>
       </v-layout>
     </v-layout>
-    <v-layout>
+    <div class="text-center">
       <v-pagination
         v-model="pagination.page"
         @input="paginationChange"
         :length="pagination.length" 
         :total-visible="pagination.visible"
       ></v-pagination>
-    </v-layout>
+    </div>
     {{ $router.query }}
   </v-container>
 </template>

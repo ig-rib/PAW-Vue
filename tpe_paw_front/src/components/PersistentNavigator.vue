@@ -15,7 +15,9 @@
 
         <!-- Title -->
         <v-flex md1 sm1>
-          <v-toolbar-title>Snippit</v-toolbar-title>
+          <v-toolbar-title
+            @click="goHome"
+            >{{ $t('snippit') }}</v-toolbar-title>
         </v-flex>
 
         <!-- Navigation for large screens -->
@@ -119,14 +121,24 @@
         </v-flex>
 
         <!-- Registration/Login/User section -->
-        <v-flex class="flex-move-end">
-          <v-btn icon>
-            <v-icon>mdi-heart</v-icon>
-          </v-btn>
-
-          <v-btn icon>
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
+        <v-flex shrink v-if="$vuetify.breakpoint.lgAndUp">
+          <v-layout v-if="!$store.getters.loggedIn">
+            <v-flex shrink>
+              <v-btn @click="goToLogin">{{ $t('registration.login') }}</v-btn>
+            </v-flex>
+          </v-layout>
+          <v-layout v-else>
+            <v-flex shrink>
+              <v-btn x-large icon @click="goToProfile">
+                <v-icon>mdi-account-circle</v-icon>  
+              </v-btn>
+            </v-flex>
+            <v-flex shrink>
+              <v-btn x-large icon @click="logout">
+                <v-icon>mdi-logout</v-icon>
+              </v-btn>
+            </v-flex>
+          </v-layout>
         </v-flex>
       </v-layout>
     </v-app-bar>
@@ -161,11 +173,15 @@
       </v-flex>
     </v-layout>
     <v-layout v-else>
-      <v-flex>
-        <v-btn @click="goToProfile">{{ $t('registration.profile') }}</v-btn>
+      <v-flex shrink>
+        <v-btn x-large icon @click="goToProfile">
+          <v-icon>mdi-account-circle</v-icon>  
+        </v-btn>
       </v-flex>
-      <v-flex>
-        <v-btn @click="logout">{{ $t('registration.logout') }}</v-btn>
+      <v-flex shrink>
+        <v-btn x-large icon @click="logout">
+          <v-icon>mdi-logout</v-icon>
+        </v-btn>
       </v-flex>
     </v-layout>
     </v-navigation-drawer>
@@ -242,8 +258,10 @@ export default {
     }
   },
   methods: {
-    goto (path) {
-      this.$router.push(path)
+    goHome () {
+      this.$router.push({
+        name: 'feed'
+      })
     },
     search () {
       let params
@@ -258,7 +276,7 @@ export default {
           showOnlyFollowing: this.showOnlyFollowing
         }
       }
-      params.q = this.searchQuery,
+      params.q = this.searchQuery
       params.page = 1
       this.performSearch(params)
     },

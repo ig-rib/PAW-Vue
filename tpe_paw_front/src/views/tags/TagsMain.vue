@@ -1,32 +1,32 @@
 <template>
   <v-container>
     <div>
-        <p> {{ $t('tags.title') }} </p>
-        <v-row>
-            <v-col v-for="tag in tags" :key="tag.id">
-                <div>
-                  <v-chip @click="goToTagSnippets(tag.id)" class="ma-2 tag-chip" label>
-                    {{ tag.name }}
-                    <!-- If tag is followed -->
-                    <v-chip 
-                      v-if="tag.userFollowing"
-                      class="ma-1" color="primary"
-                      v-on:click="unfollowTag(tag)"
-                    >
-                    {{ $t('tags.following') }}
-                    </v-chip>
-                    <!-- If tags is not followed -->
-                    <v-chip 
-                      v-else
-                      class="ma-1" color="indigo darken-3" outlined
-                      v-on:click="followTag(tag)"
-                    >
-                    {{ $t('tags.follow') }}
-                    </v-chip>
-                  </v-chip>
-                </div>
-            </v-col>
-        </v-row>
+      <p> {{ $t('tags.title') }} </p>
+      <v-row>
+        <v-col v-for="tag in tags" :key="tag.id">
+          <div>
+            <v-chip @click="goToTagSnippets(tag.id)" class="ma-2 tag-chip" label>
+              {{ tag.name }}
+              <!-- If tag is followed -->
+              <v-chip 
+                v-if="tag.userFollowing"
+                class="ma-1" color="primary"
+                v-on:click="unfollowTag(tag)"
+              >
+              {{ $t('tags.following') }}
+              </v-chip>
+              <!-- If tags is not followed -->
+              <v-chip 
+                v-else
+                class="ma-1" color="indigo darken-3" outlined
+                v-on:click="followTag(tag)"
+              >
+              {{ $t('tags.follow') }}
+              </v-chip>
+            </v-chip>
+          </div>
+        </v-col>
+      </v-row>
     </div>
     <div class="text-center">
       <v-pagination
