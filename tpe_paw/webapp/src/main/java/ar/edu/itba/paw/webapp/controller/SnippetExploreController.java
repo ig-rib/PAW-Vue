@@ -4,10 +4,13 @@ import ar.edu.itba.paw.interfaces.dao.SnippetDao;
 import ar.edu.itba.paw.interfaces.service.*;
 import ar.edu.itba.paw.models.Snippet;
 import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
+import ar.edu.itba.paw.webapp.dto.ErrorMessageDto;
 import ar.edu.itba.paw.webapp.dto.SnippetDto;
 import ar.edu.itba.paw.webapp.form.ExploreForm;
 import ar.edu.itba.paw.webapp.form.SearchForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,6 +27,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -41,6 +46,7 @@ public class SnippetExploreController {
     @Autowired private RoleService roleService;
     @Autowired private UserService userService;
     @Context private UriInfo uriInfo;
+    @Autowired private MessageSource messageSource;
 
     private final static Map<String, SnippetDao.Types> typesMap;
     static {
@@ -68,10 +74,10 @@ public class SnippetExploreController {
     public Response exploreSearch(    final @QueryParam("t") String type,
                                       final @QueryParam("s") String sort,
                                       final @QueryParam("page") @DefaultValue("1") int page,
-                                      final @QueryParam("minDate") @DateTimeFormat(pattern = "yyyy,MM,dd") Date minDate,
-                                      final @QueryParam("maxDate") @DateTimeFormat(pattern = "yyyy,MM,dd") Date maxDate,
-//                                      final @QueryParam("minDate") Date minDate,
-//                                      final @QueryParam("maxDate") Date maxDate,
+                                      // Trouble accepting min and maxDate as Date parameters
+                                      // with a given format...
+                                      final @QueryParam("minDate") String minDate,
+                                      final @QueryParam("maxDate") String maxDate,
                                       final @QueryParam("minRep") Integer minRep,
                                       final @QueryParam("maxRep") Integer maxRep,
                                       final @QueryParam("minVotes") Integer minVotes,
@@ -85,11 +91,17 @@ public class SnippetExploreController {
 
         Instant minInstant = null;
         Instant maxInstant = null;
-        if (minDate != null){
-            minInstant = minDate.toInstant();
-        }
-        if (maxDate != null){
-            maxInstant = maxDate.toInstant();
+        try {
+            if (minDate != null) {
+                minInstant = new SimpleDateFormat("yyyy-MM-dd").parse(minDate).toInstant();
+            }
+            if (maxDate != null) {
+                maxInstant = new SimpleDateFormat("yyyy-MM-dd").parse(maxDate).toInstant();
+            }
+        } catch (ParseException e) {
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.400.dateFormat", null, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorMessageDto).build();
         }
         List<SnippetDto> snippets = this.snippetService.findSnippetByDeepCriteria(
                 minInstant, maxInstant,
