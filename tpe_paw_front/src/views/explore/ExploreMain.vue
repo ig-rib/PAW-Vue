@@ -156,7 +156,7 @@
         </v-card>
       </v-flex>
       <v-flex>
-        SNIPPETS HERE
+        <snippet-grid ref="exploreSnippets"></snippet-grid>
       </v-flex>
     </v-layout>
   </v-container>
@@ -168,6 +168,7 @@ import search from '@/services/search.js'
 export default {
   data () {
     return {
+      snippets: [],
       exploreParams: {
         orderBy: null,
         sort: null,
@@ -207,6 +208,9 @@ export default {
       }
       // TODO handle results
       search.explore(queryParams)
+        .then(r => {
+          this.$refs.exploreSnippets.$emit('searchResults', r)
+        })
       this.$router.replace({
         query: queryParams
       })

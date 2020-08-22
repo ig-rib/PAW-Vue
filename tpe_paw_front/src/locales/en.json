@@ -108,7 +108,8 @@
   },
   "components": {
     "tfDatePicker": {
-      "defaultLabel": "Select Date"
+      "defaultLabel": "Select Date",
+      "clearDate": "Clear Date"
     },
     "shared": {
       "pagination": {
