@@ -1572,78 +1572,78 @@ public class SnippetDaoTest {
 
     }
 
-    @Test
-    public void findSnippetByDeepCriteriaReputationNegativeTest() {
-        Map<String, Snippet> snippets = TestMethods.dataForSearchByDeepCriteria(em, TestMethods.userCreationDeepSearch(em, owner), tag, language);
-        Collection<Snippet> result1 = snippetDao.findSnippetByDeepCriteria(
-                null,
-                null, // Instant.now()
-                TestConstants.REP_VALUE_1,
-                TestConstants.REP_VALUE_2,
-                null,
-                null,
-                language.getId(),
-                tag.getId(),
-                "",
-                "",
-                SnippetDao.Orders.ASC,
-                SnippetDao.Types.TITLE,
-                true,
-                1,
-                TestConstants.SNIPPET_PAGE_SIZE
-        );
-        Assert.assertTrue(result1.contains(snippets.get(TestConstants.SNIPPET_TITLE2)));
-    }
-
-    @Test
-    public void findSnippetByDeepCriteriaReputationNonnegativeTest() {
-        Map<String, Snippet> snippets = TestMethods.dataForSearchByDeepCriteria(em, TestMethods.userCreationDeepSearch(em, owner), tag, language);
-        Collection<Snippet> result2 = snippetDao.findSnippetByDeepCriteria(
-                null,
-                null, // Instant.now()
-                TestConstants.REP_VALUE_3,
-                TestConstants.REP_VALUE_5,
-                null,
-                null,
-                language.getId(),
-                tag.getId(),
-                "",
-                "",
-                SnippetDao.Orders.ASC,
-                SnippetDao.Types.TITLE,
-                true,
-                1,
-                TestConstants.SNIPPET_PAGE_SIZE
-        );
-        Assert.assertTrue(result2.contains(snippets.get(TestConstants.SNIPPET_TITLE)));
-        Assert.assertTrue(result2.contains(snippets.get(TestConstants.SNIPPET_TITLE3)));
-        Assert.assertTrue(result2.contains(snippets.get(TestConstants.SNIPPET_TITLE4)));
-        Assert.assertTrue(result2.contains(snippets.get(TestConstants.SNIPPET_TITLE5)));
-    }
-
-    @Test
-    public void findSnippetByDeepCriteriaReputationInvalidTest() {
-        Map<String, Snippet> snippets = TestMethods.dataForSearchByDeepCriteria(em, TestMethods.userCreationDeepSearch(em, owner), tag, language);
-        Collection<Snippet> result3 = snippetDao.findSnippetByDeepCriteria(
-                null,
-                null, // Instant.now()
-                TestConstants.REP_VALUE_6,
-                TestConstants.REP_VALUE_6,
-                null,
-                null,
-                language.getId(),
-                tag.getId(),
-                "",
-                "",
-                SnippetDao.Orders.ASC,
-                SnippetDao.Types.TITLE,
-                true,
-                1,
-                TestConstants.SNIPPET_PAGE_SIZE
-        );
-
-        Assert.assertTrue(result3.isEmpty());
-    }
+//    @Test
+//    public void findSnippetByDeepCriteriaReputationNegativeTest() {
+//        Map<String, Snippet> snippets = TestMethods.dataForSearchByDeepCriteria(em, TestMethods.userCreationDeepSearch(em, owner), tag, language);
+//        Collection<Snippet> result1 = snippetDao.findSnippetByDeepCriteria(
+//                null,
+//                null, // Instant.now()
+//                TestConstants.REP_VALUE_1,
+//                TestConstants.REP_VALUE_2,
+//                null,
+//                null,
+//                language.getId(),
+//                tag.getId(),
+//                "",
+//                "",
+//                SnippetDao.Orders.ASC,
+//                SnippetDao.Types.TITLE,
+//                true,
+//                1,
+//                TestConstants.SNIPPET_PAGE_SIZE
+//        );
+//        Assert.assertTrue(result1.contains(snippets.get(TestConstants.SNIPPET_TITLE2)));
+//    }
+//
+//    @Test
+//    public void findSnippetByDeepCriteriaReputationNonnegativeTest() {
+//        Map<String, Snippet> snippets = TestMethods.dataForSearchByDeepCriteria(em, TestMethods.userCreationDeepSearch(em, owner), tag, language);
+//        Collection<Snippet> result2 = snippetDao.findSnippetByDeepCriteria(
+//                null,
+//                null, // Instant.now()
+//                TestConstants.REP_VALUE_3,
+//                TestConstants.REP_VALUE_5,
+//                null,
+//                null,
+//                language.getId(),
+//                tag.getId(),
+//                "",
+//                "",
+//                SnippetDao.Orders.ASC,
+//                SnippetDao.Types.TITLE,
+//                true,
+//                1,
+//                TestConstants.SNIPPET_PAGE_SIZE
+//        );
+//        Assert.assertTrue(result2.contains(snippets.get(TestConstants.SNIPPET_TITLE)));
+//        Assert.assertTrue(result2.contains(snippets.get(TestConstants.SNIPPET_TITLE3)));
+//        Assert.assertTrue(result2.contains(snippets.get(TestConstants.SNIPPET_TITLE4)));
+//        Assert.assertTrue(result2.contains(snippets.get(TestConstants.SNIPPET_TITLE5)));
+//    }
+//
+//    @Test
+//    public void findSnippetByDeepCriteriaReputationInvalidTest() {
+//        Map<String, Snippet> snippets = TestMethods.dataForSearchByDeepCriteria(em, TestMethods.userCreationDeepSearch(em, owner), tag, language);
+//        Collection<Snippet> result3 = snippetDao.findSnippetByDeepCriteria(
+//                null,
+//                null, // Instant.now()
+//                TestConstants.REP_VALUE_6,
+//                TestConstants.REP_VALUE_6,
+//                null,
+//                null,
+//                language.getId(),
+//                tag.getId(),
+//                "",
+//                "",
+//                SnippetDao.Orders.ASC,
+//                SnippetDao.Types.TITLE,
+//                true,
+//                1,
+//                TestConstants.SNIPPET_PAGE_SIZE
+//        );
+//
+//        Assert.assertTrue(result3.isEmpty());
+//    }
 
     /* Testing getting snippet by deep criteria count */
 
@@ -1768,60 +1768,60 @@ public class SnippetDaoTest {
         Assert.assertEquals(0, result3);
     }
 
-    @Test
-    public void findSnippetByDeepCriteriaCountReputationNegativeTest() {
-        Map<String, Snippet> snippets = TestMethods.dataForSearchByDeepCriteria(em, TestMethods.userCreationDeepSearch(em, owner), tag, language);
-        int result1 = snippetDao.getSnippetByDeepCriteriaCount(
-                null,
-                null, // Instant.now()
-                TestConstants.REP_VALUE_1,
-                TestConstants.REP_VALUE_2,
-                null,
-                null,
-                language.getId(),
-                tag.getId(),
-                "",
-                "",
-                true
-        );
-        Assert.assertEquals(1, result1);
-    }
-
-    @Test
-    public void findSnippetByDeepCriteriaCountReputationNonnegativeTest() {
-        Map<String, Snippet> snippets = TestMethods.dataForSearchByDeepCriteria(em, TestMethods.userCreationDeepSearch(em, owner), tag, language);
-        int result2 = snippetDao.getSnippetByDeepCriteriaCount(
-                null,
-                null, // Instant.now()
-                TestConstants.REP_VALUE_3,
-                TestConstants.REP_VALUE_5,
-                null,
-                null,
-                language.getId(),
-                tag.getId(),
-                "",
-                "",
-                true
-        );
-        Assert.assertEquals(4, result2);
-    }
-
-    @Test
-    public void findSnippetByDeepCriteriaCountReputationInvalidTest() {
-        Map<String, Snippet> snippets = TestMethods.dataForSearchByDeepCriteria(em, TestMethods.userCreationDeepSearch(em, owner), tag, language);
-        int result3 = snippetDao.getSnippetByDeepCriteriaCount(
-                null,
-                null, // Instant.now()
-                TestConstants.REP_VALUE_6,
-                TestConstants.REP_VALUE_6,
-                null,
-                null,
-                language.getId(),
-                tag.getId(),
-                "",
-                "",
-                true
-        );
-        Assert.assertEquals(0, result3);
-    }
+//    @Test
+//    public void findSnippetByDeepCriteriaCountReputationNegativeTest() {
+//        Map<String, Snippet> snippets = TestMethods.dataForSearchByDeepCriteria(em, TestMethods.userCreationDeepSearch(em, owner), tag, language);
+//        int result1 = snippetDao.getSnippetByDeepCriteriaCount(
+//                null,
+//                null, // Instant.now()
+//                TestConstants.REP_VALUE_1,
+//                TestConstants.REP_VALUE_2,
+//                null,
+//                null,
+//                language.getId(),
+//                tag.getId(),
+//                "",
+//                "",
+//                true
+//        );
+//        Assert.assertEquals(1, result1);
+//    }
+//
+//    @Test
+//    public void findSnippetByDeepCriteriaCountReputationNonnegativeTest() {
+//        Map<String, Snippet> snippets = TestMethods.dataForSearchByDeepCriteria(em, TestMethods.userCreationDeepSearch(em, owner), tag, language);
+//        int result2 = snippetDao.getSnippetByDeepCriteriaCount(
+//                null,
+//                null, // Instant.now()
+//                TestConstants.REP_VALUE_3,
+//                TestConstants.REP_VALUE_5,
+//                null,
+//                null,
+//                language.getId(),
+//                tag.getId(),
+//                "",
+//                "",
+//                true
+//        );
+//        Assert.assertEquals(4, result2);
+//    }
+//
+//    @Test
+//    public void findSnippetByDeepCriteriaCountReputationInvalidTest() {
+//        Map<String, Snippet> snippets = TestMethods.dataForSearchByDeepCriteria(em, TestMethods.userCreationDeepSearch(em, owner), tag, language);
+//        int result3 = snippetDao.getSnippetByDeepCriteriaCount(
+//                null,
+//                null, // Instant.now()
+//                TestConstants.REP_VALUE_6,
+//                TestConstants.REP_VALUE_6,
+//                null,
+//                null,
+//                language.getId(),
+//                tag.getId(),
+//                "",
+//                "",
+//                true
+//        );
+//        Assert.assertEquals(0, result3);
+//    }
 }

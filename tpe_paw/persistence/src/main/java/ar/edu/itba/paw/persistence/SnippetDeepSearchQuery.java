@@ -143,6 +143,20 @@ public class SnippetDeepSearchQuery {
         }
 
         /**
+         * Adds a list of languages as possible languages a retrieved snippet may have
+         * @param tagIds
+         * @return Instance of builder
+         */
+        public Builder addTags(List<Long> tagIds) {
+            if (tagIds != null) {
+                this.checkIfFirst();
+                this.query.append("st.tag_id in :t_ids");
+                this.params.put("t_ids", tagIds);
+            }
+            return this;
+        }
+
+        /**
          * Adds a specific date range condition to be taken into account in the query
          * @param min Minimum date in string format to be searched
          * @param max Maximum date in string format to be searched
@@ -225,6 +239,20 @@ public class SnippetDeepSearchQuery {
                 this.checkIfFirst();
                 this.query.append("s.language_id = :lid");
                 this.params.put("lid", languageId);
+            }
+            return this;
+        }
+
+        /**
+         * Adds a list of languages as possible languages a retrieved snippet may have
+         * @param languageIds List of languages to query by
+         * @return Instance of Builder
+         */
+        public Builder addLanguages(List<Long> languageIds) {
+            if (languageIds != null) {
+                this.checkIfFirst();
+                this.query.append("s.language_id in :l_ids");
+                this.params.put("l_ids", languageIds);
             }
             return this;
         }

@@ -92,10 +92,10 @@ public class SnippetExploreController {
         Instant minInstant = null;
         Instant maxInstant = null;
         try {
-            if (minDate != null) {
+            if (minDate != null && !minDate.isEmpty()) {
                 minInstant = new SimpleDateFormat("yyyy-MM-dd").parse(minDate).toInstant();
             }
-            if (maxDate != null) {
+            if (maxDate != null && !maxDate.isEmpty()) {
                 maxInstant = new SimpleDateFormat("yyyy-MM-dd").parse(maxDate).toInstant();
             }
         } catch (ParseException e) {
@@ -107,7 +107,7 @@ public class SnippetExploreController {
                 minInstant, maxInstant,
                 minRep, maxRep,
                 minVotes, maxVotes,
-                -1L, -1L,
+                langIds, tagIds,
                 title, username,
                 ordersMap.getOrDefault(sort, SnippetDao.Orders.NO), typesMap.getOrDefault(field, SnippetDao.Types.ALL), includeFlagged, page, SNIPPET_PAGE_SIZE)
                 .stream()
@@ -117,7 +117,7 @@ public class SnippetExploreController {
                 minInstant, maxInstant,
                 minRep, maxRep,
                 minVotes, maxVotes,
-                -1L, -1L,
+                langIds, tagIds,
                 title, username,
                 includeFlagged);
         int pageCount = (snippetCount/SNIPPET_PAGE_SIZE) + ((snippetCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);

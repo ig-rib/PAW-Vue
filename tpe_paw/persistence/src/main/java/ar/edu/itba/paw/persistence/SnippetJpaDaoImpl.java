@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.math.BigInteger;
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -36,8 +34,8 @@ public class SnippetJpaDaoImpl implements SnippetDao {
     }
 
     @Override
-    public Collection<Snippet> findSnippetByDeepCriteria(Instant dateMin, Instant dateMax, Integer repMin, Integer repMax, Integer voteMin, Integer voteMax, Long languageId, Long tagId, String title, String username, SnippetDao.Orders order, SnippetDao.Types type, Boolean includeFlagged, int page, int pageSize) {
-        SnippetDeepSearchQuery searchQuery = this.createDeepQuery(dateMin, dateMax, repMin, repMax, voteMin, voteMax, languageId, tagId, title, username, order, type, includeFlagged);
+    public Collection<Snippet> findSnippetByDeepCriteria(Instant dateMin, Instant dateMax, Integer repMin, Integer repMax, Integer voteMin, Integer voteMax, List<Long> languageIds, List<Long> tagIds, String title, String username, Orders order, Types type, Boolean includeFlagged, int page, int pageSize) {
+        SnippetDeepSearchQuery searchQuery = this.createDeepQuery(dateMin, dateMax, repMin, repMax, voteMin, voteMax, languageIds, tagIds, title, username, order, type, includeFlagged);
         Query nativeQuery = this.em.createNativeQuery(searchQuery.getQuery());
         this.setSearchQueryParameters(searchQuery.getParams(), nativeQuery);
         return this.getSearchSnippetsByPage(page, pageSize, nativeQuery, order, type, true);
@@ -247,16 +245,16 @@ public class SnippetJpaDaoImpl implements SnippetDao {
     }
 
     @Override
-    public int getSnippetByDeepCriteriaCount(Instant dateMin, Instant dateMax, Integer repMin, Integer repMax, Integer voteMin, Integer voteMax, Long languageId, Long tagId, String title, String username, Boolean includeFlagged) {
-        SnippetDeepSearchQuery searchQuery = this.createDeepQuery(dateMin, dateMax, repMin, repMax, voteMin, voteMax, languageId, tagId, title, username, null, null, includeFlagged);
+    public int getSnippetByDeepCriteriaCount(Instant dateMin, Instant dateMax, Integer repMin, Integer repMax, Integer voteMin, Integer voteMax, List<Long> languageIds, List<Long> tagIds, String title, String username, Boolean includeFlagged) {
+        SnippetDeepSearchQuery searchQuery = this.createDeepQuery(dateMin, dateMax, repMin, repMax, voteMin, voteMax, languageIds, tagIds, title, username, null, null, includeFlagged);
         Query nativeQuery = this.em.createNativeQuery(searchQuery.getQuery());
         this.setSearchQueryParameters(searchQuery.getParams(), nativeQuery);
         return nativeQuery.getResultList().size();
     }
 
-    private SnippetDeepSearchQuery createDeepQuery(Instant dateMin, Instant dateMax, Integer repMin, Integer repMax, Integer voteMin, Integer voteMax, Long languageId, Long tagId, String title, String username, SnippetDao.Orders order, SnippetDao.Types type, Boolean includeFlagged) {
+    private SnippetDeepSearchQuery createDeepQuery(Instant dateMin, Instant dateMax, Integer repMin, Integer repMax, Integer voteMin, Integer voteMax, List<Long> languageIds, List<Long> tagIds, String title, String username, Orders order, Types type, Boolean includeFlagged) {
         SnippetDeepSearchQuery.Builder queryBuilder = new SnippetDeepSearchQuery.Builder();
-        if (dateMin == null && dateMax == null && repMin == null && repMax == null && voteMin == null && voteMax == null && languageId == null && tagId == null && title == null && username == null && includeFlagged == null) {
+        if (dateMin == null && dateMax == null && repMin == null && repMax == null && voteMin == null && voteMax == null && languageIds == null && tagIds == null && title == null && username == null && includeFlagged == null) {
             return queryBuilder.setOrder(Types.TITLE, Orders.ASC).build();
         } else {
             if (dateMin != null || dateMax != null) {
@@ -278,11 +276,11 @@ public class SnippetJpaDaoImpl implements SnippetDao {
             if (voteMin != null || voteMax != null) {
                 queryBuilder = queryBuilder.addVotesRange(voteMin, voteMax);
             }
-            if (languageId != null) {
-                queryBuilder = queryBuilder.addLanguage(languageId);
+            if (languageIds != null && !languageIds.isEmpty()) {
+                queryBuilder = queryBuilder.addLanguages(languageIds);
             }
-            if (tagId != null) {
-                queryBuilder = queryBuilder.addTag(tagId);
+            if (tagIds != null && !tagIds.isEmpty()) {
+                queryBuilder = queryBuilder.addTags(tagIds);
             }
             if (title != null && !title.isEmpty()) {
                 queryBuilder = queryBuilder.addTitle(title);

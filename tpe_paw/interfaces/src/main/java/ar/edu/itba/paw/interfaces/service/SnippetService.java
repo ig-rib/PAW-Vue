@@ -8,6 +8,7 @@ import ar.edu.itba.paw.models.User;
 
 import java.time.Instant;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface SnippetService {
@@ -27,7 +28,7 @@ public interface SnippetService {
     boolean deleteOrRestoreSnippet(final Snippet snippet, final long userId, boolean delete);
     void updateFlagged(final Snippet snippet, final User owner, boolean isFlagged, final String baseUrl);
     int getNewSnippetsForTagsCount(Instant dateMin, Collection<Tag> tags, long userId);
-    Collection<Snippet> findSnippetByDeepCriteria(Instant dateMin, Instant dateMax, Integer repMin, Integer repMax, Integer voteMin, Integer voteMax, Long languageId, Long tagId, String title, String username, SnippetDao.Orders order, SnippetDao.Types type, Boolean includeFlagged, int page, int pageSize);
+    Collection<Snippet> findSnippetByDeepCriteria(Instant dateMin, Instant dateMax, Integer repMin, Integer repMax, Integer voteMin, Integer voteMax, List<Long> languageId, List<Long> tagId, String title, String username, SnippetDao.Orders order, SnippetDao.Types type, Boolean includeFlagged, int page, int pageSize);
     int getAllSnippetsCount();
     int getAllFavoriteSnippetsCount(final long userId);
     int getAllFollowingSnippetsCount(final long userId);
@@ -38,7 +39,7 @@ public interface SnippetService {
     int getAllSnippetsByTagCount(final long tagId);
     int getAllSnippetsByLanguageCount(final long langId);
     int getSnippetByCriteriaCount(SnippetDao.Types type, String term, SnippetDao.Locations location, Long userId, Long resourceId);
-    int getSnippetByDeepCriteriaCount(Instant dateMin, Instant dateMax, Integer repMin, Integer repMax, Integer voteMin, Integer voteMax, Long languageId, Long tagId, String title, String username, Boolean includeFlagged);
+    int getSnippetByDeepCriteriaCount(Instant dateMin, Instant dateMax, Integer repMin, Integer repMax, Integer voteMin, Integer voteMax, List<Long> languageId, List<Long> tagId, String title, String username, Boolean includeFlagged);
     Long createSnippet(User owner, String title, String description, String code, Instant dateCreated, Long language, Collection<String> tags);
     void analizeSnippetsUsing(Tag tag);
     void analizeSnippetsUsing(Language language);

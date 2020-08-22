@@ -32,7 +32,6 @@
             v-model="tags"
             :closeOnSelect="false"
             :label="$t('snippets.createSnippet.tags')"></tag-select>
-          {{ tags }}
         </v-flex>
         <v-flex>
           <v-btn @click="saveSnippet">
