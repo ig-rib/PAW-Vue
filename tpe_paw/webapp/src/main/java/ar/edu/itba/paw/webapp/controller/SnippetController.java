@@ -1,10 +1,12 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.service.*;
+import ar.edu.itba.paw.models.Language;
 import ar.edu.itba.paw.models.Snippet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
 import ar.edu.itba.paw.webapp.dto.ErrorMessageDto;
+import ar.edu.itba.paw.webapp.dto.SnippetCreateDto;
 import ar.edu.itba.paw.webapp.dto.SnippetDto;
 import ar.edu.itba.paw.webapp.exception.SnippetNotFoundException;
 import org.slf4j.Logger;
@@ -15,9 +17,11 @@ import org.springframework.context.i18n.LocaleContextHolder;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.time.Instant;
+import java.util.Collections;
 import java.util.Optional;
 
-@Path("/snippets")
+@Path("/snippet")
 public class SnippetController {
 
     @Autowired private UserService userService;
@@ -29,11 +33,10 @@ public class SnippetController {
     @Autowired private TagService tagService;
     @Autowired private MessageSource messageSource;
     @Autowired private ReportService reportService;
+    @Autowired private LanguageService languageService;
+    @Context UriInfo uriInfo;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ar.edu.itba.paw.webapp.old_controller.SnippetController.class);
-
-    @Context
-    private UriInfo uriInfo;
 
     @Context
     private SecurityContext securityContext;
@@ -153,6 +156,19 @@ public class SnippetController {
         LOGGER.debug("User {} reported snippet {} with message {}", user.getUsername(), id, reportService);
 
         return Response.ok().build();
+    }
+
+    @POST
+    @Path("/create")
+    public Response createSnippet(SnippetCreateDto snippetDto) {
+        User user = loginAuthentication.getLoggedInUser();
+        if (user == null){
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+        }
+        long snippetId = snippetService.createSnippet(user, snippetDto.getTitle(), snippetDto.getDescription(), snippetDto.getCode(), Instant.now(), snippetDto.getLanguageId(), Collections.emptyList());
+        return Response.created(uriInfo.getBaseUriBuilder().path(String.valueOf(snippetId)).build()).build();
     }
 
     //TODO: Check if delete is appropiate for this operation.

@@ -48,7 +48,14 @@
     "showOnlyFollowing": "Show following"
   },
   "snippets": {
-    "createSnippet": "Create Snippet",
+    "createSnippet": {
+      "createSnippet": "Create Snippet",
+      "title": "Title",
+      "description": "Description",
+      "code": "Code",
+      "tags": "Tags",
+      "language": "Language"
+    },
     "feed": {
       "title": "Snippets Feed",
       "favorites": {

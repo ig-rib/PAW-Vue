@@ -121,7 +121,7 @@
         </v-flex>
         <v-flex shrink v-if="$store.getters.loggedIn">
           <v-btn :to="{name: 'create-snippet'}">
-            {{ $t('snippets.createSnippet') }}
+            {{ $t('snippets.createSnippet.createSnippet') }}
           </v-btn>
         </v-flex>
         <!-- Registration/Login/User section -->
