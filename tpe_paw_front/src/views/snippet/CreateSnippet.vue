@@ -8,7 +8,8 @@
             :label="$t('snippets.createSnippet.title')"></v-text-field>
         </v-flex>
         <v-flex>
-          <language-select v-model="languageId"/>
+          <language-select v-model="language"/>
+          {{ language }}
         </v-flex>
       </v-layout>
       <v-divider></v-divider>
@@ -31,6 +32,7 @@
             v-model="tags"
             :closeOnSelect="false"
             :label="$t('snippets.createSnippet.tags')"></tag-select>
+          {{ tags }}
         </v-flex>
         <v-flex>
           <v-btn @click="saveSnippet">
@@ -49,7 +51,7 @@ export default {
   data () {
     return {
       title: '',
-      languageId: null,
+      language: null,
       description: '',
       code: '',
       tags: []
@@ -59,7 +61,7 @@ export default {
     saveSnippet () {
       snippetService.createSnippet({
         title: this.title,
-        languageId: this.languageId,
+        language: this.language.id,
         description: this.description,
         code: this.code,
         tags: this.tags.map(tag => tag.name)

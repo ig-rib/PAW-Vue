@@ -31,7 +31,7 @@ export default {
     'v-multiselect': Multiselect
   },
   props: {
-    value: Object,
+    value: [Object, Array],
     multiple: {
       type: Boolean,
       default: false
@@ -45,7 +45,7 @@ export default {
     return {
       tags: [],
       tagQuery: '',
-      selectedTags: [],
+      selectedTags: null,
       links: () => {}
     }
   },

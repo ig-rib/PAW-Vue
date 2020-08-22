@@ -63,7 +63,9 @@
               </v-layout>
               <v-layout>
                 <language-select
-                  v-model="exploreParams.language"
+                  :multiple="true"
+                  :closeOnSelect="false"
+                  v-model="exploreParams.languages"
                 ></language-select>
               </v-layout>
             </v-flex>
@@ -73,7 +75,9 @@
               </v-layout>
               <v-layout>
                 <tag-select
-                  v-model="exploreParams.tag"
+                  :multiple="true"
+                  :closeOnSelect="false"
+                  v-model="exploreParams.tags"
                 ></tag-select>
               </v-layout>
             </v-flex>
@@ -174,8 +178,8 @@ export default {
         sort: null,
         includeFlagged: null,
         snippetTitle: null,
-        language: null,
-        tag: null,
+        languages: null,
+        tags: null,
         username: null,
         fromDate: null,
         toDate: null,
@@ -199,8 +203,8 @@ export default {
         maxRep: this.exploreParams.maxRep,
         minVotes: this.exploreParams.minVotes,
         maxVotes: this.exploreParams.maxVotes,
-        langId: this.exploreParams.language,
-        tagId: this.exploreParams.tag,
+        langId: (this.exploreParams.languages == null) ? null : this.exploreParams.languages.map(lang => lang.id),
+        tagId: (this.exploreParams.tags == null) ? null : this.exploreParams.tags.map(tag => tag.id),
         uname: this.exploreParams.username,
         title: this.exploreParams.snippetTitle,
         field: this.exploreParams.orderBy,

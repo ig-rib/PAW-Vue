@@ -1,14 +1,15 @@
 <template>
   <v-container>
     <v-multiselect
-      v-model="selectedLang"
+      v-model="selectedLangs"
       :options="languages"
       @search-change="updateSelectionSet"
-      :close-on-select="true"
+      :close-on-select="closeOnSelect"
       :cler-on-select="false"
       :placeholder="$t('components.languageSelect.selectLanguage')"
       label="name"
       track-by="id"
+      :multiple="multiple"
     >
       <template slot="afterList" v-if="hasNext">
         <v-btn
@@ -29,12 +30,22 @@ export default {
   components: {
     'v-multiselect': Multiselect
   },
-  props: ['value'],
+  props: {
+    value: [Object, Array],
+    multiple: {
+      type: Boolean,
+      default: false
+    },
+    closeOnSelect: {
+      type: Boolean,
+      default: true
+    }
+  },
   data () {
     return {
       languages: [],
       langQuery: '',
-      selectedLang: '',
+      selectedLangs: null,
       links: () => {}
     }
   },
@@ -58,9 +69,9 @@ export default {
     }
   },
   watch: {
-    selectedLang: {
+    selectedLangs: {
       handler: function (val, oldVal) {
-        this.$emit('input', val.id)
+        this.$emit('input', val)
       }
     }
   },

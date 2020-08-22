@@ -1,6 +1,12 @@
 import axios from 'axios'
 import Store from '@/store'
 import Router from '@/router'
+import querystring from 'querystring'
+
+axios.defaults.paramsSerializer = params => {
+  return querystring.stringify(params)
+}
+
 /**
  * Wrapper for axios
  * @param {string} url

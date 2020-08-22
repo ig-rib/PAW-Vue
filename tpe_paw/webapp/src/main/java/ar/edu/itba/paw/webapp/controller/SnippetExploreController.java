@@ -82,8 +82,8 @@ public class SnippetExploreController {
                                       final @QueryParam("maxRep") Integer maxRep,
                                       final @QueryParam("minVotes") Integer minVotes,
                                       final @QueryParam("maxVotes") Integer maxVotes,
-                                      final @QueryParam("langId") Long langId,
-                                      final @QueryParam("tagId") Long tagId,
+                                      final @QueryParam("langId") List<Long> langIds,
+                                      final @QueryParam("tagId") List<Long> tagIds,
                                       final @QueryParam("uname") String username,
                                       final @QueryParam("title") String title,
                                       final @QueryParam("field") String field,
@@ -107,7 +107,7 @@ public class SnippetExploreController {
                 minInstant, maxInstant,
                 minRep, maxRep,
                 minVotes, maxVotes,
-                langId, tagId,
+                -1L, -1L,
                 title, username,
                 ordersMap.getOrDefault(sort, SnippetDao.Orders.NO), typesMap.getOrDefault(field, SnippetDao.Types.ALL), includeFlagged, page, SNIPPET_PAGE_SIZE)
                 .stream()
@@ -117,7 +117,7 @@ public class SnippetExploreController {
                 minInstant, maxInstant,
                 minRep, maxRep,
                 minVotes, maxVotes,
-                langId, tagId,
+                -1L, -1L,
                 title, username,
                 includeFlagged);
         int pageCount = (snippetCount/SNIPPET_PAGE_SIZE) + ((snippetCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);
