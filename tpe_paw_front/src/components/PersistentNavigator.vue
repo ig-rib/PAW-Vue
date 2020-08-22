@@ -313,7 +313,12 @@ export default {
       })
     },
     goToProfile () {
-
+      this.$router.push({
+        name: 'user-profile',
+        params: {
+          id: this.$store.getters.user.id
+        }
+      })
     },
     logout () {
       this.$store.dispatch('logout')

@@ -203,13 +203,18 @@ export default {
         maxRep: this.exploreParams.maxRep,
         minVotes: this.exploreParams.minVotes,
         maxVotes: this.exploreParams.maxVotes,
-        langId: (this.exploreParams.languages == null) ? null : this.exploreParams.languages.map(lang => lang.id),
-        tagId: (this.exploreParams.tags == null) ? null : this.exploreParams.tags.map(tag => tag.id),
         uname: this.exploreParams.username,
         title: this.exploreParams.snippetTitle,
         field: this.exploreParams.orderBy,
         includeFlagged: this.exploreParams.includeFlagged
       }
+      if (this.exploreParams.languages != null && this.exploreParams.languages.length !== 0) {
+        queryParams.langId = this.exploreParams.languages.map(lang => lang.id)
+      }
+      if (this.exploreParams.tags != null && this.exploreParams.tags.length !== 0) {
+        queryParams.tagId = this.exploreParams.tags.map(tag => tag.id)
+      }
+      console.log(queryParams)
       // TODO handle results
       this.$router.replace({
         query: queryParams

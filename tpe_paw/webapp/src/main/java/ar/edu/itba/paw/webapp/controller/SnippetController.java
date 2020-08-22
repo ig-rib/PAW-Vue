@@ -171,7 +171,7 @@ public class SnippetController {
         return Response.created(uriInfo.getBaseUriBuilder().path("snippet").path(String.valueOf(snippetId)).build()).build();
     }
 
-    //TODO: Check if delete is appropiate for this operation.
+    //TODO: Check if delete is appropriate for this operation.
     @DELETE
     @Path("{id}/report/delete")
     public Response reportSnippet(@PathParam(value="id") long id) {
