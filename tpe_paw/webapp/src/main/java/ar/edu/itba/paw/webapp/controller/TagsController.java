@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.security.Principal;
@@ -99,6 +100,7 @@ public class TagsController {
 
     @POST
     @Path("/tags")
+    @RolesAllowed({"ADMIN"})
     @Produces(value = {MediaType.APPLICATION_JSON})
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response createTag(TagCreateDto tagCreateDto){
