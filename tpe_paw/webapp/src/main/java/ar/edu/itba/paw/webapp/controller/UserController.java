@@ -10,19 +10,22 @@ import ar.edu.itba.paw.webapp.dto.ErrorMessageDto;
 import ar.edu.itba.paw.webapp.dto.ProfilePhotoDto;
 import ar.edu.itba.paw.webapp.dto.SnippetDto;
 import ar.edu.itba.paw.webapp.dto.UserDto;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static ar.edu.itba.paw.webapp.utility.Constants.SNIPPET_PAGE_SIZE;
 
-@Path("/")
+@Path("/user")
 public class UserController {
 
     @Autowired
@@ -44,7 +47,7 @@ public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @GET
-    @Path("user/{id}/active")
+    @Path("{id}/active")
     public Response activeUserSnippets(
             final @PathParam(value="id") long id,
             final @QueryParam(value = "page") @DefaultValue("1") int page
@@ -74,7 +77,7 @@ public class UserController {
     }
 
     @GET
-    @Path("user/{id}/deleted")
+    @Path("{id}/deleted")
     public Response deletedUserSnippets(
             final @PathParam(value="id") long id,
             final @QueryParam(value = "page") @DefaultValue("1") int page
@@ -110,7 +113,7 @@ public class UserController {
     }
 
     @GET
-    @Path("user/{id}")
+    @Path("{id}")
     public Response getUser(final @PathParam(value="id") long id) {
         User user = userService.findUserById(id).orElse(null);
         if (user == null){
@@ -118,13 +121,32 @@ public class UserController {
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        UserDto userDto = UserDto.fromUser(user);
+        UserDto userDto = UserDto.fromUser(user, uriInfo);
         return Response.ok(userDto).build();
     }
 
-    @PUT
-    @Path("user/{id}/profile-photo")
-    public Response uploadPhoto(@PathParam(value="id") final long id, ProfilePhotoDto profilePhotoDto) {
+    @GET
+    @Path("{id}/profile-photo")
+    @Produces(MediaType.MULTIPART_FORM_DATA)
+    public Response getProfilePhoto(final @PathParam("id") long id) {
+        User user = userService.findUserById(id).orElse(null);
+        if (user == null){
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+        }
+        byte[] icon = user.getIcon();
+        // handle case where no icon exists
+        return Response.ok(icon).build();
+    }
+
+    @POST
+    @Path("{id}/profile-photo")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response uploadPhoto(@PathParam(value="id") final long id
+//                                 @FormDataParam("photo") final InputStream iconInputStream
+//                                 @FormDataParam("photo") final FormDataContentDisposition icon
+    ) {
         User user = userService.findUserById(id).orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
@@ -137,12 +159,20 @@ public class UserController {
             errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.FORBIDDEN).entity(errorMessageDto).build();
         }
-        userService.changeProfilePhotoBase64(currentUser.getId(), profilePhotoDto.getEncodedPhoto());
+//        byte[] icon;
+//        try {
+//            icon = IOUtils.toByteArray(iconInputStream);
+//        } catch (IOException e) {
+//            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+//            errorMessageDto.setMessage(messageSource.getMessage("error.500.io.image", null, LocaleContextHolder.getLocale()));
+//            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorMessageDto).build();
+//        }
+        userService.changeProfilePhoto(currentUser.getId(), new byte[0]);
         return Response.accepted().build();
     }
 
     @PUT
-    @Path("user/{id}/user-data")
+    @Path("{id}/user-data")
     public Response updateUserData(@PathParam(value="id") final long id, UserDto userDto) {
         User user = userService.findUserById(id).orElse(null);
         if (user == null){

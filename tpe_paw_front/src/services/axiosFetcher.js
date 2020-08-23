@@ -18,7 +18,7 @@ axios.defaults.paramsSerializer = params => {
  * @returns {Promise} Response
  */
 
-const axiosFetcher = (url = '', params = {}, method = 'get', data = {}) => {
+const axiosFetcher = (url = '', params = {}, method = 'get', data = {}, headers = {}) => {
   url = urlMaker(url, params.pathVariables)
   const config = {
     headers: {
@@ -26,6 +26,7 @@ const axiosFetcher = (url = '', params = {}, method = 'get', data = {}) => {
     },
     params: params.queryParams
   }
+  Object.assign(config.headers, headers)
   if (Store.getters.token.value != null) {
     config.headers.Authorization = 'Bearer ' + Store.getters.token.value
   }
@@ -80,7 +81,7 @@ const get = (url, params = {}, data = {}) => axiosFetcher(url, params, 'get')
  * @param {Object} data
  * @returns {Promise} Response
  */
-const post = (url, params = {}, data = {}) => axiosFetcher(url, params, 'post', data)
+const post = (url, params = {}, data = {}, headers = {}) => axiosFetcher(url, params, 'post', data, headers)
 
 /**
  * Perform put request
@@ -91,7 +92,7 @@ const post = (url, params = {}, data = {}) => axiosFetcher(url, params, 'post', 
  * @param {Object} data
  * @returns {Promise} Response
  */
-const put = (url, params = {}, data = {}) => axiosFetcher(url, params, 'put', data)
+const put = (url, params = {}, data = {}, headers = {}) => axiosFetcher(url, params, 'put', data, headers)
 
 /**
  * Perform delete request

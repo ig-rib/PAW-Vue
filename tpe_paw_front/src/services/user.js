@@ -7,6 +7,12 @@ const getUser = (id) => axiosFetcher.get(urls.user.getUser, {
   }
 })
 
+const getProfilePhoto = (id) => axiosFetcher.get(urls.user.profilePhoto, {
+  pathVariables: {
+    id
+  }
+})
+
 const getActiveUserSnippets = (id, page) => axiosFetcher.get(urls.user.getActiveUserSnippets, {
   queryParams: {
     page
@@ -24,13 +30,15 @@ const getDeletedUserSnippets = (id, page) => axiosFetcher.get(urls.user.getDelet
     id
   }
 })
-const uploadProfilePhoto = (id, encodedPhoto) => axiosFetcher.put(urls.user.uploadProfilePhoto, {
+const uploadProfilePhoto = (id, photo) => axiosFetcher.post(urls.user.profilePhoto, {
   pathVariables: {
     id
   }
-}, {
-  encodedPhoto
-})
+},
+  photo,
+  {
+    'Content-Type' : 'multipart/form-data'
+  })
 
 const updateUserData = (id, description, username) => axiosFetcher.put(urls.user.updateUserData, {
   pathVariables: {
@@ -46,5 +54,6 @@ export default {
   getActiveUserSnippets,
   getDeletedUserSnippets,
   uploadProfilePhoto,
-  updateUserData
+  updateUserData,
+  getProfilePhoto
 }

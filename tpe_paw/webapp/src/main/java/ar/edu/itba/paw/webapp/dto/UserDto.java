@@ -2,6 +2,8 @@ package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.models.User;
 
+import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 import java.time.Instant;
 import java.util.Base64;
 
@@ -13,19 +15,17 @@ public class UserDto {
     private String description;
     private int reputation;
     private Instant dateJoined;
-    private byte[] icon;
+    private URI icon;
     private boolean verified;
     private String lang;
     private String region;
 
-    public static UserDto fromUser(User user){
+    public static UserDto fromUser(User user, UriInfo uriInfo){
         final UserDto dto = new UserDto();
 
         dto.id = user.getId();
         dto.username = user.getUsername();
-        if (user.getIcon() != null) {
-            dto.icon = Base64.getEncoder().encode(user.getIcon());
-        }
+        dto.icon = uriInfo.getAbsolutePathBuilder().path("profile-photo").build();
         dto.description = user.getDescription();
 
         return dto;
@@ -79,14 +79,6 @@ public class UserDto {
         this.dateJoined = dateJoined;
     }
 
-    public byte[] getIcon() {
-        return icon;
-    }
-
-    public void setIcon(byte[] icon) {
-        this.icon = icon;
-    }
-
     public boolean isVerified() {
         return verified;
     }
@@ -117,5 +109,13 @@ public class UserDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public URI getIcon() {
+        return icon;
+    }
+
+    public void setIcon(URI icon) {
+        this.icon = icon;
     }
 }

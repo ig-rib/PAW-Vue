@@ -313,6 +313,7 @@ export default {
       })
     },
     goToProfile () {
+      console.log(this.$store.getters.user)
       this.$router.push({
         name: 'user-profile',
         params: {
