@@ -17,6 +17,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.security.Principal;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Optional;
@@ -45,7 +46,6 @@ public class SnippetController {
     @Path("/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response snippetDetail(@PathParam(value="id") long id) {
-        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
 
         Snippet snippet = snippetService.findSnippetById(id).orElse(null);
         if(snippet == null){
