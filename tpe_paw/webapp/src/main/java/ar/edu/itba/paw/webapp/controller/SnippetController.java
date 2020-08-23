@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.service.*;
-import ar.edu.itba.paw.models.Language;
 import ar.edu.itba.paw.models.Snippet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
@@ -17,7 +16,6 @@ import org.springframework.context.i18n.LocaleContextHolder;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.security.Principal;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Optional;
@@ -227,6 +225,7 @@ public class SnippetController {
         return Response.status(errorStatus).entity(errorMessageDto).build();
     }
 
+    //TODO: Delete
     @Deprecated
     private Snippet getSnippet(final long snippetId) {
         Optional<Snippet> retrievedSnippet = this.snippetService.findSnippetById(snippetId);

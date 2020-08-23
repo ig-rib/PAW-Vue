@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.Language;
 import ar.edu.itba.paw.models.Snippet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
+import ar.edu.itba.paw.webapp.dto.LanguageCreateDto;
 import ar.edu.itba.paw.webapp.dto.LanguageDto;
 import ar.edu.itba.paw.webapp.dto.SnippetDto;
 import ar.edu.itba.paw.webapp.exception.LanguageNotFoundException;
@@ -18,9 +19,7 @@ import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static ar.edu.itba.paw.webapp.utility.Constants.LANGUAGE_PAGE_SIZE;
@@ -75,6 +74,23 @@ public class LanguagesController {
 
         return responseBuilder.build();
     }
+
+    @POST
+    @Path("/languages")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    @Consumes(value = {MediaType.APPLICATION_JSON})
+    public Response createLanguage(LanguageCreateDto languageCreateDto){
+        List<String> languages = languageCreateDto.getLanguages() != null ? languageCreateDto.getLanguages() : Collections.emptyList();
+        languages.removeAll(Arrays.asList("", null));
+
+        if (!languages.isEmpty()) languageService.addLanguages(languages);
+
+        LOGGER.debug("Admin added languages -> {}", languages.toString());
+
+        return Response.ok().build();
+    }
+
+
 
     @GET
     @Path("languages/search")
