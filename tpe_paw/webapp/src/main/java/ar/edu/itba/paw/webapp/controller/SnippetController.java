@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.dao.SnippetDao;
 import ar.edu.itba.paw.interfaces.service.*;
 import ar.edu.itba.paw.models.Language;
 import ar.edu.itba.paw.models.Snippet;
@@ -19,8 +20,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.security.Principal;
 import java.time.Instant;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Path("/snippet")
 public class SnippetController {
@@ -35,12 +36,35 @@ public class SnippetController {
     @Autowired private MessageSource messageSource;
     @Autowired private ReportService reportService;
     @Autowired private LanguageService languageService;
+    @Autowired private SearchHelper searchHelper;
     @Context UriInfo uriInfo;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ar.edu.itba.paw.webapp.old_controller.SnippetController.class);
 
     @Context
     private SecurityContext securityContext;
+
+    @GET
+    @Path("/")
+    public Response searchInHome(final @QueryParam("q") String query,
+                                 final @QueryParam("t") String type,
+                                 final @QueryParam("uid") String userId,
+                                 final @QueryParam("s") String sort,
+                                 final @QueryParam("page") @DefaultValue("1") int page) {
+        List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.HOME, sort, null, null, page)
+                .stream()
+                .map(SnippetDto::fromSnippet)
+                .collect(Collectors.toList());
+        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.HOME, null, null);
+
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("q", query);
+        queryParams.put("t", type);
+        queryParams.put("uid", userId);
+        queryParams.put("s", sort);
+
+        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
+    }
 
     @GET
     @Path("/{id}")
@@ -76,6 +100,29 @@ public class SnippetController {
             }
         }
         return Response.status(Response.Status.NO_CONTENT).build();
+    }
+
+    // Needed for admin to search snippets flagged by him/herself
+    @GET
+    @Path("/flagged")
+    public Response searchInFlagged(final @QueryParam("q") String query,
+                                    final @QueryParam("t") String type,
+                                    final @QueryParam("uid") String userId,
+                                    final @QueryParam("s") String sort,
+                                    final @QueryParam("page") @DefaultValue("1") int page) {
+
+        List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.FLAGGED, sort, null, null, page)
+                .stream()
+                .map(SnippetDto::fromSnippet)
+                .collect(Collectors.toList());
+        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.FLAGGED, null, null);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("q", query);
+        queryParams.put("t", type);
+        queryParams.put("uid", userId);
+        queryParams.put("s", sort);
+
+        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
     }
 
     @PUT

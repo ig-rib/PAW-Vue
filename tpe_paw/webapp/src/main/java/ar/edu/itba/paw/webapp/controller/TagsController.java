@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.dao.SnippetDao;
 import ar.edu.itba.paw.interfaces.service.RoleService;
 import ar.edu.itba.paw.interfaces.service.SnippetService;
 import ar.edu.itba.paw.interfaces.service.TagService;
@@ -22,10 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -45,6 +43,10 @@ public class TagsController {
     private MessageSource messageSource;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private SearchHelper searchHelper;
+    @Autowired
+    private LoginAuthentication loginAuthentication;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TagsController.class);
 
@@ -123,6 +125,35 @@ public class TagsController {
         return respBuilder.build();
     }
 
+    @GET
+    @Path("/tags/{tagId}/snippets")
+    public Response searchInTag(final @QueryParam("q") String query,
+                                final @QueryParam("t") String type,
+                                final @QueryParam("uid") String userId,
+                                final @QueryParam("s") String sort,
+                                final @QueryParam("page") @DefaultValue("1") int page,
+                                final @PathParam(value = "tagId") long tagId) {
+
+        Tag tag = this.tagService.findTagById(tagId).orElse(null);
+        if (tag == null) {
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.tag", new Object[]{tagId}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+        }
+        List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.TAGS, sort, null, tagId, page)
+                .stream()
+                .map(SnippetDto::fromSnippet)
+                .collect(Collectors.toList());
+        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.TAGS, null, tagId);
+
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("q", query);
+        queryParams.put("t", type);
+        queryParams.put("uid", userId);
+        queryParams.put("s", sort);
+
+        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);    }
+
     //TODO: Check follow/unfollow repsonse and how info is received
     @POST
     @Path("tags/{tagId}/follow")
@@ -156,7 +187,35 @@ public class TagsController {
     }
 
     @GET
-    @Path("tags/search")
+    @Path("/following/snippets")
+    public Response searchInFollowing(final @QueryParam("q") String query,
+                                      final @QueryParam("t") String type,
+                                      final @QueryParam("uid") String userId,
+                                      final @QueryParam("s") String sort,
+                                      final @QueryParam("page") @DefaultValue("1") int page) {
+
+        User user = loginAuthentication.getLoggedInUser();
+        if (user == null){
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+        }
+        List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.FOLLOWING, sort, user.getId(), null, page)
+                .stream()
+                .map(SnippetDto::fromSnippet)
+                .collect(Collectors.toList());
+        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.FOLLOWING, user.getId(), null);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("q", query);
+        queryParams.put("t", type);
+        queryParams.put("uid", userId);
+        queryParams.put("s", sort);
+
+        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
+    }
+
+    @GET
+    @Path("tags")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response searchTags(final @QueryParam("page") @DefaultValue("1") int page,
                                final @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,

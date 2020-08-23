@@ -66,19 +66,41 @@ const snippetQueryParamTemplate = {
  * @param {String} params.s Sort, one of constants.orders.x.value where x can be any
  * @returns {Promise} Response
  */
-const searchInLocation = (location, params) => {
+const searchInLocation = (route, queryParams) => {
   for (const key in snippetQueryParamTemplate) {
-    if (params[key] == null) {
-      params[key] = snippetQueryParamTemplate[key]
+    if (queryParams[key] == null) {
+      queryParams[key] = snippetQueryParamTemplate[key]
     }
   }
-  // Remove the locale part of uri
-  const resultArray = location.replace(/\/$/, '').split('/')
-  resultArray.shift()
-  resultArray.shift()
-  const pathSuffix = resultArray.join('/')
-  return axiosFetcher.get(urls.localDomain + pathSuffix + '/search', {
-    queryParams: params
+  // // Remove the locale part of uri
+  // const resultArray = location.replace(/\/$/, '').split('/')
+  // resultArray.shift()
+  // resultArray.shift()
+  // const pathSuffix = resultArray.join('/')
+  let url = ''
+  let pathVariables = {}
+  
+  switch(route.name) {
+    case 'feed':
+      url = urls.snippet.snippets
+      break;
+    case 'tag-snippets':
+      url = urls.tags.getTagSnippets
+      pathVariables.id = route.params.id
+      break;
+    case 'language-snippets':
+      url = urls.languages.getLanguageSnippets
+      pathVariables.id = route.params.id
+      break;
+    case 'explore':
+      return explore(queryParams)
+  }
+
+  console.log('searching in location', route, 'url', url, 'pathVariables', pathVariables)
+
+  return axiosFetcher.get(url, {
+    queryParams,
+    pathVariables
   })
 }
 

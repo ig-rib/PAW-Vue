@@ -70,7 +70,7 @@ public class SnippetExploreController {
     }
 
     @GET
-    @Path("/search")
+    @Path("/")
     public Response exploreSearch(    final @QueryParam("t") String type,
                                       final @QueryParam("s") String sort,
                                       final @QueryParam("page") @DefaultValue("1") int page,
