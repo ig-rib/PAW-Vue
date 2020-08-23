@@ -64,7 +64,7 @@ public class UserController {
                                     final @QueryParam("s") String sort,
                                     final @QueryParam("page") @DefaultValue("1") int page) {
 
-        User user = loginAuthentication.getLoggedInUser();
+        User user = loginAuthentication.getLoggedInUser().orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
@@ -92,13 +92,13 @@ public class UserController {
                                                 final @QueryParam("s") String sort,
                                                 final @QueryParam("page") @DefaultValue("1") int page,
                                                 final @PathParam(value = "id") long id) {
-        User user = loginAuthentication.getLoggedInUser();
+        User user = userService.findUserById(id).orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        User currentUser = loginAuthentication.getLoggedInUser();
+        User currentUser = loginAuthentication.getLoggedInUser().orElse(null);
         if (currentUser == null || !user.equals(currentUser)) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
@@ -143,13 +143,13 @@ public class UserController {
     }
 
     @GET
-    @Path("snippets/favorite")
+    @Path("snippets/favorites")
     public Response searchInFavorites(final @QueryParam("q") String query,
                                       final @QueryParam("t") String type,
                                       final @QueryParam("uid") String userId,
                                       final @QueryParam("s") String sort,
                                       final @QueryParam("page") @DefaultValue("1") int page) {
-        User user = loginAuthentication.getLoggedInUser();
+        User user = loginAuthentication.getLoggedInUser().orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
@@ -211,7 +211,7 @@ public class UserController {
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{id}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        User currentUser =  loginAuthentication.getLoggedInUser();
+        User currentUser =  loginAuthentication.getLoggedInUser().orElse(null);
         if (currentUser == null || !user.equals(currentUser)) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
@@ -241,7 +241,7 @@ public class UserController {
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{id}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        User currentUser =  loginAuthentication.getLoggedInUser();
+        User currentUser =  loginAuthentication.getLoggedInUser().orElse(null);
         if (currentUser == null || !user.equals(currentUser)) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
@@ -261,7 +261,7 @@ public class UserController {
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{id}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        User currentUser =  loginAuthentication.getLoggedInUser();
+        User currentUser =  loginAuthentication.getLoggedInUser().orElse(null);
         if (currentUser == null || !user.equals(currentUser)) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));

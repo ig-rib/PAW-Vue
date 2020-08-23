@@ -194,7 +194,7 @@ public class TagsController {
                                       final @QueryParam("s") String sort,
                                       final @QueryParam("page") @DefaultValue("1") int page) {
 
-        User user = loginAuthentication.getLoggedInUser();
+        User user = loginAuthentication.getLoggedInUser().orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
