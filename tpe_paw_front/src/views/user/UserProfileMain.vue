@@ -65,7 +65,7 @@ import urls from '@/services/urls.js'
         // user.uploadProfilePhoto(75, formData).then(r2 => {
         //   console.log(r2.data)
         // })
-        user.uploadProfilePhoto64(75, btoa(this.profilePhoto)).then(r => {
+        user.uploadProfilePhoto64(this.$route.params.id, btoa(this.profilePhoto)).then(r => {
           console.log(r.data)
         })
       },

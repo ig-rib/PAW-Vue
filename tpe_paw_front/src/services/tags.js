@@ -8,28 +8,28 @@ const queryParamTemplate = {
   showOnlyFollowing: 'false'
 } 
 
-const getTagSnippets = (tagId, page = 1) => axiosFetcher.get(urls.tags.getTagSnippets, {
+const getTagSnippets = (id, page = 1) => axiosFetcher.get(urls.tags.getTagSnippets, {
   queryParams: {
     page
   },
   pathVariables: {
-    tagId
+    id
   }
 })
 
 const followTag = (id) => axiosFetcher.post(urls.tags.followTag, {
   pathVariables: {
-    tagId: id
+    id
   }
 })
 
 const unfollowTag = (id) => axiosFetcher.post(urls.tags.unfollowTag, {
   pathVariables: {
-    tagId: id
+    id
   }
 })
 
-const deleteTag = (id) => axiosFetcher.del(urls.tags.deleteTag, { pathVariables: { tagId: id } })
+const deleteTag = (id) => axiosFetcher.del(urls.tags.deleteTag, { pathVariables: { id: id } })
 
 const searchTags = params => {
   for (const key in queryParamTemplate) {

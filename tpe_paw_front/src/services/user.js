@@ -7,6 +7,8 @@ const getUser = (id) => axiosFetcher.get(urls.user.getUser, {
   }
 })
 
+const getLoggedInUser = () => axiosFetcher.get(urls.user.current)
+
 const getProfilePhoto = (id) => axiosFetcher.get(urls.user.profilePhoto, {
   pathVariables: {
     id
@@ -61,6 +63,7 @@ const updateUserData = (id, description, username) => axiosFetcher.put(urls.user
 
 export default {
   getUser,
+  getLoggedInUser,
   getActiveUserSnippets,
   getDeletedUserSnippets,
   uploadProfilePhoto,

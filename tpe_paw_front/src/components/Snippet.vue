@@ -1,5 +1,5 @@
 <template>
-  <v-container> 
+  <v-container id="snippet-card-container"> 
       <v-card @click="goToSnippetDetail">
           <!-- User and language -->
           <v-container fill-height fluid>
@@ -7,7 +7,8 @@
                   <v-col class="pt-0" cols="8">
                     <v-list-item two-line>
                       <v-avatar class="mr-2" color="indigo">
-                          <v-icon dark>mdi-account-circle</v-icon>
+                        <img v-if="!error" @error="error = true" class="profile-circle" :src="snippetData.owner.icon"/>
+                        <v-icon v-else>mdi-account-circle</v-icon>
                       </v-avatar>
                       <v-list-item-content> 
                         <v-list-item-title class="headline mb-1">{{ snippetData.owner.username }}</v-list-item-title>
@@ -69,7 +70,7 @@ export default {
 
   data () {
     return {
-      
+      error: false
     }
   },
   methods: {
@@ -95,5 +96,10 @@ export default {
 </script>
 
 <style lang="scss">
-
+#snippet-card-container {
+  .account-circle {
+    max-height: 30px;
+    max-width: 30px;
+  }
+}
 </style>

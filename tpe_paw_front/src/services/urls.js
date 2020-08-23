@@ -3,6 +3,7 @@ const localDomain = 'http://localhost:8080/'
 const urls = {
   localDomain,
   user: {
+    current: localDomain + 'user/current',
     getActiveUserSnippets: localDomain + 'user/:id/snippets/active',
     getDeletedUserSnippets: localDomain + 'user/:id/snippets/deleted',
     upvotedSnippets: localDomain + 'user/upvoted',

@@ -55,6 +55,9 @@ export default {
               query: this.prevRoute.query
             })
           }
+          user.getLoggedInUser().then(r => {
+            this.$store.dispatch('setUser', r.data)
+          })
           })
         .catch(e => {
           this.invalid = true

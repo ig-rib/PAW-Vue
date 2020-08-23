@@ -57,6 +57,13 @@ public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @GET
+    @Path("/current")
+    public Response getLoggedInUser(final @QueryParam("uname") String username) {
+        User user = loginAuthentication.getLoggedInUser().orElse(null);
+        return Response.ok(UserDto.fromUser(user, uriInfo)).build();
+    }
+
+    @GET
     @Path("/snippets/upvoted")
     public Response searchInUpvoted(final @QueryParam("q") String query,
                                     final @QueryParam("t") String type,

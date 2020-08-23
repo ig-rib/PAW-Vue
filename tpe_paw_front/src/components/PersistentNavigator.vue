@@ -134,7 +134,8 @@
           <v-layout v-else>
             <v-flex shrink>
               <v-btn x-large icon @click="goToProfile">
-                <v-icon>mdi-account-circle</v-icon>  
+                <img v-if="!profileImageError" @error="profileImageError = true" class="profile-circle" :src="currentUser.icon"/>
+                <v-icon v-else>mdi-account-circle</v-icon>
               </v-btn>
             </v-flex>
             <v-flex shrink>
@@ -179,7 +180,8 @@
     <v-layout v-else>
       <v-flex shrink>
         <v-btn x-large icon @click="goToProfile">
-          <v-icon>mdi-account-circle</v-icon>  
+          <img v-if="!profileImageError" @error="profileImageError = true" class="profile-circle" :src="currentUser.icon"/>
+          <v-icon v-else>mdi-account-circle</v-icon>  
         </v-btn>
       </v-flex>
       <v-flex shrink>
@@ -238,7 +240,8 @@ export default {
             name: 'tags-main'
           }
         }
-      ]
+      ],
+      profileImageError: false
     }
   },
   computed: {
@@ -259,6 +262,9 @@ export default {
         default:
           return 'snippet'
       }
+    },
+    currentUser () {
+      return this.$store.getters.user
     }
   },
   methods: {

@@ -96,8 +96,6 @@ const searchInLocation = (route, queryParams) => {
       return explore(queryParams)
   }
 
-  console.log('searching in location', route, 'url', url, 'pathVariables', pathVariables)
-
   return axiosFetcher.get(url, {
     queryParams,
     pathVariables
