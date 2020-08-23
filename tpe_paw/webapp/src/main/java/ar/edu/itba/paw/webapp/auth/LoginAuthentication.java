@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Context;
+import java.security.Principal;
 import java.util.Optional;
 
 @Component
@@ -21,37 +22,27 @@ public class LoginAuthentication {
 
     @Autowired
     private UserService userService;
-    @Context
-    private SecurityContext securityContext;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginAuthentication.class);
 
     public String getLoggedInUsername() {
         return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        if (securityContext != null) {
-//            final Object userDetails = securityContext.getAuthentication().getPrincipal();
-//            if (userDetails instanceof UserDetails) {
-//                return ((UserDetails) userDetails).getUsername();
-//            }
-//        }
-//        return null;
     }
 
-    public User getLoggedInUser() {
+    public Optional<User> getLoggedInUser() {
         final String username = this.getLoggedInUsername();
         if (username == null) {
-            return null;
+            return Optional.empty();
         }
         return this.findUser(username);
     }
 
-    private User findUser(String username) {
+    private Optional<User> findUser(String username) {
         final Optional<User> user = userService.findUserByUsername(username);
         if (!user.isPresent()) {
             LOGGER.warn("Logged user {} not found in the database", username);
-            return null;
         }
-        return user.get();
+        return user;
     }
 
 }

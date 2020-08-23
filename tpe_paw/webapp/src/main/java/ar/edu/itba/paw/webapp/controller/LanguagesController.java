@@ -45,9 +45,6 @@ public class LanguagesController {
     @Context
     private UriInfo uriInfo;
 
-    //TODO: See if better to use loginAuthentication directly
-    @Context
-    private SecurityContext securityContext;
 
     @GET
     @Path("/languages")
@@ -160,7 +157,7 @@ public class LanguagesController {
     @Consumes(value = {MediaType.APPLICATION_JSON})
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response deleteLanguage (@PathParam("langId") long langId) {
-        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+        User user = loginAuthentication.getLoggedInUser().orElse(null);
 
         if (user != null && roleService.isAdmin(user.getId())){
             this.languageService.removeLanguage(langId);

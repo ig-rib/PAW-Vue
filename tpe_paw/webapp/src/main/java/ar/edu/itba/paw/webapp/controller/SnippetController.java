@@ -35,10 +35,8 @@ public class SnippetController {
     @Autowired private LanguageService languageService;
     @Context UriInfo uriInfo;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ar.edu.itba.paw.webapp.old_controller.SnippetController.class);
-
-    @Context
-    private SecurityContext securityContext;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ar.edu.itba.paw.webapp.controller.SnippetController.class);
+    
 
     @GET
     @Path("/{id}")
@@ -47,7 +45,7 @@ public class SnippetController {
 
         Snippet snippet = snippetService.findSnippetById(id).orElse(null);
         if(snippet == null){
-            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, securityContext.getUserPrincipal().getName());
+            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
         }
 
         SnippetDto snippetDto = SnippetDto.fromSnippet(snippet);
@@ -57,20 +55,20 @@ public class SnippetController {
     @DELETE
     @Path("/{id}")
     public Response deleteSnippet(@PathParam(value="id") long id) {
-        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+        User user = loginAuthentication.getLoggedInUser().orElse(null);
         Optional<Snippet> snippet = this.snippetService.findSnippetById(id);
 
         //TODO: Check what should we respond in the body in case of an error
         if (!snippet.isPresent()) {
-            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, securityContext.getUserPrincipal().getName());
+            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
         }
         if (user == null || user.getUsername().compareTo(snippet.get().getOwner().getUsername()) != 0) {
-            return buildErrorResponse("error.403.snippet", Response.Status.FORBIDDEN, securityContext.getUserPrincipal().getName());
+            return buildErrorResponse("error.403.snippet", Response.Status.FORBIDDEN, loginAuthentication.getLoggedInUsername());
         } else {
             //TODO: Adapt to be able to restore snippet
             if (!this.snippetService.deleteOrRestoreSnippet(snippet.get(), user.getId(), true)) {
                 /* Operation was unsuccessful */
-                return buildErrorResponse("error.409.snippet", Response.Status.CONFLICT, securityContext.getUserPrincipal().getName());
+                return buildErrorResponse("error.409.snippet", Response.Status.CONFLICT, loginAuthentication.getLoggedInUsername());
             }
         }
         return Response.status(Response.Status.NO_CONTENT).build();
@@ -86,14 +84,14 @@ public class SnippetController {
             final @QueryParam("selected") boolean selected
     ) {
 
-        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+        User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
 
         if (user == null) {
-            return buildErrorResponse("error.403.snippet", Response.Status.FORBIDDEN, securityContext.getUserPrincipal().getName());
+            return buildErrorResponse("error.403.snippet", Response.Status.FORBIDDEN, loginAuthentication.getLoggedInUsername());
         } else {
             Snippet snippet = snippetService.findSnippetById(id).orElse(null);
             if(snippet == null){
-                return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, securityContext.getUserPrincipal().getName());
+                return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
             }
             this.voteService.performVote(snippet.getOwner().getId(), user.getId(), id, selected, type);
         }
@@ -109,7 +107,7 @@ public class SnippetController {
             @PathParam(value="id") long id,
             final @QueryParam("type") boolean favorite
     ) {
-        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+        User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
 
         if (user == null) {
             return buildErrorResponse("error.403.snippet.fav", Response.Status.FORBIDDEN, null);
@@ -135,9 +133,9 @@ public class SnippetController {
         //final String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
         Snippet snippet = snippetService.findSnippetById(id).orElse(null);
         if(snippet == null){
-            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, securityContext.getUserPrincipal().getName());
+            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
         }
-        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+        User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
 
         if (user == null || user.equals(snippet.getOwner())) {
             return buildErrorResponse("error.403.snippet.report.owner", Response.Status.FORBIDDEN, null);
@@ -159,7 +157,7 @@ public class SnippetController {
     @POST
     @Path("/create")
     public Response createSnippet(SnippetCreateDto snippetDto) {
-        User user = loginAuthentication.getLoggedInUser();
+        User user = loginAuthentication.getLoggedInUser().orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
@@ -173,10 +171,10 @@ public class SnippetController {
     @DELETE
     @Path("{id}/report/delete")
     public Response reportSnippet(@PathParam(value="id") long id) {
-        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+        User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
         Snippet snippet = snippetService.findSnippetById(id).orElse(null);
         if(snippet == null){
-            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, securityContext.getUserPrincipal().getName());
+            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
         }
 
         if (user == null || !user.equals(snippet.getOwner())) {
@@ -193,14 +191,14 @@ public class SnippetController {
             @QueryParam(value="isFlagged") boolean isFlagged,
             @QueryParam(value="baseUrl") String baseUrl
     ) {
-        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+        User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
 
         if (user == null || !roleService.isAdmin(user.getId())) {
             return buildErrorResponse("error.403.snippet.flag", Response.Status.UNAUTHORIZED, null);
         } else {
             Snippet snippet = snippetService.findSnippetById(id).orElse(null);
             if(snippet == null){
-                return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, securityContext.getUserPrincipal().getName());
+                return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
             }
 
             // Getting the url of the server
