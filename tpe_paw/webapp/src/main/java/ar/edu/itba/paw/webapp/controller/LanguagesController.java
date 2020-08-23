@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.Language;
 import ar.edu.itba.paw.models.Snippet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
+import ar.edu.itba.paw.webapp.dto.LanguageCreateDto;
 import ar.edu.itba.paw.webapp.dto.LanguageDto;
 import ar.edu.itba.paw.webapp.dto.SnippetDto;
 import ar.edu.itba.paw.webapp.exception.LanguageNotFoundException;
@@ -16,11 +17,10 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static ar.edu.itba.paw.webapp.utility.Constants.LANGUAGE_PAGE_SIZE;
@@ -45,9 +45,6 @@ public class LanguagesController {
     @Context
     private UriInfo uriInfo;
 
-    //TODO: See if better to use loginAuthentication directly
-    @Context
-    private SecurityContext securityContext;
 
     @GET
     @Path("/languages")
@@ -75,6 +72,24 @@ public class LanguagesController {
 
         return responseBuilder.build();
     }
+
+    @POST
+    @Path("/languages")
+    @RolesAllowed({"ADMIN"})
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    @Consumes(value = {MediaType.APPLICATION_JSON})
+    public Response createLanguage(LanguageCreateDto languageCreateDto){
+        List<String> languages = languageCreateDto.getLanguages() != null ? languageCreateDto.getLanguages() : Collections.emptyList();
+        languages.removeAll(Arrays.asList("", null));
+
+        if (!languages.isEmpty()) languageService.addLanguages(languages);
+
+        LOGGER.debug("Admin added languages -> {}", languages.toString());
+
+        return Response.ok().build();
+    }
+
+
 
     @GET
     @Path("languages/search")
@@ -142,7 +157,7 @@ public class LanguagesController {
     @Consumes(value = {MediaType.APPLICATION_JSON})
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response deleteLanguage (@PathParam("langId") long langId) {
-        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+        User user = loginAuthentication.getLoggedInUser().orElse(null);
 
         if (user != null && roleService.isAdmin(user.getId())){
             this.languageService.removeLanguage(langId);

@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.service.CryptoService;
 import ar.edu.itba.paw.interfaces.service.EmailService;
 import ar.edu.itba.paw.interfaces.service.UserService;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
 import ar.edu.itba.paw.webapp.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,8 +37,8 @@ public class RegistrationController {
     private MessageSource messageSource;
     @Autowired
     private EmailService emailService;
-    @Context
-    private SecurityContext securityContext;
+
+    @Autowired private LoginAuthentication loginAuthentication;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
 
@@ -64,10 +65,10 @@ public class RegistrationController {
     @GET
     @Path(value = "/verify-email")
     public Response verifyEmail() {
-        User currentUser = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+        User currentUser = loginAuthentication.getLoggedInUser().orElse(null);
         if (currentUser == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
         try {
@@ -81,10 +82,10 @@ public class RegistrationController {
     @POST
     @Path(value = "/verify-email")
     public Response completeVerifyEmail(VerificationDto verificationDto) {
-        User currentUser = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+        User currentUser = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
         if (currentUser == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
         // Checking the code sent by the user is valid
