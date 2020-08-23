@@ -12,7 +12,6 @@
       <input name="photo" type="file" accept="image/*" @change="readImage">
       <v-btn @click="uploadPhoto"></v-btn>
     </v-layout>
-    {{ profilePhoto }}
   </v-container>
 </template>
 

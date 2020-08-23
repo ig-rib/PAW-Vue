@@ -36,7 +36,7 @@
         <jboss.logging.version>3.3.0.Final</jboss.logging.version>
         <eclipse.persistence.moxy.version>2.7.4</eclipse.persistence.moxy.version>
         <hk2.version>2.5.0-b05</hk2.version>
-<!--        <jersey.multipart.version>2.17</jersey.multipart.version>-->
+        <jersey.multipart.version>2.21</jersey.multipart.version>
 <!--        <mimepull.version>1.9.3</mimepull.version>-->
     </properties>
 
@@ -115,11 +115,11 @@
                 </exclusions>
             </dependency>
             <!-- https://mvnrepository.com/artifact/com.sun.jersey.contribs/jersey-multipart -->
-<!--            <dependency>-->
-<!--                <groupId>org.glassfish.jersey.media</groupId>-->
-<!--                <artifactId>jersey-media-multipart</artifactId>-->
-<!--                <version>${jersey.multipart.version}</version>-->
-<!--            </dependency>-->
+            <dependency>
+                <groupId>org.glassfish.jersey.media</groupId>
+                <artifactId>jersey-media-multipart</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
             <!-- https://mvnrepository.com/artifact/org.jvnet.mimepull/mimepull -->
 <!--            <dependency>-->
 <!--                <groupId>org.jvnet.mimepull</groupId>-->

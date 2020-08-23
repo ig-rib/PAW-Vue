@@ -11,6 +11,8 @@ import ar.edu.itba.paw.webapp.dto.ProfilePhotoDto;
 import ar.edu.itba.paw.webapp.dto.SnippetDto;
 import ar.edu.itba.paw.webapp.dto.UserDto;
 import org.apache.commons.io.IOUtils;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -143,9 +146,9 @@ public class UserController {
     @POST
     @Path("{id}/profile-photo")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response uploadPhoto(@PathParam(value="id") final long id
-//                                 @FormDataParam("photo") final InputStream iconInputStream
-//                                 @FormDataParam("photo") final FormDataContentDisposition icon
+    public Response uploadPhoto(@PathParam(value="id") final long id,
+                                 @FormDataParam("photo") final InputStream iconInputStream,
+                                 @FormDataParam("photo") final FormDataContentDisposition iconContentDisposition
     ) {
         User user = userService.findUserById(id).orElse(null);
         if (user == null){
@@ -159,15 +162,15 @@ public class UserController {
             errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.FORBIDDEN).entity(errorMessageDto).build();
         }
-//        byte[] icon;
-//        try {
-//            icon = IOUtils.toByteArray(iconInputStream);
-//        } catch (IOException e) {
-//            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-//            errorMessageDto.setMessage(messageSource.getMessage("error.500.io.image", null, LocaleContextHolder.getLocale()));
-//            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorMessageDto).build();
-//        }
-        userService.changeProfilePhoto(currentUser.getId(), new byte[0]);
+        byte[] icon;
+        try {
+            icon = IOUtils.toByteArray(iconInputStream);
+        } catch (IOException e) {
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.500.io.image", null, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorMessageDto).build();
+        }
+        userService.changeProfilePhoto(currentUser.getId(), icon);
         return Response.accepted().build();
     }
 
