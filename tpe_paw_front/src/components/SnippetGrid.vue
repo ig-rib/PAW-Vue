@@ -67,7 +67,7 @@ export default {
       this.$router.replace({
         query: queryParams
       })
-      searchService.searchInLocation(this.$router.currentRoute.path, queryParams)
+      searchService.searchInLocation(this.$route, queryParams)
         .then(r => {
           this.handleSearchResponse(r)
         })
@@ -93,7 +93,7 @@ export default {
   mounted () {
     const queryParams = this.$route.query
     this.status = 'loading'
-    searchService.searchInLocation(this.$router.currentRoute.path, queryParams)
+    searchService.searchInLocation(this.$route, queryParams)
       .then(r => {
         this.pagination.page = parseInt(queryParams.page) || 1
         this.handleSearchResponse(r)

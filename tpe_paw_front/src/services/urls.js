@@ -3,8 +3,9 @@ const localDomain = 'http://localhost:8080/'
 const urls = {
   localDomain,
   user: {
-    getActiveUserSnippets: localDomain + 'user/:id/active',
-    getDeletedUserSnippets: localDomain + 'user/:id/deleted',
+    getActiveUserSnippets: localDomain + 'user/:id/snippets/active',
+    getDeletedUserSnippets: localDomain + 'user/:id/snippets/deleted',
+    upvotedSnippets: localDomain + 'user/upvoted',
     getUser: localDomain + 'user/:id',
     profilePhoto: localDomain + 'user/:id/profile-photo',
     profilePhoto64: localDomain + 'user/:id/profile-photo64',
@@ -22,12 +23,11 @@ const urls = {
     resetPassword: localDomain + 'reset-password',
   },
   tags: {
-    getTags: localDomain + 'tags',
-    searchTags: localDomain + 'tags/search',
-    getTagSnippets: localDomain + 'tags/:tagId',
-    followTag: localDomain + 'tags/:tagId/follow',
-    unfollowTag: localDomain + 'tags/:tagId/unfollow',
-    deleteTag: localDomain + 'tags/:tagId/delete'
+    searchTags: localDomain + 'tags',
+    getTagSnippets: localDomain + 'tags/:id/snippets',
+    followTag: localDomain + 'tags/:id/follow',
+    unfollowTag: localDomain + 'tags/:id/unfollow',
+    deleteTag: localDomain + 'tags/:id/delete'
   },
   search: {
     searchHome: localDomain + 'search',
@@ -41,9 +41,10 @@ const urls = {
     searchInDeletedUserSnippets: localDomain + 'user/:id/deleted/search'
   },
   explore: {
-    search: localDomain + 'explore/search'
+    search: localDomain + 'explore'
   },
   snippet: {
+    snippets: localDomain + 'snippet',
     getSnippet: localDomain + 'snippet/:id',
     deleteSnippet: localDomain + 'snippet/:id/delete',
     voteSnippet: localDomain + 'snippet/:id/vote', // Pass isPositive in body
@@ -53,9 +54,8 @@ const urls = {
     create: localDomain + 'snippet/create'
   },
   languages: {
-    getLanguages: localDomain + 'languages',
-    searchLanguages: localDomain + 'languages/search',
-    getLanguage: localDomain + 'languages/:id',
+    searchLanguages: localDomain + 'languages',
+    getLanguageSnippets: localDomain + 'languages/:id/snippets',
     deleteLanguage: localDomain + 'languages/:id/delete'
   },
   test: {

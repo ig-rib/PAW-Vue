@@ -1,11 +1,12 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.dao.SnippetDao;
 import ar.edu.itba.paw.interfaces.service.*;
 import ar.edu.itba.paw.models.Language;
 import ar.edu.itba.paw.models.Snippet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
-import ar.edu.itba.paw.webapp.dto.LanguageCreateDto;
+import ar.edu.itba.paw.webapp.dto.ErrorMessageDto;
 import ar.edu.itba.paw.webapp.dto.LanguageDto;
 import ar.edu.itba.paw.webapp.dto.SnippetDto;
 import ar.edu.itba.paw.webapp.exception.LanguageNotFoundException;
@@ -17,7 +18,6 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.*;
@@ -29,7 +29,7 @@ import static ar.edu.itba.paw.webapp.utility.Constants.SNIPPET_PAGE_SIZE;
 //TODO: Repeated code: modularize
 
 @Component
-@Path("/")
+@Path("languages")
 public class LanguagesController {
 
     @Autowired private LanguageService languageService;
@@ -39,60 +39,49 @@ public class LanguagesController {
     @Autowired private RoleService roleService;
     @Autowired private UserService userService;
     @Autowired private MessageSource messageSource;
+    @Autowired private SearchHelper searchHelper;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LanguagesController.class);
 
     @Context
     private UriInfo uriInfo;
 
+    //TODO: See if better to use loginAuthentication directly
+    @Context
+    private SecurityContext securityContext;
 
     @GET
-    @Path("/languages")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response showAllLanguages(final @QueryParam("page") @DefaultValue("1") int page) {
+    @Path("/{langId}/snippets")
+    public Response searchInLanguage(final @QueryParam("q") String query,
+                                     final @QueryParam("t") String type,
+                                     final @QueryParam("uid") String userId,
+                                     final @QueryParam("s") String sort,
+                                     final @QueryParam("page") @DefaultValue("1") int page,
+                                     final @PathParam(value = "langId") long langId) {
 
-        Collection<Language> allLanguages = this.languageService.getAllLanguages(true, page, LANGUAGE_PAGE_SIZE);
-
-        for (Language language : allLanguages) {
-            this.snippetService.analizeSnippetsUsing(language);
+        Language language = this.languageService.findById(langId).orElse(null);
+        if (language == null) {
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.language", new Object[]{langId}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
+        List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.LANGUAGES, sort, null, langId, page)
+                .stream()
+                .map(SnippetDto::fromSnippet)
+                .collect(Collectors.toList());
+        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.LANGUAGES, null, langId);
 
-        int languageCount = this.languageService.getAllLanguagesCount(true);
-        int pageCount = (languageCount/LANGUAGE_PAGE_SIZE) + (languageCount % LANGUAGE_PAGE_SIZE == 0 ? 0 : 1);
-        final List<LanguageDto> languagesDto = allLanguages.stream()
-            .map(LanguageDto::fromLanguage).collect(Collectors.toList());
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("q", query);
+        queryParams.put("t", type);
+        queryParams.put("uid", userId);
+        queryParams.put("s", sort);
 
-        Response.ResponseBuilder responseBuilder =  Response.ok(new GenericEntity<List<LanguageDto>>(languagesDto) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
-        if (page > 1)
-            responseBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
-        if (page < pageCount)
-            responseBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
-
-        return responseBuilder.build();
+        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
     }
-
-    @POST
-    @Path("/languages")
-    @RolesAllowed({"ADMIN"})
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    @Consumes(value = {MediaType.APPLICATION_JSON})
-    public Response createLanguage(LanguageCreateDto languageCreateDto){
-        List<String> languages = languageCreateDto.getLanguages() != null ? languageCreateDto.getLanguages() : Collections.emptyList();
-        languages.removeAll(Arrays.asList("", null));
-
-        if (!languages.isEmpty()) languageService.addLanguages(languages);
-
-        LOGGER.debug("Admin added languages -> {}", languages.toString());
-
-        return Response.ok().build();
-    }
-
-
 
     @GET
-    @Path("languages/search")
+    @Path("/")
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response searchInAllLanguages(@QueryParam("page") @DefaultValue("1") int page,
                                          @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
@@ -120,44 +109,12 @@ public class LanguagesController {
         return responseBuilder.build();
     }
 
-    @GET
-    @Path("languages/{langId}")
-    @Consumes(value = {MediaType.APPLICATION_JSON})
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response showSnippetsForLang(@PathParam(value="langId") long langId,
-        final @QueryParam("page") @DefaultValue("1") int page){
-
-        /* Retrieve the language */
-        Optional<Language> language = languageService.findById(langId);
-        if (!language.isPresent()) {
-            LOGGER.warn("No language found with id {}", langId);
-            // TODO: Check how to handle exception
-            throw new LanguageNotFoundException(messageSource.getMessage("error.404.language", new Object[]{langId}, LocaleContextHolder.getLocale()));
-        }
-        Collection<Snippet> snippets = snippetService.getSnippetsWithLanguage(langId, page, SNIPPET_PAGE_SIZE);
-        int snippetsCount = this.snippetService.getAllSnippetsByLanguageCount(langId);
-
-        List<SnippetDto> snippetsDto = snippets.stream()
-                .map(SnippetDto::fromSnippet)
-                .collect(Collectors.toList());
-        int pageCount = (snippetsCount/SNIPPET_PAGE_SIZE) + ((snippetsCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);
-
-        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<SnippetDto>>(snippetsDto) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
-        if (page > 1)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
-        if (page < pageCount)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
-        return respBuilder.build();
-    }
-
     @POST
-    @Path("languages/{langId}/delete")
+    @Path("/{langId}/delete")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response deleteLanguage (@PathParam("langId") long langId) {
-        User user = loginAuthentication.getLoggedInUser().orElse(null);
+        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
 
         if (user != null && roleService.isAdmin(user.getId())){
             this.languageService.removeLanguage(langId);

@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.dao.SnippetDao;
 import ar.edu.itba.paw.interfaces.service.RoleService;
 import ar.edu.itba.paw.interfaces.service.SnippetService;
 import ar.edu.itba.paw.interfaces.service.TagService;
@@ -8,17 +9,22 @@ import ar.edu.itba.paw.models.Tag;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
 import ar.edu.itba.paw.webapp.dto.*;
+import ar.edu.itba.paw.webapp.exception.ForbiddenAccessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.security.Principal;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static ar.edu.itba.paw.webapp.utility.Constants.SNIPPET_PAGE_SIZE;
@@ -37,14 +43,19 @@ public class TagsController {
     private MessageSource messageSource;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private SearchHelper searchHelper;
+    @Autowired
+    private LoginAuthentication loginAuthentication;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TagsController.class);
 
     @Context
     private UriInfo uriInfo;
 
-    @Autowired
-    LoginAuthentication loginAuthentication;
+    //TODO: See if better to use loginAuthentication directly
+    @Context
+    private SecurityContext securityContext;
 
     @GET
     @Path("/tags")
@@ -53,8 +64,17 @@ public class TagsController {
                                 final @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
                                 @QueryParam("showOnlyFollowing") @DefaultValue("false") boolean showOnlyFollowing) {
 
-        Optional<User> userOpt = loginAuthentication.getLoggedInUser();
-        Long userId = userOpt.map(User::getId).orElse(null);
+        //TODO: Modularize repeated code in searchTags
+
+        // Find the user, check if it exists
+        Long userId = null;
+        Optional<User> userOpt = Optional.empty();
+        if (securityContext.getUserPrincipal() != null) {
+            userOpt = userService.findUserByUsername(securityContext.getUserPrincipal().getName());
+            if(userOpt.isPresent()){
+                userId = userOpt.get().getId();
+            }
+        }
 
         // Check if showOnlyFollowing is activated --> If user is not logged return unauthorized.
         if (showOnlyFollowing && !userOpt.isPresent())
@@ -82,22 +102,6 @@ public class TagsController {
         return respBuilder.build();
     }
 
-    @POST
-    @Path("/tags")
-    @RolesAllowed({"ADMIN"})
-    @Produces(value = {MediaType.APPLICATION_JSON})
-    @Consumes(value = {MediaType.APPLICATION_JSON})
-    public Response createTag(TagCreateDto tagCreateDto){
-        List<String> tags = tagCreateDto.getTags() != null ? tagCreateDto.getTags() : Collections.emptyList();
-        tags.removeAll(Arrays.asList("", null));
-
-        if (!tags.isEmpty()) tagService.addTags(tags);
-
-        LOGGER.debug("Admin added tags -> {}", tags.toString());
-
-        return Response.ok().build();
-    }
-
     @GET
     @Path("tags/{tagId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
@@ -121,16 +125,46 @@ public class TagsController {
         return respBuilder.build();
     }
 
+    @GET
+    @Path("/tags/{tagId}/snippets")
+    public Response searchInTag(final @QueryParam("q") String query,
+                                final @QueryParam("t") String type,
+                                final @QueryParam("uid") String userId,
+                                final @QueryParam("s") String sort,
+                                final @QueryParam("page") @DefaultValue("1") int page,
+                                final @PathParam(value = "tagId") long tagId) {
+
+        Tag tag = this.tagService.findTagById(tagId).orElse(null);
+        if (tag == null) {
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.tag", new Object[]{tagId}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+        }
+        List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.TAGS, sort, null, tagId, page)
+                .stream()
+                .map(SnippetDto::fromSnippet)
+                .collect(Collectors.toList());
+        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.TAGS, null, tagId);
+
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("q", query);
+        queryParams.put("t", type);
+        queryParams.put("uid", userId);
+        queryParams.put("s", sort);
+
+        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);    }
+
     //TODO: Check follow/unfollow repsonse and how info is received
     @POST
     @Path("tags/{tagId}/follow")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response followTag(@PathParam(value="tagId") final long tagId,
-                                          final FollowDto followDto) {
-        User user = loginAuthentication.getLoggedInUser().orElse(null);
+                                          final FollowDto followDto,
+                                          @Context SecurityContext securityContext) {
+        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
         tagService.followTag(user.getId(), tagId);
@@ -142,10 +176,10 @@ public class TagsController {
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response unfollowTag(@PathParam(value="tagId") final long tagId,
                                           final FollowDto followDto) {
-        User user = loginAuthentication.getLoggedInUser().orElse(null);
+        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
         tagService.unfollowTag(user.getId(), tagId);
@@ -153,15 +187,49 @@ public class TagsController {
     }
 
     @GET
-    @Path("tags/search")
+    @Path("/following/snippets")
+    public Response searchInFollowing(final @QueryParam("q") String query,
+                                      final @QueryParam("t") String type,
+                                      final @QueryParam("uid") String userId,
+                                      final @QueryParam("s") String sort,
+                                      final @QueryParam("page") @DefaultValue("1") int page) {
+
+        User user = loginAuthentication.getLoggedInUser();
+        if (user == null){
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+        }
+        List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.FOLLOWING, sort, user.getId(), null, page)
+                .stream()
+                .map(SnippetDto::fromSnippet)
+                .collect(Collectors.toList());
+        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.FOLLOWING, user.getId(), null);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("q", query);
+        queryParams.put("t", type);
+        queryParams.put("uid", userId);
+        queryParams.put("s", sort);
+
+        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
+    }
+
+    @GET
+    @Path("tags")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response searchTags(final @QueryParam("page") @DefaultValue("1") int page,
                                final @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
                                @QueryParam("showOnlyFollowing") @DefaultValue("false") boolean showOnlyFollowing,
                                final @QueryParam("q") @DefaultValue("") String q) {
-        Optional<User> userOpt = loginAuthentication.getLoggedInUser();
-        Long userId = userOpt.map(User::getId).orElse(null);
-
+        // Find the user, check if it exists
+        Long userId = null;
+        Optional<User> userOpt = Optional.empty();
+        if (securityContext.getUserPrincipal() != null) {
+            userOpt = userService.findUserByUsername(securityContext.getUserPrincipal().getName());
+            if(userOpt.isPresent()){
+                userId = userOpt.get().getId();
+            }
+        }
         if (showOnlyFollowing && !userOpt.isPresent())
             return Response.status(HttpStatus.UNAUTHORIZED.value()).build();
 
@@ -196,8 +264,14 @@ public class TagsController {
     @DELETE
     @Path("tags/{tagId}/delete")
     public Response deleteTag(@PathParam(value="tagId") long tagId) {
-        Optional<User> userOpt = loginAuthentication.getLoggedInUser();
-        Long userId = userOpt.map(User::getId).orElse(null);
+        Long userId = null;
+        Optional<User> userOpt = Optional.empty();
+        if (securityContext.getUserPrincipal() != null) {
+            userOpt = userService.findUserByUsername(securityContext.getUserPrincipal().getName());
+            if(userOpt.isPresent()){
+                userId = userOpt.get().getId();
+            }
+        }
 
         if ( userOpt.isPresent()  && roleService.isAdmin(userId)){
             this.tagService.removeTag(tagId);

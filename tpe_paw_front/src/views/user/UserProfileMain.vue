@@ -97,12 +97,12 @@ import urls from '@/services/urls.js'
     },
     mounted () {
       // Unconditionally get and store user
-      user.getUser(this.$router.currentRoute.params.id)
+      user.getUser(this.$route.params.id)
         .then(r => { 
           this.user = r.data
           this.oldDescription = this.description = this.user.description
         })
-      user.getProfilePhoto(this.$router.currentRoute.params.id)
+      user.getProfilePhoto(this.$route.params.id)
         .then(r => {
           this.gottenProfilePhoto = r.data
         })

@@ -291,7 +291,7 @@ export default {
       })
       switch (this.resultType) {
         case 'snippet':
-          return search.searchInLocation(this.$router.currentRoute.path, params)
+          return search.searchInLocation(this.$route, params)
             .then(r => {
               this.$refs.persistentNavigatorRouterView.$emit('searchResults', r)
             })

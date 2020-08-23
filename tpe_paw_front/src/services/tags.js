@@ -8,12 +8,6 @@ const queryParamTemplate = {
   showOnlyFollowing: 'false'
 } 
 
-const getTags = (page) => axiosFetcher.get(urls.tags.getTags, {
-  queryParams: {
-    page: page
-  }
-})
-
 const getTagSnippets = (tagId, page = 1) => axiosFetcher.get(urls.tags.getTagSnippets, {
   queryParams: {
     page
@@ -49,7 +43,6 @@ const searchTags = params => {
 }
 
 export default {
-  getTags,
   followTag,
   unfollowTag,
   deleteTag,

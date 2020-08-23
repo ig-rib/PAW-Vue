@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.dao.SnippetDao;
 import ar.edu.itba.paw.interfaces.service.RoleService;
 import ar.edu.itba.paw.interfaces.service.SnippetService;
 import ar.edu.itba.paw.interfaces.service.TagService;
@@ -25,7 +26,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static ar.edu.itba.paw.webapp.utility.Constants.SNIPPET_PAGE_SIZE;
@@ -48,73 +51,123 @@ public class UserController {
     private LoginAuthentication loginAuthentication;
     @Context
     private UriInfo uriInfo;
+    @Autowired
+    private SearchHelper searchHelper;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @GET
-    @Path("{id}/active")
-    public Response activeUserSnippets(
-            final @PathParam(value="id") long id,
-            final @QueryParam(value = "page") @DefaultValue("1") int page
-    ) {
-        User user = loginAuthentication.getLoggedInUser().orElse(null);
+    @Path("/snippets/upvoted")
+    public Response searchInUpvoted(final @QueryParam("q") String query,
+                                    final @QueryParam("t") String type,
+                                    final @QueryParam("uid") String userId,
+                                    final @QueryParam("s") String sort,
+                                    final @QueryParam("page") @DefaultValue("1") int page) {
+
+        User user = loginAuthentication.getLoggedInUser();
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-
-        List<SnippetDto> snippets = this.snippetService.getAllSnippetsByOwner(user.getId(), page, SNIPPET_PAGE_SIZE)
+        List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.UPVOTED, sort, user.getId(), null, page)
                 .stream()
                 .map(SnippetDto::fromSnippet)
                 .collect(Collectors.toList());
-        int snippetCount = this.snippetService.getAllSnippetsByOwnerCount(user.getId());
-        int pageCount = (snippetCount/SNIPPET_PAGE_SIZE) + ((snippetCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);
+        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.UPVOTED, user.getId(), null);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("q", query);
+        queryParams.put("t", type);
+        queryParams.put("uid", userId);
+        queryParams.put("s", sort);
 
-        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
-        if (page > 1)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
-        if (page < pageCount)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
-        return respBuilder.build();
+        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
     }
 
     @GET
-    @Path("{id}/deleted")
-    public Response deletedUserSnippets(
-            final @PathParam(value="id") long id,
-            final @QueryParam(value = "page") @DefaultValue("1") int page
-    ) {
-        User user = userService.findUserById(id).orElse(null);
+    @Path("{id}/snippets/deleted")
+    public Response searchInDeletedUserSnippets(final @QueryParam("q") String query,
+                                                final @QueryParam("t") String type,
+                                                final @QueryParam("uid") String userId,
+                                                final @QueryParam("s") String sort,
+                                                final @QueryParam("page") @DefaultValue("1") int page,
+                                                final @PathParam(value = "id") long id) {
+        User user = loginAuthentication.getLoggedInUser();
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{id}, LocaleContextHolder.getLocale()));
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        User currentUser =  loginAuthentication.getLoggedInUser().orElse(null);
+        User currentUser = loginAuthentication.getLoggedInUser();
         if (currentUser == null || !user.equals(currentUser)) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.FORBIDDEN).entity(errorMessageDto).build();
         }
-
-        List<SnippetDto> snippets = this.snippetService.getAllDeletedSnippetsByOwner(user.getId(), page, SNIPPET_PAGE_SIZE)
+        List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.DELETED, sort, id, null, page)
                 .stream()
                 .map(SnippetDto::fromSnippet)
                 .collect(Collectors.toList());
-        int snippetCount = this.snippetService.getAllDeletedSnippetsByOwnerCount(user.getId());
-        int pageCount = (snippetCount/SNIPPET_PAGE_SIZE) + ((snippetCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);
+        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.DELETED, id, null);
 
-        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
-        if (page > 1)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
-        if (page < pageCount)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
-        return respBuilder.build();
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("q", query);
+        queryParams.put("t", type);
+        queryParams.put("uid", userId);
+        queryParams.put("s", sort);
+
+        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
+    }
+
+    @GET
+    @Path("/{id}/snippets/active")
+    public Response searchInActiveUserSnippets(final @QueryParam("q") String query,
+                                               final @QueryParam("t") String type,
+                                               final @QueryParam("uid") String userId,
+                                               final @QueryParam("s") String sort,
+                                               final @QueryParam("page") @DefaultValue("1") int page,
+                                               final @PathParam(value = "id") long id) {
+        List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.USER, sort, id, null, page)
+                .stream()
+                .map(SnippetDto::fromSnippet)
+                .collect(Collectors.toList());
+        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.USER, id, null);
+
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("q", query);
+        queryParams.put("t", type);
+        queryParams.put("uid", userId);
+        queryParams.put("s", sort);
+
+        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
+    }
+
+    @GET
+    @Path("snippets/favorite")
+    public Response searchInFavorites(final @QueryParam("q") String query,
+                                      final @QueryParam("t") String type,
+                                      final @QueryParam("uid") String userId,
+                                      final @QueryParam("s") String sort,
+                                      final @QueryParam("page") @DefaultValue("1") int page) {
+        User user = loginAuthentication.getLoggedInUser();
+        if (user == null){
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+        }
+        List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.HOME, sort, user.getId(), null, page)
+                .stream()
+                .map(SnippetDto::fromSnippet)
+                .collect(Collectors.toList());
+        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.FAVORITES, user.getId(), null);
+
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("q", query);
+        queryParams.put("t", type);
+        queryParams.put("uid", userId);
+        queryParams.put("s", sort);
+
+        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
     }
 
     @GET
@@ -188,7 +241,7 @@ public class UserController {
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{id}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        User currentUser =  loginAuthentication.getLoggedInUser().orElse(null);
+        User currentUser =  loginAuthentication.getLoggedInUser();
         if (currentUser == null || !user.equals(currentUser)) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
@@ -208,7 +261,7 @@ public class UserController {
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{id}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        User currentUser =  loginAuthentication.getLoggedInUser().orElse(null);
+        User currentUser =  loginAuthentication.getLoggedInUser();
         if (currentUser == null || !user.equals(currentUser)) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
