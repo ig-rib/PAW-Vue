@@ -22,10 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -98,6 +95,21 @@ public class TagsController {
             respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
 
         return respBuilder.build();
+    }
+
+    @POST
+    @Path("/tags")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    @Consumes(value = {MediaType.APPLICATION_JSON})
+    public Response createTag(TagCreateDto tagCreateDto){
+        List<String> tags = tagCreateDto.getTags() != null ? tagCreateDto.getTags() : Collections.emptyList();
+        tags.removeAll(Arrays.asList("", null));
+
+        if (!tags.isEmpty()) tagService.addTags(tags);
+
+        LOGGER.debug("Admin added tags -> {}", tags.toString());
+
+        return Response.ok().build();
     }
 
     @GET
