@@ -7,6 +7,7 @@ const urls = {
     getDeletedUserSnippets: localDomain + 'user/:id/deleted',
     getUser: localDomain + 'user/:id',
     profilePhoto: localDomain + 'user/:id/profile-photo',
+    profilePhoto64: localDomain + 'user/:id/profile-photo64',
     updateUserData: localDomain + 'user/:id/user-data'
   },
   admin: {

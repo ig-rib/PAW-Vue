@@ -2,15 +2,23 @@
   <v-container>
     <v-layout>
       <v-flex sm3 md3 lg3>
-        <img max-height="30px" :src="renderableImage" alt="" srcset="">
+        <img :src="renderableImage" alt="" srcset="">
       </v-flex>
       <v-flex>
         INFO
       </v-flex>
     </v-layout>
     <v-layout>
-      <input name="photo" type="file" accept="image/*" @change="readImage">
+      <input name="photo" type="file" @change="readImage">
       <v-btn @click="uploadPhoto"></v-btn>
+    </v-layout>
+    <v-layout>
+      <v-flex md6 lg6>
+        {{ profilePhoto }}
+      </v-flex>
+      <v-flex md6 lg6>
+        {{ gottenProfilePhoto }}
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -24,7 +32,7 @@ import urls from '@/services/urls.js'
       return {
         editing: false,
         profilePhoto: null,
-        image64: '',
+        gottenProfilePhoto: '',
         description: '',
         oldDescription: '',
         user: () => {}
@@ -54,8 +62,11 @@ import urls from '@/services/urls.js'
       uploadPhoto () {
         let formData = new FormData()
         formData.append('photo', this.profilePhoto)
-        user.uploadProfilePhoto(75, formData).then(r2 => {
-          console.log(r2.data)
+        // user.uploadProfilePhoto(75, formData).then(r2 => {
+        //   console.log(r2.data)
+        // })
+        user.uploadProfilePhoto64(75, btoa(this.profilePhoto)).then(r => {
+          console.log(r.data)
         })
       },
       updateDescription () {
@@ -90,6 +101,10 @@ import urls from '@/services/urls.js'
         .then(r => { 
           this.user = r.data
           this.oldDescription = this.description = this.user.description
+        })
+      user.getProfilePhoto(this.$router.currentRoute.params.id)
+        .then(r => {
+          this.gottenProfilePhoto = r.data
         })
     }
   }

@@ -37,8 +37,18 @@ const uploadProfilePhoto = (id, photo) => axiosFetcher.post(urls.user.profilePho
 },
   photo,
   {
-    'Content-Type' : 'multipart/form-data'
+    'Content-Type' : 'multipart/form-data;charset=utf-8'
   })
+
+const uploadProfilePhoto64 = (id, photo64) => axiosFetcher.post(urls.user.profilePhoto64, {
+  pathVariables: {
+    id
+  }
+  },
+  {
+    encodedPhoto: photo64
+  }
+)
 
 const updateUserData = (id, description, username) => axiosFetcher.put(urls.user.updateUserData, {
   pathVariables: {
@@ -54,6 +64,7 @@ export default {
   getActiveUserSnippets,
   getDeletedUserSnippets,
   uploadProfilePhoto,
+  uploadProfilePhoto64,
   updateUserData,
   getProfilePhoto
 }

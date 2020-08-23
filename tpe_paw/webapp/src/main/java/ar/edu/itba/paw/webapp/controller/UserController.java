@@ -21,8 +21,10 @@ import org.springframework.context.i18n.LocaleContextHolder;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -173,6 +175,29 @@ public class UserController {
         userService.changeProfilePhoto(currentUser.getId(), icon);
         return Response.accepted().build();
     }
+
+    @POST
+    @Path("{id}/profile-photo64")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response uploadPhoto64(@PathParam(value="id") final long id,
+                                final ProfilePhotoDto profilePhotoDto
+    ) {
+        User user = userService.findUserById(id).orElse(null);
+        if (user == null){
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{id}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+        }
+        User currentUser =  loginAuthentication.getLoggedInUser();
+        if (currentUser == null || !user.equals(currentUser)) {
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.FORBIDDEN).entity(errorMessageDto).build();
+        }
+        userService.changeProfilePhotoBase64(currentUser.getId(), profilePhotoDto.getEncodedPhoto());
+        return Response.accepted().build();
+    }
+
 
     @PUT
     @Path("{id}/user-data")
