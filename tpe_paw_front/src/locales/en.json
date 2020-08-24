@@ -90,7 +90,9 @@
       "editProfile": "Edit Profile",
       "cancel": "Cancel",
       "done": "Done"
-    }
+    },
+    "active": "Active Snippets",
+    "deleted": "Deleted Snippets"
   },
   "registration": {
     "username": "User Name",

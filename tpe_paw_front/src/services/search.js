@@ -92,6 +92,14 @@ const searchInLocation = (route, queryParams) => {
       url = urls.languages.getLanguageSnippets
       pathVariables.id = route.params.id
       break;
+    case 'active-snippets':
+      url = urls.user.activeSnippets
+      pathVariables.id = route.params.id
+      break;
+    case 'deleted-snippets':
+      url = urls.user.deletedSnippets
+      pathVariables.id = route.params.id
+      break;
     case 'explore':
       return explore(queryParams)
   }

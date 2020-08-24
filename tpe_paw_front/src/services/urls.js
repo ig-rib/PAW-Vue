@@ -4,8 +4,8 @@ const urls = {
   localDomain,
   user: {
     current: localDomain + 'user/current',
-    getActiveUserSnippets: localDomain + 'user/:id/snippets/active',
-    getDeletedUserSnippets: localDomain + 'user/:id/snippets/deleted',
+    activeSnippets: localDomain + 'user/:id/snippets/active',
+    deletedSnippets: localDomain + 'user/:id/snippets/deleted',
     upvotedSnippets: localDomain + 'user/upvoted',
     getUser: localDomain + 'user/:id',
     profilePhoto: localDomain + 'user/:id/profile-photo',

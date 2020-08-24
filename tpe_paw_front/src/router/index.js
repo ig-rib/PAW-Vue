@@ -21,6 +21,7 @@ import ResetPassword from '@/views/registration/ResetPassword.vue'
 import SendVerificationCode from '@/views/registration/SendVerificationCode.vue'
 import UserProfileMain from '@/views/user/UserProfileMain.vue'
 import CreateSnippet from '@/views/snippet/CreateSnippet.vue'
+import SnippetGrid from '@/components/SnippetGrid.vue'
 
 Vue.use(VueRouter)
 
@@ -150,7 +151,22 @@ const routes = [
           {
             path: 'user/:id',
             name: 'user-profile',
-            component: UserProfileMain
+            redirect: {
+              name: 'active-snippets'
+            },
+            component: UserProfileMain,
+            children: [
+              {
+                path: 'active',
+                name: 'active-snippets',
+                component: SnippetGrid
+              },
+              {
+                path: 'deleted',
+                name: 'deleted-snippets',
+                component: SnippetGrid
+              }
+            ]
           }
         ]
       }

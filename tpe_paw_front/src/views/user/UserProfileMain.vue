@@ -66,6 +66,13 @@
     </v-layout>
     <v-divider></v-divider>
     <v-layout v-if="!editing">
+      <v-tabs class="justify-center" v-if="isLoggedInUser">
+        <v-tab :to="{ name: 'active-snippets' }" @click="$refs.userProfileRouterView.$emit('updated')">{{ $t('user.active') }}</v-tab>
+        <v-tab :to="{ name: 'deleted-snippets' }" @click="$refs.userProfileRouterView.$emit('updated')">{{ $t('user.deleted') }}</v-tab>
+      </v-tabs>
+    </v-layout>
+    <v-layout>
+      <router-view ref="userProfileRouterView"></router-view>
     </v-layout>
   </v-container>
 </template>
@@ -147,7 +154,6 @@ import urls from '@/services/urls.js'
     },
     computed: {
       renderableImage () {
-        console.log(this.user.icon)
         return `${this.user.icon}`
       },
       currentUser () {
@@ -164,22 +170,29 @@ import urls from '@/services/urls.js'
         }
       },
       isLoggedInUser () {
-        return this.$route.params.id === this.$store.getters.user.id
+        return parseInt(this.$route.params.id) === this.$store.getters.user.id
       }
     },
     mounted () {
       // Unconditionally get and store user
+      if (this.$route.name === 'deleted-snippets' && parseInt(this.$route.params.id) !== this.$store.getters.user.id) {
+        this.$router.replace({
+          name: 'active-snippets'
+        })
+      }
       user.getUser(this.$route.params.id)
         .then(r => {
           console.log('userData', r.data)
           this.user = r.data
           this.oldDescription = this.description = this.user.description
         })
+      this.$on('searchResults', (r) => this.$refs.userProfileRouterView.$emit('searchResults', r))
     }
   }
 </script>
 
 <style lang="scss">
+@import '@/styles/alignmentUtils.scss';
   #user-profile-container {
     .user-profile-profile-pic {
       border-radius: 150px;
