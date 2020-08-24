@@ -26,7 +26,7 @@
           <v-flex grow>
             {{ user.username }}
           </v-flex>
-          <v-flex shrink>            
+          <v-flex shrink v-if="isLoggedInUser">            
             <v-btn
               v-if="!editing"
               @click="editing = true"
@@ -135,6 +135,9 @@ import urls from '@/services/urls.js'
         console.log(params)
         user.updateUserData(this.$route.params.id, params).then(r => {
           this.user.descrpition = this.description
+          let newUserData = this.$store.getters.user
+          newUserData.description = this.description
+          this.$store.dispatch('setUser', newUserData)
         })
         .finally(() => {
           this.editing = false
@@ -159,6 +162,9 @@ import urls from '@/services/urls.js'
         } else {
           return this.renderableImage
         }
+      },
+      isLoggedInUser () {
+        return this.$route.params.id === this.$store.getters.user.id
       }
     },
     mounted () {
