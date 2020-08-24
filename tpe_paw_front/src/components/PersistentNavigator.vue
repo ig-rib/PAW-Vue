@@ -14,10 +14,12 @@
         </v-flex>
 
         <!-- Title -->
-        <v-flex md1 sm1>
-          <v-toolbar-title
-            @click="goHome"
-            >{{ $t('snippit') }}</v-toolbar-title>
+        <v-flex md1 sm1 v-if="$vuetify.breakpoint.mdAndUp">
+          <v-btn depressed class="title-btn">
+            <v-toolbar-title
+              @click="goHome"
+              >{{ $t('snippit') }}</v-toolbar-title>
+          </v-btn>
         </v-flex>
 
         <!-- Navigation for large screens -->
@@ -25,7 +27,7 @@
         <v-flex v-if="$vuetify.breakpoint.lgAndUp" shrink>
           <v-layout fill-height class="pt-0">
             <v-flex
-              v-for="item in generalPaths"
+              v-for="item in generalPathsNoFeed"
               :key="item.title"
             >
               <v-btn
@@ -44,6 +46,33 @@
                 </v-layout>
               </v-btn>
             </v-flex>
+            <v-menu offset-y>
+              <template v-slot:activator="{ on }">
+                <v-btn
+                elevation="0"
+                class="nav-button"
+                v-on="on"
+              >
+                <v-layout>
+                  <v-flex>
+                    <v-icon>mdi-account-circle</v-icon>
+                  </v-flex>
+
+                  <v-flex>
+                    <div>FOR YOU</div>
+                  </v-flex>
+                </v-layout>
+              </v-btn>
+              </template>
+              <v-list>
+                <v-list-item
+                  v-for="item in loggedInPaths"
+                  :key="item.title"
+                  :to="item.path">
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </v-layout>
         </v-flex>
 
@@ -120,8 +149,11 @@
           </v-layout>
         </v-flex>
         <v-flex shrink v-if="$store.getters.loggedIn">
-          <v-btn :to="{name: 'create-snippet'}">
+          <v-btn v-if="$vuetify.breakpoint.lgAndUp" :to="{name: 'create-snippet'}">
             {{ $t('snippets.createSnippet.createSnippet') }}
+          </v-btn>
+          <v-btn v-else icon :to="{name: 'create-snippet'}">
+            <v-icon>mdi-plus</v-icon>
           </v-btn>
         </v-flex>
         <!-- Registration/Login/User section -->
@@ -305,6 +337,9 @@ export default {
     },
     currentUser () {
       return this.$store.getters.user
+    },
+    generalPathsNoFeed () {
+      return this.generalPaths.filter(item => item.path.name !== 'feed')
     }
   },
   methods: {
@@ -438,6 +473,15 @@ export default {
       display: flex;
       align-items: center;
     }
+  }
+  .title-btn {
+    height: 100% !important;
+    border-radius: 3px !important;
+    .a {
+      border-radius: 3px !important;
+    }
+    width: max-content;
+    padding: 0px;
   }
   .nav-search-text-field {
     background: white;
