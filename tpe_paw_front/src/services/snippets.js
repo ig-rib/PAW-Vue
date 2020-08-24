@@ -9,7 +9,42 @@ const getSnippet = (id) => axiosFetcher.get(urls.snippet.getSnippet, {
   }
 })
 
+const voteSnippet = (id, params) => axiosFetcher.put(urls.snippet.voteSnippet, {
+  queryParams: {
+    id
+  }
+}, params)
+
+const favSnippet = (id) => axiosFetcher.put(urls.snippet.favSnippet, {
+  pathVariables: {
+    id
+  }
+})
+
+const unfavSnippet = (id) => axiosFetcher.del(urls.snippet.favSnippet, {
+  pathVariables: {
+    id
+  }
+})
+
+const reportSnippet = (id, params) => axiosFetcher.put(urls.snippet.reportSnippet, {
+  pathVariables: {
+    id
+  }
+}, params)
+
+const unreportSnippet = (id) => axiosFetcher.put(urls.snippet.reportSnippet, {
+  pathVariables: {
+    id
+  }
+})
+
 export default {
   createSnippet,
-  getSnippet
+  getSnippet,
+  voteSnippet,
+  favSnippet,
+  unfavSnippet,
+  reportSnippet,
+  unreportSnippet
 }

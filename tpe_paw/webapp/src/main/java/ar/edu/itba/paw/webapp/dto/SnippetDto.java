@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.models.Snippet;
+import ar.edu.itba.paw.models.Vote;
 
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
@@ -24,6 +25,11 @@ public class SnippetDto {
     private boolean flagged;
     private boolean deleted;
     private Collection<URI> tags;
+    private long score;
+    // User-specific section
+    private boolean isFavorite;
+    private boolean isReported;
+    private Vote vote;
 
     public static SnippetDto fromSnippet(Snippet snippet, UriInfo uriInfo){
         SnippetDto dto = new SnippetDto();
@@ -39,6 +45,15 @@ public class SnippetDto {
         dto.flagged = snippet.isFlagged();
         dto.deleted = snippet.isDeleted();
         dto.tags = snippet.getTags().stream().map(tag -> uriInfo.getBaseUriBuilder().path("/tags").path(String.valueOf(tag.getId())).build()).collect(Collectors.toList());
+        return dto;
+    }
+
+    public static SnippetDto fromSnippetWithDetail(Snippet snippet, UriInfo uriInfo, long score, Vote vote, boolean reported, boolean favorite) {
+        SnippetDto dto = SnippetDto.fromSnippet(snippet, uriInfo);
+        dto.score = score;
+        dto.vote = vote;
+        dto.isReported = reported;
+        dto.isFavorite = favorite;
         return dto;
     }
 
@@ -120,5 +135,37 @@ public class SnippetDto {
 
     public void setTags(Collection<URI> tags) {
         this.tags = tags;
+    }
+
+    public long getScore() {
+        return score;
+    }
+
+    public void setScore(long score) {
+        this.score = score;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
+    public boolean isReported() {
+        return isReported;
+    }
+
+    public void setReported(boolean reported) {
+        isReported = reported;
+    }
+
+    public Vote getVote() {
+        return vote;
+    }
+
+    public void setVote(Vote vote) {
+        this.vote = vote;
     }
 }

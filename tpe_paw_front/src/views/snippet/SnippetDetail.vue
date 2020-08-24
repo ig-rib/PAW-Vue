@@ -53,7 +53,9 @@
           DELETE
         </v-flex>
         <v-flex>
-          FAVORITE
+          <v-btn :disabled="faving" @click="fav" icon>
+            <v-icon>{{`mdi-heart${snippet.isFavorite ? '' : '-outline'}`}}</v-icon>
+          </v-btn>
         </v-flex>
         <v-flex>
           <v-layout>
@@ -90,7 +92,21 @@ export default {
       snippet: {},
       user: {},
       tags: [],
-      loading: true
+      loading: true,
+      faving: false
+    }
+  },
+  methods: {
+    fav () {
+      this.faving = true
+      let promise = {}
+      if (this.snippet.isFavorite) {
+        promise = snippets.unfavSnippet(this.snippet.id)
+      } else {
+        promise = snippets.favSnippet(this.snippet.id)
+      }
+      promise.then(r => { this.snippet.isFavorite = !this.snippet.isFavorite })
+      .finally(() => { this.faving = false })
     }
   },
   mounted () {

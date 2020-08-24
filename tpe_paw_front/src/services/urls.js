@@ -51,7 +51,7 @@ const urls = {
     getSnippet: localDomain + 'snippet/:id',
     deleteSnippet: localDomain + 'snippet/:id/delete',
     voteSnippet: localDomain + 'snippet/:id/vote', // Pass isPositive in body
-    favSnippet: localDomain + 'snippet/:id/fav', // For both faving and unfaving
+    favSnippet: localDomain + 'snippet/:id/favorite', // For both faving and unfaving
     reportSnippet: localDomain + 'snippet/:id/report',
     flagSnippet: localDomain + 'snippet/:id/flag',
     create: localDomain + 'snippet/create'

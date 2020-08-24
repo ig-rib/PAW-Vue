@@ -2,12 +2,12 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.dao.SnippetDao;
 import ar.edu.itba.paw.interfaces.service.*;
+import ar.edu.itba.paw.models.Report;
 import ar.edu.itba.paw.models.Snippet;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.Vote;
 import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
-import ar.edu.itba.paw.webapp.dto.ErrorMessageDto;
-import ar.edu.itba.paw.webapp.dto.SnippetCreateDto;
-import ar.edu.itba.paw.webapp.dto.SnippetDto;
+import ar.edu.itba.paw.webapp.dto.*;
 import ar.edu.itba.paw.webapp.exception.SnippetNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,7 +72,16 @@ public class SnippetController {
             return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
         }
 
-        SnippetDto snippetDto = SnippetDto.fromSnippet(snippet, uriInfo);
+        SnippetDto snippetDto = null;
+        User loggedInUser = this.loginAuthentication.getLoggedInUser().orElse(null);
+        if (loggedInUser != null) {
+            Vote vote = voteService.getVote(loggedInUser.getId(), snippet.getId()).orElse(null);
+            boolean reported = reportService.getReport(loggedInUser.getId(), snippet.getId()).isPresent();
+            boolean favorite = loggedInUser.getFavorites().contains(snippet);
+            snippetDto = SnippetDto.fromSnippetWithDetail(snippet, uriInfo, voteService.getVoteBalance(snippet.getId()), vote, reported, favorite);
+        } else {
+            snippetDto = SnippetDto.fromSnippet(snippet, uriInfo);
+        }
         return Response.ok(snippetDto).build();
     }
 
@@ -80,17 +89,17 @@ public class SnippetController {
     @Path("/{id}")
     public Response deleteSnippet(@PathParam(value="id") long id) {
         User user = loginAuthentication.getLoggedInUser().orElse(null);
-        Optional<Snippet> snippet = this.snippetService.findSnippetById(id);
+        Snippet snippet = this.snippetService.findSnippetById(id).orElse(null);
 
         //TODO: Check what should we respond in the body in case of an error
-        if (!snippet.isPresent()) {
+        if (snippet == null) {
             return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
         }
-        if (user == null || user.getUsername().compareTo(snippet.get().getOwner().getUsername()) != 0) {
-            return buildErrorResponse("error.403.snippet", Response.Status.FORBIDDEN, loginAuthentication.getLoggedInUsername());
+        if (user == null || user.getUsername().compareTo(snippet.getOwner().getUsername()) != 0) {
+            return buildErrorResponse("error.403.snippet", Response.Status.FORBIDDEN, snippet.getId());
         } else {
             //TODO: Adapt to be able to restore snippet
-            if (!this.snippetService.deleteOrRestoreSnippet(snippet.get(), user.getId(), true)) {
+            if (!this.snippetService.deleteOrRestoreSnippet(snippet, user.getId(), true)) {
                 /* Operation was unsuccessful */
                 return buildErrorResponse("error.409.snippet", Response.Status.CONFLICT, loginAuthentication.getLoggedInUsername());
             }
@@ -122,13 +131,12 @@ public class SnippetController {
     }
 
     @PUT
-    @Path("/{id}/votes")
+    @Path("/{id}/vote")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response votePositive(
             @PathParam(value="id") long id,
-            final @QueryParam("type") boolean type,
-            final @QueryParam("selected") boolean selected
+            VoteDto voteDto
     ) {
 
         User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
@@ -140,7 +148,7 @@ public class SnippetController {
             if(snippet == null){
                 return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
             }
-            this.voteService.performVote(snippet.getOwner().getId(), user.getId(), id, selected, type);
+            this.voteService.performVote(snippet.getOwner().getId(), user.getId(), id, voteDto.isSelected(), voteDto.isPositive());
         }
         return Response.ok().build();
     }
@@ -148,18 +156,34 @@ public class SnippetController {
 
     @PUT
     @Path("/{id}/favorite")
-    @Consumes(value = {MediaType.APPLICATION_JSON})
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response favSnippet(
-            @PathParam(value="id") long id,
-            final @QueryParam("type") boolean favorite
+            @PathParam(value="id") long id
     ) {
         User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
 
         if (user == null) {
             return buildErrorResponse("error.403.snippet.fav", Response.Status.FORBIDDEN, null);
         } else {
-            this.favService.updateFavorites(user.getId(), id, favorite);
+            this.favService.updateFavorites(user.getId(), id, true);
+            LOGGER.debug("User {} updated favorite on snippet {}", user.getUsername(), id);
+        }
+
+        return Response.ok().build();
+    }
+
+    @DELETE
+    @Path("/{id}/favorite")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response unfavSnippet(
+            @PathParam(value="id") long id
+    ) {
+        User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
+
+        if (user == null) {
+            return buildErrorResponse("error.403.snippet.fav", Response.Status.FORBIDDEN, null);
+        } else {
+            this.favService.updateFavorites(user.getId(), id, true);
             LOGGER.debug("User {} updated favorite on snippet {}", user.getUsername(), id);
         }
 
@@ -172,8 +196,7 @@ public class SnippetController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response reportSnippet(
             @PathParam(value="id") long id,
-            @QueryParam(value="detail") String detail,
-            @QueryParam(value="baseUrl") String baseUrl
+            ReportDto reportDto
     ) {
         //TODO: Check from where we gonna obtain the base url of the report.
         // Getting the url of the server
@@ -191,7 +214,7 @@ public class SnippetController {
         }
 
         try {
-            reportService.reportSnippet(user, snippet, detail, baseUrl);
+            reportService.reportSnippet(user, snippet, reportDto.getDetail(), reportDto.getBaseUri());
         } catch (Exception e) {
             LOGGER.error(e.getMessage() + "Failed report snippet: user {} about their snippet {}", snippet.getOwner().getUsername(), snippet.getId());
             return buildErrorResponse("error.500.snippet.report.failure", Response.Status.INTERNAL_SERVER_ERROR,snippet.getOwner().getUsername());
@@ -207,7 +230,7 @@ public class SnippetController {
         User user = loginAuthentication.getLoggedInUser().orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.username", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
         long snippetId = snippetService.createSnippet(user, snippetDto.getTitle(), snippetDto.getDescription(), snippetDto.getCode(), Instant.now(), snippetDto.getLanguageId(), Collections.emptyList());
@@ -216,16 +239,16 @@ public class SnippetController {
 
     //TODO: Check if delete is appropriate for this operation.
     @DELETE
-    @Path("{id}/report/delete")
-    public Response reportSnippet(@PathParam(value="id") long id) {
+    @Path("{id}/report")
+    public Response unreportSnippet(@PathParam(value="id") long id) {
         User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
         Snippet snippet = snippetService.findSnippetById(id).orElse(null);
         if(snippet == null){
-            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
+            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, id);
         }
 
         if (user == null || !user.equals(snippet.getOwner())) {
-            return buildErrorResponse("error.403.report.dismiss", Response.Status.FORBIDDEN, null);
+            return buildErrorResponse("error.404.username", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
         }
         this.reportService.dismissReportsForSnippet(id);
         return Response.ok().build();
@@ -240,8 +263,8 @@ public class SnippetController {
     ) {
         User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
 
-        if (user == null || !roleService.isAdmin(user.getId())) {
-            return buildErrorResponse("error.403.snippet.flag", Response.Status.UNAUTHORIZED, null);
+        if (user == null) {
+            return buildErrorResponse("error.404.user", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
         } else {
             Snippet snippet = snippetService.findSnippetById(id).orElse(null);
             if(snippet == null){
