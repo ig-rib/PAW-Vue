@@ -1,25 +1,73 @@
 <template>
-  <v-container>
+  <v-container id="user-profile-container">
     <v-layout>
-      <v-flex sm3 md3 lg3>
-        <img :src="renderableImage" alt="" srcset="">
+      <v-flex shrink>
+        <v-img
+          v-if="!editing"
+          width="150px"
+          height="150px"
+          :src="renderableImage"
+          class="user-profile-profile-pic"
+          />
+        <v-btn class="user-profile-profile-pic-btn"
+          v-else
+          @click="$refs.file.click()">
+          <v-img
+          width="150px"
+          height="150px"
+          :src="editableImage"
+          class="user-profile-profile-pic"
+          />
+          <input class="user-profile-photo-input" ref="file" type="file" @change="saveImage" accept="image/*" />
+        </v-btn>
       </v-flex>
-      <v-flex>
-        INFO
+      <v-flex pt-5 px-5 sm9 md9 lg9>
+        <v-layout>
+          <v-flex grow>
+            {{ user.username }}
+          </v-flex>
+          <v-flex shrink>            
+            <v-btn
+              v-if="!editing"
+              @click="editing = true"
+            >
+              {{ $t('user.profile.editProfile') }}
+            </v-btn>
+            <v-layout v-else>
+              <v-flex>
+                <v-btn
+                  @click="cancelEditing">
+                {{ $t('user.profile.cancel') }}
+              </v-btn>
+              </v-flex>
+              <v-flex>
+                <v-btn
+                  @click="saveChanges">
+                {{ $t('user.profile.done') }}
+              </v-btn>
+              </v-flex>
+            </v-layout>
+          </v-flex>
+        </v-layout>
+        <v-layout mt-10>
+          <v-flex>
+            <div v-if="!editing">
+              {{ user.description }}
+            </div>
+            <div v-if="editing">
+              <v-text-field v-model="description">
+              </v-text-field>
+            </div>
+          </v-flex>
+        </v-layout>
       </v-flex>
     </v-layout>
-    <v-layout>
-      <input name="photo" type="file" @change="readImage">
-      <v-btn @click="uploadPhoto"></v-btn>
+    <v-divider></v-divider>
+    <v-layout v-if="!editing">
+
     </v-layout>
-    <v-layout>
-      <v-flex md6 lg6>
-        {{ profilePhoto }}
-      </v-flex>
-      <v-flex md6 lg6>
-        {{ gottenProfilePhoto }}
-      </v-flex>
-    </v-layout>
+    <img :src="profilePhoto"/>
+    {{profilePhoto}}
   </v-container>
 </template>
 
@@ -32,10 +80,10 @@ import urls from '@/services/urls.js'
       return {
         editing: false,
         profilePhoto: null,
-        gottenProfilePhoto: '',
         description: '',
         oldDescription: '',
-        user: () => {}
+        user: () => {},
+        hasPhotoPreview: false
       }
     },
     methods: {
@@ -46,14 +94,6 @@ import urls from '@/services/urls.js'
           this.profilePhoto = e.target.result
         }
         reader.readAsBinaryString(selectedImage)
-      },
-      getActiveUserSnippets () {
-        user.getActiveUserSnippets(75)
-          .then(r => { this.editing = true })
-      },
-      getDeletedUserSnippets () {
-        user.getDeletedUserSnippets(75)
-          .then(r => { this.editing = true })
       },
       getUserEntity () {
         user.getUser(75)
@@ -75,6 +115,7 @@ import urls from '@/services/urls.js'
           .catch(e => this.resetUserData())
       },
       saveImage (e) {
+        this.hasPhotoPreview = true
         this.profilePhoto = e.target.files[0]        
       },
       resetUserData () {
@@ -82,6 +123,12 @@ import urls from '@/services/urls.js'
       },
       updateOldDescription () {
         this.oldDescription = this.description
+      },
+      cancelEditing () {
+
+      },
+      saveChanges () {
+
       }
     },
     computed: {
@@ -93,6 +140,14 @@ import urls from '@/services/urls.js'
       },
       profilePhotoUrl () {
         return urls.user.profilePhoto
+      },
+      editableImage () {
+        if (this.hasPhotoPreview) {
+          let fr = new FileReader()
+          return fr.readAsDataURL(this.profilePhoto)
+        } else {
+          return this.renderableImage
+        }
       }
     },
     mounted () {
@@ -102,10 +157,23 @@ import urls from '@/services/urls.js'
           this.user = r.data
           this.oldDescription = this.description = this.user.description
         })
-      user.getProfilePhoto(this.$route.params.id)
-        .then(r => {
-          this.gottenProfilePhoto = r.data
-        })
     }
   }
 </script>
+
+<style lang="scss">
+  #user-profile-container {
+    .user-profile-profile-pic {
+      border-radius: 150px;
+    }
+    .user-profile-profile-pic-btn {
+      height: max-content;
+      width: max-content;
+      padding: 0px;
+      border-radius: 150px;
+    }
+    .user-profile-photo-input {
+      display: none;
+    }
+  }
+</style>

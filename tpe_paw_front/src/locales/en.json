@@ -85,6 +85,13 @@
       "no": "No specific order"
     }
   },
+  "user": {
+    "profile": {
+      "editProfile": "Edit Profile",
+      "cancel": "Cancel",
+      "done": "Done"
+    }
+  },
   "registration": {
     "username": "User Name",
     "password": "Password",
