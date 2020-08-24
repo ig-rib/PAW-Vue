@@ -111,7 +111,7 @@ public class SnippetExploreController {
                 title, username,
                 ordersMap.getOrDefault(sort, SnippetDao.Orders.NO), typesMap.getOrDefault(field, SnippetDao.Types.ALL), includeFlagged, page, SNIPPET_PAGE_SIZE)
                 .stream()
-                .map(SnippetDto::fromSnippet)
+                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo))
                 .collect(Collectors.toList());
         int snippetCount =  this.snippetService.getSnippetByDeepCriteriaCount(
                 minInstant, maxInstant,

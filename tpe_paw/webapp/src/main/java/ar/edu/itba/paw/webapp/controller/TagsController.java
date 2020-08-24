@@ -105,24 +105,14 @@ public class TagsController {
     @GET
     @Path("tags/{tagId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response showSnippetsForTag(final @QueryParam("page") @DefaultValue("1") int page,
-        final @PathParam(value="tagId") long tagId) {
-        final List<SnippetDto> snippets = snippetService.findSnippetsForTag(tagId, page, SNIPPET_PAGE_SIZE)
-                .stream()
-                .map(SnippetDto::fromSnippet)
-                .collect(Collectors.toList());
-
-        int snippetsCount = snippetService.getAllSnippetsByTagCount(tagId);
-        int pageCount = (snippetsCount/SNIPPET_PAGE_SIZE) + ((snippetsCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);
-
-        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
-        if (page > 1)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
-        if (page < pageCount)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
-        return respBuilder.build();
+    public Response showSnippetsForTag(final @PathParam(value="tagId") long tagId) {
+        final Tag tag = tagService.findTagById(tagId).orElse(null);
+        if (tag == null) {
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.tag", new Object[]{tagId}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+        }
+        return Response.ok(TagDto.fromTag(tag)).build();
     }
 
     @GET
@@ -142,7 +132,7 @@ public class TagsController {
         }
         List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.TAGS, sort, null, tagId, page)
                 .stream()
-                .map(SnippetDto::fromSnippet)
+                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo))
                 .collect(Collectors.toList());
         int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.TAGS, null, tagId);
 

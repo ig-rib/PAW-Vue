@@ -6,6 +6,8 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.time.Instant;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 import static ar.edu.itba.paw.webapp.utility.Constants.BACK_BASE_URL_LOCAL;
 import static ar.edu.itba.paw.webapp.utility.Constants.FRONT_BASE_URL_LOCAL;
@@ -21,13 +23,14 @@ public class SnippetDto {
     private Instant dateCreated;
     private boolean flagged;
     private boolean deleted;
+    private Collection<URI> tags;
 
-    public static SnippetDto fromSnippet(Snippet snippet){
+    public static SnippetDto fromSnippet(Snippet snippet, UriInfo uriInfo){
         SnippetDto dto = new SnippetDto();
 
         dto.id = snippet.getId();
         // No use in bringing uriInfo, need to create URI from scratch
-        dto.owner = UriBuilder.fromPath(BACK_BASE_URL_LOCAL).path("user").path(String.valueOf(snippet.getOwner().getId())).build();
+        dto.owner = uriInfo.getBaseUriBuilder().path("user").path(String.valueOf(snippet.getOwner().getId())).build();
         dto.language = LanguageDto.fromLanguage(snippet.getLanguage());
         dto.code = snippet.getCode();
         dto.title = snippet.getTitle();
@@ -35,7 +38,7 @@ public class SnippetDto {
         dto.dateCreated = snippet.getDateCreated();
         dto.flagged = snippet.isFlagged();
         dto.deleted = snippet.isDeleted();
-
+        dto.tags = snippet.getTags().stream().map(tag -> uriInfo.getBaseUriBuilder().path("/tags").path(String.valueOf(tag.getId())).build()).collect(Collectors.toList());
         return dto;
     }
 
@@ -109,5 +112,13 @@ public class SnippetDto {
 
     public void setLanguage(LanguageDto language) {
         this.language = language;
+    }
+
+    public Collection<URI> getTags() {
+        return tags;
+    }
+
+    public void setTags(Collection<URI> tags) {
+        this.tags = tags;
     }
 }

@@ -49,7 +49,7 @@ public class SnippetController {
                                  final @QueryParam("page") @DefaultValue("1") int page) {
         List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.HOME, sort, null, null, page)
                 .stream()
-                .map(SnippetDto::fromSnippet)
+                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo))
                 .collect(Collectors.toList());
         int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.HOME, null, null);
 
@@ -72,7 +72,7 @@ public class SnippetController {
             return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
         }
 
-        SnippetDto snippetDto = SnippetDto.fromSnippet(snippet);
+        SnippetDto snippetDto = SnippetDto.fromSnippet(snippet, uriInfo);
         return Response.ok(snippetDto).build();
     }
 
@@ -109,7 +109,7 @@ public class SnippetController {
 
         List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.FLAGGED, sort, null, null, page)
                 .stream()
-                .map(SnippetDto::fromSnippet)
+                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo))
                 .collect(Collectors.toList());
         int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.FLAGGED, null, null);
         Map<String, Object> queryParams = new HashMap<>();
