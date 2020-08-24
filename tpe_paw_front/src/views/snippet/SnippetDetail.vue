@@ -60,13 +60,17 @@
         <v-flex>
           <v-layout>
             <v-flex>
-              UPVOTE
+              <v-btn :disabled="voting" @click="vote(true)" icon>
+                <v-icon>{{`mdi-thumb-up${isUpvoted ? '' : '-outline'}`}}</v-icon>
+              </v-btn>
             </v-flex>
             <v-flex>
-              SCORE
+              {{ snippet.score }}
             </v-flex>
             <v-flex>
-              DOWNVOTE
+              <v-btn :disabled="voting" @click="vote(false)" icon>
+                <v-icon>{{`mdi-thumb-down${isDownvoted ? '' : '-outline'}`}}</v-icon>
+              </v-btn>
             </v-flex>
           </v-layout>
         </v-flex>
@@ -78,6 +82,7 @@
         </v-flex>
       </v-layout>
     </v-card>
+    {{snippet}}
   </v-container>
 </template>
 
@@ -93,7 +98,8 @@ export default {
       user: {},
       tags: [],
       loading: true,
-      faving: false
+      faving: false,
+      voting: false,
     }
   },
   methods: {
@@ -107,6 +113,26 @@ export default {
       }
       promise.then(r => { this.snippet.isFavorite = !this.snippet.isFavorite })
       .finally(() => { this.faving = false })
+    },
+    vote (isPositive) {
+      this.voting = true
+      const params = {
+        positive: isPositive,
+        selected: this.snippet.vote == null || this.snippet.vote.positive !== isPositive
+      }
+      snippets.voteSnippet(this.snippet.id, params).then(r => {
+        this.snippet.vote = r.data.vote
+        this.snippet.score = r.data.snippetScore
+      })
+      .finally(() => { this.voting = false })
+    }
+  },
+  computed: {
+    isUpvoted () {
+      return this.snippet.vote != null && this.snippet.vote.positive
+    },
+    isDownvoted () {
+      return this.snippet.vote != null && !this.snippet.vote.positive
     }
   },
   mounted () {

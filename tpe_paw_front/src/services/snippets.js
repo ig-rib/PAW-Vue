@@ -9,8 +9,8 @@ const getSnippet = (id) => axiosFetcher.get(urls.snippet.getSnippet, {
   }
 })
 
-const voteSnippet = (id, params) => axiosFetcher.put(urls.snippet.voteSnippet, {
-  queryParams: {
+const voteSnippet = (id, params) => axiosFetcher.post(urls.snippet.voteSnippet, {
+  pathVariables: {
     id
   }
 }, params)

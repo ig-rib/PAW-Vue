@@ -130,7 +130,7 @@ public class SnippetController {
         return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
     }
 
-    @PUT
+    @POST
     @Path("/{id}/vote")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     @Produces(value = {MediaType.APPLICATION_JSON})
@@ -148,9 +148,11 @@ public class SnippetController {
             if(snippet == null){
                 return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
             }
-            this.voteService.performVote(snippet.getOwner().getId(), user.getId(), id, voteDto.isSelected(), voteDto.isPositive());
+            this.voteService.performVote(snippet.getOwner().getId(), user.getId(), id, voteDto.getSelected(), voteDto.getPositive());
+            VoteResponseDto vrDto = VoteResponseDto.createVoteResponse(voteService.getVoteBalance(snippet.getId()), voteService.getVote(user.getId(), snippet.getId()).orElse(null));
+            return Response.ok(vrDto).build();
         }
-        return Response.ok().build();
+
     }
 
 

@@ -29,7 +29,7 @@ public class SnippetDto {
     // User-specific section
     private boolean isFavorite;
     private boolean isReported;
-    private Vote vote;
+    private VoteDto vote;
 
     public static SnippetDto fromSnippet(Snippet snippet, UriInfo uriInfo){
         SnippetDto dto = new SnippetDto();
@@ -51,7 +51,8 @@ public class SnippetDto {
     public static SnippetDto fromSnippetWithDetail(Snippet snippet, UriInfo uriInfo, long score, Vote vote, boolean reported, boolean favorite) {
         SnippetDto dto = SnippetDto.fromSnippet(snippet, uriInfo);
         dto.score = score;
-        dto.vote = vote;
+        if (vote != null)
+            dto.vote = VoteDto.fromVote(vote);
         dto.isReported = reported;
         dto.isFavorite = favorite;
         return dto;
@@ -161,11 +162,11 @@ public class SnippetDto {
         isReported = reported;
     }
 
-    public Vote getVote() {
+    public VoteDto getVote() {
         return vote;
     }
 
-    public void setVote(Vote vote) {
+    public void setVote(VoteDto vote) {
         this.vote = vote;
     }
 }
