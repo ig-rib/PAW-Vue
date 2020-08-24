@@ -64,6 +64,13 @@
       "following": {
         "title": "Following"
       }
+    },
+    "snippetDetail": {
+      "report": {
+        "whatIsWrong": "What is wrong with this snippet?",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      }
     }
   },
   "search": {

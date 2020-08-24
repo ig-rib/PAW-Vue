@@ -54,7 +54,7 @@
         </v-flex>
         <v-flex>
           <v-btn :disabled="faving" @click="fav" icon>
-            <v-icon>{{`mdi-heart${snippet.isFavorite ? '' : '-outline'}`}}</v-icon>
+            <v-icon>{{`mdi-heart${snippet.favorite ? '' : '-outline'}`}}</v-icon>
           </v-btn>
         </v-flex>
         <v-flex>
@@ -75,21 +75,32 @@
           </v-layout>
         </v-flex>
         <v-flex>
-          REPORT
+          <v-btn :disabled="reporting" @click="report" icon>
+            <v-icon>{{`mdi-alert-octagon${snippet.reported ? '' : '-outline'}`}}</v-icon>
+          </v-btn>
         </v-flex>
         <v-flex>
           OWNER
         </v-flex>
       </v-layout>
     </v-card>
-    {{snippet}}
+    <v-dialog v-model="reportDialog">
+      <v-card>
+        <v-card-title>{{ $t('snippets.snippetDetail.report.whatIsWrong') }}</v-card-title>
+        <v-textarea v-model="reportMessage"></v-textarea>
+        <v-card-actions>
+          <v-btn @click="sendReport">{{ $t('snippets.snippetDetail.report.confirm') }}</v-btn>
+          <v-btn @click="cancelReport">{{ $t('snippets.snippetDetail.report.cancel')}}</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
 import snippets from '@/services/snippets.js'
 import axiosFetcher from '@/services/axiosFetcher.js'
-
+import urls from '@/services/urls.js'
 
 export default {
   data () {
@@ -100,18 +111,21 @@ export default {
       loading: true,
       faving: false,
       voting: false,
+      reporting: false,
+      reportDialog: false,
+      reportMessage: ''
     }
   },
   methods: {
     fav () {
       this.faving = true
       let promise = {}
-      if (this.snippet.isFavorite) {
+      if (this.snippet.favorite) {
         promise = snippets.unfavSnippet(this.snippet.id)
       } else {
         promise = snippets.favSnippet(this.snippet.id)
       }
-      promise.then(r => { this.snippet.isFavorite = !this.snippet.isFavorite })
+      promise.then(r => { this.snippet.favorite = !this.snippet.favorite })
       .finally(() => { this.faving = false })
     },
     vote (isPositive) {
@@ -125,6 +139,38 @@ export default {
         this.snippet.score = r.data.snippetScore
       })
       .finally(() => { this.voting = false })
+    },
+    report () {
+      this.reporting = true
+      let promise = {}
+      if (this.snippet.reported) {
+        snippets.unreportSnippet(this.snippet.id)
+          .then(r => {
+            this.snippet.reported = false
+          })
+          .finally(() => { this.reporting = false })
+      } else {
+        this.reportDialog = true
+      }
+    },
+    sendReport () {
+      snippets.reportSnippet(this.snippet.id, {
+        detail: this.reportMessage,
+        // TODO how to find baseURI
+        baseUri: urls.localDomain + this.$route.path
+      }).then(r => {
+        this.snippet.reported = true
+        this.resetReportData()
+      })
+      // TODO add catch clause
+    },
+    cancelReport () {
+      this.resetReportData()
+    },
+    resetReportData () {
+      this.reportMessage = ''
+      this.reportDialog = false
+      this.reporting = false
     }
   },
   computed: {
@@ -154,6 +200,15 @@ export default {
       .finally(() => {
         this.loading = false
       })
+  },
+  watch: {
+    reportDialog: {
+      handler: function (newVal, oldVal) {
+        if (newVal === false) {
+          this.resetReportData()
+        }
+      }
+    }
   }
 }
 </script>
