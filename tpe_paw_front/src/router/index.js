@@ -22,6 +22,7 @@ import SendVerificationCode from '@/views/registration/SendVerificationCode.vue'
 import UserProfileMain from '@/views/user/UserProfileMain.vue'
 import CreateSnippet from '@/views/snippet/CreateSnippet.vue'
 import SnippetGrid from '@/components/SnippetGrid.vue'
+import UserSpecificSnippets from '@/views/user/UserSpecificSnippets.vue'
 
 Vue.use(VueRouter)
 
@@ -167,6 +168,21 @@ const routes = [
                 component: SnippetGrid
               }
             ]
+          },
+          {
+            path: 'current-user/following',
+            name: 'following',
+            component: UserSpecificSnippets
+          },
+          {
+            path: 'current-user/favorites',
+            name: 'favorites',
+            component: UserSpecificSnippets
+          },
+          {
+            path: 'current-user/upvoted',
+            name: 'upvoted',
+            component: UserSpecificSnippets
           }
         ]
       }

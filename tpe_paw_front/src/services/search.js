@@ -100,6 +100,15 @@ const searchInLocation = (route, queryParams) => {
       url = urls.user.deletedSnippets
       pathVariables.id = route.params.id
       break;
+    case 'following':
+      url = urls.user.followingSnippets
+      break;
+    case 'favorites':
+      url = urls.user.favoriteSnippets
+      break;
+    case 'upvoted':
+      url = urls.user.upvotedSnippets
+      break;
     case 'explore':
       return explore(queryParams)
   }

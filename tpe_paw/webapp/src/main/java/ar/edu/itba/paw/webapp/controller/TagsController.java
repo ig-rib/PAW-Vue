@@ -187,34 +187,6 @@ public class TagsController {
     }
 
     @GET
-    @Path("/following/snippets")
-    public Response searchInFollowing(final @QueryParam("q") String query,
-                                      final @QueryParam("t") String type,
-                                      final @QueryParam("uid") String userId,
-                                      final @QueryParam("s") String sort,
-                                      final @QueryParam("page") @DefaultValue("1") int page) {
-
-        User user = loginAuthentication.getLoggedInUser().orElse(null);
-        if (user == null){
-            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
-            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
-        }
-        List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.FOLLOWING, sort, user.getId(), null, page)
-                .stream()
-                .map(SnippetDto::fromSnippet)
-                .collect(Collectors.toList());
-        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.FOLLOWING, user.getId(), null);
-        Map<String, Object> queryParams = new HashMap<>();
-        queryParams.put("q", query);
-        queryParams.put("t", type);
-        queryParams.put("uid", userId);
-        queryParams.put("s", sort);
-
-        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
-    }
-
-    @GET
     @Path("tags")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response searchTags(final @QueryParam("page") @DefaultValue("1") int page,
