@@ -7,11 +7,13 @@ import java.util.Optional;
 public class VoteResponseDto {
 
     private long snippetScore;
+    private long ownerReputation;
     private VoteDto vote;
 
-    public static VoteResponseDto createVoteResponse(int voteBalance, Vote vote) {
+    public static VoteResponseDto createVoteResponse(long voteBalance, long ownerReputation, Vote vote) {
         VoteResponseDto vrDto = new VoteResponseDto();
         vrDto.setSnippetScore(voteBalance);
+        vrDto.setOwnerReputation(ownerReputation);
         if (vote != null)
             vrDto.setVote(VoteDto.fromVote(vote));
         return vrDto;
@@ -31,5 +33,13 @@ public class VoteResponseDto {
 
     public void setVote(VoteDto vote) {
         this.vote = vote;
+    }
+
+    public long getOwnerReputation() {
+        return ownerReputation;
+    }
+
+    public void setOwnerReputation(long ownerReputation) {
+        this.ownerReputation = ownerReputation;
     }
 }

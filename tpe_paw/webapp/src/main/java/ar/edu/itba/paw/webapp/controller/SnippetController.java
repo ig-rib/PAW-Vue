@@ -149,7 +149,7 @@ public class SnippetController {
                 return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
             }
             this.voteService.performVote(snippet.getOwner().getId(), user.getId(), id, voteDto.getSelected(), voteDto.getPositive());
-            VoteResponseDto vrDto = VoteResponseDto.createVoteResponse(voteService.getVoteBalance(snippet.getId()), voteService.getVote(user.getId(), snippet.getId()).orElse(null));
+            VoteResponseDto vrDto = VoteResponseDto.createVoteResponse(voteService.getVoteBalance(snippet.getId()), snippet.getOwner().getReputation(), voteService.getVote(user.getId(), snippet.getId()).orElse(null));
             return Response.ok(vrDto).build();
         }
 

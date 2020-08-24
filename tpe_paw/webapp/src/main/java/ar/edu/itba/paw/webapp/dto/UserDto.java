@@ -27,6 +27,7 @@ public class UserDto {
         dto.username = user.getUsername();
         dto.icon = uriInfo.getAbsolutePathBuilder().path("profile-photo").build();
         dto.description = user.getDescription();
+        dto.reputation = user.getReputation();
 
         return dto;
     }

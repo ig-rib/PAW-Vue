@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container id="snippet-detail-container">
     <v-card v-if="!loading">
       <v-layout>
         <v-flex>
@@ -49,7 +49,7 @@
         </v-flex>
       </v-layout>
       <v-layout>
-        <v-flex>
+        <v-flex v-if="isSnippetOwner">
           DELETE
         </v-flex>
         <v-flex>
@@ -80,7 +80,29 @@
           </v-btn>
         </v-flex>
         <v-flex>
-          OWNER
+          <v-layout column>
+            <v-flex>
+              {{snippet.dateCreated}}
+            </v-flex>
+            <v-flex>
+              <v-layout>
+                <v-flex>
+                  <v-img class="owner-image" width="20px" height="20px" :src="user.icon" v-if="user != null">
+                  </v-img>
+                </v-flex>
+                <v-flex>
+                  <v-layout column>
+                    <v-flex>
+                      {{ user.username }}
+                    </v-flex>
+                    <v-flex>
+                      {{ user.reputation }}
+                    </v-flex>
+                  </v-layout>
+                </v-flex>
+              </v-layout>
+            </v-flex>
+          </v-layout>
         </v-flex>
       </v-layout>
     </v-card>
@@ -137,6 +159,7 @@ export default {
       snippets.voteSnippet(this.snippet.id, params).then(r => {
         this.snippet.vote = r.data.vote
         this.snippet.score = r.data.snippetScore
+        this.user.reputation = r.data.ownerReputation
       })
       .finally(() => { this.voting = false })
     },
@@ -179,6 +202,9 @@ export default {
     },
     isDownvoted () {
       return this.snippet.vote != null && !this.snippet.vote.positive
+    },
+    isSnippetOwner () {
+      return this.$store.getters.user.id === this.user.id
     }
   },
   mounted () {
@@ -212,3 +238,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  #snippet-detail-container {
+    .owner-image {
+      border-radius: 20px;
+    }
+  }
+</style>
