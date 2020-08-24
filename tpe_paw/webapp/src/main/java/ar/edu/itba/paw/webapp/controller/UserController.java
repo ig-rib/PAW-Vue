@@ -7,10 +7,7 @@ import ar.edu.itba.paw.interfaces.service.TagService;
 import ar.edu.itba.paw.interfaces.service.UserService;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
-import ar.edu.itba.paw.webapp.dto.ErrorMessageDto;
-import ar.edu.itba.paw.webapp.dto.ProfilePhotoDto;
-import ar.edu.itba.paw.webapp.dto.SnippetDto;
-import ar.edu.itba.paw.webapp.dto.UserDto;
+import ar.edu.itba.paw.webapp.dto.*;
 import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -22,16 +19,12 @@ import org.springframework.context.i18n.LocaleContextHolder;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static ar.edu.itba.paw.webapp.utility.Constants.SNIPPET_PAGE_SIZE;
 
 @Path("/user")
 public class UserController {
@@ -261,7 +254,7 @@ public class UserController {
 
     @PUT
     @Path("{id}/user-data")
-    public Response updateUserData(@PathParam(value="id") final long id, UserDto userDto) {
+    public Response updateUserData(@PathParam(value="id") final long id, UserDataDto userDataDto) {
         User user = userService.findUserById(id).orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
@@ -274,7 +267,10 @@ public class UserController {
             errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.FORBIDDEN).entity(errorMessageDto).build();
         }
-        userService.changeDescription(id, userDto.getDescription());
+        if (userDataDto.getDescription() != null)
+            userService.changeDescription(id, userDataDto.getDescription());
+        if (userDataDto.getEncodedPhoto() != null && !userDataDto.getEncodedPhoto().isEmpty())
+            userService.changeProfilePhotoBase64(currentUser.getId(), userDataDto.getEncodedPhoto());
         return Response.accepted().build();
     }
 }

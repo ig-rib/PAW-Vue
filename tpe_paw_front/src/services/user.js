@@ -52,14 +52,11 @@ const uploadProfilePhoto64 = (id, photo64) => axiosFetcher.post(urls.user.profil
   }
 )
 
-const updateUserData = (id, description, username) => axiosFetcher.put(urls.user.updateUserData, {
+const updateUserData = (id, params) => axiosFetcher.put(urls.user.updateUserData, {
   pathVariables: {
     id
   }
-}, {
-  description
-  // username
-})
+}, params)
 
 export default {
   getUser,

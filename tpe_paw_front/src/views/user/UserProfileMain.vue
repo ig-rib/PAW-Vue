@@ -62,12 +62,11 @@
         </v-layout>
       </v-flex>
     </v-layout>
+    <v-layout>
+    </v-layout>
     <v-divider></v-divider>
     <v-layout v-if="!editing">
-
     </v-layout>
-    <img :src="profilePhoto"/>
-    {{profilePhoto}}
   </v-container>
 </template>
 
@@ -80,21 +79,15 @@ import urls from '@/services/urls.js'
       return {
         editing: false,
         profilePhoto: null,
+        imagePreview: null,
         description: '',
+        image64: '',
         oldDescription: '',
         user: () => {},
         hasPhotoPreview: false
       }
     },
     methods: {
-      readImage (event) {
-        const selectedImage = event.target.files[0]
-        const reader = new FileReader()
-        reader.onload = (e) => {
-          this.profilePhoto = e.target.result
-        }
-        reader.readAsBinaryString(selectedImage)
-      },
       getUserEntity () {
         user.getUser(75)
           .then(r => { this.editing = true })
@@ -114,25 +107,44 @@ import urls from '@/services/urls.js'
           .then(r => this.updateOldDescription())
           .catch(e => this.resetUserData())
       },
-      saveImage (e) {
+      saveImage (event) {
         this.hasPhotoPreview = true
-        this.profilePhoto = e.target.files[0]        
-      },
-      resetUserData () {
-        this.description = this.oldDescription
-      },
-      updateOldDescription () {
-        this.oldDescription = this.description
+        this.profilePhoto = event.target.files[0]
+        console.log(this.profilePhoto)
+        const reader = new FileReader()
+        const that = this
+        reader.onload = function (e) {
+          that.imagePreview = e.target.result
+          that.image64 = e.target.result.split('base64,').pop()
+        }
+        reader.readAsDataURL(this.profilePhoto)
+        console.log(this.profilePhoto, btoa(this.profilePhoto))
       },
       cancelEditing () {
-
+        this.imagePreview = null
+        this.profilePhoto = null
+        this.editing = false
+        this.hasPhotoPreview = false
+        this.description = this.user.description
       },
       saveChanges () {
-
+        const params = {
+          encodedPhoto: this.image64,
+          description: this.description
+        }
+        console.log(params)
+        user.updateUserData(this.$route.params.id, params).then(r => {
+          this.user.descrpition = this.description
+        })
+        .finally(() => {
+          this.editing = false
+          this.hasPhotoPreview = false
+        })
       }
     },
     computed: {
       renderableImage () {
+        console.log(this.user.icon)
         return `${this.user.icon}`
       },
       currentUser () {
@@ -142,9 +154,8 @@ import urls from '@/services/urls.js'
         return urls.user.profilePhoto
       },
       editableImage () {
-        if (this.hasPhotoPreview) {
-          let fr = new FileReader()
-          return fr.readAsDataURL(this.profilePhoto)
+        if (this.hasPhotoPreview && this.imagePreview != null) {
+          return this.imagePreview
         } else {
           return this.renderableImage
         }
@@ -153,7 +164,8 @@ import urls from '@/services/urls.js'
     mounted () {
       // Unconditionally get and store user
       user.getUser(this.$route.params.id)
-        .then(r => { 
+        .then(r => {
+          console.log('userData', r.data)
           this.user = r.data
           this.oldDescription = this.description = this.user.description
         })
