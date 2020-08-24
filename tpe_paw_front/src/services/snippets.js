@@ -3,7 +3,7 @@ import axiosFetcher from './axiosFetcher.js'
 
 const createSnippet = (snippet) => axiosFetcher.post(urls.snippet.create, {}, snippet)
 
-const getSnippet = (id) => axiosFetcher.get(urls.snippet.getSnippet, {
+const getSnippet = (id) => axiosFetcher.get(urls.snippet.snippet, {
   pathVariables: {
     id
   }
@@ -39,6 +39,18 @@ const unreportSnippet = (id) => axiosFetcher.del(urls.snippet.reportSnippet, {
   }
 })
 
+const deleteSnippet = (id) => axiosFetcher.del(urls.snippet.snippet, {
+  pathVariables: {
+    id
+  }
+})
+
+const restoreDeletedSnippet = (id) => axiosFetcher.put(urls.snippet.restore, {
+  pathVariables: {
+    id
+  }
+})
+
 export default {
   createSnippet,
   getSnippet,
@@ -46,5 +58,7 @@ export default {
   favSnippet,
   unfavSnippet,
   reportSnippet,
-  unreportSnippet
+  unreportSnippet,
+  deleteSnippet,
+  restoreDeletedSnippet
 }

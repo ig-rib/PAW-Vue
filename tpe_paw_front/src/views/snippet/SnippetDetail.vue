@@ -50,7 +50,12 @@
       </v-layout>
       <v-layout>
         <v-flex v-if="isSnippetOwner">
-          DELETE
+          <v-btn v-if="!snippet.deleted" :disabled="deleting" @click="deleteSnippet" icon>
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+          <v-btn v-else :disabled="deleting" @click="restoreSnippet" icon>
+            <v-icon>mdi-delete-restore</v-icon>
+          </v-btn>
         </v-flex>
         <v-flex>
           <v-btn :disabled="faving" @click="fav" icon>
@@ -87,16 +92,16 @@
             <v-flex>
               <v-layout>
                 <v-flex>
-                  <v-img class="owner-image" width="20px" height="20px" :src="user.icon" v-if="user != null">
+                  <v-img class="owner-image" width="20px" height="20px" :src="owner.icon" v-if="user != null">
                   </v-img>
                 </v-flex>
                 <v-flex>
                   <v-layout column>
                     <v-flex>
-                      {{ user.username }}
+                      {{ owner.username }}
                     </v-flex>
                     <v-flex>
-                      {{ user.reputation }}
+                      {{ owner.reputation }}
                     </v-flex>
                   </v-layout>
                 </v-flex>
@@ -134,6 +139,7 @@ export default {
       faving: false,
       voting: false,
       reporting: false,
+      deleting: false,
       reportDialog: false,
       reportMessage: ''
     }
@@ -159,7 +165,7 @@ export default {
       snippets.voteSnippet(this.snippet.id, params).then(r => {
         this.snippet.vote = r.data.vote
         this.snippet.score = r.data.snippetScore
-        this.user.reputation = r.data.ownerReputation
+        this.owner.reputation = r.data.ownerReputation
       })
       .finally(() => { this.voting = false })
     },
@@ -194,6 +200,26 @@ export default {
       this.reportMessage = ''
       this.reportDialog = false
       this.reporting = false
+    },
+    deleteSnippet () {
+      this.deleting = true
+      snippets.deleteSnippet(this.snippet.id)
+        .then(r => {
+          this.snippet.deleted = true
+        })
+        .finally(() => {
+          this.deleting = false
+        })
+    },
+    restoreSnippet () {
+      this.deleting = true
+      snippets.restoreDeletedSnippet(this.snippet.id)
+        .then(r => {
+          this.snippet.deleted = false
+        })
+        .finally(() => {
+          this.deleting = false
+        })
     }
   },
   computed: {
@@ -204,7 +230,7 @@ export default {
       return this.snippet.vote != null && !this.snippet.vote.positive
     },
     isSnippetOwner () {
-      return this.$store.getters.user.id === this.user.id
+      return this.$store.getters.user.id === this.owner.id
     }
   },
   mounted () {
@@ -220,7 +246,7 @@ export default {
         return Promise.all(allRequests)
       })
       .then(responses => {
-        this.user = responses.pop().data
+        this.owner = responses.pop().data
         this.tags = responses.map(r => r.data)
       })
       .finally(() => {

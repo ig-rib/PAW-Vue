@@ -87,7 +87,7 @@ public class SnippetController {
 
     @DELETE
     @Path("/{id}")
-    public Response deleteSnippet(@PathParam(value="id") long id) {
+    public Response deleteSnippet(final @PathParam(value="id") long id) {
         User user = loginAuthentication.getLoggedInUser().orElse(null);
         Snippet snippet = this.snippetService.findSnippetById(id).orElse(null);
 
@@ -105,6 +105,28 @@ public class SnippetController {
             }
         }
         return Response.status(Response.Status.NO_CONTENT).build();
+    }
+
+    @PUT
+    @Path("/{id}/restore")
+    public Response restoreDeletedSnippet(final @PathParam("id") long id) {
+        User user = loginAuthentication.getLoggedInUser().orElse(null);
+        Snippet snippet = this.snippetService.findSnippetById(id).orElse(null);
+
+        //TODO: Check what should we respond in the body in case of an error
+        if (snippet == null) {
+            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
+        }
+        if (user == null || user.getUsername().compareTo(snippet.getOwner().getUsername()) != 0) {
+            return buildErrorResponse("error.403.snippet", Response.Status.FORBIDDEN, snippet.getId());
+        } else {
+            //TODO: Adapt to be able to restore snippet
+            if (!this.snippetService.deleteOrRestoreSnippet(snippet, user.getId(), true)) {
+                /* Operation was unsuccessful */
+                return buildErrorResponse("error.409.snippet", Response.Status.CONFLICT, loginAuthentication.getLoggedInUsername());
+            }
+        }
+        return Response.ok().build();
     }
 
     // Needed for admin to search snippets flagged by him/herself
