@@ -25,7 +25,7 @@
         <v-flex v-if="$vuetify.breakpoint.lgAndUp" shrink>
           <v-layout fill-height class="pt-0">
             <v-flex
-              v-for="item in paths"
+              v-for="item in generalPaths"
               :key="item.title"
             >
               <v-btn
@@ -155,23 +155,40 @@
       <h3>
         {{`Snippit`}}
       </h3>
-      <v-list class="pt-0">
-      <v-list-item
-        v-for="item in paths"
-        :key="item.title"
-        :to="item.path"
-      >
-        <v-layout>
-          <v-flex>
-              <v-icon>{{ item.icon }}</v-icon>
-          </v-flex>
+        <v-list>
+          <v-list-item
+            v-for="item in generalPaths"
+            :key="item.title"
+            :to="item.path"
+          >
+            <v-layout>
+              <v-flex>
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-flex>
 
-          <v-flex>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-flex>
-        </v-layout>
-      </v-list-item>
-    </v-list>
+              <v-flex>
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-flex>
+            </v-layout>
+          </v-list-item>
+        </v-list>
+      <v-divider></v-divider>
+      <v-list class="pt-0" v-if="$store.getters.loggedIn">
+        <v-list-item
+          v-for="item in loggedInPaths"
+          :key="item.title"
+          :to="item.path">
+          <v-layout>
+              <v-flex>
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-flex>
+
+              <v-flex>
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-flex>
+            </v-layout>
+        </v-list-item>
+      </v-list>
     <v-layout v-if="!$store.getters.loggedIn">
       <v-flex>
         <v-btn @click="goToLogin">{{ $t('registration.login') }}</v-btn>
@@ -211,7 +228,7 @@ export default {
       searchOrder: '',
       showEmpty: true,
       showOnlyFollowing: false,
-      paths: [
+      generalPaths: [
         {
           title: this.$t('feed.title'),
           icon: 'mdi-home',
@@ -238,6 +255,29 @@ export default {
           icon: 'mdi-tag',
           path: {
             name: 'tags-main'
+          }
+        }
+      ],
+      loggedInPaths: [
+        {
+          title: this.$t('user.following.following'),
+          icon: 'mdi-tag-heart',
+          path: {
+            name: 'following'
+          }
+        },
+        {
+          title: this.$t('user.favorites.favorites'),
+          icon: 'mdi-heart',
+          path: {
+            name: 'favorites'
+          }
+        },
+        {
+          title: this.$t('user.upvoted.upvoted'),
+          icon: 'mdi-thumb-up',
+          path: {
+            name: 'upvoted'
           }
         }
       ],

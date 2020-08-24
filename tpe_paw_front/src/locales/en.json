@@ -92,7 +92,19 @@
       "done": "Done"
     },
     "active": "Active Snippets",
-    "deleted": "Deleted Snippets"
+    "deleted": "Deleted Snippets",
+    "following": {
+      "title": "Snippets For Tags You Follow",
+      "following": "Following"
+    },
+    "favorites": {
+      "title": "Snippets Marked As Favorite",
+      "favorites": "Favorites"
+    },
+    "upvoted": {
+      "title": "Snippets You've Upvoted",
+      "upvoted": "Upvoted"
+    }
   },
   "registration": {
     "username": "User Name",

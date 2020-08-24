@@ -22,7 +22,9 @@ import SendVerificationCode from '@/views/registration/SendVerificationCode.vue'
 import UserProfileMain from '@/views/user/UserProfileMain.vue'
 import CreateSnippet from '@/views/snippet/CreateSnippet.vue'
 import SnippetGrid from '@/components/SnippetGrid.vue'
-import UserSpecificSnippets from '@/views/user/UserSpecificSnippets.vue'
+import Favorites from '@/views/user/Favorites.vue'
+import Following from '@/views/user/Following.vue'
+import Upvoted from '@/views/user/Upvoted.vue'
 
 Vue.use(VueRouter)
 
@@ -172,17 +174,17 @@ const routes = [
           {
             path: 'current-user/following',
             name: 'following',
-            component: UserSpecificSnippets
+            component: Following
           },
           {
             path: 'current-user/favorites',
             name: 'favorites',
-            component: UserSpecificSnippets
+            component: Favorites
           },
           {
             path: 'current-user/upvoted',
             name: 'upvoted',
-            component: UserSpecificSnippets
+            component: Upvoted
           }
         ]
       }
