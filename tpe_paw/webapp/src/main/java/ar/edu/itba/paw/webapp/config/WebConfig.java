@@ -22,6 +22,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.ui.velocity.VelocityEngineFactory;
@@ -47,6 +48,7 @@ import java.util.concurrent.TimeUnit;
 @EnableAsync
 @ComponentScan({ "ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.webapp.auth", "ar.edu.itba.paw.webapp.validations", "ar.edu.itba.paw.services", "ar.edu.itba.paw.persistence"})
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableScheduling
 @EnableTransactionManagement
 public class WebConfig extends WebMvcConfigurerAdapter {

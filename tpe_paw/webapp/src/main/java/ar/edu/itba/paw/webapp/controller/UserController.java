@@ -53,7 +53,7 @@ public class UserController {
     @Path("/current")
     public Response getLoggedInUser(final @QueryParam("uname") String username) {
         User user = loginAuthentication.getLoggedInUser().orElse(null);
-        return Response.ok(UserDto.fromUser(user, uriInfo)).build();
+        return Response.ok(UserDto.fromUser(user, roleService.isAdmin(user.getId()), uriInfo)).build();
     }
 
     @GET
@@ -203,7 +203,7 @@ public class UserController {
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        UserDto userDto = UserDto.fromUser(user, uriInfo);
+        UserDto userDto = UserDto.fromUser(user, roleService.isAdmin(user.getId()), uriInfo);
         return Response.ok(userDto).build();
     }
 

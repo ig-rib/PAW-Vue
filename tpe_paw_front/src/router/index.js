@@ -25,6 +25,8 @@ import SnippetGrid from '@/components/SnippetGrid.vue'
 import Favorites from '@/views/user/Favorites.vue'
 import Following from '@/views/user/Following.vue'
 import Upvoted from '@/views/user/Upvoted.vue'
+import AddTags from '@/views/admin/AddTags.vue'
+import AddLanguages from '@/views/admin/AddLanguages.vue'
 
 Vue.use(VueRouter)
 
@@ -185,9 +187,19 @@ const routes = [
             path: 'current-user/upvoted',
             name: 'upvoted',
             component: Upvoted
+          },
+          {
+            path: 'admin/add-tags',
+            name: 'add-tags',
+            component: AddTags
+          },
+          {
+            path: 'admin/add-languages',
+            name: 'add-languages',
+            component: AddLanguages
           }
         ]
-      }
+      },
     ]
   }
 ]

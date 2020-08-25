@@ -37,10 +37,14 @@ const searchTags = params => {
       params[key] = queryParamTemplate[key]
     }
   }
-  return axiosFetcher.get(urls.tags.searchTags, {
+  return axiosFetcher.get(urls.tags.tags, {
     queryParams: params
   })
 }
+
+const addTag = tagName => axiosFetcher.post(urls.tags.tags, {}, {
+  name: tagName
+})
 
 export default {
   followTag,
@@ -48,4 +52,5 @@ export default {
   deleteTag,
   searchTags,
   getTagSnippets,
+  addTag
 }

@@ -79,6 +79,12 @@ public class TagServiceImpl implements TagService {
         this.tagDao.addTags(tags);
     }
 
+    @Transactional
+    @Override
+    public Tag addTag(String tagName) {
+        return this.tagDao.addTag(tagName);
+    }
+
     @Override
     public boolean tagExists(String tag) {
         return this.tagDao.findByName(tag).isPresent();

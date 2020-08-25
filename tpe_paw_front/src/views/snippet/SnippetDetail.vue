@@ -91,8 +91,8 @@
             </v-flex>
             <v-flex>
               <v-layout>
-                <v-flex>
-                  <v-img class="owner-image" width="20px" height="20px" :src="owner.icon" v-if="user != null">
+                <v-flex shrink>
+                  <v-img class="owner-image" width="40px" height="40px" :src="owner.icon" v-if="user != null">
                   </v-img>
                 </v-flex>
                 <v-flex>
@@ -268,7 +268,7 @@ export default {
 <style lang="scss">
   #snippet-detail-container {
     .owner-image {
-      border-radius: 20px;
+      border-radius: 40px;
     }
   }
 </style>

@@ -26,11 +26,10 @@ const urls = {
     resetPassword: localDomain + 'reset-password',
   },
   tags: {
-    searchTags: localDomain + 'tags',
+    tags: localDomain + 'tags',
     getTagSnippets: localDomain + 'tags/:id/snippets',
     followTag: localDomain + 'tags/:id/follow',
-    unfollowTag: localDomain + 'tags/:id/unfollow',
-    deleteTag: localDomain + 'tags/:id/delete'
+    unfollowTag: localDomain + 'tags/:id/unfollow'
   },
   search: {
     searchHome: localDomain + 'search',
@@ -57,7 +56,7 @@ const urls = {
     create: localDomain + 'snippet/create'
   },
   languages: {
-    searchLanguages: localDomain + 'languages',
+    languages: localDomain + 'languages',
     getLanguageSnippets: localDomain + 'languages/:id/snippets',
     deleteLanguage: localDomain + 'languages/:id/delete'
   },

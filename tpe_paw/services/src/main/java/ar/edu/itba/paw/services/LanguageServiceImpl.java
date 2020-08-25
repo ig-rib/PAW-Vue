@@ -70,4 +70,10 @@ public class LanguageServiceImpl implements LanguageService {
     public void removeLanguage(final long langId) {
         this.languageDao.removeLanguage(langId);
     }
+
+    @Transactional
+    @Override
+    public Language addLanguage(String name) {
+        return languageDao.addLanguage(name);
+    }
 }

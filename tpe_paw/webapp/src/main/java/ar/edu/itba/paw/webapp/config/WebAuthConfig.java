@@ -31,8 +31,7 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 
 @EnableWebSecurity
-@ComponentScan({ "ar.edu.itba.paw.webapp.auth"})
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@ComponentScan({ "ar.edu.itba.paw.webapp.auth", "ar.edu.itba.paw.webapp.controller"})
 @Configuration
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
@@ -65,7 +64,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**/active", "/user/**/deleted", "user/**/active/edit", "user/**/deleted/edit"). hasRole("USER")
                 .antMatchers("/user/current").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/tags/**/follow").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/tags/**/delete", "/languages/**/delete").hasRole("ADMIN")
+                // .antMatchers("/tags/**/delete", "/languages/**/delete").hasRole("ADMIN")
                 .antMatchers("/**")
                 .permitAll()
                 .and()

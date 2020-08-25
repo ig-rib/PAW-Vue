@@ -73,6 +73,9 @@
       }
     }
   },
+  "navigation": {
+    "forUser": "For You"
+  },
   "search": {
     "showOnlyFollowing": "Show Only Following",
     "showEmpty": "Show empty",
@@ -111,6 +114,16 @@
     "upvoted": {
       "title": "Snippets You've Upvoted",
       "upvoted": "Upvoted"
+    }
+  },
+  "admin": {
+    "addTags": {
+      "addTags": "Add Tags",
+      "addNewTags": "Add New Tags"
+    },
+    "addLanguages": {
+      "addLanguages": "Add Languages",
+      "addNewLanguages": "Add New Languages"
     }
   },
   "registration": {
