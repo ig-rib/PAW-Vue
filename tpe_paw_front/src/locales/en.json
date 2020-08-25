@@ -37,7 +37,8 @@
     "max": "Max"
   },
   "languages": {
-    "title": "Languages"
+    "title": "Languages",
+    "languageSnippets": "Snippets for language {langName}"
   },
   "tags": {
     "title": "Tags",
@@ -45,7 +46,8 @@
     "following": "Following",
     "search" : "Search for a tag",
     "showEmpty": "Show empty",
-    "showOnlyFollowing": "Show following"
+    "showOnlyFollowing": "Show following",
+    "tagSnippets": "Snippets for tag {tagName}"
   },
   "snippets": {
     "createSnippet": {
@@ -124,7 +126,12 @@
     "addLanguages": {
       "addLanguages": "Add Languages",
       "addNewLanguages": "Add New Languages"
-    }
+    },
+    "confirmDeletion": "Confirm Deletion",
+    "languageDeletionDisclaimer": "Are you sure you want to delete \"{langName}\" from Languages? Deleted languages will no longer be available for new snippets and will not appear in the language list unless added again by an administrator.",
+    "tagDeletionDisclaimer": "Are you sure you want to delete \"{tagName}\" from Tags? Deleted tags will be removed from all the snippets containing it and from all users following list. This action cant be undone.",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
   },
   "registration": {
     "username": "User Name",

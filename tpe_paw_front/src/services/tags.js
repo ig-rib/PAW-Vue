@@ -17,6 +17,12 @@ const getTagSnippets = (id, page = 1) => axiosFetcher.get(urls.tags.getTagSnippe
   }
 })
 
+const getTag = id => axiosFetcher.get(urls.tags.tag, {
+  pathVariables: {
+    id
+  }
+})
+
 const followTag = (id) => axiosFetcher.post(urls.tags.followTag, {
   pathVariables: {
     id
@@ -47,6 +53,7 @@ const addTag = tagName => axiosFetcher.post(urls.tags.tags, {}, {
 })
 
 export default {
+  getTag,
   followTag,
   unfollowTag,
   deleteTag,

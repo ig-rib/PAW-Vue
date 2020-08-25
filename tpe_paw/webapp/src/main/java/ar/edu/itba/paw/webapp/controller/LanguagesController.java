@@ -55,6 +55,19 @@ public class LanguagesController {
     private SecurityContext securityContext;
 
     @GET
+    @Path("{langId}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response getLanguage(final @PathParam(value="langId") long langId) {
+        final Language lang = languageService.findById(langId).orElse(null);
+        if (lang == null) {
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.language", new Object[]{langId}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+        }
+        return Response.ok(LanguageDto.fromLanguage(lang)).build();
+    }
+
+    @GET
     @Path("/{langId}/snippets")
     public Response searchInLanguage(final @QueryParam("q") String query,
                                      final @QueryParam("t") String type,

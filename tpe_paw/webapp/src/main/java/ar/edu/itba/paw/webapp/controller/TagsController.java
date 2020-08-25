@@ -61,7 +61,7 @@ public class TagsController {
     @GET
     @Path("tags/{tagId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response showSnippetsForTag(final @PathParam(value="tagId") long tagId) {
+    public Response getTag(final @PathParam(value="tagId") long tagId) {
         final Tag tag = tagService.findTagById(tagId).orElse(null);
         if (tag == null) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
