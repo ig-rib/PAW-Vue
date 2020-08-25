@@ -54,7 +54,8 @@ const urls = {
     favSnippet: localDomain + 'snippet/:id/favorite', // For both faving and unfaving
     reportSnippet: localDomain + 'snippet/:id/report',
     flagSnippet: localDomain + 'snippet/:id/flag',
-    create: localDomain + 'snippet/create'
+    create: localDomain + 'snippet/create',
+    flagged: localDomain + 'snippet/flagged'
   },
   languages: {
     languages: localDomain + 'languages',

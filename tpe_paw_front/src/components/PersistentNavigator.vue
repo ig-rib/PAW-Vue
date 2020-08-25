@@ -71,6 +71,11 @@
                   :to="item.path">
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </v-list-item>
+                <v-list-item
+                  :to="{ name: 'flagged' }"
+                >
+                  <v-list-item-title>{{ $t('admin.flagged') }}</v-list-item-title>
+                </v-list-item>
               </v-list>
             </v-menu>
           </v-layout>
@@ -236,6 +241,18 @@
         </v-list>
       <v-divider></v-divider>
       <v-list class="pt-0" v-if="$store.getters.loggedIn">
+        <v-list-item
+          :to="{ name: 'flagged' }"
+          v-if="isAdmin">
+          <v-layout>
+              <v-flex>
+                <v-icon>mdi-flag</v-icon>
+              </v-flex>
+              <v-flex>
+                <v-list-item-title>{{ $t('admin.flagged') }}</v-list-item-title>
+              </v-flex>
+            </v-layout>
+        </v-list-item>
         <v-list-item
           v-for="item in loggedInPaths"
           :key="item.title"

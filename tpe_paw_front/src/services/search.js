@@ -109,6 +109,9 @@ const searchInLocation = (route, queryParams) => {
     case 'upvoted':
       url = urls.user.upvotedSnippets
       break;
+    case 'flagged':
+      url = urls.snippet.flagged
+      break;
     case 'explore':
       return explore(queryParams)
   }
