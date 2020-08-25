@@ -26,11 +26,11 @@ const urls = {
     resetPassword: localDomain + 'reset-password',
   },
   tags: {
-    searchTags: localDomain + 'tags',
+    tags: localDomain + 'tags',
+    tag: localDomain + 'tags/:id',
     getTagSnippets: localDomain + 'tags/:id/snippets',
     followTag: localDomain + 'tags/:id/follow',
     unfollowTag: localDomain + 'tags/:id/unfollow',
-    deleteTag: localDomain + 'tags/:id/delete'
   },
   search: {
     searchHome: localDomain + 'search',
@@ -57,9 +57,9 @@ const urls = {
     create: localDomain + 'snippet/create'
   },
   languages: {
-    searchLanguages: localDomain + 'languages',
+    languages: localDomain + 'languages',
+    language: localDomain + 'languages/:id',
     getLanguageSnippets: localDomain + 'languages/:id/snippets',
-    deleteLanguage: localDomain + 'languages/:id/delete'
   },
   test: {
     jerseyTest: localDomain + 'jersey-test'

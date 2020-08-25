@@ -26,7 +26,7 @@ const searchLanguages = (params) => {
     queryParams: params
   })
 }
-const deleteLanguage = (id) => axiosFetcher.del(urls.languages.deleteLanguage, {
+const deleteLanguage = (id) => axiosFetcher.del(urls.languages.language, {
    pathVariables: { 
      id: id 
     } 

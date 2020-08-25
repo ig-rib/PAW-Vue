@@ -29,7 +29,7 @@ const unfollowTag = (id) => axiosFetcher.post(urls.tags.unfollowTag, {
   }
 })
 
-const deleteTag = (id) => axiosFetcher.del(urls.tags.deleteTag, { pathVariables: { id: id } })
+const deleteTag = (id) => axiosFetcher.del(urls.tags.tag, { pathVariables: { id: id } })
 
 const searchTags = params => {
   for (const key in queryParamTemplate) {
