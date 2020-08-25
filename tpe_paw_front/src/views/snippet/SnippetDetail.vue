@@ -80,7 +80,10 @@
           </v-layout>
         </v-flex>
         <v-flex>
-          <v-btn :disabled="reporting" @click="report" icon>
+          <v-btn v-if="isAdmin" :disabled="flagging" @click="flag" icon>
+            <v-icon>{{`mdi-flag${snippet.flagged ? '' : '-outline'}`}}</v-icon>
+          </v-btn>
+          <v-btn v-else :disabled="reporting" @click="report" icon>
             <v-icon>{{`mdi-alert-octagon${snippet.reported ? '' : '-outline'}`}}</v-icon>
           </v-btn>
         </v-flex>
@@ -138,6 +141,7 @@ export default {
       loading: true,
       faving: false,
       voting: false,
+      flagging: false,
       reporting: false,
       deleting: false,
       reportDialog: false,
@@ -168,6 +172,17 @@ export default {
         this.owner.reputation = r.data.ownerReputation
       })
       .finally(() => { this.voting = false })
+    },
+    flag () {
+      this.flagging = true
+      let promise = {}
+      if (this.snippet.flagged) {
+        promise = snippets.unflagSnippet(this.snippet.id)
+      } else {
+        promise = snippets.flagSnippet(this.snippet.id)
+      }
+      promise.then(r => { this.snippet.flagged = !this.snippet.flagged })
+      .finally(() => { this.flagging = false })
     },
     report () {
       this.reporting = true
@@ -231,6 +246,9 @@ export default {
     },
     isSnippetOwner () {
       return this.$store.getters.user.id === this.owner.id
+    },
+    isAdmin () {
+      return this.$store.getters.user.admin
     }
   },
   mounted () {

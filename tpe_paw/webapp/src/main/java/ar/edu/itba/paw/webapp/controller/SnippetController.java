@@ -279,12 +279,11 @@ public class SnippetController {
         return Response.ok().build();
     }
 
+    // TODO check flagging endpoints
     @PUT
     @Path(value="/{id}/flag")
     public Response flagSnippet(
-            @PathParam(value="id") long id,
-            @QueryParam(value="isFlagged") boolean isFlagged,
-            @QueryParam(value="baseUrl") String baseUrl
+            @PathParam(value="id") long id
     ) {
         User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
 
@@ -301,7 +300,38 @@ public class SnippetController {
             //final String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
             try {
                 // Updating the flagged variable of snippet
-                this.snippetService.updateFlagged(snippet, snippet.getOwner(), isFlagged, baseUrl);
+                this.snippetService.updateFlagged(snippet, snippet.getOwner(), true, "");
+            } catch (Exception e) {
+                LOGGER.error(e.getMessage() + "Failed to flag snippet {}", snippet.getId());
+                return buildErrorResponse("error.500", Response.Status.INTERNAL_SERVER_ERROR, null);
+            }
+            LOGGER.debug("Marked snippet {} as flagged by admin", id);
+
+        }
+        return Response.ok().build();
+    }
+
+    @DELETE
+    @Path(value="/{id}/flag")
+    public Response unflagSnippet(
+            @PathParam(value="id") long id
+    ) {
+        User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
+
+        if (user == null) {
+            return buildErrorResponse("error.404.user", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
+        } else {
+            Snippet snippet = snippetService.findSnippetById(id).orElse(null);
+            if(snippet == null){
+                return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
+            }
+
+            // Getting the url of the server
+            //TODO: Check how to handle baseUrl
+            //final String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+            try {
+                // Updating the flagged variable of snippet
+                this.snippetService.updateFlagged(snippet, snippet.getOwner(), false, "");
             } catch (Exception e) {
                 LOGGER.error(e.getMessage() + "Failed to flag snippet {}", snippet.getId());
                 return buildErrorResponse("error.500", Response.Status.INTERNAL_SERVER_ERROR, null);

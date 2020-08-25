@@ -27,6 +27,18 @@ const unfavSnippet = (id) => axiosFetcher.del(urls.snippet.favSnippet, {
   }
 })
 
+const flagSnippet = (id) => axiosFetcher.put(urls.snippet.flagSnippet, {
+  pathVariables: {
+    id
+  }
+})
+
+const unflagSnippet = (id) => axiosFetcher.del(urls.snippet.flagSnippet, {
+  pathVariables: {
+    id
+  }
+})
+
 const reportSnippet = (id, params) => axiosFetcher.put(urls.snippet.reportSnippet, {
   pathVariables: {
     id
@@ -57,6 +69,8 @@ export default {
   voteSnippet,
   favSnippet,
   unfavSnippet,
+  flagSnippet,
+  unflagSnippet,
   reportSnippet,
   unreportSnippet,
   deleteSnippet,
