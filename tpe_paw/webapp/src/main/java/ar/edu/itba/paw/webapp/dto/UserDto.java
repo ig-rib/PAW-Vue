@@ -19,14 +19,17 @@ public class UserDto {
     private boolean verified;
     private String lang;
     private String region;
+    private boolean admin;
 
-    public static UserDto fromUser(User user, UriInfo uriInfo){
+    public static UserDto fromUser(User user, boolean isAdmin, UriInfo uriInfo){
         final UserDto dto = new UserDto();
 
         dto.id = user.getId();
         dto.username = user.getUsername();
         dto.icon = uriInfo.getAbsolutePathBuilder().path("profile-photo").build();
         dto.description = user.getDescription();
+        dto.reputation = user.getReputation();
+        dto.admin = isAdmin;
 
         return dto;
     }
@@ -117,5 +120,13 @@ public class UserDto {
 
     public void setIcon(URI icon) {
         this.icon = icon;
+    }
+
+    public boolean getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 }

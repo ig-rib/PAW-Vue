@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.security.Principal;
@@ -58,71 +59,16 @@ public class TagsController {
     private SecurityContext securityContext;
 
     @GET
-    @Path("/tags")
-    @Produces(value = MediaType.APPLICATION_JSON)
-    public Response getAllTags(final @QueryParam("page") @DefaultValue("1") int page,
-                                final @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
-                                @QueryParam("showOnlyFollowing") @DefaultValue("false") boolean showOnlyFollowing) {
-
-        //TODO: Modularize repeated code in searchTags
-
-        // Find the user, check if it exists
-        Long userId = null;
-        Optional<User> userOpt = Optional.empty();
-        if (securityContext.getUserPrincipal() != null) {
-            userOpt = userService.findUserByUsername(securityContext.getUserPrincipal().getName());
-            if(userOpt.isPresent()){
-                userId = userOpt.get().getId();
-            }
-        }
-
-        // Check if showOnlyFollowing is activated --> If user is not logged return unauthorized.
-        if (showOnlyFollowing && !userOpt.isPresent())
-                return Response.status(HttpStatus.UNAUTHORIZED.value()).build();
-
-        //TODO: See if better just to store the following data in the user.
-        final List<TagDto> tags = new ArrayList<>();
-        for(Tag t: tagService.getAllTags(showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)){
-            TagDto tagDto = TagDto.fromTag(t);
-            tagDto.setUserFollowing(userOpt.isPresent() && tagService.userFollowsTag(userId, t.getId()));
-            tags.add(tagDto);
-        }
-
-        int tagsCount = tagService.getAllTagsCount(showEmpty, showOnlyFollowing, userId);
-        int pageCount = (tagsCount/TAG_PAGE_SIZE) + ((tagsCount % TAG_PAGE_SIZE == 0) ? 0 : 1);
-
-        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<TagDto>>(tags) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
-        if (page > 1)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
-        if (page < pageCount)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
-
-        return respBuilder.build();
-    }
-
-    @GET
     @Path("tags/{tagId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response showSnippetsForTag(final @QueryParam("page") @DefaultValue("1") int page,
-        final @PathParam(value="tagId") long tagId) {
-        final List<SnippetDto> snippets = snippetService.findSnippetsForTag(tagId, page, SNIPPET_PAGE_SIZE)
-                .stream()
-                .map(SnippetDto::fromSnippet)
-                .collect(Collectors.toList());
-
-        int snippetsCount = snippetService.getAllSnippetsByTagCount(tagId);
-        int pageCount = (snippetsCount/SNIPPET_PAGE_SIZE) + ((snippetsCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);
-
-        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).build(), "last");
-        if (page > 1)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev");
-        if (page < pageCount)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next");
-        return respBuilder.build();
+    public Response showSnippetsForTag(final @PathParam(value="tagId") long tagId) {
+        final Tag tag = tagService.findTagById(tagId).orElse(null);
+        if (tag == null) {
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.tag", new Object[]{tagId}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+        }
+        return Response.ok(TagDto.fromTag(tag)).build();
     }
 
     @GET
@@ -142,7 +88,7 @@ public class TagsController {
         }
         List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.TAGS, sort, null, tagId, page)
                 .stream()
-                .map(SnippetDto::fromSnippet)
+                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo))
                 .collect(Collectors.toList());
         int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.TAGS, null, tagId);
 
@@ -233,8 +179,29 @@ public class TagsController {
         return respBuilder.build();
     }
 
+    /**
+     * Can only create one tag at a time in order
+     * to adhere to ReST best practices
+     * @param tagDto
+     * @return
+     */
+    @POST
+    @PreAuthorize("hasRole('ADMIN')")
+    @Path("tags")
+    @Consumes(value = {MediaType.APPLICATION_JSON})
+    public Response addTag(final TagDto tagDto) {
+        Tag newTag = tagService.addTag(tagDto.getName());
+        if (newTag == null) {
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.500.tags.create", new Object[]{tagDto.getName()}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorMessageDto).build();
+        }
+        return Response.created(uriInfo.getAbsolutePathBuilder().path(String.valueOf(newTag.getId())).build()).build();
+    }
+
     @DELETE
-    @Path("tags/{tagId}/delete")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Path("tags/{tagId}")
     public Response deleteTag(@PathParam(value="tagId") long tagId) {
         Long userId = null;
         Optional<User> userOpt = Optional.empty();

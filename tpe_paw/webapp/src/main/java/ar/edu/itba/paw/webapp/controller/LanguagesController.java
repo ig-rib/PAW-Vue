@@ -4,11 +4,13 @@ import ar.edu.itba.paw.interfaces.dao.SnippetDao;
 import ar.edu.itba.paw.interfaces.service.*;
 import ar.edu.itba.paw.models.Language;
 import ar.edu.itba.paw.models.Snippet;
+import ar.edu.itba.paw.models.Tag;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
 import ar.edu.itba.paw.webapp.dto.ErrorMessageDto;
 import ar.edu.itba.paw.webapp.dto.LanguageDto;
 import ar.edu.itba.paw.webapp.dto.SnippetDto;
+import ar.edu.itba.paw.webapp.dto.TagDto;
 import ar.edu.itba.paw.webapp.exception.LanguageNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.*;
@@ -67,7 +71,7 @@ public class LanguagesController {
         }
         List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.LANGUAGES, sort, null, langId, page)
                 .stream()
-                .map(SnippetDto::fromSnippet)
+                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo))
                 .collect(Collectors.toList());
         int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.LANGUAGES, null, langId);
 
@@ -110,11 +114,24 @@ public class LanguagesController {
     }
 
     @POST
-    @Path("/{langId}/delete")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Path("/")
     @Consumes(value = {MediaType.APPLICATION_JSON})
-    @Produces(value = {MediaType.APPLICATION_JSON})
+    public Response addLanguage(final LanguageDto languageDto) {
+        Language newLanguage = languageService.addLanguage(languageDto.getName());
+        if (newLanguage == null) {
+            ErrorMessageDto errorMessageDto = new ErrorMessageDto();
+            errorMessageDto.setMessage(messageSource.getMessage("error.500.languages.create", new Object[]{languageDto.getName()}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorMessageDto).build();
+        }
+        return Response.created(uriInfo.getAbsolutePathBuilder().path(String.valueOf(newLanguage.getId())).build()).build();
+    }
+
+    @DELETE
+    @PreAuthorize("hasRole('ADMIN')")
+    @Path("/{langId}")
     public Response deleteLanguage (@PathParam("langId") long langId) {
-        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+        User user = loginAuthentication.getLoggedInUser().orElse(null);
 
         if (user != null && roleService.isAdmin(user.getId())){
             this.languageService.removeLanguage(langId);
@@ -123,7 +140,7 @@ public class LanguagesController {
             LOGGER.error("No user logged in or logged in user not admin but language {} is trying to be deleted", langId);
             return Response.status(HttpStatus.UNAUTHORIZED.value()).build();
         }
-        return Response.ok().build();
+        return Response.noContent().build();
     }
 
 

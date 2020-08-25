@@ -17,4 +17,6 @@ public interface LanguageService {
     boolean languageExists(final String language);
     boolean languageExists(final long id);
     void removeLanguage(final long langId);
+
+    Language addLanguage(String name);
 }

@@ -59,7 +59,7 @@
                   </v-flex>
 
                   <v-flex>
-                    <div>FOR YOU</div>
+                    <div>{{ $t('navigation.forUser') }}</div>
                   </v-flex>
                 </v-layout>
               </v-btn>
@@ -149,12 +149,42 @@
           </v-layout>
         </v-flex>
         <v-flex shrink v-if="$store.getters.loggedIn">
-          <v-btn v-if="$vuetify.breakpoint.lgAndUp" :to="{name: 'create-snippet'}">
-            {{ $t('snippets.createSnippet.createSnippet') }}
-          </v-btn>
-          <v-btn v-else icon :to="{name: 'create-snippet'}">
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
+          <template v-if="isAdmin">
+            <v-menu offset-y>
+              <template v-slot:activator="{ on }">
+                <v-btn
+                elevation="0"
+                class="nav-button"
+                v-on="on"
+              >
+                <v-layout>
+                <v-flex>
+                    <div>{{ $t('admin.addTagsOrLanguages') }}</div>
+                  </v-flex>
+                </v-layout>
+              </v-btn>
+              </template>
+              <v-list>
+                <v-list-item
+                  :to="{ name: 'add-tags'}">
+                  <v-list-item-title>{{ $t('admin.addTags.addTags') }}</v-list-item-title>
+                </v-list-item>
+                <v-list-item
+                  :to="{ name: 'add-languages'}">
+                  <v-list-item-title>{{ $t('admin.addLanguages.addLanguages') }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+            
+          </template>
+          <template v-else>
+            <v-btn v-if="$vuetify.breakpoint.lgAndUp" :to="{ name: 'create-snippet' }">
+              {{ $t('snippets.createSnippet.createSnippet') }}
+            </v-btn>
+            <v-btn v-else icon :to="{ name: 'create-snippet' }">
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </template>
         </v-flex>
         <!-- Registration/Login/User section -->
         <v-flex shrink v-if="$vuetify.breakpoint.lgAndUp">
@@ -214,7 +244,6 @@
               <v-flex>
                 <v-icon>{{ item.icon }}</v-icon>
               </v-flex>
-
               <v-flex>
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-flex>
@@ -340,6 +369,9 @@ export default {
     },
     generalPathsNoFeed () {
       return this.generalPaths.filter(item => item.path.name !== 'feed')
+    },
+    isAdmin () {
+      return this.$store.getters.user.admin
     }
   },
   methods: {
@@ -405,6 +437,17 @@ export default {
     logout () {
       this.$store.dispatch('logout')
       this.$router.go()
+    },
+    goToAdd () {
+      if (this.isAdmin) {
+        this.$router.push({
+          name: 'add-tags-or-languages'
+        })
+      } else {
+        this.$router.push({
+          name: 'create-snippet'
+        })
+      }
     }
   },
   // Decided to update contents as soon as checkboxes are

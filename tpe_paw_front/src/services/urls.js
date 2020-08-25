@@ -30,7 +30,7 @@ const urls = {
     tag: localDomain + 'tags/:id',
     getTagSnippets: localDomain + 'tags/:id/snippets',
     followTag: localDomain + 'tags/:id/follow',
-    unfollowTag: localDomain + 'tags/:id/unfollow',
+    unfollowTag: localDomain + 'tags/:id/unfollow'
   },
   search: {
     searchHome: localDomain + 'search',
@@ -48,10 +48,10 @@ const urls = {
   },
   snippet: {
     snippets: localDomain + 'snippet',
-    getSnippet: localDomain + 'snippet/:id',
-    deleteSnippet: localDomain + 'snippet/:id/delete',
+    snippet: localDomain + 'snippet/:id',
+    restore: localDomain + 'snippet/:id/restore',
     voteSnippet: localDomain + 'snippet/:id/vote', // Pass isPositive in body
-    favSnippet: localDomain + 'snippet/:id/fav', // For both faving and unfaving
+    favSnippet: localDomain + 'snippet/:id/favorite', // For both faving and unfaving
     reportSnippet: localDomain + 'snippet/:id/report',
     flagSnippet: localDomain + 'snippet/:id/flag',
     create: localDomain + 'snippet/create'

@@ -39,4 +39,6 @@ public interface TagService {
     void updateFollowing(long userId, long tagId, boolean followed);
 
     boolean userFollowsTag(long userId, long tagId);
+
+    Tag addTag(String name);
 }
