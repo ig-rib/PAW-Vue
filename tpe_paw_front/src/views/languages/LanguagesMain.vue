@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <div>
       <p>{{$t('languages.title')}}</p>
       <v-row>
@@ -19,7 +19,7 @@
         circle
       ></v-pagination>
     </div>
-  </div>
+  </v-container>
 </template>
 
 <script>

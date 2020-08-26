@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <v-text-field
       type="password"
       :label="$t('registration.password')"
@@ -15,7 +15,7 @@
       v-model="repeatPassword">
     </v-text-field>
     <v-btn @click="resetPassword">{{ $t('registration.resetPassword') }}</v-btn>
-  </div>
+  </v-container>
 </template>
 
 <script>

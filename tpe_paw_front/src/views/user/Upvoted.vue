@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <v-container>
     <v-layout>
       UPVOTED
     </v-layout>
     <v-layout>
       <snippet-grid ref="userFavoritesSnippetGrid"></snippet-grid>
     </v-layout>
-  </div>
+  </v-container>
 </template>
 
 <script>

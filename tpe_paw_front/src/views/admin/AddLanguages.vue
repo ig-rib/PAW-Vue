@@ -1,5 +1,5 @@
 <template>
-  <div id="admin-add-container">
+  <v-container id="admin-add-container">
     <v-card>
       <v-layout>
         {{ $t('admin.addLanguages.addLanguages') }}
@@ -30,7 +30,7 @@
         </v-flex>
       </v-layout>
     </v-card>
-  </div>
+  </v-container>
 </template>
 
 <script>

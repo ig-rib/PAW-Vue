@@ -1,5 +1,5 @@
 <template>
-  <div id="snippet-detail-container">
+  <v-container id="snippet-detail-container">
     <v-card v-if="!loading">
       <v-layout>
         <v-flex>
@@ -124,7 +124,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </div>
+  </v-container>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <v-text-field
       :label="$t('registration.email')"
       outlined
@@ -15,7 +15,7 @@
     <v-layout>
       <v-btn text @click="goToRegister">{{ $t('registration.noAccount') }} {{ $t('registration.goToRegister') }}</v-btn>
     </v-layout>
-  </div>
+  </v-container>
 </template>
 
 <script>

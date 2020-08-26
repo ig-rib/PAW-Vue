@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <!-- Search bar -->
     <v-row align="start">
         <v-col>
@@ -61,7 +61,7 @@
         circle
       ></v-pagination>
     </div>
-  </div>
+  </v-container>
 </template>
 
 <script>

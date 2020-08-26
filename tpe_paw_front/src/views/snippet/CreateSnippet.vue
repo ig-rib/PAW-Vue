@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <v-card>
       <v-layout>
         <v-flex>
@@ -40,7 +40,7 @@
         </v-flex>
       </v-layout>
     </v-card>
-  </div>
+  </v-container>
 </template>
 
 <script>

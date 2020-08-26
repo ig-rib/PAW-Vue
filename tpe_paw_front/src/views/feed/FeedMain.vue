@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <v-container>
     <v-layout>
       <v-flex>
         {{ $t('feed.title') }}
       </v-flex>
     </v-layout>
     <snippet-grid ref="feedSnippets"></snippet-grid>
-  </div>
+  </v-container>
 </template>
 
 <script>

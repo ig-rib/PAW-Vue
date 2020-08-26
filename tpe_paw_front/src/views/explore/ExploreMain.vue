@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <v-layout>
       <v-flex>
         <v-card ma-2>
@@ -177,7 +177,7 @@
         <snippet-grid ref="exploreSnippets"></snippet-grid>
       </v-flex>
     </v-layout>
-  </div>
+  </v-container>
 </template>
 
 <script>

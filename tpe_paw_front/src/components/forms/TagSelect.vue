@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <v-multiselect
       v-model="selectedTags"
       :options="tags"
@@ -18,7 +18,7 @@
         </v-btn>
       </template>
     </v-multiselect>
-  </div>
+  </v-container>
 </template>
 <script>
 import tags from '@/services/tags'
