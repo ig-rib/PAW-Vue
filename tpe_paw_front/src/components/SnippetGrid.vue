@@ -12,7 +12,7 @@
       <v-layout v-if="status !== 'loading'" row>
         <v-flex lg6 md12 sm12 v-for="snippet in completeSnippets" :key="snippet.id">
           <snippet
-            :snippetData="snippet"/>
+            :snippet="snippet"/>
         </v-flex>
       </v-layout>
     </v-layout>
