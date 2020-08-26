@@ -1,9 +1,8 @@
 <template>
-  <v-layout row wrap>
+  <v-layout>
     <v-menu
       v-model="dateMenu"
       :close-on-content-click="false"
-      :nudge-right="40"
       transition="scale-transition"
       offset-y
     >
@@ -14,6 +13,9 @@
           readonly
           :value="displayedDate"
           v-on="on"
+          rounded
+          outlined
+          dense
         ></v-text-field>
       </template>
       <v-layout>

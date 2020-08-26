@@ -10,7 +10,7 @@
     </div>
     <v-layout>
       <v-layout v-if="status !== 'loading'" row>
-        <v-flex md4 sm4 v-for="snippet in completeSnippets" :key="snippet.id">
+        <v-flex lg6 md12 sm12 v-for="snippet in completeSnippets" :key="snippet.id">
           <snippet
             :snippetData="snippet"/>
         </v-flex>
