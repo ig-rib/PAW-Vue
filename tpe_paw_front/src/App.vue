@@ -17,4 +17,8 @@ export default {
 
 <style lang="scss">
 @import "@/styles/multiselect.scss";
+
+#app {
+  background: #fefefe;
+}
 </style>

@@ -1,10 +1,10 @@
 <template>
   <v-container v-if="snippet != null" id="snippet-card-container">
-      <v-card @click="goToSnippetDetail">
+      <v-card min-width="350px" max-height="400px" @click="goToSnippetDetail">
         <!-- User and language -->
         <v-container fill-height fluid>
-          <v-row class="pt-0" align="start" justify="space-between">
-              <v-col class="pt-0" cols="8">
+          <v-row dense align="start" justify="space-between">
+              <v-col dense>
                 <v-list-item two-line>
                   <v-avatar class="mr-2" color="indigo">
                     <img v-if="!error" @error="error = true" class="profile-circle" :src="owner.icon"/>
@@ -12,28 +12,37 @@
                   </v-avatar>
                   <v-list-item-content> 
                     <v-list-item-title class="headline mb-1">{{ owner.username }}</v-list-item-title>
-                    <v-list-item-subtitle>{{ snippet.date }}</v-list-item-subtitle>
+                    <v-list-item-subtitle>{{ standardDate }}</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
               </v-col>
 
-              <v-col cols="4">
-                <v-row class="mr-2" justify="end">
-                  <v-btn icon @click="fav">
-                    <v-icon :disabled="faving">
-                      mdi-heart{{(snippet.favorite) ? '' : '-outline'}}
-                    </v-icon>
-                  </v-btn>
-                  <v-chip
-                    color="light-blue"
-                    label
-                    text-color="white"
-                    @mousedown="$event.stopPropagation()"
-                    @click.stop="null"
-                    @click="goToLanguageSnippets(language.id)"
-                  >
-                      {{ language.name }}
-                  </v-chip>
+              <v-col class="pr-2">
+                <v-row class="pr-2" justify="end">
+                  <v-col class="flex-grow-0 pa-0">
+                    <v-btn icon
+                      color="red"
+                      @mousedown="$event.stopPropagation()"
+                      @click.stop="null"
+                      @click="fav">
+                      <v-icon :disabled="faving">
+                        mdi-heart{{(snippet.favorite) ? '' : '-outline'}}
+                      </v-icon>
+                    </v-btn>
+                  </v-col>
+                  <v-col class="flex-grow-0 pa-0">
+                    <v-btn
+                      outlined
+                      color="light-blue"
+                      class="white--text"
+                      elevation="0"
+                      @mousedown="$event.stopPropagation()"
+                      @click.stop="null"
+                      @click="goToLanguageSnippets(language.id)"
+                    >
+                        {{ language.name }}
+                    </v-btn>
+                  </v-col>
                 </v-row>
               </v-col>
           </v-row>
@@ -48,11 +57,13 @@
 
           <!-- Code preview -->
           <v-textarea
-            class="pl-2"
-            name="input-7-1"
-            filled
+            no-resize
+            hide-details
+            rounded
+            class="pl-2 code-textarea"
             label="Code preview"
             readonly
+            filled
             :value="snippet.code"
           ></v-textarea>
 
@@ -85,6 +96,11 @@ export default {
       faving: false,
       owner: {},
       language: {}
+    }
+  },
+  computed: {
+    standardDate () {
+      return this.snippet.dateCreated.split('T')[0]
     }
   },
   methods: {
@@ -130,6 +146,12 @@ export default {
   .account-circle {
     max-height: 30px;
     max-width: 30px;
+  }
+  .code-textarea {
+    border-radius: 10px;
+    textarea {
+      overflow: hidden !important;
+    }
   }
 }
 </style>
