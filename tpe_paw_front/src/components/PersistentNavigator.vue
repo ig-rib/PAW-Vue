@@ -12,7 +12,6 @@
         <v-flex shrink v-if="$vuetify.breakpoint.mdAndDown">
           <v-app-bar-nav-icon @click="navDrawer = !navDrawer"></v-app-bar-nav-icon>
         </v-flex>
-
         <!-- Title -->
         <v-flex md1 sm1 v-if="$vuetify.breakpoint.mdAndUp">
           <v-btn depressed class="title-btn">
@@ -90,6 +89,7 @@
                   <v-flex>
                     <v-text-field
                       @keyup.enter="search"
+                      :placeholder="searchBarHint"
                       height="100%"
                       class="nav-search-text-field"
                       dense
@@ -389,6 +389,21 @@ export default {
     },
     isAdmin () {
       return this.$store.getters.user.admin
+    },
+    searchBarHint () {
+      let params = {}
+      switch (this.resultType) {
+        case 'snippet':
+          params = { objectType: 'snippets' }
+          break;
+        case 'tag':
+          params = { objectType: 'tags' }
+          break;
+        case 'language':
+          params = { objectType: 'languages' }
+          break;
+      }
+      return this.$t('search.searchBarHint', params)
     }
   },
   methods: {
@@ -415,7 +430,6 @@ export default {
       this.performSearch(params)
     },
     performSearch (params) {
-      console.log('persistent-navigator params', params)
       this.$router.replace({
         query: params
       })
@@ -443,7 +457,6 @@ export default {
       })
     },
     goToProfile () {
-      console.log(this.$store.getters.user)
       this.$router.push({
         name: 'user-profile',
         params: {
@@ -474,13 +487,12 @@ export default {
   watch: {
     showEmpty: {
       handler: function (newVal, oldVal) {
-        let params = {}
+        const params = {}
         Object.assign(params, this.$route.query)
         params.showEmpty = newVal
         this.performSearch(params)
           .then(r => {
             // TODO handle data
-            console.log(params)
             // this.$router.query.showEmpty = newVal
           })
           .catch(e => {
@@ -492,13 +504,12 @@ export default {
     },
     showOnlyFollowing: {
       handler: function (newVal, oldVal) {
-        let params = {}
+        const params = {}
         Object.assign(params, this.$route.query)
         params.showOnlyFollowing = newVal
         this.performSearch(params)
           .then(r => {
             // TODO handle data
-            console.log(params)
             // this.$router.query.showOnlyFollowing = newVal
           })
           .catch(e => {

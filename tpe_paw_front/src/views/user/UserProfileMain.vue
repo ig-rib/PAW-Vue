@@ -100,13 +100,10 @@ import urls from '@/services/urls.js'
           .then(r => { this.editing = true })
       },
       uploadPhoto () {
-        let formData = new FormData()
+        const formData = new FormData()
         formData.append('photo', this.profilePhoto)
-        // user.uploadProfilePhoto(75, formData).then(r2 => {
-        //   console.log(r2.data)
-        // })
         user.uploadProfilePhoto64(this.$route.params.id, btoa(this.profilePhoto)).then(r => {
-          console.log(r.data)
+
         })
       },
       updateDescription () {
@@ -117,7 +114,6 @@ import urls from '@/services/urls.js'
       saveImage (event) {
         this.hasPhotoPreview = true
         this.profilePhoto = event.target.files[0]
-        console.log(this.profilePhoto)
         const reader = new FileReader()
         const that = this
         reader.onload = function (e) {
@@ -125,7 +121,6 @@ import urls from '@/services/urls.js'
           that.image64 = e.target.result.split('base64,').pop()
         }
         reader.readAsDataURL(this.profilePhoto)
-        console.log(this.profilePhoto, btoa(this.profilePhoto))
       },
       cancelEditing () {
         this.imagePreview = null
@@ -139,10 +134,9 @@ import urls from '@/services/urls.js'
           encodedPhoto: this.image64,
           description: this.description
         }
-        console.log(params)
         user.updateUserData(this.$route.params.id, params).then(r => {
-          this.user.descrpition = this.description
-          let newUserData = this.$store.getters.user
+          this.user.description = this.description
+          const newUserData = this.$store.getters.user
           newUserData.description = this.description
           this.$store.dispatch('setUser', newUserData)
         })
@@ -182,7 +176,6 @@ import urls from '@/services/urls.js'
       }
       user.getUser(this.$route.params.id)
         .then(r => {
-          console.log('userData', r.data)
           this.user = r.data
           this.oldDescription = this.description = this.user.description
         })

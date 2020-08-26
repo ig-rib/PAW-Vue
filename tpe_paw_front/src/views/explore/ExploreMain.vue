@@ -3,174 +3,176 @@
     <v-layout>
       <v-flex>
         <v-card ma-2>
-          <v-layout>
-            {{ $t('explore.order.title') }}
-          </v-layout>
-          <v-layout my-2>
-            <v-flex>
-              <v-select
-                v-model="exploreParams.orderBy"
-                :items="types"
-                item-text="name"
-                item-value="value"
-                :label="$t('explore.order.orderBy')"
-                rounded
-                outlined
-                dense></v-select>
-            </v-flex>
-            <v-flex>
-              <v-select
-                v-model="exploreParams.sort"
-                :items="sortOrders"
-                item-text="name"
-                item-value="value"
-                :label="$t('explore.order.sort')"
-                rounded
-                outlined
-                dense></v-select>
-            </v-flex>
-          </v-layout>
-          <v-divider></v-divider>
-          <v-layout>
-            {{ $t('explore.flagged.title') }}
-          </v-layout>
-          <v-layout>
+          <v-container>
             <v-layout>
-              <v-checkbox v-model="exploreParams.includeFlagged"
-                :label="$t('explore.flagged.includeFlagged')"
-                ></v-checkbox>
+              {{ $t('explore.order.title') }}
             </v-layout>
-          </v-layout>
-          <v-divider></v-divider>
-          <v-layout>
-            {{ $t('explore.title.title') }}
-          </v-layout>
-          <v-layout>
-            <v-layout>
-              <v-text-field v-model="exploreParams.snippetTitle"
-                :label="$t('explore.title.label')"
-                rounded
-                outlined
-                dense></v-text-field>
-            </v-layout>
-          </v-layout>
-          <v-divider></v-divider>
-          <v-layout>
-            <v-flex>
-              <v-layout>
-                {{ $t('explore.language') }}
-              </v-layout>
-              <v-layout>
-                <language-select
-                  :multiple="true"
-                  :closeOnSelect="false"
-                  v-model="exploreParams.languages"
-                ></language-select>
-              </v-layout>
-            </v-flex>
-            <v-flex>
-              <v-layout>
-                {{ $t('explore.tag')}}
-              </v-layout>
-              <v-layout>
-                <tag-select
-                  :multiple="true"
-                  :closeOnSelect="false"
-                  v-model="exploreParams.tags"
-                ></tag-select>
-              </v-layout>
-            </v-flex>
-          </v-layout>
-          <v-divider></v-divider>
-          <v-layout>
-            {{ $t('explore.username') }}
-          </v-layout>
-          <v-layout>
-            <v-layout>
-              <v-text-field v-model="exploreParams.username"
-                :label="$t('explore.username')"
-                rounded
-                outlined
-                dense></v-text-field>
-            </v-layout>
-          </v-layout>
-          <v-divider></v-divider>
-          <v-layout>
-            {{ $t('explore.dateUploaded') }}
-          </v-layout>
-          <v-layout>
-            <v-layout>
+            <v-layout my-2>
               <v-flex>
-                <tf-date-picker
-                  v-model="exploreParams.fromDate"
-                  :label="$t('explore.from')"
-                ></tf-date-picker>
-              </v-flex>
-              <v-flex>
-                <tf-date-picker
-                  v-model="exploreParams.toDate"
-                  :label="$t('explore.to')"
-                ></tf-date-picker>
-              </v-flex>
-            </v-layout>
-          </v-layout>
-          <v-divider></v-divider>
-          <v-layout>
-            {{ $t('explore.userReputation.title') }}
-          </v-layout>
-          <v-layout>
-            <v-layout>
-              <v-flex>
-                <v-text-field
-                  :label="$t('explore.min')"
-                  v-model="exploreParams.minRep"
+                <v-select
+                  v-model="exploreParams.orderBy"
+                  :items="types"
+                  item-text="name"
+                  item-value="value"
+                  :label="$t('explore.order.orderBy')"
                   rounded
                   outlined
-                  dense
-                ></v-text-field>
+                  dense></v-select>
               </v-flex>
               <v-flex>
-                <v-text-field
-                  :label="$t('explore.max')"
-                  v-model="exploreParams.maxRep"
+                <v-select
+                  v-model="exploreParams.sort"
+                  :items="sortOrders"
+                  item-text="name"
+                  item-value="value"
+                  :label="$t('explore.order.sort')"
                   rounded
                   outlined
-                  dense
-                ></v-text-field>
+                  dense></v-select>
               </v-flex>
             </v-layout>
-          </v-layout>
-          <v-divider></v-divider>
-          <v-layout>
-            {{ $t('explore.snippetVotes.title') }}
-          </v-layout>
-          <v-layout>
+            <v-divider></v-divider>
+            <v-layout>
+              {{ $t('explore.flagged.title') }}
+            </v-layout>
+            <v-layout>
+              <v-layout>
+                <v-checkbox v-model="exploreParams.includeFlagged"
+                  :label="$t('explore.flagged.includeFlagged')"
+                  ></v-checkbox>
+              </v-layout>
+            </v-layout>
+            <v-divider></v-divider>
+            <v-layout>
+              {{ $t('explore.title.title') }}
+            </v-layout>
+            <v-layout>
+              <v-layout>
+                <v-text-field v-model="exploreParams.snippetTitle"
+                  :label="$t('explore.title.label')"
+                  rounded
+                  outlined
+                  dense></v-text-field>
+              </v-layout>
+            </v-layout>
+            <v-divider></v-divider>
             <v-layout>
               <v-flex>
-                <v-text-field
-                  :label="$t('explore.min')"
-                  v-model="exploreParams.minVotes"
-                  rounded
-                  outlined
-                  dense
-                ></v-text-field>
+                <v-layout>
+                  {{ $t('explore.language') }}
+                </v-layout>
+                <v-layout>
+                  <language-select
+                    :multiple="true"
+                    :closeOnSelect="false"
+                    v-model="exploreParams.languages"
+                  ></language-select>
+                </v-layout>
               </v-flex>
               <v-flex>
-                <v-text-field
-                  :label="$t('explore.max')"
-                  v-model="exploreParams.maxVotes"
-                  rounded
-                  outlined
-                  dense
-                ></v-text-field>
+                <v-layout>
+                  {{ $t('explore.tag')}}
+                </v-layout>
+                <v-layout>
+                  <tag-select
+                    :multiple="true"
+                    :closeOnSelect="false"
+                    v-model="exploreParams.tags"
+                  ></tag-select>
+                </v-layout>
               </v-flex>
             </v-layout>
-          </v-layout>
-          <v-layout>
-            <v-btn @click="exploreSearch">
-              {{ $t('explore.explore') }}
-            </v-btn>
-          </v-layout>
+            <v-divider></v-divider>
+            <v-layout>
+              {{ $t('explore.username') }}
+            </v-layout>
+            <v-layout>
+              <v-layout>
+                <v-text-field v-model="exploreParams.username"
+                  :label="$t('explore.username')"
+                  rounded
+                  outlined
+                  dense></v-text-field>
+              </v-layout>
+            </v-layout>
+            <v-divider></v-divider>
+            <v-layout>
+              {{ $t('explore.dateUploaded') }}
+            </v-layout>
+            <v-layout>
+              <v-layout>
+                <v-flex>
+                  <tf-date-picker
+                    v-model="exploreParams.fromDate"
+                    :label="$t('explore.from')"
+                  ></tf-date-picker>
+                </v-flex>
+                <v-flex>
+                  <tf-date-picker
+                    v-model="exploreParams.toDate"
+                    :label="$t('explore.to')"
+                  ></tf-date-picker>
+                </v-flex>
+              </v-layout>
+            </v-layout>
+            <v-divider></v-divider>
+            <v-layout>
+              {{ $t('explore.userReputation.title') }}
+            </v-layout>
+            <v-layout>
+              <v-layout>
+                <v-flex>
+                  <v-text-field
+                    :label="$t('explore.min')"
+                    v-model="exploreParams.minRep"
+                    rounded
+                    outlined
+                    dense
+                  ></v-text-field>
+                </v-flex>
+                <v-flex>
+                  <v-text-field
+                    :label="$t('explore.max')"
+                    v-model="exploreParams.maxRep"
+                    rounded
+                    outlined
+                    dense
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+            </v-layout>
+            <v-divider></v-divider>
+            <v-layout>
+              {{ $t('explore.snippetVotes.title') }}
+            </v-layout>
+            <v-layout>
+              <v-layout>
+                <v-flex>
+                  <v-text-field
+                    :label="$t('explore.min')"
+                    v-model="exploreParams.minVotes"
+                    rounded
+                    outlined
+                    dense
+                  ></v-text-field>
+                </v-flex>
+                <v-flex>
+                  <v-text-field
+                    :label="$t('explore.max')"
+                    v-model="exploreParams.maxVotes"
+                    rounded
+                    outlined
+                    dense
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
+            </v-layout>
+            <v-layout>
+              <v-btn @click="exploreSearch">
+                {{ $t('explore.explore') }}
+              </v-btn>
+            </v-layout>
+          </v-container>
         </v-card>
       </v-flex>
       <v-flex>
@@ -228,7 +230,6 @@ export default {
       if (this.exploreParams.tags != null && this.exploreParams.tags.length !== 0) {
         queryParams.tagId = this.exploreParams.tags.map(tag => tag.id)
       }
-      console.log(queryParams)
       // TODO handle results
       this.$router.replace({
         query: queryParams

@@ -95,7 +95,8 @@
       "asc": "Ascending",
       "desc": "Descending",
       "no": "No specific order"
-    }
+    },
+    "searchBarHint": "Search for {objectType} here"
   },
   "user": {
     "profile": {
