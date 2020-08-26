@@ -46,7 +46,7 @@
                 </v-layout>
               </v-btn>
             </v-flex>
-            <v-menu offset-y>
+            <v-menu v-if="$store.getters.loggedIn" offset-y>
               <template v-slot:activator="{ on }">
                 <v-btn
                 elevation="0"
