@@ -10,9 +10,9 @@
         <v-flex shrink ml-auto>
           <v-btn :to="{
             name: 'language-snippets',
-            params: { id: snippet.language.id }
+            params: { id: language.id }
           }" text outlined v-cloak>
-            {{ snippet.language.name }}
+            {{ language.name }}
           </v-btn>
         </v-flex>
       </v-layout>
@@ -137,6 +137,7 @@ export default {
     return {
       snippet: {},
       user: {},
+      language: {},
       tags: [],
       loading: true,
       faving: false,
@@ -258,12 +259,15 @@ export default {
       .then(snippetResponse => {
         this.snippet = snippetResponse.data
         let ownerRequest = axiosFetcher.get(snippetResponse.data.owner)
+        let languageRequest = axiosFetcher.get(snippetResponse.data.language)
         let allRequests = []
         allRequests.push(...snippetResponse.data.tags.map(tagUri => axiosFetcher.get(tagUri)))
         allRequests.push(ownerRequest)
+        allRequests.push(languageRequest)
         return Promise.all(allRequests)
       })
       .then(responses => {
+        this.language = responses.pop().data
         this.owner = responses.pop().data
         this.tags = responses.map(r => r.data)
       })

@@ -19,7 +19,7 @@ public class SnippetDto {
 
     private Long id;
     private URI owner;
-    private LanguageDto language;
+    private URI language;
     private String code;
     private String title;
     private String description;
@@ -39,7 +39,7 @@ public class SnippetDto {
         dto.id = snippet.getId();
         // No use in bringing uriInfo, need to create URI from scratch
         dto.owner = uriInfo.getBaseUriBuilder().path("user").path(String.valueOf(snippet.getOwner().getId())).build();
-        dto.language = LanguageDto.fromLanguage(snippet.getLanguage());
+        dto.language = uriInfo.getBaseUriBuilder().path("languages").path(String.valueOf(snippet.getLanguage().getId())).build();
         dto.code = snippet.getCode();
         dto.title = snippet.getTitle();
         dto.description = snippet.getDescription();
@@ -131,14 +131,6 @@ public class SnippetDto {
         this.owner = owner;
     }
 
-    public LanguageDto getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(LanguageDto language) {
-        this.language = language;
-    }
-
     public Collection<URI> getTags() {
         return tags;
     }
@@ -177,5 +169,13 @@ public class SnippetDto {
 
     public void setVote(VoteDto vote) {
         this.vote = vote;
+    }
+
+    public URI getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(URI language) {
+        this.language = language;
     }
 }

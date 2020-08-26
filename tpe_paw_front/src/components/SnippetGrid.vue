@@ -10,7 +10,7 @@
     </div>
     <v-layout>
       <v-layout v-if="status !== 'loading'" row>
-        <v-flex lg6 md12 sm12 v-for="snippet in completeSnippets" :key="snippet.id">
+        <v-flex lg6 md12 sm12 v-for="snippet in snippets" :key="snippet.id">
           <snippet
             :snippet="snippet"/>
         </v-flex>
@@ -24,20 +24,18 @@
         :total-visible="pagination.visible"
       ></v-pagination>
     </div>
-    {{ $router.query }}
   </v-container>
 </template>
 
 <script>
 import searchService from '@/services/search.js'
-import axiosFetcher from '@/services/axiosFetcher.js'
 import helpers from '@/functions/helpers.js'
 
 export default {
     data () {
     return {
       snippets: [],
-      users: {},
+      // users: {},
       status: '',
       pagination: {
         page: 1,
@@ -47,16 +45,16 @@ export default {
     }
   },
   computed: {
-    completeSnippets () {
-      return this.snippets.map(x => {
-        let newObj = {}
-        Object.assign(newObj, x)
-        // TODO error-check this
-        let ownerId = parseInt(x.owner.split('/').pop())
-        newObj.owner = this.users.filter(x => x.id === ownerId)[0]
-        return newObj
-      })
-    }
+    // completeSnippets () {
+    //   return this.snippets.map(x => {
+    //     let newObj = {}
+    //     Object.assign(newObj, x)
+    //     // TODO error-check this
+    //     let ownerId = parseInt(x.owner.split('/').pop())
+    //     newObj.owner = this.users.filter(x => x.id === ownerId)[0]
+    //     return newObj
+    //   })
+    // }
   },
   methods: {
     paginationChange () {
@@ -75,19 +73,21 @@ export default {
     handleSearchResponse (r) {
       this.links = helpers.parseLinks(r.headers.link)
       this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10)
+      console.log(r.data)
       this.snippets = r.data
       // get unique user links and map them to promises
-      let promises = r.data
-        .map(x => x.owner)
-        .filter((item, pos, array) => !pos || item !== array[pos-1])
-        .map(uri => axiosFetcher.get(uri))
-      return Promise.all(promises)
-        .then(r => {
-          this.users = r.map(x => x.data)
-        })
-        .finally(() => {
-          this.status = ''
-        })
+      // let ownerPromises = r.data
+      //   .map(x => x.owner)
+      //   .filter((item, pos, array) => !pos || item !== array[pos-1])
+      //   .map(uri => axiosFetcher.get(uri))
+      // Promise.all(ownerPromises)
+      //   .then(r => {
+      //     this.users = r.map(x => x.data)
+      //   })
+      //   .finally(() => {
+      //     this.status = ''
+      //   })
+      this.status = ''
     }
   },
   mounted () {

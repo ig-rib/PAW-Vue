@@ -1,5 +1,5 @@
 <template>
-  <v-container id="snippet-card-container"> 
+  <v-container v-if="snippet != null" id="snippet-card-container">
       <v-card @click="goToSnippetDetail">
         <!-- User and language -->
         <v-container fill-height fluid>
@@ -7,11 +7,11 @@
               <v-col class="pt-0" cols="8">
                 <v-list-item two-line>
                   <v-avatar class="mr-2" color="indigo">
-                    <img v-if="!error" @error="error = true" class="profile-circle" :src="snippet.owner.icon"/>
+                    <img v-if="!error" @error="error = true" class="profile-circle" :src="owner.icon"/>
                     <v-icon v-else>mdi-account-circle</v-icon>
                   </v-avatar>
                   <v-list-item-content> 
-                    <v-list-item-title class="headline mb-1">{{ snippet.owner.username }}</v-list-item-title>
+                    <v-list-item-title class="headline mb-1">{{ owner.username }}</v-list-item-title>
                     <v-list-item-subtitle>{{ snippet.date }}</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
@@ -30,9 +30,9 @@
                     text-color="white"
                     @mousedown="$event.stopPropagation()"
                     @click.stop="null"
-                    @click="goToLanguageSnippets(snippet.language.id)"
+                    @click="goToLanguageSnippets(language.id)"
                   >
-                      {{ snippet.language.name }}
+                      {{ language.name }}
                   </v-chip>
                 </v-row>
               </v-col>
@@ -64,6 +64,7 @@
 
 <script>
 import snippets from '@/services/snippets.js'
+import axiosFetcher from '@/services/axiosFetcher.js'
 
 export default {
   name: 'SnippetComponent', 
@@ -72,13 +73,18 @@ export default {
     // TagComponent
   },
   props: {
-    snippet: Object
+    snippet: {
+      type: Object,
+      default: () => {}
+    }
   },
 
   data () {
     return {
       error: false,
-      faving: false
+      faving: false,
+      owner: {},
+      language: {}
     }
   },
   methods: {
@@ -111,6 +117,10 @@ export default {
       promise.then(r => { this.snippet.favorite = !this.snippet.favorite })
       .finally(() => { this.faving = false })
     },
+  },
+  mounted () {
+    axiosFetcher.get(this.snippet.owner).then(r => { this.owner = r.data })
+    axiosFetcher.get(this.snippet.language).then(r => { this.language = r.data })
   }
 }
 </script>
