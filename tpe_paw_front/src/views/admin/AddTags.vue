@@ -1,5 +1,5 @@
 <template>
-  <v-container id="admin-add-container">
+  <div id="admin-add-container">
     <v-card>
       <v-layout>
         {{ $t('admin.addTags.addTags') }}
@@ -30,7 +30,7 @@
         </v-flex>
       </v-layout>
     </v-card>
-  </v-container>
+  </div>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <v-container id="user-profile-container">
+  <div id="user-profile-container">
     <v-layout>
       <v-flex shrink>
         <v-img
@@ -74,7 +74,7 @@
     <v-layout>
       <router-view ref="userProfileRouterView"></router-view>
     </v-layout>
-  </v-container>
+  </div>
 </template>
 
 <script>

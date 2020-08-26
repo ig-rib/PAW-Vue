@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <div>
       <p> {{ $t('tags.title') }} </p>
       <v-row>
@@ -36,7 +36,7 @@
         :total-visible="pagination.visible"
       ></v-pagination>
     </div>
-  </v-container>
+  </div>
 </template>
 
 <script>

@@ -1,12 +1,12 @@
 <template>
-  <v-container>
+  <div>
     <v-layout>
       FLAGGED
     </v-layout>
     <v-layout>
       <snippet-grid ref="userFlaggedSnippetGrid"></snippet-grid>
     </v-layout>
-  </v-container>
+  </div>
 </template>
 
 <script>

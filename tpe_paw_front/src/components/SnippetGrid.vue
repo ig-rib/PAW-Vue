@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <div class="text-center">
       <v-pagination
         v-model="pagination.page"
@@ -25,7 +25,7 @@
       ></v-pagination>
     </div>
     {{ $router.query }}
-  </v-container>
+  </div>
 </template>
 
 <script>

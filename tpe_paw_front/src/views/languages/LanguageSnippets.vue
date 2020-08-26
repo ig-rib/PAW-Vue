@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <v-layout>
       <v-flex v-cloak>
         {{ $t('languages.languageSnippets', { langName: language.name}) }}
@@ -21,7 +21,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script>

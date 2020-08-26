@@ -415,7 +415,6 @@ export default {
       this.performSearch(params)
     },
     performSearch (params) {
-      console.log('persistent-navigator params', params)
       this.$router.replace({
         query: params
       })
@@ -443,7 +442,6 @@ export default {
       })
     },
     goToProfile () {
-      console.log(this.$store.getters.user)
       this.$router.push({
         name: 'user-profile',
         params: {
@@ -474,13 +472,12 @@ export default {
   watch: {
     showEmpty: {
       handler: function (newVal, oldVal) {
-        let params = {}
+        const params = {}
         Object.assign(params, this.$route.query)
         params.showEmpty = newVal
         this.performSearch(params)
           .then(r => {
             // TODO handle data
-            console.log(params)
             // this.$router.query.showEmpty = newVal
           })
           .catch(e => {
@@ -492,13 +489,12 @@ export default {
     },
     showOnlyFollowing: {
       handler: function (newVal, oldVal) {
-        let params = {}
+        const params = {}
         Object.assign(params, this.$route.query)
         params.showOnlyFollowing = newVal
         this.performSearch(params)
           .then(r => {
             // TODO handle data
-            console.log(params)
             // this.$router.query.showOnlyFollowing = newVal
           })
           .catch(e => {

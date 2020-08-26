@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <v-layout>
       <v-flex>
         {{ $t('tags.tagSnippets', { tagName: tag.name}) }}
@@ -21,7 +21,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script>

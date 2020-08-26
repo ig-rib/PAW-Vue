@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <v-multiselect
       v-model="selectedLangs"
       :options="languages"
@@ -18,7 +18,7 @@
         </v-btn>
       </template>
     </v-multiselect>
-  </v-container>
+  </div>
 </template>
 <script>
 import languages from '@/services/languages'

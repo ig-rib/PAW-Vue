@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <v-text-field
       :label="$t('registration.verificationCode')"
       outlined
@@ -9,7 +9,7 @@
     <v-btn @click="sendVerificationCode">
       {{ $t('registration.sendVerificationCode') }}
     </v-btn>
-  </v-container>
+  </div>
 </template>
 
 <script>

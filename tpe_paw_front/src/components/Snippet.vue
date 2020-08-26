@@ -1,8 +1,8 @@
 <template>
-  <v-container id="snippet-card-container"> 
+  <div id="snippet-card-container"> 
       <v-card @click="goToSnippetDetail">
           <!-- User and language -->
-          <v-container fill-height fluid>
+          <div fill-height fluid>
               <v-row class="pt-0" align="start" justify="space-between">
                   <v-col class="pt-0" cols="8">
                     <v-list-item two-line>
@@ -51,9 +51,9 @@
                 :value="snippetData.code"
               ></v-textarea>
 
-          </v-container>
+          </div>
       </v-card>
-  </v-container>
+  </div>
   
 </template>
 
