@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <v-layout>
-      <v-flex>
+    <v-layout wrap>
+      <v-flex lg3 md4>
         <v-card ma-2>
           <v-container>
             <v-layout>
@@ -175,7 +175,7 @@
           </v-container>
         </v-card>
       </v-flex>
-      <v-flex>
+      <v-flex lg9 md8>
         <snippet-grid ref="exploreSnippets"></snippet-grid>
       </v-flex>
     </v-layout>

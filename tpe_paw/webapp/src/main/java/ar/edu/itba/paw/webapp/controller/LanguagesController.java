@@ -84,7 +84,7 @@ public class LanguagesController {
         }
         List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.LANGUAGES, sort, null, langId, page)
                 .stream()
-                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo))
+                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo, loginAuthentication.getLoggedInUser().orElse(null)))
                 .collect(Collectors.toList());
         int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.LANGUAGES, null, langId);
 

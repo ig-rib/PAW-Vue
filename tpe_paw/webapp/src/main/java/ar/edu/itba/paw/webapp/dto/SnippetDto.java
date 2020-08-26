@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.models.Snippet;
+import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.Vote;
 
 import javax.ws.rs.core.UriBuilder;
@@ -8,6 +9,7 @@ import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static ar.edu.itba.paw.webapp.utility.Constants.BACK_BASE_URL_LOCAL;
@@ -45,6 +47,13 @@ public class SnippetDto {
         dto.flagged = snippet.isFlagged();
         dto.deleted = snippet.isDeleted();
         dto.tags = snippet.getTags().stream().map(tag -> uriInfo.getBaseUriBuilder().path("/tags").path(String.valueOf(tag.getId())).build()).collect(Collectors.toList());
+        return dto;
+    }
+
+    public static SnippetDto fromSnippet(Snippet snippet, UriInfo uriInfo, User loggedInUser) {
+        SnippetDto dto = SnippetDto.fromSnippet(snippet, uriInfo);
+        if (loggedInUser != null)
+            dto.isFavorite = loggedInUser.getFavorites().contains(snippet);
         return dto;
     }
 

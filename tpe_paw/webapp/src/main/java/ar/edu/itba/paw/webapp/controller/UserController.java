@@ -71,7 +71,7 @@ public class UserController {
         }
         List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.UPVOTED, sort, user.getId(), null, page)
                 .stream()
-                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo))
+                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo, loginAuthentication.getLoggedInUser().orElse(null)))
                 .collect(Collectors.toList());
         int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.UPVOTED, user.getId(), null);
         Map<String, Object> queryParams = new HashMap<>();
@@ -104,7 +104,7 @@ public class UserController {
         }
         List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.DELETED, sort, id, null, page)
                 .stream()
-                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo))
+                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo, loginAuthentication.getLoggedInUser().orElse(null)))
                 .collect(Collectors.toList());
         int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.DELETED, id, null);
 
@@ -127,7 +127,7 @@ public class UserController {
                                                final @PathParam(value = "id") long id) {
         List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.USER, sort, id, null, page)
                 .stream()
-                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo))
+                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo, loginAuthentication.getLoggedInUser().orElse(null)))
                 .collect(Collectors.toList());
         int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.USER, id, null);
 
@@ -154,7 +154,7 @@ public class UserController {
         }
         List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.FAVORITES, sort, user.getId(), null, page)
                 .stream()
-                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo))
+                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo, loginAuthentication.getLoggedInUser().orElse(null)))
                 .collect(Collectors.toList());
         int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.FAVORITES, user.getId(), null);
 
@@ -182,7 +182,7 @@ public class UserController {
         }
         List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.FOLLOWING, sort, user.getId(), null, page)
                 .stream()
-                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo))
+                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo, loginAuthentication.getLoggedInUser().orElse(null)))
                 .collect(Collectors.toList());
         int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.FOLLOWING, user.getId(), null);
         Map<String, Object> queryParams = new HashMap<>();

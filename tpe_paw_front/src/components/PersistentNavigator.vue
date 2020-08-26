@@ -54,7 +54,7 @@
               >
                 <v-layout>
                   <v-flex>
-                    <v-icon>mdi-account-circle</v-icon>
+                    <v-icon>mdi-heart-box-outline</v-icon>
                   </v-flex>
 
                   <v-flex>
@@ -83,7 +83,7 @@
         <!-- Search bar -->
         <v-flex id="search-bar-flex" px-2>
           <v-layout>
-            <v-flex lg6 grow>
+            <v-flex grow>
               <v-card height="70%" width="100%">
                 <v-layout fill-height>
                   <v-flex>
@@ -161,12 +161,9 @@
                 elevation="0"
                 class="nav-button"
                 v-on="on"
+                icon
               >
-                <v-layout>
-                <v-flex>
-                    <div>{{ $t('admin.addTagsOrLanguages') }}</div>
-                  </v-flex>
-                </v-layout>
+                <v-icon>mdi-plus</v-icon>
               </v-btn>
               </template>
               <v-list>

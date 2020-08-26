@@ -49,7 +49,7 @@ public class SnippetController {
                                  final @QueryParam("page") @DefaultValue("1") int page) {
         List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.HOME, sort, null, null, page)
                 .stream()
-                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo))
+                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo, loginAuthentication.getLoggedInUser().orElse(null)))
                 .collect(Collectors.toList());
         int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.HOME, null, null);
 
@@ -140,7 +140,7 @@ public class SnippetController {
 
         List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.FLAGGED, sort, null, null, page)
                 .stream()
-                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo))
+                .map(sn -> SnippetDto.fromSnippet(sn, uriInfo, loginAuthentication.getLoggedInUser().orElse(null)))
                 .collect(Collectors.toList());
         int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.FLAGGED, null, null);
         Map<String, Object> queryParams = new HashMap<>();
