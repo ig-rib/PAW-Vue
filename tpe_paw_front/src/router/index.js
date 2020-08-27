@@ -7,10 +7,8 @@ import ExploreMain from '@/views/explore/ExploreMain.vue'
 import LanguagesMain from '@/views/languages/LanguagesMain.vue'
 import LanguageSnippets from '@/views/languages/LanguageSnippets.vue'
 import LanguagesSuper from '@/views/languages/LanguagesSuper.vue'
-import LanguagesSearch from '@/views/languages/LanguagesSearch.vue'
 import SnippetDetail from '@/views/snippet/SnippetDetail.vue'
 import TagsMain from '@/views/tags/TagsMain.vue'
-import TagsSearch from '@/views/tags/TagsSearch.vue'
 import TagSnippets from '@/views/tags/TagSnippets.vue'
 import TagsSuper from '@/views/tags/TagsSuper.vue'
 import Login from '@/views/registration/Login.vue'
@@ -79,11 +77,6 @@ const routes = [
                 component: LanguagesMain
               },
               {
-                path: 'search',
-                name: 'languages-search',
-                component: LanguagesSearch
-              },
-              {
                 path: ':id',
                 name: 'language-snippets',
                 component: LanguageSnippets
@@ -109,11 +102,6 @@ const routes = [
                 path: '',
                 name: 'tags-main',
                 component: TagsMain
-              },
-              {
-                path: 'search',
-                name: 'tags-search',
-                component: TagsSearch
               },
               {
                 path: ':id',

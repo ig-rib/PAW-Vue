@@ -2,31 +2,36 @@
   <v-container>
     <div>
       <p> {{ $t('tags.title') }} </p>
-      <v-row>
-        <v-col v-for="tag in tags" :key="tag.id">
-          <div>
-            <v-chip @click="goToTagSnippets(tag.id)" class="ma-2 tag-chip" label>
-              {{ tag.name }}
-              <!-- If tag is followed -->
-              <v-chip 
-                v-if="tag.userFollowing"
-                class="ma-1" color="primary"
-                v-on:click="unfollowTag(tag)"
-              >
-              {{ $t('tags.following') }}
-              </v-chip>
-              <!-- If tags is not followed -->
-              <v-chip 
-                v-else
-                class="ma-1" color="indigo darken-3" outlined
-                v-on:click="followTag(tag)"
-              >
-              {{ $t('tags.follow') }}
-              </v-chip>
-            </v-chip>
-          </div>
-        </v-col>
-      </v-row>
+      <v-layout wrap justify="center">
+        <v-flex my-2 :class="`lg3 md4 sm4 ${ $vuetify.breakpoint.lgAndUp ? 'px-2' : 'mx-2' }`" v-for="tag in tags" :key="tag.id">
+          <v-card class="tag-chip" @click="goToTagSnippets(tag.id)">
+            <v-layout width="100%">
+              <v-flex pl-2 class="tag-name-flex">
+                {{ tag.name }}
+              </v-flex>
+              <v-flex shrink ml-auto>
+                <!-- If tag is followed -->
+                <v-btn
+                  text
+                  class="tag-follow-btn ma-1"
+                  color="primary"
+                  :outlined="!tag.userFollowing"
+                  @click="tag.userFollowing ? unfollowTag(tag) : followTag(tag)"
+                  @mousedown.stop="null"
+                  @click.stop="null"
+                >
+                <template v-if="tag.userFollowing">
+                  {{ $t('tags.following') }}
+                </template>
+                <template v-else>
+                  {{ $t('tags.follow') }}
+                </template>
+                </v-btn>
+              </v-flex>
+            </v-layout>            
+          </v-card>
+        </v-flex>
+      </v-layout>
     </div>
     <div class="text-center">
       <v-pagination
@@ -121,8 +126,26 @@ export default {
 <style lang="scss">
 
 .tag-chip{
-    width: 200px;
+    min-width: 200px;
     height: 50px !important;
+    .flex {
+      align-items: center;
+      display: flex;
+    }
+    .layout {
+      height: 100%;
+    }
+}
+
+.tag-name-flex {
+  min-width: 50%;
+  align-items: center;
+  display: flex;
+}
+
+.tag-follow-btn {
+  font-weight: 400;
+  padding: 3px !important;
 }
 
 </style>

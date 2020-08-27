@@ -1,6 +1,6 @@
 <template>
   <v-container v-if="snippet != null" id="snippet-card-container">
-      <v-card min-width="350px" max-height="400px" @click="goToSnippetDetail">
+      <v-card class="snippet-card-card" min-width="350px" max-height="400px" @click="goToSnippetDetail">
         <!-- User and language -->
         <v-container fill-height fluid>
           <v-row dense align="start" justify="space-between">
@@ -60,13 +60,13 @@
             no-resize
             hide-details
             rounded
-            class="pl-2 code-textarea"
-            label="Code preview"
+            class="pl-2 snippet-card-code-textarea"
             readonly
             filled
             :value="snippet.code"
-          ></v-textarea>
-
+          >
+            <p class="snippet-card-code-fade">a</p>
+          </v-textarea>
         </v-container>
       </v-card>
   </v-container>
@@ -147,10 +147,26 @@ export default {
     max-height: 30px;
     max-width: 30px;
   }
-  .code-textarea {
+  .snippet-card-code-textarea {
     border-radius: 10px;
     textarea {
       overflow: hidden !important;
+      -webkit-user-select: none; /* Safari */        
+      -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* IE10+/Edge */
+      user-select: none; /* Standard */
+    }
+  }
+  .snippet-card-code-fade {
+    position: absolute;
+  }
+  .snippet-card-card {
+    -webkit-user-select: none; /* Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+    .v-ripple__container {
+      opacity: 0.1 !important;
     }
   }
 }
