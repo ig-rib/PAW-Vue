@@ -1,10 +1,10 @@
 <template>
   <v-container v-if="snippet != null" id="snippet-card-container">
-      <v-card class="snippet-card-card" min-width="350px" max-height="400px" @click="goToSnippetDetail">
+      <v-card max-height="450px" min-width="350px" class="snippet-card-card" @click="goToSnippetDetail">
         <!-- User and language -->
-        <v-container fill-height fluid>
-          <v-row dense align="start" justify="space-between">
-              <v-col dense>
+        <v-container>
+          <v-layout dense>
+              <v-flex dense>
                 <v-list-item two-line>
                   <v-avatar class="mr-2" color="indigo">
                     <img v-if="!error" @error="error = true" class="profile-circle" :src="owner.icon"/>
@@ -15,11 +15,11 @@
                     <v-list-item-subtitle>{{ standardDate }}</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
-              </v-col>
+              </v-flex>
 
-              <v-col class="pr-2">
-                <v-row class="pr-2" justify="end">
-                  <v-col class="flex-grow-0 pa-0">
+              <v-flex class="pr-2">
+                <v-layout class="pr-2" justify="end">
+                  <v-flex class="flex-grow-0 pa-0">
                     <v-btn icon
                       color="red"
                       @mousedown="$event.stopPropagation()"
@@ -29,8 +29,8 @@
                         mdi-heart{{(snippet.favorite) ? '' : '-outline'}}
                       </v-icon>
                     </v-btn>
-                  </v-col>
-                  <v-col class="flex-grow-0 pa-0">
+                  </v-flex>
+                  <v-flex class="flex-grow-0 pa-0">
                     <v-btn
                       outlined
                       color="light-blue"
@@ -42,31 +42,35 @@
                     >
                         {{ language.name }}
                     </v-btn>
-                  </v-col>
-                </v-row>
-              </v-col>
-          </v-row>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+          </v-layout>
 
           <!-- Title and description -->
-          <v-list-item two-line>
-            <v-list-item-content class="pa-0"> 
-              <v-list-item-title class="headline mb-1">{{ snippet.title }}</v-list-item-title>
-              <p>{{ snippet.description }}</p>
-            </v-list-item-content>
-          </v-list-item>
+          <v-layout>
+            <v-list-item two-line>
+              <v-list-item-content class="pa-0"> 
+                <v-list-item-title class="headline mb-1">{{ snippet.title }}</v-list-item-title>
+                <p>{{ snippet.description }}</p>
+              </v-list-item-content>
+            </v-list-item>
+          </v-layout>
 
           <!-- Code preview -->
-          <v-textarea
-            no-resize
-            hide-details
-            rounded
-            class="pl-2 snippet-card-code-textarea"
-            readonly
-            filled
-            :value="snippet.code"
-          >
-            <p class="snippet-card-code-fade">a</p>
-          </v-textarea>
+          <v-layout class="code-layout">
+            <v-textarea
+              no-resize
+              hide-details
+              rounded
+              class="pl-2 snippet-card-code-textarea"
+              readonly
+              filled
+              :value="snippet.code"
+            >
+              <p class="snippet-card-code-fade">a</p>
+            </v-textarea>
+          </v-layout>
         </v-container>
       </v-card>
   </v-container>
@@ -143,13 +147,18 @@ export default {
 
 <style lang="scss">
 #snippet-card-container {
+  max-width: 450px;
   .account-circle {
     max-height: 30px;
     max-width: 30px;
   }
+  .code-layout {
+
+  }
   .snippet-card-code-textarea {
     border-radius: 10px;
     textarea {
+      height: 100%;
       overflow: hidden !important;
       -webkit-user-select: none; /* Safari */        
       -moz-user-select: none; /* Firefox */

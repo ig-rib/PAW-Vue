@@ -1,44 +1,65 @@
 <template>
-  <v-container>
-    <v-card>
-      <v-layout>
-        <v-flex>
-          <v-text-field
-            v-model="title"
-            :label="$t('snippets.createSnippet.title')"></v-text-field>
-        </v-flex>
-        <v-flex>
-          <language-select v-model="language"/>
-          {{ language }}
-        </v-flex>
-      </v-layout>
-      <v-divider></v-divider>
-      <v-layout>
-        <v-textarea
-          v-model="description"
-          :label="$t('snippets.createSnippet.description')"></v-textarea>
-      </v-layout>
-      <v-divider></v-divider>
-      <v-layout>
-        <v-textarea
-        v-model="code"
-        :label="$t('snippets.createSnippet.code')"></v-textarea>
-      </v-layout>
-      <v-divider></v-divider>
-      <v-layout>
-        <v-flex>
-          <tag-select
-            multiple
-            v-model="tags"
-            :closeOnSelect="false"
-            :label="$t('snippets.createSnippet.tags')"></tag-select>
-        </v-flex>
-        <v-flex>
-          <v-btn @click="saveSnippet">
-            {{ $t('snippets.createSnippet.createSnippet') }}
-          </v-btn>
-        </v-flex>
-      </v-layout>
+  <v-container id="snippet-create-container">
+    <v-card class="snippet-create-card">
+      <v-container>
+        <v-layout class="title-row">
+          <v-flex>
+            <v-text-field
+              outlined
+              dense
+              rounded
+              hide-details
+              v-model="title"
+              :label="$t('snippets.createSnippet.title')"></v-text-field>
+          </v-flex>
+          <v-flex>
+            <language-select v-model="language"/>
+          </v-flex>
+        </v-layout>
+        <v-divider></v-divider>
+        <v-layout column mt-2 class="description-line">
+          <v-flex>
+            {{ $t('snippets.createSnippet.description') }}
+          </v-flex>
+          <v-flex>
+            <v-textarea
+              rounded
+              outlined
+              no-resize
+              v-model="description">
+            </v-textarea>
+          </v-flex>
+        </v-layout>
+        <v-divider></v-divider>
+        <v-layout column mt-2 class="code-line">
+          <v-flex>
+            {{ $t('snippets.createSnippet.code') }}
+          </v-flex>
+          <v-flex>
+            <v-textarea
+            rounded
+            outlined
+            no-resize
+            v-model="code"
+            ></v-textarea>
+          </v-flex>
+        </v-layout>
+        <v-divider></v-divider>
+        <v-layout class="tags-line">
+          <v-flex md6 sm6>
+            <tag-select
+              multiple
+              v-model="tags"
+              :closeOnSelect="false"
+              :label="$t('snippets.createSnippet.tags')"></tag-select>
+          </v-flex>
+          <v-flex class="save-btn-flex">
+            <v-btn @click="saveSnippet">
+              {{ $t('snippets.createSnippet.createSnippet') }}
+            </v-btn>
+          </v-flex>
+        </v-layout>
+      </v-container>
     </v-card>
   </v-container>
 </template>
@@ -69,3 +90,31 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  #snippet-create-container {
+    .title-row {
+      .flex {
+        display: flex;
+        align-items: center;
+      }
+    }
+    .snippet-create-card {
+      min-width: max-content;
+    }
+    .description-line {
+    }
+    .code-line {
+    }
+    .tags-line {
+      .flex {
+        max-width: 50%;
+      }
+      .save-btn-flex {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+    }
+  }
+</style>
