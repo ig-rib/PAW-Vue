@@ -1,10 +1,10 @@
 <template>
   <v-container>
     <v-card id="snippet-detail-card" v-if="!loading">
-      <v-container>
-        <v-layout>
+      <v-container px-12>
+        <v-layout class="snippet-title-line">
           <v-flex>
-            <div>
+            <div class="snippet-title">
               {{ snippet.title }}
             </div>
           </v-flex>
@@ -27,13 +27,20 @@
         <v-layout>
           <v-divider></v-divider>
         </v-layout>
-        <v-layout>
+        <v-layout class="snippet-code-layout">
           <v-flex>
-            <v-textarea readonly v-model="snippet.code" v-cloak>
+            <v-textarea
+            readonly
+            no-resize
+            hide-details
+            rounded
+            filled
+            class="snippet-detail-code-textarea"
+            v-model="snippet.code" v-cloak>
             </v-textarea>
           </v-flex>
         </v-layout>
-        <v-layout wrap>
+        <v-layout v-if="tags.length > 0" wrap>
           <v-flex
             v-for="tag in tags"
             :key="tag.name"
@@ -52,7 +59,7 @@
         <!-- ACTION BAR - ACTION ICONS AND OWNER DATA -->
         <v-layout id="snippet-detail-action-bar">
           <!-- ACTION ICONS -->
-          <v-flex class="action-icons" sm8 md8 lg8>
+          <v-flex class="action-icons" sm7 md7 lg7 mx-2>
             <v-layout class="action-icons-layout">
               <v-flex v-if="isSnippetOwner">
                 <v-btn v-if="!snippet.deleted" :disabled="deleting" @click="deleteSnippet" icon>
@@ -74,7 +81,7 @@
                       <v-icon>{{`mdi-thumb-up${isUpvoted ? '' : '-outline'}`}}</v-icon>
                     </v-btn>
                   </v-flex>
-                  <v-flex>
+                  <v-flex class="snippet-score-flex">
                     {{ snippet.score }}
                   </v-flex>
                   <v-flex>
@@ -297,16 +304,41 @@ export default {
 </script>
 
 <style lang="scss">
+@import '~vuetify/src/styles/settings/_variables';
+
   #snippet-detail-card {
     .owner-image {
       border-radius: 40px;
     }
     min-width: max-content;
+    .snippet-title-line {
+      > .flex {
+        display: flex;
+        align-items: center;
+      }
+      .snippet-title {
+        font-size: 38px;
+      }
+    }
+    .snippet-code-layout {
+      min-height: 50%;
+      .snippet-detail-code-textarea {
+        border-radius: 10px;
+        height: 100%;
+        div {
+          height: 100%;
+        }
+      }
+    }
   }
-  #snippet-detail-card > .container {
-    height: 500px !important;
+
+  @media #{map-get($display-breakpoints, 'sm-and-up')} {
+    #snippet-detail-card > .container {
+    height: 750px !important;
     display: flex;
     flex-direction: column;
+  }
+
   }
   #snippet-detail-action-bar {
     margin-top: auto !important;
@@ -314,14 +346,26 @@ export default {
     .action-icons-layout {
       border: 1px solid black;
       border-radius: 40px;
-      flex-grow: 0;
+      justify-content: space-around;
+      width: max-content;
     }
     .action-icons-layout > .flex {
       flex-grow:0;
+      // width: max-content;
+      i, .v-btn {
+        width: 75px;
+        height: 75px;
+        font-size: 50px;
+      }
     }
   }
   #snippet-detail-action-bar > .flex {
-      display: flex;
-      align-items: center;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .snippet-score-flex {
+    display: flex;
+    align-items: center;
+  }
 </style>
