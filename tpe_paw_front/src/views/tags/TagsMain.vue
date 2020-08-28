@@ -3,10 +3,12 @@
     <div>
       <p> {{ $t('tags.title') }} </p>
       <v-layout wrap justify="center">
-        <v-flex my-2 :class="`lg3 md4 sm4 ${ $vuetify.breakpoint.lgAndUp ? 'px-2' : 'mx-2' }`" v-for="tag in tags" :key="tag.id">
+        <v-flex my-2 :class="`lg3 md4 sm4 ${ $vuetify.breakpoint.lgAndUp ? 'px-2' : 'mx-2' } px-2`" v-for="tag in tags" :key="tag.id">
+          <!-- <v-container> -->
+
           <v-card class="tag-chip" @click="goToTagSnippets(tag.id)">
             <v-layout width="100%">
-              <v-flex pl-2 class="tag-name-flex">
+              <v-flex class="tag-name-flex">
                 {{ tag.name }}
               </v-flex>
               <v-flex shrink ml-auto>
@@ -30,6 +32,7 @@
               </v-flex>
             </v-layout>            
           </v-card>
+          <!-- </v-container> -->
         </v-flex>
       </v-layout>
     </div>
@@ -126,7 +129,9 @@ export default {
 <style lang="scss">
 
 .tag-chip{
-    min-width: 200px;
+    padding-left: 5%;
+    padding-right: 5%;
+    min-width: max-content;
     height: 50px !important;
     .flex {
       align-items: center;
@@ -138,7 +143,7 @@ export default {
 }
 
 .tag-name-flex {
-  min-width: 50%;
+  // min-width: 50%;
   align-items: center;
   display: flex;
 }
