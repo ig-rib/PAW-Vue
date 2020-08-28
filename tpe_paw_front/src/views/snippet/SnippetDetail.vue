@@ -9,7 +9,7 @@
             </div>
           </v-flex>
           <v-flex shrink ml-auto>
-            <v-btn :to="{
+            <v-btn color="light-blue" :to="{
               name: 'language-snippets',
               params: { id: language.id }
             }" text outlined v-cloak>
@@ -17,16 +17,17 @@
             </v-btn>
           </v-flex>
         </v-layout>
-        <v-layout>
+        <v-layout class="description-line">
           <v-flex>
             <div>
               {{snippet.description}}
             </div>
           </v-flex>
         </v-layout>
-        <v-layout>
+        <v-layout class="divider-line">
           <v-divider></v-divider>
         </v-layout>
+        <!-- CODE LAYOUT -->
         <v-layout class="snippet-code-layout">
           <v-flex>
             <v-textarea
@@ -40,18 +41,23 @@
             </v-textarea>
           </v-flex>
         </v-layout>
-        <v-layout v-if="tags.length > 0" wrap>
+        <!-- TAGS LINE -->
+        <v-layout class="tags-line" v-if="tags.length > 0" wrap>
           <v-flex
             v-for="tag in tags"
             :key="tag.name"
             shrink
             px-2>
-            <v-btn :to="{
-              name: 'tag-snippets',
-              params: {
-                id: tag.id
-              }
-            }">
+            <v-btn 
+              depressed
+              color="light-blue"
+              class="white--text"
+              :to="{
+                name: 'tag-snippets',
+                params: {
+                  id: tag.id
+                }
+              }">
               {{ tag.name }}
             </v-btn>
           </v-flex>
@@ -69,61 +75,70 @@
                   <v-icon>mdi-delete-restore</v-icon>
                 </v-btn>
               </v-flex>
+              <!-- FAV -->
               <v-flex>
-                <v-btn :disabled="faving" @click="fav" icon>
+                <v-btn :class="`fav-btn ${snippet.favorite ? 'color-crimson' : '' }`" :disabled="faving" @click="fav" icon>
                   <v-icon>{{`mdi-heart${snippet.favorite ? '' : '-outline'}`}}</v-icon>
                 </v-btn>
               </v-flex>
+              <!-- VOTES -->
               <v-flex>
                 <v-layout>
+                  <!-- UPVOTE -->
                   <v-flex>
-                    <v-btn :disabled="voting" @click="vote(true)" icon>
+                    <v-btn :color="`${ isUpvoted ? 'green' : '' }`" class="thumb-up-btn" :disabled="voting" @click="vote(true)" icon>
                       <v-icon>{{`mdi-thumb-up${isUpvoted ? '' : '-outline'}`}}</v-icon>
                     </v-btn>
                   </v-flex>
+                  <!-- SCORE -->
                   <v-flex class="snippet-score-flex">
                     {{ snippet.score }}
                   </v-flex>
+                  <!-- DOWNVOTE -->
                   <v-flex>
-                    <v-btn :disabled="voting" @click="vote(false)" icon>
+                    <v-btn :color="`${ isDownvoted ? 'red' : '' }`" class="thumb-down-btn" :disabled="voting" @click="vote(false)" icon>
                       <v-icon>{{`mdi-thumb-down${isDownvoted ? '' : '-outline'}`}}</v-icon>
                     </v-btn>
                   </v-flex>
                 </v-layout>
               </v-flex>
-              <v-flex>
-                <v-btn v-if="isAdmin" :disabled="flagging" @click="flag" icon>
+              <v-flex v-if="isAdmin || allowedToReport">
+                <!-- FLAG -->
+                <v-btn :color="`${ snippet.flagged ? 'red' : '' }`" class="flag-btn" v-if="isAdmin" :disabled="flagging" @click="flag" icon>
                   <v-icon>{{`mdi-flag${snippet.flagged ? '' : '-outline'}`}}</v-icon>
                 </v-btn>
-                <v-btn v-else :disabled="reporting" @click="report" icon>
+                <!-- REPORT -->
+                <v-btn :class="`fav-btn ${snippet.reported ? 'color-sandybrown' : '' }`" class="report-btn" v-else :disabled="reporting" @click="report" icon>
                   <v-icon>{{`mdi-alert-octagon${snippet.reported ? '' : '-outline'}`}}</v-icon>
                 </v-btn>
               </v-flex>
             </v-layout>
           </v-flex>
           <!-- OWNER DATA -->
-          <v-flex sm4 md4 lg4>
+          <v-flex shrink>
             <v-layout column>
               <v-flex>
                 {{snippet.dateCreated}}
               </v-flex>
               <v-flex>
-                <v-layout>
-                  <v-flex shrink>
-                    <v-img class="owner-image" width="40px" height="40px" :src="owner.icon" v-if="user != null">
-                    </v-img>
-                  </v-flex>
-                  <v-flex>
-                    <v-layout column>
-                      <v-flex>
-                        {{ owner.username }}
-                      </v-flex>
-                      <v-flex>
-                        {{ owner.reputation }}
-                      </v-flex>
-                    </v-layout>
-                  </v-flex>
-                </v-layout>
+                <v-card elevation="0" class="owner-data" @click="goToOwnerProfile">
+                  <v-layout>
+                    <v-flex shrink>
+                      <v-img class="owner-image" width="40px" height="40px" :src="owner.icon" v-if="user != null">
+                      </v-img>
+                    </v-flex>
+                    <v-flex>
+                      <v-layout column>
+                        <v-flex>
+                          {{ owner.username }}
+                        </v-flex>
+                        <v-flex>
+                          {{ owner.reputation }}
+                        </v-flex>
+                      </v-layout>
+                    </v-flex>
+                  </v-layout>
+                </v-card>
               </v-flex>
             </v-layout>
         </v-flex>
@@ -145,6 +160,7 @@
 
 <script>
 import snippets from '@/services/snippets.js'
+import user from '@/services/user.js'
 import axiosFetcher from '@/services/axiosFetcher.js'
 import urls from '@/services/urls.js'
 
@@ -252,6 +268,14 @@ export default {
         .finally(() => {
           this.deleting = false
         })
+    },
+    goToOwnerProfile () {
+      this.$router.push({
+        name: 'user-profile',
+        params: {
+          id: this.owner.id
+        }
+      })
     }
   },
   computed: {
@@ -266,6 +290,9 @@ export default {
     },
     isAdmin () {
       return this.$store.getters.user.admin
+    },
+    allowedToReport () {
+      return this.$store.getters.user.reputation >= 10
     }
   },
   mounted () {
@@ -290,6 +317,9 @@ export default {
       .finally(() => {
         this.loading = false
       })
+    user.getLoggedInUser().then(r => {
+      this.$store.dispatch('setUser', r.data)
+    })
   },
   watch: {
     reportDialog: {
@@ -310,7 +340,10 @@ export default {
     .owner-image {
       border-radius: 40px;
     }
-    min-width: max-content;
+    .owner-data:hover {
+      cursor: pointer;
+    }
+    min-width: min-content;
     .snippet-title-line {
       > .flex {
         display: flex;
@@ -319,6 +352,13 @@ export default {
       .snippet-title {
         font-size: 38px;
       }
+    }
+    .description-line {
+      max-height: 10%;
+    }
+    .divider-line {
+      flex-grow: 0;
+      margin: 0px 0px 2.5% 0px;
     }
     .snippet-code-layout {
       min-height: 50%;
@@ -329,6 +369,10 @@ export default {
           height: 100%;
         }
       }
+    }
+    .tags-line {
+      align-items: center;
+      max-height: 10%;
     }
   }
 
@@ -343,11 +387,30 @@ export default {
   #snippet-detail-action-bar {
     margin-top: auto !important;
     clear: both;
+    justify-content: space-between;
+
     .action-icons-layout {
       border: 1px solid black;
       border-radius: 40px;
       justify-content: space-around;
       width: max-content;
+      padding: 0px 50px 0px 50px;
+
+      .fav-btn:hover, .color-crimson {
+        color: crimson;
+      }
+      .thumb-up-btn:hover {
+        color: green;
+      }
+      .thumb-down-btn:hover {
+        color: red;
+      }
+      .report-btn:hover, .color-sandybrown {
+        color: sandybrown;
+      }
+      .flag-btn {
+        color: red;
+      }
     }
     .action-icons-layout > .flex {
       flex-grow:0;
