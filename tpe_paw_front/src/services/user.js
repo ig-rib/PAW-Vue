@@ -32,7 +32,7 @@ const getDeletedUserSnippets = (id, page) => axiosFetcher.get(urls.user.getDelet
     id
   }
 })
-const uploadProfilePhoto = (id, photo) => axiosFetcher.post(urls.user.profilePhoto, {
+const uploadProfilePhoto = (id, photo) => axiosFetcher.put(urls.user.profilePhoto, {
   pathVariables: {
     id
   }

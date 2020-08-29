@@ -319,7 +319,7 @@ export default {
       .finally(() => {
         this.loading = false
       })
-    if (this.$store.getters.loggedIn != null) {
+    if (this.$store.getters.loggedIn) {
       user.getLoggedInUser().then(r => {
         this.$store.dispatch('setUser', r.data)
       })

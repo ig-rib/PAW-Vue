@@ -2,11 +2,15 @@ import axios from 'axios'
 import Store from '@/store'
 import Router from '@/router'
 import querystring from 'querystring'
+import { cacheAdapterEnhancer } from 'axios-extensions'
 
 axios.defaults.paramsSerializer = params => {
   return querystring.stringify(params)
 }
-
+// axios.defaults.adapter = cacheAdapterEnhancer(axios.defaults.adapter)
+const http = axios.create({
+  adapter: cacheAdapterEnhancer(axios.defaults.adapter, { enabledByDefault: true, cacheFlag: 'useCache' })
+})
 /**
  * Wrapper for axios
  * @param {string} url
@@ -34,16 +38,16 @@ const axiosFetcher = (url = '', params = {}, method = 'get', data = {}, headers 
   let promise = null
   switch (method.toLowerCase()) {
     case 'get':
-      promise = axios.get(url, config)
+      promise = http.get(url, config)
       break;
     case 'post':
-      promise = axios.post(url, data, config)
+      promise = http.post(url, data, config)
       break;
     case 'put':
-      promise = axios.put(url, data, config)
+      promise = http.put(url, data, config)
       break;
     case 'delete':
-      promise = axios.delete(url, config)
+      promise = http.delete(url, config)
       break;
   }
   // Handle errors
