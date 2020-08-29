@@ -317,9 +317,11 @@ export default {
       .finally(() => {
         this.loading = false
       })
-    user.getLoggedInUser().then(r => {
-      this.$store.dispatch('setUser', r.data)
-    })
+    if (this.$store.getter.user != null) {
+      user.getLoggedInUser().then(r => {
+        this.$store.dispatch('setUser', r.data)
+      })
+    }
   },
   watch: {
     reportDialog: {

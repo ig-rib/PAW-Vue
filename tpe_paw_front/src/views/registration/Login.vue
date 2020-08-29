@@ -1,6 +1,6 @@
 <template>
   <v-container id="login-container">
-    <v-layout align-center justify-center>
+    <v-layout py-10 class="registration-title-layout" align-center justify-center>
       <h1>
         WELCOME TO SNIPPIT
       </h1>
