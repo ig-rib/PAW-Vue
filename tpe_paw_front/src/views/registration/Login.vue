@@ -1,25 +1,44 @@
 <template>
-  <v-container>
-    <v-text-field
-      :label="$t('registration.username')"
-      outlined
-      v-model="username">
-    </v-text-field>
-    <v-text-field
-      type="password"
-      :label="$t('registration.password')"
-      outlined
-      v-model="password">
-    </v-text-field>
-    <div v-if="invalid" class="error-text">
-      {{ $t('registration.validations.usernameOrPasswordInvalid') }}
-    </div>
-    <v-btn @click="login">{{ $t('registration.login') }}</v-btn>
-    <v-layout>
-      <v-btn text @click="goToRegister">{{ $t('registration.noAccount') }} {{ $t('registration.goToRegister') }}</v-btn>
+  <v-container id="login-container">
+    <v-layout align-center justify-center>
+      <h1>
+        WELCOME TO SNIPPIT
+      </h1>
     </v-layout>
-    <v-layout>
-      <v-btn text @click="goToPassRecovery">{{ $t('registration.forgotPassword') }} {{ $t('registration.goToPassRecovery') }}</v-btn>
+    <v-layout class="registration-data-layout" column>
+      <v-flex>
+        <v-text-field
+          :label="$t('registration.username')"
+          outlined
+          v-model="username">
+        </v-text-field>
+      </v-flex>
+      <v-flex>
+        <v-text-field
+          type="password"
+          :label="$t('registration.password')"
+          outlined
+          v-model="password">
+        </v-text-field>
+      </v-flex>
+      <v-flex>
+        <v-layout justify-center>
+          <v-flex shrink>
+            <v-btn @click="login">{{ $t('registration.login') }}</v-btn>
+          </v-flex>
+        </v-layout>
+      </v-flex>
+    </v-layout>
+    <v-layout class="registration-navigation-layout" column>
+      <div v-if="invalid" class="error-text">
+        {{ $t('registration.validations.usernameOrPasswordInvalid') }}
+      </div>
+      <v-flex>
+        <v-btn text @click="goToRegister">{{ $t('registration.noAccount') }} {{ $t('registration.goToRegister') }}</v-btn>
+      </v-flex>
+      <v-flex>
+        <v-btn text @click="goToPassRecovery">{{ $t('registration.forgotPassword') }} {{ $t('registration.goToPassRecovery') }}</v-btn>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -93,4 +112,12 @@ export default {
 
 <style lang="scss">
   @import '@/styles/main.scss';
+  @import '@/styles/registration.scss';
+
+  #login-container {
+    height: 100%;
+    padding: 2% 5% 2% 5%;
+    display: flex;
+    flex-direction: column;    
+  }
 </style>
