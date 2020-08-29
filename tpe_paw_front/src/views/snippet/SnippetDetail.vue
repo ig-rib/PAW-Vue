@@ -1,160 +1,162 @@
 <template>
-  <v-container>
-    <v-card id="snippet-detail-card" v-if="!loading">
-      <v-container px-12>
-        <v-layout class="snippet-title-line">
-          <v-flex>
-            <div class="snippet-title">
-              {{ snippet.title }}
-            </div>
-          </v-flex>
-          <v-flex shrink ml-auto>
-            <v-btn color="light-blue" :to="{
-              name: 'language-snippets',
-              params: { id: language.id }
-            }" text outlined v-cloak>
-              {{ language.name }}
-            </v-btn>
-          </v-flex>
-        </v-layout>
-        <v-layout class="description-line">
-          <v-flex>
-            <div>
-              {{snippet.description}}
-            </div>
-          </v-flex>
-        </v-layout>
-        <v-layout class="divider-line">
-          <v-divider></v-divider>
-        </v-layout>
-        <!-- CODE LAYOUT -->
-        <v-layout class="snippet-code-layout">
-          <v-flex>
-            <v-textarea
-            readonly
-            no-resize
-            hide-details
-            rounded
-            filled
-            class="snippet-detail-code-textarea"
-            v-model="snippet.code" v-cloak>
-            </v-textarea>
-          </v-flex>
-        </v-layout>
-        <!-- TAGS LINE -->
-        <v-layout class="tags-line" v-if="tags.length > 0" wrap>
-          <v-flex
-            v-for="tag in tags"
-            :key="tag.name"
-            shrink
-            px-2>
-            <v-btn 
-              depressed
-              color="light-blue"
-              class="white--text"
-              :to="{
-                name: 'tag-snippets',
-                params: {
-                  id: tag.id
-                }
-              }">
-              {{ tag.name }}
-            </v-btn>
-          </v-flex>
-        </v-layout>
-        <!-- ACTION BAR - ACTION ICONS AND OWNER DATA -->
-        <v-layout id="snippet-detail-action-bar">
-          <!-- ACTION ICONS -->
-          <v-flex class="action-icons" sm7 md7 lg7 mx-2>
-            <v-layout class="action-icons-layout">
-              <v-flex v-if="isSnippetOwner">
-                <v-btn v-if="!snippet.deleted" :disabled="deleting" @click="deleteSnippet" icon>
-                  <v-icon>mdi-delete</v-icon>
-                </v-btn>
-                <v-btn v-else :disabled="deleting" @click="restoreSnippet" icon>
-                  <v-icon>mdi-delete-restore</v-icon>
-                </v-btn>
-              </v-flex>
-              <!-- FAV -->
-              <v-flex>
-                <v-btn :class="`fav-btn ${snippet.favorite ? 'color-crimson' : '' }`" :disabled="faving" @click="fav" icon>
-                  <v-icon>{{`mdi-heart${snippet.favorite ? '' : '-outline'}`}}</v-icon>
-                </v-btn>
-              </v-flex>
-              <!-- VOTES -->
-              <v-flex>
-                <v-layout>
-                  <!-- UPVOTE -->
-                  <v-flex>
-                    <v-btn :color="`${ isUpvoted ? 'green' : '' }`" class="thumb-up-btn" :disabled="voting" @click="vote(true)" icon>
-                      <v-icon>{{`mdi-thumb-up${isUpvoted ? '' : '-outline'}`}}</v-icon>
-                    </v-btn>
-                  </v-flex>
-                  <!-- SCORE -->
-                  <v-flex class="snippet-score-flex">
-                    {{ snippet.score }}
-                  </v-flex>
-                  <!-- DOWNVOTE -->
-                  <v-flex>
-                    <v-btn :color="`${ isDownvoted ? 'red' : '' }`" class="thumb-down-btn" :disabled="voting" @click="vote(false)" icon>
-                      <v-icon>{{`mdi-thumb-down${isDownvoted ? '' : '-outline'}`}}</v-icon>
-                    </v-btn>
-                  </v-flex>
-                </v-layout>
-              </v-flex>
-              <v-flex v-if="isAdmin || allowedToReport">
-                <!-- FLAG -->
-                <v-btn :color="`${ snippet.flagged ? 'red' : '' }`" class="flag-btn" v-if="isAdmin" :disabled="flagging" @click="flag" icon>
-                  <v-icon>{{`mdi-flag${snippet.flagged ? '' : '-outline'}`}}</v-icon>
-                </v-btn>
-                <!-- REPORT -->
-                <v-btn :class="`fav-btn ${snippet.reported ? 'color-sandybrown' : '' }`" class="report-btn" v-else :disabled="reporting" @click="report" icon>
-                  <v-icon>{{`mdi-alert-octagon${snippet.reported ? '' : '-outline'}`}}</v-icon>
-                </v-btn>
-              </v-flex>
-            </v-layout>
-          </v-flex>
-          <!-- OWNER DATA -->
-          <v-flex shrink>
-            <v-layout column>
-              <v-flex>
-                {{snippet.dateCreated}}
-              </v-flex>
-              <v-flex>
-                <v-card elevation="0" class="owner-data" @click="goToOwnerProfile">
+  <v-container class="snippet-detail-outer-container">
+    <v-layout justify-center>
+      <v-card id="snippet-detail-card" v-if="!loading">
+        <v-container px-12>
+          <v-layout class="snippet-title-line">
+            <v-flex>
+              <div class="snippet-title">
+                {{ snippet.title }}
+              </div>
+            </v-flex>
+            <v-flex shrink ml-auto>
+              <v-btn color="light-blue" :to="{
+                name: 'language-snippets',
+                params: { id: language.id }
+              }" text outlined v-cloak>
+                {{ language.name }}
+              </v-btn>
+            </v-flex>
+          </v-layout>
+          <v-layout class="description-line">
+            <v-flex>
+              <div>
+                {{snippet.description}}
+              </div>
+            </v-flex>
+          </v-layout>
+          <v-layout class="divider-line">
+            <v-divider></v-divider>
+          </v-layout>
+          <!-- CODE LAYOUT -->
+          <v-layout class="snippet-code-layout">
+            <v-flex>
+              <v-textarea
+              readonly
+              no-resize
+              hide-details
+              rounded
+              filled
+              class="snippet-detail-code-textarea"
+              v-model="snippet.code" v-cloak>
+              </v-textarea>
+            </v-flex>
+          </v-layout>
+          <!-- TAGS LINE -->
+          <v-layout class="tags-line" v-if="tags.length > 0" wrap>
+            <v-flex
+              v-for="tag in tags"
+              :key="tag.name"
+              shrink
+              px-2>
+              <v-btn 
+                depressed
+                color="light-blue"
+                class="white--text"
+                :to="{
+                  name: 'tag-snippets',
+                  params: {
+                    id: tag.id
+                  }
+                }">
+                {{ tag.name }}
+              </v-btn>
+            </v-flex>
+          </v-layout>
+          <!-- ACTION BAR - ACTION ICONS AND OWNER DATA -->
+          <v-layout id="snippet-detail-action-bar">
+            <!-- ACTION ICONS -->
+            <v-flex class="action-icons" sm7 md7 lg7 mx-2>
+              <v-layout class="action-icons-layout">
+                <v-flex v-if="isSnippetOwner">
+                  <v-btn v-if="!snippet.deleted" :disabled="deleting" @click="deleteSnippet" icon>
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                  <v-btn v-else :disabled="deleting" @click="restoreSnippet" icon>
+                    <v-icon>mdi-delete-restore</v-icon>
+                  </v-btn>
+                </v-flex>
+                <!-- FAV -->
+                <v-flex>
+                  <v-btn :class="`fav-btn ${snippet.favorite ? 'color-crimson' : '' }`" :disabled="faving" @click="fav" icon>
+                    <v-icon>{{`mdi-heart${snippet.favorite ? '' : '-outline'}`}}</v-icon>
+                  </v-btn>
+                </v-flex>
+                <!-- VOTES -->
+                <v-flex>
                   <v-layout>
-                    <v-flex shrink>
-                      <v-img class="owner-image" width="40px" height="40px" :src="owner.icon" v-if="user != null">
-                      </v-img>
-                    </v-flex>
+                    <!-- UPVOTE -->
                     <v-flex>
-                      <v-layout column>
-                        <v-flex>
-                          {{ owner.username }}
-                        </v-flex>
-                        <v-flex>
-                          {{ owner.reputation }}
-                        </v-flex>
-                      </v-layout>
+                      <v-btn :color="`${ isUpvoted ? 'green' : '' }`" class="thumb-up-btn" :disabled="voting" @click="vote(true)" icon>
+                        <v-icon>{{`mdi-thumb-up${isUpvoted ? '' : '-outline'}`}}</v-icon>
+                      </v-btn>
+                    </v-flex>
+                    <!-- SCORE -->
+                    <v-flex class="snippet-score-flex">
+                      {{ snippet.score }}
+                    </v-flex>
+                    <!-- DOWNVOTE -->
+                    <v-flex>
+                      <v-btn :color="`${ isDownvoted ? 'red' : '' }`" class="thumb-down-btn" :disabled="voting" @click="vote(false)" icon>
+                        <v-icon>{{`mdi-thumb-down${isDownvoted ? '' : '-outline'}`}}</v-icon>
+                      </v-btn>
                     </v-flex>
                   </v-layout>
-                </v-card>
-              </v-flex>
-            </v-layout>
-        </v-flex>
-        </v-layout>
-      </v-container>
-      <v-dialog v-model="reportDialog">
-        <v-card>
-          <v-card-title>{{ $t('snippets.snippetDetail.report.whatIsWrong') }}</v-card-title>
-          <v-textarea v-model="reportMessage"></v-textarea>
-          <v-card-actions>
-            <v-btn @click="sendReport">{{ $t('snippets.snippetDetail.report.confirm') }}</v-btn>
-            <v-btn @click="cancelReport">{{ $t('snippets.snippetDetail.report.cancel')}}</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-card>
+                </v-flex>
+                <v-flex v-if="isAdmin || allowedToReport">
+                  <!-- FLAG -->
+                  <v-btn :color="`${ snippet.flagged ? 'red' : '' }`" class="flag-btn" v-if="isAdmin" :disabled="flagging" @click="flag" icon>
+                    <v-icon>{{`mdi-flag${snippet.flagged ? '' : '-outline'}`}}</v-icon>
+                  </v-btn>
+                  <!-- REPORT -->
+                  <v-btn :class="`fav-btn ${snippet.reported ? 'color-sandybrown' : '' }`" class="report-btn" v-else :disabled="reporting" @click="report" icon>
+                    <v-icon>{{`mdi-alert-octagon${snippet.reported ? '' : '-outline'}`}}</v-icon>
+                  </v-btn>
+                </v-flex>
+              </v-layout>
+            </v-flex>
+            <!-- OWNER DATA -->
+            <v-flex shrink>
+              <v-layout column>
+                <v-flex>
+                  {{snippet.dateCreated}}
+                </v-flex>
+                <v-flex>
+                  <v-card elevation="0" class="owner-data" @click="goToOwnerProfile">
+                    <v-layout>
+                      <v-flex shrink>
+                        <v-img class="owner-image" width="40px" height="40px" :src="owner.icon" v-if="user != null">
+                        </v-img>
+                      </v-flex>
+                      <v-flex>
+                        <v-layout column>
+                          <v-flex>
+                            {{ owner.username }}
+                          </v-flex>
+                          <v-flex>
+                            {{ owner.reputation }}
+                          </v-flex>
+                        </v-layout>
+                      </v-flex>
+                    </v-layout>
+                  </v-card>
+                </v-flex>
+              </v-layout>
+          </v-flex>
+          </v-layout>
+        </v-container>
+        <v-dialog v-model="reportDialog">
+          <v-card>
+            <v-card-title>{{ $t('snippets.snippetDetail.report.whatIsWrong') }}</v-card-title>
+            <v-textarea v-model="reportMessage"></v-textarea>
+            <v-card-actions>
+              <v-btn @click="sendReport">{{ $t('snippets.snippetDetail.report.confirm') }}</v-btn>
+              <v-btn @click="cancelReport">{{ $t('snippets.snippetDetail.report.cancel')}}</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-card>
+    </v-layout>
   </v-container>
 </template>
 
@@ -392,12 +394,12 @@ export default {
     justify-content: space-between;
 
     .action-icons-layout {
-      border: 1px solid black;
+      border: 1px solid lightgrey;
       border-radius: 40px;
       justify-content: space-around;
       width: max-content;
       padding: 0px 50px 0px 50px;
-
+      box-shadow: 1px 1px 3px rgba(50, 50, 50, 0.4) inset;
       .fav-btn:hover, .color-crimson {
         color: crimson;
       }
