@@ -158,7 +158,6 @@ export default {
   .snippet-card-code-textarea {
     border-radius: 10px;
     textarea {
-      height: 100%;
       overflow: hidden !important;
       -webkit-user-select: none; /* Safari */        
       -moz-user-select: none; /* Firefox */

@@ -9,7 +9,10 @@
           :key="tag.id">
           <!-- <v-container> -->
 
-          <v-card elevation="1" class="card-chip" @click="goToTagSnippets(tag.id)">
+          <v-card elevation="1"
+            class="card-chip"
+            @click="goToTagSnippets(tag.id)"
+            >
             <v-layout width="100%">
               <v-flex class="tag-name-flex">
                 {{ tag.name }}
@@ -77,7 +80,7 @@ export default {
       })
       tagService.searchTags(queryParams)
         .then(values => {
-          this.tags = values.data 
+          this.tags = values.data
           this.links = helpers.parseLinks(values.headers.link)
         })
         .catch(error => { console.log(error) })
