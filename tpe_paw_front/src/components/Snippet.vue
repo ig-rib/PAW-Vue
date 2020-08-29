@@ -1,8 +1,8 @@
 <template>
   <v-container v-if="snippet != null" id="snippet-card-container">
-      <v-card max-height="450px" min-width="350px" class="snippet-card-card" @click="goToSnippetDetail">
-        <!-- User and language -->
+      <v-card min-width="300px" class="snippet-card-card" @click="goToSnippetDetail">
         <v-container>
+        <!-- User and language -->
           <v-layout dense>
               <v-flex dense>
                 <v-list-item two-line>
@@ -17,8 +17,8 @@
                 </v-list-item>
               </v-flex>
 
-              <v-flex class="pr-2">
-                <v-layout class="pr-2" justify="end">
+              <v-flex class="pr-2 snippet-language-flex">
+                <v-layout class="pr-2" justify-end>
                   <v-flex class="flex-grow-0 pa-0">
                     <v-btn icon
                       color="red"
@@ -48,7 +48,13 @@
           </v-layout>
 
           <!-- Title and description -->
-          <v-layout>
+          <v-layout class="title-description-layout" column>
+            <!-- <v-flex>
+              <p>{{snippet.title}}</p>
+            </v-flex>
+            <v-flex>
+              <p>{{snippet.description}}</p>
+            </v-flex> -->
             <v-list-item two-line>
               <v-list-item-content class="pa-0"> 
                 <v-list-item-title class="headline mb-1">{{ snippet.title }}</v-list-item-title>
@@ -148,12 +154,22 @@ export default {
 <style lang="scss">
 #snippet-card-container {
   max-width: 450px;
+  // max-width: 33%;
+  // margin: 5%;
   .account-circle {
     max-height: 30px;
     max-width: 30px;
   }
+  .title-description-layout {
+    // max-width: 300px;
+  }
   .code-layout {
-
+    // max-width: 300px;
+  }
+  .snippet-language-flex {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
   }
   .snippet-card-code-textarea {
     border-radius: 10px;

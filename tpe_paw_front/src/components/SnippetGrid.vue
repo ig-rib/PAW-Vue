@@ -9,8 +9,11 @@
       ></v-pagination>
     </div>
     <v-layout>
-      <v-layout v-if="status !== 'loading'" row>
-        <v-flex lg6 md12 sm12 v-for="snippet in snippets" :key="snippet.id">
+      <v-layout v-if="status !== 'loading'" row wrap justify-center>
+        <v-flex shrink
+            v-for="snippet in snippets"
+            :key="snippet.id"
+          >
           <snippet
             :snippet="snippet"/>
         </v-flex>
