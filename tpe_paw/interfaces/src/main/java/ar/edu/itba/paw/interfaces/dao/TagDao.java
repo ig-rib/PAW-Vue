@@ -30,4 +30,6 @@ public interface TagDao {
     void addTags(final List<String> tags);
 
     void removeTag(final long tagId);
+
+    Collection<Tag> findSpecificTagsById(Collection<Long> tags);
 }

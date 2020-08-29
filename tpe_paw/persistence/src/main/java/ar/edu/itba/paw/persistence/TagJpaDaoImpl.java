@@ -74,6 +74,15 @@ public class TagJpaDaoImpl implements TagDao {
         }
     }
 
+    @Override
+    public Collection<Tag> findSpecificTagsById(Collection<Long> tags) {
+        if (tags.isEmpty())
+            return Collections.emptyList();
+        TypedQuery<Tag> tagQuery = this.em.createQuery("FROM Tag WHERE id IN :tagIds", Tag.class)
+            .setParameter("tagIds", tags);
+        return tagQuery.getResultList();
+    }
+
 
     @Override
     public Collection<Tag> getAllTags(boolean showEmpty, boolean showOnlyFollowing, Long userId, int page, int pageSize) {

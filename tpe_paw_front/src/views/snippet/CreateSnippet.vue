@@ -83,10 +83,10 @@ export default {
     saveSnippet () {
       snippetService.createSnippet({
         title: this.title,
-        language: this.language.id,
+        languageId: this.language.id,
         description: this.description,
         code: this.code,
-        tags: this.tags.map(tag => tag.name)
+        tags: this.tags.map(tag => tag.id)
       })
     }
   }

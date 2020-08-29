@@ -40,7 +40,7 @@ public interface SnippetDao {
     Optional<Snippet> findSnippetById(final long id);
     boolean deleteSnippetById(final long id);
     boolean restoreSnippetById(final long id);
-    Long createSnippet(long ownerId, String title, String description, String code, Instant dateCreated, Long languageId, Collection<String> tags);
+    Long createSnippet(long ownerId, String title, String description, String code, Instant dateCreated, Long languageId, Collection<Long> tags);
     boolean unflagSnippet(long snippetId);
     boolean flagSnippet(long snippetId);
     int getAllSnippetsCount();

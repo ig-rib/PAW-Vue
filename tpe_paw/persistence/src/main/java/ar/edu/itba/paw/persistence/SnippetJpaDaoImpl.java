@@ -145,10 +145,10 @@ public class SnippetJpaDaoImpl implements SnippetDao {
     }
 
     @Override
-    public Long createSnippet(long ownerId, String title, String description, String code, Instant dateCreated, Long languageId, Collection<String> tags) {
+    public Long createSnippet(long ownerId, String title, String description, String code, Instant dateCreated, Long languageId, Collection<Long> tags) {
         User owner = em.find(User.class, ownerId);
         Language lang = em.find(Language.class, languageId);
-        Collection<Tag> tagEntities = tagDao.findSpecificTagsByName(tags);
+        Collection<Tag> tagEntities = tagDao.findSpecificTagsById(tags);
         Snippet createdSnippet = new Snippet(owner, code, title, description, dateCreated, lang, tagEntities, false, false);
         em.persist(createdSnippet);
         return createdSnippet.getId();

@@ -319,7 +319,7 @@ export default {
       .finally(() => {
         this.loading = false
       })
-    if (this.$store.getter.user != null) {
+    if (this.$store.getters.loggedIn != null) {
       user.getLoggedInUser().then(r => {
         this.$store.dispatch('setUser', r.data)
       })
@@ -394,6 +394,7 @@ export default {
     justify-content: space-between;
 
     .action-icons-layout {
+      background: #fefefe;
       border: 1px solid lightgrey;
       border-radius: 40px;
       justify-content: space-around;
