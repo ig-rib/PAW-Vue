@@ -2,19 +2,21 @@
   <v-container>
     <div>
       <p> {{ $t('tags.title') }} </p>
-      <v-layout wrap justify="center">
-        <v-flex my-2 :class="`lg3 md4 sm4 ${ $vuetify.breakpoint.lgAndUp ? 'px-2' : 'mx-2' } px-2`" v-for="tag in tags" :key="tag.id">
+      <v-layout wrap justify-center>
+        <v-flex my-2
+          :class="`lg3 md4 sm4 ${ $vuetify.breakpoint.lgAndUp ? 'px-2' : 'mx-2' }`"
+          v-for="tag in tags"
+          :key="tag.id">
           <!-- <v-container> -->
 
-          <v-card class="tag-chip" @click="goToTagSnippets(tag.id)">
+          <v-card elevation="1" class="card-chip" @click="goToTagSnippets(tag.id)">
             <v-layout width="100%">
               <v-flex class="tag-name-flex">
                 {{ tag.name }}
               </v-flex>
               <v-flex shrink ml-auto>
-                <!-- If tag is followed -->
                 <v-btn
-                  text
+                  elevation="0"
                   class="tag-follow-btn ma-1"
                   color="primary"
                   :outlined="!tag.userFollowing"
@@ -127,20 +129,7 @@ export default {
 </script>
 
 <style lang="scss">
-
-.tag-chip{
-    padding-left: 5%;
-    padding-right: 5%;
-    min-width: max-content;
-    height: 50px !important;
-    .flex {
-      align-items: center;
-      display: flex;
-    }
-    .layout {
-      height: 100%;
-    }
-}
+@import '@/styles/cardChip.scss';
 
 .tag-name-flex {
   // min-width: 50%;
@@ -149,6 +138,8 @@ export default {
 }
 
 .tag-follow-btn {
+  transition: 0.3s;
+  border-radius: 20px;
   font-weight: 400;
   padding: 3px !important;
 }

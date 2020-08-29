@@ -2,13 +2,25 @@
   <v-container>
     <div>
       <p>{{$t('languages.title')}}</p>
-      <v-row>
-        <v-col v-for="lang in languages" :key="lang.id">
+      <v-layout wrap justify-center>
+        <v-flex my-2
+          :class="`lg3 md4 sm4 ${ $vuetify.breakpoint.lgAndUp ? 'px-2' : 'mx-2' } px-2`"
+          v-for="lang in languages"
+          :key="lang.id">
           <div>
-            <v-chip @click="goToLanguageSnippets(lang)" class="ma-2 language-chip" label>{{ lang.name }}</v-chip>
+            <v-card elevation="1" class="card-chip" @click="goToLanguageSnippets(lang)">
+              <v-layout width="100%">
+                <v-flex px-2 class="tag-name-flex">
+                  {{ lang.name }}
+                </v-flex>
+              <!-- <v-chip @click="goToLanguageSnippets(lang)" class="ma-2 language-chip" label>
+                {{ lang.name }}
+              </v-chip> -->
+              </v-layout>
+            </v-card>
           </div>
-        </v-col>
-      </v-row>
+        </v-flex>
+      </v-layout>
     </div>
     <div class="text-center">
       <v-pagination
@@ -16,7 +28,6 @@
         v-on:input="paginationChange"
         :length="pagination.length" 
         :total-visible="pagination.visible"
-        circle
       ></v-pagination>
     </div>
   </v-container>
@@ -80,6 +91,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import '@/styles/cardChip.scss';
 
 .language-chip{
     width: 100px;
