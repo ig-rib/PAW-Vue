@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="persistent-navigator-div">
     <v-app-bar
       pa-0
       color="lightgrey"
@@ -198,7 +198,7 @@
           <v-layout v-else>
             <v-flex shrink>
               <v-btn x-large icon @click="goToProfile">
-                <img v-if="!profileImageError" @error="profileImageError = true" class="profile-circle" :src="currentUser.icon"/>
+                <img v-if="!profileImageError" @error="profileImageError = true" class="navbar-profile-circle" :src="currentUser.icon"/>
                 <v-icon v-else>mdi-account-circle</v-icon>
               </v-btn>
             </v-flex>
@@ -272,7 +272,7 @@
     <v-layout v-else>
       <v-flex shrink>
         <v-btn x-large icon @click="goToProfile">
-          <img v-if="!profileImageError" @error="profileImageError = true" class="profile-circle" :src="currentUser.icon"/>
+          <img v-if="!profileImageError" @error="profileImageError = true" class="navbar-profile-circle" :src="currentUser.icon"/>
           <v-icon v-else>mdi-account-circle</v-icon>  
         </v-btn>
       </v-flex>
@@ -379,6 +379,7 @@ export default {
       }
     },
     currentUser () {
+      console.log(this.$store.getters.user)
       return this.$store.getters.user
     },
     generalPathsNoFeed () {
@@ -533,6 +534,8 @@ export default {
 
 <style lang="scss">
 @import '@/styles/alignmentUtils.scss';
+#persistent-navigator-div {
+
   div.v-toolbar__content {
     padding: 0px;
   }
@@ -541,6 +544,11 @@ export default {
       display: flex;
       align-items: center;
     }
+  }
+  .navbar-profile-circle {
+    max-height: 40px;
+    max-width: 40px;
+    border-radius: 40px;
   }
   .title-btn {
     height: 100% !important;
@@ -587,4 +595,5 @@ export default {
       height: 0px;
     }
   }
+}
 </style>

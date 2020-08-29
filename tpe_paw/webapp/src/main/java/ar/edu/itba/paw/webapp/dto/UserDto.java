@@ -26,7 +26,8 @@ public class UserDto {
 
         dto.id = user.getId();
         dto.username = user.getUsername();
-        dto.icon = uriInfo.getAbsolutePathBuilder().path("profile-photo").build();
+        // Need to use base for the case of current user
+        dto.icon = uriInfo.getBaseUriBuilder().path("user").path(String.valueOf(user.getId())).path("profile-photo").build();
         dto.description = user.getDescription();
         dto.reputation = user.getReputation();
         dto.admin = isAdmin;
