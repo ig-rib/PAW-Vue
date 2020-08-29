@@ -95,10 +95,6 @@ import urls from '@/services/urls.js'
       }
     },
     methods: {
-      getUserEntity () {
-        user.getUser(75)
-          .then(r => { this.editing = true })
-      },
       uploadPhoto () {
         const formData = new FormData()
         formData.append('photo', this.profilePhoto)
