@@ -1,7 +1,12 @@
-const localDomain = 'http://localhost:8080/'
+"use strict";
 
-const urls = {
-  localDomain,
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+var localDomain = 'http://localhost:8080/';
+var urls = {
+  localDomain: localDomain,
   user: {
     current: localDomain + 'user/current',
     activeSnippets: localDomain + 'user/:id/snippets/active',
@@ -50,8 +55,10 @@ const urls = {
     snippets: localDomain + 'snippet',
     snippet: localDomain + 'snippet/:id',
     restore: localDomain + 'snippet/:id/restore',
-    voteSnippet: localDomain + 'snippet/:id/vote', // Pass isPositive in body
-    favSnippet: localDomain + 'snippet/:id/favorite', // For both faving and unfaving
+    voteSnippet: localDomain + 'snippet/:id/vote',
+    // Pass isPositive in body
+    favSnippet: localDomain + 'snippet/:id/favorite',
+    // For both faving and unfaving
     reportSnippet: localDomain + 'snippet/:id/report',
     flagSnippet: localDomain + 'snippet/:id/flag',
     create: localDomain + 'snippet',
@@ -65,6 +72,6 @@ const urls = {
   test: {
     jerseyTest: localDomain + 'jersey-test'
   }
-}
-
-export default urls
+};
+var _default = urls;
+exports["default"] = _default;

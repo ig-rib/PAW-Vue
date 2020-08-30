@@ -260,7 +260,7 @@ public class SnippetController {
     }
 
     @POST
-    @Path("/create")
+    @Path("/")
     public Response createSnippet(SnippetCreateDto snippetDto) {
         User user = loginAuthentication.getLoggedInUser().orElse(null);
         if (user == null){
@@ -358,19 +358,4 @@ public class SnippetController {
         return Response.status(errorStatus).entity(errorMessageDto).build();
     }
 
-    //TODO: Delete
-    @Deprecated
-    private Snippet getSnippet(final long snippetId) {
-        Optional<Snippet> retrievedSnippet = this.snippetService.findSnippetById(snippetId);
-        if (!retrievedSnippet.isPresent()) {
-            logAndThrow(snippetId);
-        }
-        return retrievedSnippet.get();
-    }
-
-    @Deprecated
-    private void logAndThrow(final long snippetId) {
-        LOGGER.warn("No snippet found for id {}", snippetId);
-        throw new SnippetNotFoundException(messageSource.getMessage("error.404.snippet", new Object[]{snippetId}, LocaleContextHolder.getLocale()));
-    }
 }
