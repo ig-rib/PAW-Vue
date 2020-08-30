@@ -55,6 +55,7 @@
       "title": "Title",
       "description": "Description",
       "code": "Code",
+      "codeHint": "Insert your code",
       "tags": "Tags",
       "language": "Language"
     },

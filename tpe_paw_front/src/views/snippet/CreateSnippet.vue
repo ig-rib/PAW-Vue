@@ -4,48 +4,69 @@
         <v-card class="snippet-create-card">
           <v-container>
             <v-layout class="title-row">
+
               <v-flex>
                 <v-text-field
+                  class="title-input"
+                  height="50px"
                   outlined
                   dense
-                  rounded
                   hide-details
                   v-model="title"
-                  :label="$t('snippets.createSnippet.title')"></v-text-field>
+                  :label="$t('snippets.createSnippet.title')">
+                </v-text-field>
               </v-flex>
+
               <v-flex>
                 <language-select v-model="language"/>
               </v-flex>
+
             </v-layout>
+
+
             <v-divider></v-divider>
+
+
             <v-layout column mt-2 class="description-line">
+
               <v-flex>
                 {{ $t('snippets.createSnippet.description') }}
               </v-flex>
               <v-flex>
+
                 <v-textarea
-                  rounded
                   outlined
                   no-resize
                   v-model="description">
                 </v-textarea>
               </v-flex>
+
             </v-layout>
+
+
             <v-divider></v-divider>
+
+
             <v-layout column mt-2 class="code-line">
               <v-flex>
                 {{ $t('snippets.createSnippet.code') }}
               </v-flex>
+
               <v-flex>
                 <v-textarea
-                rounded
-                outlined
-                no-resize
-                v-model="code"
+                  class="code-input"
+                  filled
+                  v-model="code"
+                  :label="$t('snippets.createSnippet.codeHint')"
                 ></v-textarea>
               </v-flex>
+
             </v-layout>
+
+
             <v-divider></v-divider>
+
+
             <v-layout class="tags-line">
               <v-flex md6 sm6>
                 <tag-select
@@ -54,6 +75,7 @@
                   :closeOnSelect="false"
                   :label="$t('snippets.createSnippet.tags')"></tag-select>
               </v-flex>
+
               <v-flex class="save-btn-flex">
                 <v-btn @click="saveSnippet">
                   {{ $t('snippets.createSnippet.createSnippet') }}
@@ -105,8 +127,17 @@ export default {
         align-items: center;
       }
     }
+    .title-input{
+      font-size: 22px;
+    }
+    .code-input{
+      margin: 6px 10px 0px 0px;
+      max-width: 700px;
+      border-width: thin;
+      line-height: 19px;
+    }
     .snippet-create-card {
-      min-width: max-content;
+      min-width: 700px;
     }
     .description-line {
     }
