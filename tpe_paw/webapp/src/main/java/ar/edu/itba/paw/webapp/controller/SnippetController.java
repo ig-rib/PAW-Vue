@@ -65,7 +65,8 @@ public class SnippetController {
     @GET
     @Path("/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response snippetDetail(@PathParam(value="id") long id) {
+    public Response snippetDetail(@PathParam(value="id") long id,
+                                  @Context Request request) {
 
         Snippet snippet = snippetService.findSnippetById(id).orElse(null);
         if(snippet == null){
@@ -82,7 +83,16 @@ public class SnippetController {
         } else {
             snippetDto = SnippetDto.fromSnippet(snippet, uriInfo);
         }
-        return Response.ok(snippetDto).build();
+
+        // Checking eTag for this
+        CacheControl cc = new CacheControl();
+        EntityTag eTag = new EntityTag(Integer.toString(snippetDto.hashCode()));
+        Response.ResponseBuilder builder = request.evaluatePreconditions(eTag);
+        if (builder == null) {
+            builder = Response.ok(snippetDto);
+            builder.tag(eTag);
+        }
+        return builder.cacheControl(cc).build();
     }
 
     @DELETE

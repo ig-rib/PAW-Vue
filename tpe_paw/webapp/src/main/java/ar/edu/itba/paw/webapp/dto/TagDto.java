@@ -3,6 +3,8 @@ package ar.edu.itba.paw.webapp.dto;
 import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.Tag;
 
+import java.util.Objects;
+
 public class TagDto {
 
     private Long id;
@@ -52,5 +54,19 @@ public class TagDto {
         isUserFollowing = userFollowing;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TagDto)) return false;
+        TagDto tagDto = (TagDto) o;
+        return Objects.equals(id, tagDto.id) &&
+                Objects.equals(name, tagDto.name) &&
+                Objects.equals(snippetsUsingIsEmpty, tagDto.snippetsUsingIsEmpty) &&
+                Objects.equals(isUserFollowing, tagDto.isUserFollowing);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, snippetsUsingIsEmpty, isUserFollowing);
+    }
 }

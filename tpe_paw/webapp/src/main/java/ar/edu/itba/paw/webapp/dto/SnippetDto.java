@@ -9,6 +9,7 @@ import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -177,5 +178,51 @@ public class SnippetDto {
 
     public void setLanguage(URI language) {
         this.language = language;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int sum = this.id.hashCode();
+//        sum += 19 * new Boolean(this.isFavorite).hashCode();
+//        sum += 43 * new Boolean(this.isReported).hashCode();
+//        sum += 23 * new Boolean(this.flagged).hashCode();
+//        sum += 17 * new Boolean(this.deleted).hashCode();
+//        sum += this.getVote() != null ? 29 * this.getVote().hashCode() : 0;
+//        sum += 31 * (this.score >= 0 ? this.score : 37 * -this.score);
+//        sum += 31 * this.dateCreated.hashCode();
+//        sum += 31 * this.description.hashCode();
+//        sum += 31 * this.title.hashCode();
+//        sum += 31 * this.code.hashCode();
+//        sum += 31 * this.language.hashCode();
+//        sum += 31 * this.owner.hashCode();
+//        sum += 31 * this.tags.hashCode();
+//        return sum;
+//    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SnippetDto)) return false;
+        SnippetDto that = (SnippetDto) o;
+        return flagged == that.flagged &&
+                deleted == that.deleted &&
+                score == that.score &&
+                isFavorite == that.isFavorite &&
+                isReported == that.isReported &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(owner, that.owner) &&
+                Objects.equals(language, that.language) &&
+                Objects.equals(code, that.code) &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(dateCreated, that.dateCreated) &&
+                Objects.equals(tags, that.tags) &&
+                Objects.equals(vote, that.vote);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, owner, language, code, title, description, dateCreated, flagged, deleted, tags, score, isFavorite, isReported, vote);
     }
 }

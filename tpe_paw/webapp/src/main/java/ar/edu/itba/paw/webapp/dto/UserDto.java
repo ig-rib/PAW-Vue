@@ -6,6 +6,7 @@ import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.time.Instant;
 import java.util.Base64;
+import java.util.Objects;
 
 public class UserDto {
     private long id;
@@ -129,5 +130,29 @@ public class UserDto {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserDto)) return false;
+        UserDto userDto = (UserDto) o;
+        return id == userDto.id &&
+                reputation == userDto.reputation &&
+                verified == userDto.verified &&
+                admin == userDto.admin &&
+                Objects.equals(username, userDto.username) &&
+                Objects.equals(email, userDto.email) &&
+                Objects.equals(password, userDto.password) &&
+                Objects.equals(description, userDto.description) &&
+                Objects.equals(dateJoined, userDto.dateJoined) &&
+                Objects.equals(icon, userDto.icon) &&
+                Objects.equals(lang, userDto.lang) &&
+                Objects.equals(region, userDto.region);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, email, password, description, reputation, dateJoined, icon, verified, lang, region, admin);
     }
 }

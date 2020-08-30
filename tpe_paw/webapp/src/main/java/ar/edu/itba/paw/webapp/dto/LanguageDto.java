@@ -2,6 +2,8 @@ package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.models.Language;
 
+import java.util.Objects;
+
 public class LanguageDto {
 
     private Long id;
@@ -40,5 +42,20 @@ public class LanguageDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LanguageDto)) return false;
+        LanguageDto that = (LanguageDto) o;
+        return deleted == that.deleted &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, deleted);
     }
 }

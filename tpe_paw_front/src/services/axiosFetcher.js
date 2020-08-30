@@ -9,7 +9,7 @@ axios.defaults.paramsSerializer = params => {
 }
 // axios.defaults.adapter = cacheAdapterEnhancer(axios.defaults.adapter)
 const http = axios.create({
-  // adapter: cacheAdapterEnhancer(axios.defaults.adapter, { enabledByDefault: true, cacheFlag: 'useCache' })
+  adapter: cacheAdapterEnhancer(axios.defaults.adapter, { enabledByDefault: true, cacheFlag: 'useCache' })
 })
 /**
  * Wrapper for axios
@@ -38,6 +38,7 @@ const axiosFetcher = (url = '', params = {}, method = 'get', data = {}, headers 
   let promise = null
   switch (method.toLowerCase()) {
     case 'get':
+      config.useCache = true
       promise = http.get(url, config)
       break;
     case 'post':
