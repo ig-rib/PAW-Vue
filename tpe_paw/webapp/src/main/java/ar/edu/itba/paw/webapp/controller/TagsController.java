@@ -8,27 +8,23 @@ import ar.edu.itba.paw.interfaces.service.UserService;
 import ar.edu.itba.paw.models.Tag;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
-import ar.edu.itba.paw.webapp.dto.*;
-import ar.edu.itba.paw.webapp.exception.ForbiddenAccessException;
+import ar.edu.itba.paw.webapp.dto.ErrorMessageDto;
+import ar.edu.itba.paw.webapp.dto.FollowDto;
+import ar.edu.itba.paw.webapp.dto.SnippetDto;
+import ar.edu.itba.paw.webapp.dto.TagDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.security.Principal;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static ar.edu.itba.paw.webapp.utility.Constants.SNIPPET_PAGE_SIZE;
 import static ar.edu.itba.paw.webapp.utility.Constants.TAG_PAGE_SIZE;
 
 @Path("/")
@@ -54,9 +50,6 @@ public class TagsController {
     @Context
     private UriInfo uriInfo;
 
-    //TODO: See if better to use loginAuthentication directly
-    @Context
-    private SecurityContext securityContext;
 
     @GET
     @Path("tags/{tagId}")
@@ -122,10 +115,10 @@ public class TagsController {
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public Response unfollowTag(@PathParam(value="tagId") final long tagId,
                                           final FollowDto followDto) {
-        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+        User user = loginAuthentication.getLoggedInUser().orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
+            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
         tagService.unfollowTag(user.getId(), tagId);
@@ -140,16 +133,7 @@ public class TagsController {
                                @QueryParam("showOnlyFollowing") @DefaultValue("false") boolean showOnlyFollowing,
                                final @QueryParam("q") @DefaultValue("") String q) {
         // Find the user, check if it exists
-        Long userId = null;
-        Optional<User> userOpt = Optional.empty();
-        if (securityContext.getUserPrincipal() != null) {
-            userOpt = userService.findUserByUsername(securityContext.getUserPrincipal().getName());
-            if(userOpt.isPresent()){
-                userId = userOpt.get().getId();
-            }
-        }
-        if (showOnlyFollowing && !userOpt.isPresent())
-            return Response.status(HttpStatus.UNAUTHORIZED.value()).build();
+        Long userId = loginAuthentication.getLoggedInUser().map(User::getId).orElse(null);
 
         // Check if showOnlyFollowing is activated --> If user is not logged return unauthorized.
 //        List<TagDto> tags = tagService.findTagsByName(query, showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)
@@ -162,7 +146,7 @@ public class TagsController {
         final List<TagDto> tags = new ArrayList<>();
         for(Tag t: tagService.findTagsByName(q, showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)){
             TagDto tagDto = TagDto.fromTag(t);
-            tagDto.setUserFollowing(userOpt.isPresent() && tagService.userFollowsTag(userId, t.getId()));
+            tagDto.setUserFollowing(userId != null && tagService.userFollowsTag(userId, t.getId()));
             tags.add(tagDto);
         }
 
@@ -203,16 +187,9 @@ public class TagsController {
     @PreAuthorize("hasRole('ADMIN')")
     @Path("tags/{tagId}")
     public Response deleteTag(@PathParam(value="tagId") long tagId) {
-        Long userId = null;
-        Optional<User> userOpt = Optional.empty();
-        if (securityContext.getUserPrincipal() != null) {
-            userOpt = userService.findUserByUsername(securityContext.getUserPrincipal().getName());
-            if(userOpt.isPresent()){
-                userId = userOpt.get().getId();
-            }
-        }
+        Long userId = loginAuthentication.getLoggedInUser().map(User::getId).orElse(null);
 
-        if ( userOpt.isPresent()  && roleService.isAdmin(userId)){
+        if (userId != null  && roleService.isAdmin(userId)){
             this.tagService.removeTag(tagId);
             LOGGER.debug("Admin deleted tag with id {}", tagId);
         } else {
