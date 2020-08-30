@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -46,7 +47,8 @@ public class SnippetController {
                                  final @QueryParam("t") String type,
                                  final @QueryParam("uid") String userId,
                                  final @QueryParam("s") String sort,
-                                 final @QueryParam("page") @DefaultValue("1") int page) {
+                                 final @QueryParam("page") @DefaultValue("1") int page,
+                                 final @Context Request request) {
         List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.HOME, sort, null, null, page)
                 .stream()
                 .map(sn -> SnippetDto.fromSnippet(sn, uriInfo, loginAuthentication.getLoggedInUser().orElse(null)))
@@ -59,7 +61,7 @@ public class SnippetController {
         queryParams.put("uid", userId);
         queryParams.put("s", sort);
 
-        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
+        return searchHelper.generateResponseWithLinks(request, page, queryParams, snippets, totalSnippetCount, uriInfo);
     }
 
     @GET
@@ -146,7 +148,8 @@ public class SnippetController {
                                     final @QueryParam("t") String type,
                                     final @QueryParam("uid") String userId,
                                     final @QueryParam("s") String sort,
-                                    final @QueryParam("page") @DefaultValue("1") int page) {
+                                    final @QueryParam("page") @DefaultValue("1") int page,
+                                    final @Context Request request) {
 
         List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.FLAGGED, sort, null, null, page)
                 .stream()
@@ -159,7 +162,7 @@ public class SnippetController {
         queryParams.put("uid", userId);
         queryParams.put("s", sort);
 
-        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
+        return searchHelper.generateResponseWithLinks(request, page, queryParams, snippets, totalSnippetCount, uriInfo);
     }
 
     @POST

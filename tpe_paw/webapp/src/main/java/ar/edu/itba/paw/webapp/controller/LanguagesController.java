@@ -74,7 +74,8 @@ public class LanguagesController {
                                      final @QueryParam("uid") String userId,
                                      final @QueryParam("s") String sort,
                                      final @QueryParam("page") @DefaultValue("1") int page,
-                                     final @PathParam(value = "langId") long langId) {
+                                     final @PathParam(value = "langId") long langId,
+                                     final @Context Request request) {
 
         Language language = this.languageService.findById(langId).orElse(null);
         if (language == null) {
@@ -94,7 +95,7 @@ public class LanguagesController {
         queryParams.put("uid", userId);
         queryParams.put("s", sort);
 
-        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
+        return searchHelper.generateResponseWithLinks(request, page, queryParams, snippets, totalSnippetCount, uriInfo);
     }
 
     @GET

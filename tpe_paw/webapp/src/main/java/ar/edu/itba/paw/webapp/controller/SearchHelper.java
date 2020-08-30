@@ -70,7 +70,7 @@ public class SearchHelper {
 //        }
     }
 
-    public Response generateResponseWithLinks(int page, Map<String, Object> queryParams, List<SnippetDto> snippets, int totalSnippetCount, UriInfo uriInfo) {
+    public Response generateResponseWithLinks(Request request, int page, Map<String, Object> queryParams, List<SnippetDto> snippets, int totalSnippetCount, UriInfo uriInfo) {
         int pageCount = (totalSnippetCount/SNIPPET_PAGE_SIZE) + ((totalSnippetCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);
 
         UriBuilder basePath = uriInfo.getAbsolutePathBuilder();
@@ -80,16 +80,28 @@ public class SearchHelper {
             }
         });
 
-        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {})
-                .link(UriBuilder.fromUri(basePath.build()).queryParam("page", 1).build(), "first")
+        CacheControl cc = new CacheControl();
+        List<Object> list = new ArrayList<>(queryParams.values());
+        list.add(snippets);
+        EntityTag eTag = new EntityTag(Integer.toString(Objects.hash(list.toArray())));
+        Response.ResponseBuilder builder = request.evaluatePreconditions(eTag);
+
+        if (builder == null) {
+            builder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {});
+            builder.tag(eTag);
+        }
+
+//        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {})
+
+        builder.link(UriBuilder.fromUri(basePath.build()).queryParam("page", 1).build(), "first")
                 .link(UriBuilder.fromUri(basePath.build()).queryParam("page",pageCount).build(), "last");
 
         if (page > 1)
-            respBuilder.link(UriBuilder.fromUri(basePath.build()).queryParam("page", page-1).build(), "prev");
+            builder.link(UriBuilder.fromUri(basePath.build()).queryParam("page", page-1).build(), "prev");
         if (page < pageCount)
-            respBuilder.link(UriBuilder.fromUri(basePath.build()).queryParam("page", page+1).build(), "next");
+            builder.link(UriBuilder.fromUri(basePath.build()).queryParam("page", page+1).build(), "next");
 
-        return respBuilder.build();
+        return builder.cacheControl(cc).build();
     }
 
     public int getSnippetByCriteriaCount(String type, String query, SnippetDao.Locations location, Long userId, Long resourceId) {

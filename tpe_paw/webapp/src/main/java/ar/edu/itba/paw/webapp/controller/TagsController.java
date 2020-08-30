@@ -78,7 +78,8 @@ public class TagsController {
                                 final @QueryParam("uid") String userId,
                                 final @QueryParam("s") String sort,
                                 final @QueryParam("page") @DefaultValue("1") int page,
-                                final @PathParam(value = "tagId") long tagId) {
+                                final @PathParam(value = "tagId") long tagId,
+                                final @Context Request request) {
 
         Tag tag = this.tagService.findTagById(tagId).orElse(null);
         if (tag == null) {
@@ -98,7 +99,7 @@ public class TagsController {
         queryParams.put("uid", userId);
         queryParams.put("s", sort);
 
-        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);    }
+        return searchHelper.generateResponseWithLinks(request, page, queryParams, snippets, totalSnippetCount, uriInfo);    }
 
     //TODO: Check follow/unfollow repsonse and how info is received
     @POST
@@ -138,7 +139,8 @@ public class TagsController {
     public Response searchTags(final @QueryParam("page") @DefaultValue("1") int page,
                                final @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
                                @QueryParam("showOnlyFollowing") @DefaultValue("false") boolean showOnlyFollowing,
-                               final @QueryParam("q") @DefaultValue("") String q) {
+                               final @QueryParam("q") @DefaultValue("") String q,
+                               final @Context Request request) {
         // Find the user, check if it exists
         Long userId = null;
         Optional<User> userOpt = Optional.empty();
@@ -158,6 +160,7 @@ public class TagsController {
 //                .collect(Collectors.toList());
 //        int tagsCount = this.tagService.getAllTagsCountByName(query, showEmpty, showOnlyFollowing, userId);
 
+
         //TODO: See if better just to store the following data in the user.
         final List<TagDto> tags = new ArrayList<>();
         for(Tag t: tagService.findTagsByName(q, showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)){
@@ -166,17 +169,25 @@ public class TagsController {
             tags.add(tagDto);
         }
 
+        CacheControl cc = new CacheControl();
+        cc.setNoCache(true);
+        EntityTag eTag = new EntityTag(Integer.toString(Objects.hash(tags, page, showEmpty, showOnlyFollowing, q)));
+        Response.ResponseBuilder builder = request.evaluatePreconditions(eTag);
+
+        if (builder == null)
+            builder = Response.ok(new GenericEntity<List<TagDto>>(tags){}).tag(eTag);
+
         int tagsCount = tagService.getAllTagsCountByName(q, showEmpty, showOnlyFollowing, userId);
         int pageCount = (tagsCount/TAG_PAGE_SIZE) + ((tagsCount % TAG_PAGE_SIZE == 0) ? 0 : 1);
 
-        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<TagDto>>(tags) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).queryParam("showEmpty", showEmpty).queryParam("showOnlyFollowing", showOnlyFollowing).queryParam("q", q).build(), "first")
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).queryParam("showEmpty", showEmpty).queryParam("showOnlyFollowing", showOnlyFollowing).queryParam("q", q).build(), "last");
+//        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<TagDto>>(tags) {})
+        builder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).queryParam("showEmpty", showEmpty).queryParam("showOnlyFollowing", showOnlyFollowing).queryParam("q", q).build(), "first")
+               .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).queryParam("showEmpty", showEmpty).queryParam("showOnlyFollowing", showOnlyFollowing).queryParam("q", q).build(), "last");
         if (page > 1)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).queryParam("showEmpty", showEmpty).queryParam("showOnlyFollowing", showOnlyFollowing).queryParam("q", q).build(), "prev");
+            builder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).queryParam("showEmpty", showEmpty).queryParam("showOnlyFollowing", showOnlyFollowing).queryParam("q", q).build(), "prev");
         if (page < pageCount)
-            respBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).queryParam("showEmpty", showEmpty).queryParam("showOnlyFollowing", showOnlyFollowing).queryParam("q", q).build(), "next");
-        return respBuilder.build();
+            builder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).queryParam("showEmpty", showEmpty).queryParam("showOnlyFollowing", showOnlyFollowing).queryParam("q", q).build(), "next");
+        return builder.cacheControl(cc).build();
     }
 
     /**
