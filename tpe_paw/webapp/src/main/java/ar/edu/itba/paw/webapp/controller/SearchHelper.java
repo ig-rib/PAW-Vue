@@ -80,18 +80,18 @@ public class SearchHelper {
             }
         });
 
-        CacheControl cc = new CacheControl();
-        List<Object> list = new ArrayList<>(queryParams.values());
-        list.add(snippets);
-        EntityTag eTag = new EntityTag(Integer.toString(Objects.hash(list.toArray())));
-        Response.ResponseBuilder builder = request.evaluatePreconditions(eTag);
+//        CacheControl cc = new CacheControl();
+//        List<Object> list = new ArrayList<>(queryParams.values());
+//        list.add(snippets);
+//        EntityTag eTag = new EntityTag(Integer.toString(Objects.hash(list.toArray())));
+//        Response.ResponseBuilder builder = request.evaluatePreconditions(eTag);
+//
+//        if (builder == null) {
+//            builder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {});
+//            builder.tag(eTag);
+//        }
 
-        if (builder == null) {
-            builder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {});
-            builder.tag(eTag);
-        }
-
-//        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {})
+        Response.ResponseBuilder builder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {});
 
         builder.link(UriBuilder.fromUri(basePath.build()).queryParam("page", 1).build(), "first")
                 .link(UriBuilder.fromUri(basePath.build()).queryParam("page",pageCount).build(), "last");
@@ -101,7 +101,9 @@ public class SearchHelper {
         if (page < pageCount)
             builder.link(UriBuilder.fromUri(basePath.build()).queryParam("page", page+1).build(), "next");
 
-        return builder.cacheControl(cc).build();
+        return builder
+//                .cacheControl(cc)
+                .build();
     }
 
     public int getSnippetByCriteriaCount(String type, String query, SnippetDao.Locations location, Long userId, Long resourceId) {

@@ -61,14 +61,28 @@ public class TagsController {
     @GET
     @Path("tags/{tagId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getTag(final @PathParam(value="tagId") long tagId) {
+    public Response getTag(final @PathParam(value="tagId") long tagId,
+                           final @Context Request request) {
         final Tag tag = tagService.findTagById(tagId).orElse(null);
         if (tag == null) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.404.tag", new Object[]{tagId}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        return Response.ok(TagDto.fromTag(tag)).build();
+
+        TagDto tagDto = TagDto.fromTag(tag);
+        CacheControl cc = new CacheControl();
+        EntityTag eTag = new EntityTag(String.valueOf(tagDto.hashCode()));
+        Response.ResponseBuilder builder = request.evaluatePreconditions(eTag);
+
+        if (builder == null) {
+            builder = Response.ok(tagDto).tag(eTag);
+        }
+
+
+        return builder
+                .cacheControl(cc)
+                .build();
     }
 
     @GET
@@ -169,25 +183,27 @@ public class TagsController {
             tags.add(tagDto);
         }
 
-        CacheControl cc = new CacheControl();
-        cc.setNoCache(true);
-        EntityTag eTag = new EntityTag(Integer.toString(Objects.hash(tags, page, showEmpty, showOnlyFollowing, q)));
-        Response.ResponseBuilder builder = request.evaluatePreconditions(eTag);
+//        CacheControl cc = new CacheControl();
+//        cc.setNoCache(true);
+//        EntityTag eTag = new EntityTag(Integer.toString(Objects.hash(tags, page, showEmpty, showOnlyFollowing, q)));
+//        Response.ResponseBuilder builder = request.evaluatePreconditions(eTag);
 
-        if (builder == null)
-            builder = Response.ok(new GenericEntity<List<TagDto>>(tags){}).tag(eTag);
+//        if (builder == null)
+//            builder = Response.ok(new GenericEntity<List<TagDto>>(tags){}).tag(eTag);
 
         int tagsCount = tagService.getAllTagsCountByName(q, showEmpty, showOnlyFollowing, userId);
         int pageCount = (tagsCount/TAG_PAGE_SIZE) + ((tagsCount % TAG_PAGE_SIZE == 0) ? 0 : 1);
 
-//        Response.ResponseBuilder respBuilder = Response.ok(new GenericEntity<List<TagDto>>(tags) {})
+        Response.ResponseBuilder builder = Response.ok(new GenericEntity<List<TagDto>>(tags) {});
         builder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).queryParam("showEmpty", showEmpty).queryParam("showOnlyFollowing", showOnlyFollowing).queryParam("q", q).build(), "first")
                .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).queryParam("showEmpty", showEmpty).queryParam("showOnlyFollowing", showOnlyFollowing).queryParam("q", q).build(), "last");
         if (page > 1)
             builder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).queryParam("showEmpty", showEmpty).queryParam("showOnlyFollowing", showOnlyFollowing).queryParam("q", q).build(), "prev");
         if (page < pageCount)
             builder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).queryParam("showEmpty", showEmpty).queryParam("showOnlyFollowing", showOnlyFollowing).queryParam("q", q).build(), "next");
-        return builder.cacheControl(cc).build();
+        return builder
+//                .cacheControl(cc)
+                .build();
     }
 
     /**
