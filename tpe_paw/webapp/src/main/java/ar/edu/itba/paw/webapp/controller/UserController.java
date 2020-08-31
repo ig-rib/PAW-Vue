@@ -64,7 +64,8 @@ public class UserController {
     public Response searchInUpvoted(final @QueryParam("q") String query,
                                     final @QueryParam("t") String type,
                                     final @QueryParam("s") String sort,
-                                    final @QueryParam("page") @DefaultValue("1") int page) {
+                                    final @QueryParam("page") @DefaultValue("1") int page,
+                                    final @Context Request request) {
 
         User user = loginAuthentication.getLoggedInUser().orElse(null);
         if (user == null){
@@ -82,7 +83,7 @@ public class UserController {
         queryParams.put("t", type);
         queryParams.put("s", sort);
 
-        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
+        return searchHelper.generateResponseWithLinks(request, page, queryParams, snippets, totalSnippetCount, uriInfo);
     }
 
     @GET
@@ -92,7 +93,8 @@ public class UserController {
                                                 final @QueryParam("uid") String userId,
                                                 final @QueryParam("s") String sort,
                                                 final @QueryParam("page") @DefaultValue("1") int page,
-                                                final @PathParam(value = "id") long id) {
+                                                final @PathParam(value = "id") long id,
+                                                final @Context Request request) {
         User user = userService.findUserById(id).orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
@@ -117,7 +119,7 @@ public class UserController {
         queryParams.put("uid", userId);
         queryParams.put("s", sort);
 
-        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
+        return searchHelper.generateResponseWithLinks(request, page, queryParams, snippets, totalSnippetCount, uriInfo);
     }
 
     @GET
@@ -127,7 +129,8 @@ public class UserController {
                                                final @QueryParam("uid") String userId,
                                                final @QueryParam("s") String sort,
                                                final @QueryParam("page") @DefaultValue("1") int page,
-                                               final @PathParam(value = "id") long id) {
+                                               final @PathParam(value = "id") long id,
+                                               final @Context Request request) {
         List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.USER, sort, id, null, page)
                 .stream()
                 .map(sn -> SnippetDto.fromSnippet(sn, uriInfo, loginAuthentication.getLoggedInUser().orElse(null)))
@@ -140,7 +143,7 @@ public class UserController {
         queryParams.put("uid", userId);
         queryParams.put("s", sort);
 
-        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
+        return searchHelper.generateResponseWithLinks(request, page, queryParams, snippets, totalSnippetCount, uriInfo);
     }
 
     @GET
@@ -148,7 +151,8 @@ public class UserController {
     public Response searchInFavorites(final @QueryParam("q") String query,
                                       final @QueryParam("t") String type,
                                       final @QueryParam("s") String sort,
-                                      final @QueryParam("page") @DefaultValue("1") int page) {
+                                      final @QueryParam("page") @DefaultValue("1") int page,
+                                      final @Context Request request) {
         User user = loginAuthentication.getLoggedInUser().orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
@@ -166,7 +170,7 @@ public class UserController {
         queryParams.put("t", type);
         queryParams.put("s", sort);
 
-        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
+        return searchHelper.generateResponseWithLinks(request, page, queryParams, snippets, totalSnippetCount, uriInfo);
     }
 
     @GET
@@ -175,7 +179,8 @@ public class UserController {
                                       final @QueryParam("t") String type,
                                       final @QueryParam("uid") String userId,
                                       final @QueryParam("s") String sort,
-                                      final @QueryParam("page") @DefaultValue("1") int page) {
+                                      final @QueryParam("page") @DefaultValue("1") int page,
+                                      final @Context Request request) {
 
         User user = loginAuthentication.getLoggedInUser().orElse(null);
         if (user == null){
@@ -194,7 +199,7 @@ public class UserController {
         queryParams.put("uid", userId);
         queryParams.put("s", sort);
 
-        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
+        return searchHelper.generateResponseWithLinks(request, page, queryParams, snippets, totalSnippetCount, uriInfo);
     }
 
     @GET

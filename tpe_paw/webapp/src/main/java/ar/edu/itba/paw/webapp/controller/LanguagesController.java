@@ -50,14 +50,25 @@ public class LanguagesController {
     @GET
     @Path("{langId}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    public Response getLanguage(final @PathParam(value="langId") long langId) {
+    public Response getLanguage(final @PathParam(value="langId") long langId,
+                                final @Context Request request) {
         final Language lang = languageService.findById(langId).orElse(null);
         if (lang == null) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.404.language", new Object[]{langId}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        return Response.ok(LanguageDto.fromLanguage(lang)).build();
+
+        LanguageDto languageDto = LanguageDto.fromLanguage(lang);
+
+        CacheControl cc = new CacheControl();
+        EntityTag eTag = new EntityTag(String.valueOf(languageDto.hashCode()));
+        Response.ResponseBuilder builder = request.evaluatePreconditions(eTag);
+
+        if (builder == null) {
+            builder = Response.ok(languageDto).tag(eTag);
+        }
+        return builder.cacheControl(cc).build();
     }
 
     @GET
@@ -67,7 +78,8 @@ public class LanguagesController {
                                      final @QueryParam("uid") String userId,
                                      final @QueryParam("s") String sort,
                                      final @QueryParam("page") @DefaultValue("1") int page,
-                                     final @PathParam(value = "langId") long langId) {
+                                     final @PathParam(value = "langId") long langId,
+                                     final @Context Request request) {
 
         Language language = this.languageService.findById(langId).orElse(null);
         if (language == null) {
@@ -87,7 +99,7 @@ public class LanguagesController {
         queryParams.put("uid", userId);
         queryParams.put("s", sort);
 
-        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
+        return searchHelper.generateResponseWithLinks(request, page, queryParams, snippets, totalSnippetCount, uriInfo);
     }
 
     @GET
@@ -95,7 +107,8 @@ public class LanguagesController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response searchInAllLanguages(@QueryParam("page") @DefaultValue("1") int page,
                                          @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
-                                         @QueryParam("q") @DefaultValue("") String q){
+                                         @QueryParam("q") @DefaultValue("") String q,
+                                         @Context Request request){
 
         Collection<Language> allLanguages = this.languageService.findAllLanguagesByName(q, showEmpty, page, LANGUAGE_PAGE_SIZE);
         int languageCount = this.languageService.getAllLanguagesCountByName(q, showEmpty);
@@ -108,15 +121,24 @@ public class LanguagesController {
         final List<LanguageDto> languagesDto = allLanguages.stream()
                 .map(LanguageDto::fromLanguage).collect(Collectors.toList());
 
-        Response.ResponseBuilder responseBuilder =  Response.ok(new GenericEntity<List<LanguageDto>>(languagesDto) {})
-                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).queryParam("showEmpty", showEmpty).queryParam("q", q).build(), "first")
+//        CacheControl cc = new CacheControl();
+//        EntityTag eTag = new EntityTag(String.valueOf(languagesDto.hashCode()));
+//        Response.ResponseBuilder builder = request.evaluatePreconditions(eTag);
+//
+//        if (builder == null)
+//            builder = Response.ok(new GenericEntity<List<LanguageDto>>(languagesDto) {}).tag(eTag);
+
+        Response.ResponseBuilder builder =  Response.ok(new GenericEntity<List<LanguageDto>>(languagesDto) {});
+        builder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).queryParam("showEmpty", showEmpty).queryParam("q", q).build(), "first")
                 .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).queryParam("showEmpty", showEmpty).queryParam("q", q).build(), "last");
         if (page > 1)
-            responseBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).queryParam("showEmpty", showEmpty).queryParam("q", q).build(), "prev");
+            builder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).queryParam("showEmpty", showEmpty).queryParam("q", q).build(), "prev");
         if (page < pageCount)
-            responseBuilder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).queryParam("showEmpty", showEmpty).queryParam("q", q).build(), "next");
+            builder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).queryParam("showEmpty", showEmpty).queryParam("q", q).build(), "next");
 
-        return responseBuilder.build();
+        return builder
+//                .cacheControl(cc)
+                .build();
     }
 
     @POST
