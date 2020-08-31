@@ -9,7 +9,15 @@
       ></v-pagination>
     </div>
     <v-layout>
-      <v-layout v-if="status !== 'loading'" row wrap justify-center>
+      <v-layout class="grid-progress-circle" v-if="status === 'l'" justify-center>
+        <v-progress-circular
+          :size="70"
+          :width="7"
+          color="primary"
+          indeterminate>
+        </v-progress-circular>
+      </v-layout>
+      <v-layout v-else row wrap justify-center>
         <v-flex shrink
             v-for="snippet in snippets"
             :key="snippet.id"
@@ -19,7 +27,7 @@
         </v-flex>
       </v-layout>
     </v-layout>
-    <div class="text-center">
+    <div v-if="status !== 'l'" class="text-center">
       <v-pagination
         v-model="pagination.page"
         @input="paginationChange"
@@ -47,24 +55,12 @@ export default {
       }
     }
   },
-  computed: {
-    // completeSnippets () {
-    //   return this.snippets.map(x => {
-    //     let newObj = {}
-    //     Object.assign(newObj, x)
-    //     // TODO error-check this
-    //     let ownerId = parseInt(x.owner.split('/').pop())
-    //     newObj.owner = this.users.filter(x => x.id === ownerId)[0]
-    //     return newObj
-    //   })
-    // }
-  },
   methods: {
     paginationChange () {
+      this.status = 'l'
       const queryParams = {}
       Object.assign(queryParams, this.$route.query)
       queryParams.page = this.pagination.page
-      console.log('snippet-grid paginationchange queryparams:', queryParams)
       this.$router.replace({
         query: queryParams
       })
@@ -76,26 +72,13 @@ export default {
     handleSearchResponse (r) {
       this.links = helpers.parseLinks(r.headers.link)
       this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10)
-      console.log(r.data)
       this.snippets = r.data
-      // get unique user links and map them to promises
-      // let ownerPromises = r.data
-      //   .map(x => x.owner)
-      //   .filter((item, pos, array) => !pos || item !== array[pos-1])
-      //   .map(uri => axiosFetcher.get(uri))
-      // Promise.all(ownerPromises)
-      //   .then(r => {
-      //     this.users = r.map(x => x.data)
-      //   })
-      //   .finally(() => {
-      //     this.status = ''
-      //   })
       this.status = ''
     }
   },
   mounted () {
     const queryParams = this.$route.query
-    this.status = 'loading'
+    this.status = 'l'
     searchService.searchInLocation(this.$route, queryParams)
       .then(r => {
         this.pagination.page = parseInt(queryParams.page) || 1
@@ -115,3 +98,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  @import '@/styles/main.scss';
+</style>

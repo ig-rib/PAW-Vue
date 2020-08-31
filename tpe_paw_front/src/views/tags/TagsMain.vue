@@ -2,7 +2,15 @@
   <v-container>
     <div>
       <p> {{ $t('tags.title') }} </p>
-      <v-layout wrap justify-center>
+      <v-layout class="grid-progress-circle" v-if="status === 'l'" justify-center>
+        <v-progress-circular
+          :size="70"
+          :width="7"
+          color="primary"
+          indeterminate>
+        </v-progress-circular>
+      </v-layout>
+      <v-layout v-else wrap justify-center>
         <v-flex my-2
           :class="`lg3 md4 sm4 ${ $vuetify.breakpoint.lgAndUp ? 'px-2' : 'mx-2' }`"
           v-for="tag in tags"
@@ -67,11 +75,13 @@ export default {
         page: 1,
         length: 1,
         visible: 7
-      }
+      },
+      status: ''
     }
   },
   methods: {
     paginationChange () {
+      this.status = 'l'
       const queryParams = {}
       Object.assign(queryParams, this.$route.query)
       queryParams.page = this.pagination.page
@@ -82,6 +92,7 @@ export default {
         .then(values => {
           this.tags = values.data
           this.links = helpers.parseLinks(values.headers.link)
+          this.status = ''
         })
         .catch(error => { console.log(error) })
     },
@@ -105,6 +116,7 @@ export default {
       this.tags = response.data
       this.links = helpers.parseLinks(response.headers.link)
       this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10)
+      this.status = ''
     },
     goToTagSnippets (tagId) {
       this.$router.push({
