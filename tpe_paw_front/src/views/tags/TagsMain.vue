@@ -2,6 +2,27 @@
   <v-container>
     <div>
       <p> {{ $t('tags.title') }} </p>
+      <div class="text-center">
+        <v-pagination
+          v-model="pagination.page"
+          @input="paginationChange"
+          :length="pagination.length" 
+          :total-visible="pagination.visible"
+        ></v-pagination>
+      </div>
+      <v-layout 
+        class="grid-error-layout"
+        align-center
+        column
+        justify-center
+        v-if="status === 'e'">
+        <v-flex my-2 shrink>
+          {{ $t('error.grid.tags') }}
+        </v-flex>
+        <v-flex my-2>
+          <v-btn @click="tryLoadingAgain">{{ $t('error.grid.tryAgain') }}</v-btn>
+        </v-flex>
+      </v-layout>
       <v-layout class="grid-progress-circle" v-if="status === 'l'" justify-center>
         <v-progress-circular
           :size="70"
@@ -49,14 +70,6 @@
         </v-flex>
       </v-layout>
     </div>
-    <div class="text-center">
-      <v-pagination
-        v-model="pagination.page"
-        @input="paginationChange"
-        :length="pagination.length" 
-        :total-visible="pagination.visible"
-      ></v-pagination>
-    </div>
   </v-container>
 </template>
 
@@ -76,7 +89,7 @@ export default {
         length: 1,
         visible: 7
       },
-      status: ''
+      status: 'l'
     }
   },
   methods: {
@@ -94,7 +107,26 @@ export default {
           this.links = helpers.parseLinks(values.headers.link)
           this.status = ''
         })
-        .catch(error => { console.log(error) })
+        .catch(error => { 
+          console.log(error)
+          this.status = 'e'
+          })
+    },
+    tryLoadingAgain () {
+      this.status = 'l'
+      const queryParams = {}
+      Object.assign(queryParams, this.$route.query)
+      queryParams.page = this.pagination.page
+      tagService.searchTags(queryParams)
+        .then(values => {
+          this.tags = values.data
+          this.links = helpers.parseLinks(values.headers.link)
+          this.status = ''
+        })
+        .catch(error => { 
+          console.log(error)
+          this.status = 'e'
+          })
     },
     followTag: function (tag) {
       // TODO: Verify no logged out user handling is necessary.
@@ -133,6 +165,10 @@ export default {
       .then(response => {
         this.pagination.page = parseInt(queryParams.page) || 1
         this.handleSearchResponse(response)    
+      })
+      .catch(e => {
+        console.log(e)
+        this.status = 'e'
       })
     this.$on('searchResults', r => {
       this.pagination.page = parseInt(queryParams.page) || 1

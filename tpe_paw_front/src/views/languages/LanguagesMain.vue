@@ -1,7 +1,28 @@
 <template>
   <v-container>
+    <p>{{$t('languages.title')}}</p>
+    <div class="text-center">
+      <v-pagination
+        v-model="pagination.page"
+        v-on:input="paginationChange"
+        :length="pagination.length" 
+        :total-visible="pagination.visible"
+      ></v-pagination>
+    </div>
+    <v-layout 
+        class="grid-error-layout"
+        align-center
+        column
+        justify-center
+        v-if="status === 'e'">
+        <v-flex my-2 shrink>
+          {{ $t('error.grid.languages') }}
+        </v-flex>
+        <v-flex my-2>
+          <v-btn @click="tryLoadingAgain">{{ $t('error.grid.tryAgain') }}</v-btn>
+        </v-flex>
+      </v-layout>
     <div>
-      <p>{{$t('languages.title')}}</p>
       <v-layout class="grid-progress-circle" v-if="status === 'l'" justify-center>
         <v-progress-circular
           :size="70"
@@ -30,14 +51,7 @@
         </v-flex>
       </v-layout>
     </div>
-    <div class="text-center">
-      <v-pagination
-        v-model="pagination.page"
-        v-on:input="paginationChange"
-        :length="pagination.length" 
-        :total-visible="pagination.visible"
-      ></v-pagination>
-    </div>
+    
   </v-container>
 </template>
 
@@ -71,7 +85,26 @@ export default {
           this.links = helpers.parseLinks(values.headers.link)
           this.status = ''
         })
-        .catch(error => { console.log(error) })
+        .catch(error => { 
+          console.log(error)
+          this.status = 'e'
+          })
+    },
+    tryLoadingAgain () {
+      this.status = 'l'
+      const queryParams = {}
+      Object.assign(queryParams, this.$route.query)
+      queryParams.page = this.pagination.page
+      languages.searchLanguages(queryParams)
+        .then(values => {
+          this.languages = values.data
+          this.links = helpers.parseLinks(values.headers.link)
+          this.status = ''
+        })
+        .catch(error => { 
+          console.log(error)
+          this.status = 'e'
+          })
     },
     handleSearchResponse (response) {
       this.languages = response.data
@@ -96,6 +129,10 @@ export default {
         this.pagination.page = parseInt(queryParams.page) || 1
         this.handleSearchResponse(response)
       })
+      .catch(error => { 
+          console.log(error)
+          this.status = 'e'
+          })
     this.$on('searchResults', r => this.handleSearchResponse(r))
   }
 }

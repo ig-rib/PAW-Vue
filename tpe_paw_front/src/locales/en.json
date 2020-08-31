@@ -180,5 +180,13 @@
     "languageSelect": {
       "selectLanguage": "Select A Language"
     }
+  },
+  "error": {
+    "grid": {
+      "tags": "There's been an error loading these tags",
+      "languages": "There's been an error loading these languages",
+      "snippets": "There's been an error loading these snippets",
+      "tryAgain": "Try Again"
+    }
   }
 }

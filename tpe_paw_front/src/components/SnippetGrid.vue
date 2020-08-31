@@ -17,6 +17,19 @@
           indeterminate>
         </v-progress-circular>
       </v-layout>
+      <v-layout 
+        class="grid-error-layout"
+        align-center
+        column
+        justify-center
+        v-else-if="status === 'e'">
+        <v-flex my-2 shrink>
+          {{ $t('error.grid.snippets') }}
+        </v-flex>
+        <v-flex my-2>
+          <v-btn @click="tryLoadingAgain">{{ $t('error.grid.tryAgain') }}</v-btn>
+        </v-flex>
+      </v-layout>
       <v-layout v-else row wrap justify-center>
         <v-flex shrink
             v-for="snippet in snippets"
@@ -27,7 +40,7 @@
         </v-flex>
       </v-layout>
     </v-layout>
-    <div v-if="status !== 'l'" class="text-center">
+    <div v-if="status === ''" class="text-center">
       <v-pagination
         v-model="pagination.page"
         @input="paginationChange"
@@ -46,8 +59,7 @@ export default {
     data () {
     return {
       snippets: [],
-      // users: {},
-      status: '',
+      status: 'l',
       pagination: {
         page: 1,
         length: 1,
@@ -68,13 +80,31 @@ export default {
         .then(r => {
           this.handleSearchResponse(r)
         })
+        .catch(error => { 
+          console.log(error)
+          this.status = 'e'
+          })
     },
     handleSearchResponse (r) {
       this.links = helpers.parseLinks(r.headers.link)
       this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10)
       this.snippets = r.data
       this.status = ''
-    }
+    },
+    tryLoadingAgain () {
+      this.status = 'l'
+      const queryParams = {}
+      Object.assign(queryParams, this.$route.query)
+      queryParams.page = this.pagination.page
+      searchService.searchInLocation(this.$route, queryParams)
+        .then(values => {
+          this.handleSearchResponse(values)
+        })
+        .catch(error => { 
+          console.log(error)
+          this.status = 'e'
+          })
+    },
   },
   mounted () {
     const queryParams = this.$route.query
@@ -84,6 +114,10 @@ export default {
         this.pagination.page = parseInt(queryParams.page) || 1
         this.handleSearchResponse(r)
         })
+      .catch(error => { 
+          console.log(error)
+          this.status = 'e'
+          })
     this.$on('searchResults', r => {
       this.pagination.page = parseInt(queryParams.page) || 1
       this.handleSearchResponse(r)
@@ -94,6 +128,10 @@ export default {
           this.pagination.page = parseInt(queryParams.page) || 1
           this.handleSearchResponse(r)
         })
+        .catch(error => { 
+          console.log(error)
+          this.status = 'e'
+          })
     })
   }
 }
