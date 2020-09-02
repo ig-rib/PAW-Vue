@@ -1,5 +1,20 @@
 <template>
   <v-container class="snippet-detail-outer-container">
+    <v-layout justify-center pa-5 v-if="snippet.flagged">
+      <v-flex shrink>
+        <v-card class="notice-card">
+          <v-card-title>
+            {{ $t('snippets.snippetDetail.flagged.title') }}
+          </v-card-title>
+          <v-card-text class="notice-card-text">
+            <p>{{ $t('snippets.snippetDetail.flagged.text1') }}</p>
+            <p>
+              {{ $t('snippets.snippetDetail.flagged.text2') }}
+            </p>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
     <v-layout justify-center>
       <v-card id="snippet-detail-card" v-if="!loading">
         <v-container px-12>
@@ -339,6 +354,7 @@ export default {
 
 <style lang="scss">
 @import '~vuetify/src/styles/settings/_variables';
+@import '@/styles/noticeCard.scss';
 
   #snippet-detail-card {
     .owner-image {

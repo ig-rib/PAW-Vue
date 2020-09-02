@@ -1,0 +1,9 @@
+.notice-card {
+  border-radius: 10px !important;
+}
+
+.notice-card-text {
+  > p {
+    margin: 0px;
+  }
+}

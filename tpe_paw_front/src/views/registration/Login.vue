@@ -8,6 +8,7 @@
     <v-layout class="registration-data-layout" column>
       <v-flex>
         <v-text-field
+          @keypress.enter="login"
           :label="$t('registration.username')"
           outlined
           v-model="username">
@@ -15,6 +16,7 @@
       </v-flex>
       <v-flex>
         <v-text-field
+          @keypress.enter="login"
           type="password"
           :label="$t('registration.password')"
           outlined

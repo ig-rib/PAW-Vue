@@ -1,5 +1,21 @@
 <template>
   <v-container id="user-profile-container">
+    <v-layout justify-center pa-5 v-if="currentAndUnverified">
+      <v-flex shrink>
+        <v-card class="notice-card">
+          <v-card-title>
+            {{ $t('user.profile.verifyAccount.title') }}
+          </v-card-title>
+          <v-card-text class="notice-card-text">
+            <p>{{ $t('user.profile.verifyAccount.text1') }}</p>
+            <p>
+              {{ $t('user.profile.verifyAccount.text2') }}
+              <a @click="goToVerify">{{ $t('user.profile.verifyAccount.here') }}</a>
+            </p>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
     <v-layout>
       <v-flex shrink>
         <v-img
@@ -140,6 +156,11 @@ import urls from '@/services/urls.js'
           this.editing = false
           this.hasPhotoPreview = false
         })
+      },
+      goToVerify () {
+        this.$router.push({
+          name: 'send-verification-code'
+        })
       }
     },
     computed: {
@@ -161,6 +182,9 @@ import urls from '@/services/urls.js'
       },
       isLoggedInUser () {
         return parseInt(this.$route.params.id) === this.$store.getters.user.id
+      },
+      currentAndUnverified () {
+        return this.isLoggedInUser && !this.$store.getters.user.verified
       }
     },
     mounted () {
@@ -182,6 +206,8 @@ import urls from '@/services/urls.js'
 
 <style lang="scss">
 @import '@/styles/alignmentUtils.scss';
+@import '@/styles/noticeCard.scss';
+
   #user-profile-container {
     .user-profile-profile-pic {
       border-radius: 150px;

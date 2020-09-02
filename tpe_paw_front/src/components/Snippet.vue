@@ -30,6 +30,11 @@
                       </v-icon>
                     </v-btn>
                   </v-flex>
+                  <v-flex v-if="snippet.flagged">
+                    <v-btn icon aria-disabled>
+                      <v-icon color="red">mdi-flag</v-icon>
+                    </v-btn>
+                  </v-flex>
                   <v-flex class="flex-grow-0 pa-0">
                     <v-btn
                       outlined
@@ -152,6 +157,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import '@/styles/colours.scss';
+
 #snippet-card-container {
   max-width: 450px;
   // max-width: 33%;

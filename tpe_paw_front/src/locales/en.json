@@ -72,6 +72,11 @@
         "whatIsWrong": "What is wrong with this snippet?",
         "confirm": "Confirm",
         "cancel": "Cancel"
+      },
+      "flagged": {
+        "title": "Beware!",
+        "text1": "The following snippet has been marked as incorrect by the administrator.",
+        "text2": "It may not work or be unsafe to use."
       }
     }
   },
@@ -102,7 +107,13 @@
     "profile": {
       "editProfile": "Edit Profile",
       "cancel": "Cancel",
-      "done": "Done"
+      "done": "Done",
+      "verifyAccount": {
+        "title": "Verify your account",
+        "text1": "Your email has not been verified, meaning you will not receive any emails from us.",
+        "text2": "To verify your email, click",
+        "here": "here"
+      }
     },
     "active": "Active Snippets",
     "deleted": "Deleted Snippets",
