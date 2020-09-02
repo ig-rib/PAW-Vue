@@ -7,9 +7,13 @@
             <v-layout class="admin-add-title">
               {{ $t('admin.addTags.addTags') }}
             </v-layout>
-            <v-layout class="admin-add-text-field">
+            <v-layout justify-center align-center class="admin-add-text-field">
               <v-flex>
                 <v-text-field
+                  rounded
+                  outlined
+                  dense
+                  :placeholder="$t('admin.addTags.placeholder')"
                   @keyup.enter="addTag"
                   :append-outer-icon="'mdi-plus'"
                   @click:append-outer="addTag"
@@ -44,7 +48,9 @@
             </v-layout>
             <v-layout justify-end class="admin-add-add-btn">
               <v-flex shrink>
-                <v-btn @click="postAllTags">{{ $t('admin.addTags.addNewTags') }}</v-btn>
+                <v-btn 
+                  rounded
+                  @click="postAllTags">{{ $t('admin.addTags.addNewTags') }}</v-btn>
               </v-flex>
             </v-layout>
           </v-container>

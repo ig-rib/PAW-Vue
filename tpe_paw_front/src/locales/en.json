@@ -123,12 +123,14 @@
     "addTags": {
       "addTags": "Add Tags",
       "addNewTags": "Add New Tags",
-      "emptyListText": "New tags will be shown here"
+      "emptyListText": "New tags will be shown here",
+      "placeholder": "Write a new tag name here"
     },
     "addLanguages": {
       "addLanguages": "Add Languages",
       "addNewLanguages": "Add New Languages",
-      "emptyListText": "New languages will be shown here"
+      "emptyListText": "New languages will be shown here",
+      "placeholder": "Write a new language name here"
     },
     "confirmDeletion": "Confirm Deletion",
     "languageDeletionDisclaimer": "Are you sure you want to delete \"{langName}\" from Languages? Deleted languages will no longer be available for new snippets and will not appear in the language list unless added again by an administrator.",
