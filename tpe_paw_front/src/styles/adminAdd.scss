@@ -1,3 +1,22 @@
+@import '~vuetify/src/styles/settings/_variables';
+
+@media #{map-get($display-breakpoints, 'sm-and-down')} {
+  .admin-add-card {
+    height: 500px;
+  }
+}
+
+@media #{map-get($display-breakpoints, 'md-and-down')} {
+  .admin-add-card {
+    height: 550px;
+  }
+}
+
+@media #{map-get($display-breakpoints, 'lg-and-up')} {
+  .admin-add-card {
+    height: 600px;
+  }
+}
 .admin-add-inner-container {
   height: 100%;
   display: flex;

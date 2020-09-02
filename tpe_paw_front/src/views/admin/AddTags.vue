@@ -1,8 +1,8 @@
 <template>
   <v-container id="admin-add-container">
     <v-layout justify-center>
-      <v-flex lg5 md5 sm7>
-        <v-card min-width="max-content" min-height="max-content" height="500px">
+      <v-flex lg5 md6 sm7>
+        <v-card class="admin-add-card" min-width="max-content" min-height="max-content">
           <v-container class="admin-add-inner-container" px-5 py-5>
             <v-layout class="admin-add-title">
               {{ $t('admin.addTags.addTags') }}
