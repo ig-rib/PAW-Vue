@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
+import i18n from '@/i18n.js'
 
 Vue.use(Vuex)
 
@@ -13,6 +14,10 @@ export default new Vuex.Store({
       value: '',
       expirationDate: null
     },
+    snackbar: {
+      show: true,
+      message: 'HELLO'
+    },
     user: () => {}
   },
   mutations: {
@@ -22,6 +27,11 @@ export default new Vuex.Store({
     },
     setUser (state, userData) {
       state.user = userData
+    },
+    setSnackbar(state, snackbarData) {
+      for (const [key, value] of Object.entries(snackbarData)) {
+        state.snackbar[key] = value
+      }
     }
   },
   getters: {
@@ -36,6 +46,9 @@ export default new Vuex.Store({
     },
     user (state) {
       return state.user
+    },
+    snackbar (state) {
+      return state.snackbar
     }
   },
   actions: {
@@ -47,6 +60,27 @@ export default new Vuex.Store({
     },
     logout () {
       window.sessionStorage.clear()
+    },
+    snackError ({ commit }, payload) {
+      console.log('error', payload)
+      let message = payload || i18n.$t('snackbar.error.defaultMessage')
+      commit('setSnackbar', {
+        show: true,
+        message
+      })
+    },
+    snackSuccess ({ commit }, payload) {
+      let message = payload || i18n.$t('snackbar.success.defaultMessage')
+      commit('setSnackbar', {
+        show: true,
+        message
+      })
+    },
+    hideSnackbar ({ commit }) {
+      commit('setSnackbar', {
+        show: false,
+        message: ''
+      })
     }
   },
   modules: {

@@ -23,7 +23,6 @@
                     <v-btn icon
                       color="red"
                       @mousedown="$event.stopPropagation()"
-                      @click.stop="null"
                       @click="fav">
                       <v-icon :disabled="faving">
                         mdi-heart{{(snippet.favorite) ? '' : '-outline'}}
@@ -146,6 +145,9 @@ export default {
         promise = snippets.favSnippet(this.snippet.id)
       }
       promise.then(r => { this.snippet.favorite = !this.snippet.favorite })
+      .catch(e => {
+        this.$store.dispatch('snackError', e.message)
+      })
       .finally(() => { this.faving = false })
     },
   },

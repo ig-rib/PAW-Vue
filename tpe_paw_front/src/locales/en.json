@@ -203,5 +203,14 @@
       "snippets": "There's been an error loading these snippets",
       "tryAgain": "Try Again"
     }
+  },
+  "snackbar": {
+    "error": {
+      "defaultMessage": "There's been an error performing that action"
+    },
+    "success": {
+      "defaultMessage": "Action performed correctly"
+    },
+    "hide": "hide"
   }
 }
