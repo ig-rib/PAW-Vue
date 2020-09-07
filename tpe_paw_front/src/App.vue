@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import user from '@/services/user.js'
+
 export default {
   name: 'App',
   data: () => ({
@@ -41,6 +43,13 @@ export default {
     }
   },
   mounted () {
+    if (window.localStorage.getItem('token') != null) {
+      this.$store.dispatch('setToken', JSON.parse(window.localStorage.getItem('token')))
+      console.log('token found!', window.localStorage.getItem('token'))
+      user.getLoggedInUser().then(r => {
+        this.$store.dispatch('setUser', r.data)
+      })
+    }
   }
 }
 </script>

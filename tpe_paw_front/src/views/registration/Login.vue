@@ -64,6 +64,7 @@ export default {
         .then(r => {
           this.invalid = false
           this.$store.dispatch('setToken', r.data)
+          window.localStorage.setItem('token', JSON.stringify(r.data))
           // Go to feed if user doesn't have a relevant navigation
           // history in this website
           if (this.prevRoute == null || this.prevRoute.name === 'register') {

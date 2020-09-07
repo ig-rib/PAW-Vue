@@ -463,6 +463,7 @@ export default {
       })
     },
     logout () {
+      window.localStorage.removeItem('token')
       this.$store.dispatch('logout')
       this.$router.go()
     },

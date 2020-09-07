@@ -15,7 +15,7 @@ export default new Vuex.Store({
       expirationDate: null
     },
     snackbar: {
-      show: true,
+      show: false,
       message: 'HELLO'
     },
     user: () => {}

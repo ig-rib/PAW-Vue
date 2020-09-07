@@ -16,6 +16,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.time.Instant;
@@ -264,7 +265,7 @@ public class SnippetController {
 
     @POST
     @Path("/")
-    public Response createSnippet(SnippetCreateDto snippetDto) {
+    public Response createSnippet(@Valid SnippetCreateDto snippetDto) {
         User user = loginAuthentication.getLoggedInUser().orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();

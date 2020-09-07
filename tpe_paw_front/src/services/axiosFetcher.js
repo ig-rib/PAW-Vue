@@ -31,7 +31,7 @@ const axiosFetcher = (url = '', params = {}, method = 'get', data = {}, headers 
     params: params.queryParams
   }
   Object.assign(config.headers, headers)
-  if (Store.getters.token.value != null) {
+  if (Store.getters.token.value != null && Store.getters.loggedIn) {
     config.headers.Authorization = 'Bearer ' + Store.getters.token.value
   }
   // console.log('pathVariables', params.pathVariables, 'url', url, 'config', config)
