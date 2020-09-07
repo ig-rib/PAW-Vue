@@ -379,7 +379,6 @@ export default {
       }
     },
     currentUser () {
-      console.log(this.$store.getters.user)
       return this.$store.getters.user
     },
     generalPathsNoFeed () {

@@ -14,8 +14,6 @@
 export default {
   name: 'Feed',
   mounted () {
-    console.log('storage')
-    console.log(window.localStorage)
     this.$on('searchResults', (r) => this.$refs.feedSnippets.$emit('searchResults', r))
   }
 }

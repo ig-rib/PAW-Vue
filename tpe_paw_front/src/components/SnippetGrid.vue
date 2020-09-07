@@ -88,6 +88,7 @@ export default {
     handleSearchResponse (r) {
       this.links = helpers.parseLinks(r.headers.link)
       this.pagination.length = parseInt(this.links.last.match(/page=(.*)/)[1], 10)
+      console.log(r.data)
       this.snippets = r.data
       this.status = ''
     },

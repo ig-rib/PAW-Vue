@@ -59,7 +59,6 @@ export default {
       })
     },
     loadMore () {
-      console.log(this.links.next)
       axiosFetcher.get(this.links.next).then(r => {
         if (r.data.length > 0) {
           this.languages.push(...r.data)

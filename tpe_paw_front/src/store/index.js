@@ -39,7 +39,6 @@ export default new Vuex.Store({
       return state.token
     },
     loggedIn (state) {
-      console.log(state.token)
       return (state.token.value != null &&
         state.token.expirationDate != null &&
         new Date() < new Date(state.token.expirationDate))
@@ -62,7 +61,6 @@ export default new Vuex.Store({
       window.sessionStorage.clear()
     },
     snackError ({ commit }, payload) {
-      console.log('error', payload)
       let message = payload || i18n.$t('snackbar.error.defaultMessage')
       commit('setSnackbar', {
         show: true,

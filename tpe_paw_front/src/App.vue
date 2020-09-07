@@ -32,7 +32,6 @@ export default {
         return this.$store.getters.snackbar
       },
       set () {
-        console.log('hiding snackbar')
         this.$store.dispatch('hideSnackbar')
       }
     }
@@ -45,7 +44,6 @@ export default {
   mounted () {
     if (window.localStorage.getItem('token') != null) {
       this.$store.dispatch('setToken', JSON.parse(window.localStorage.getItem('token')))
-      console.log('token found!', window.localStorage.getItem('token'))
       user.getLoggedInUser().then(r => {
         this.$store.dispatch('setUser', r.data)
       })

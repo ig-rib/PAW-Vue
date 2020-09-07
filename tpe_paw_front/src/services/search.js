@@ -1,6 +1,7 @@
 import urls from './urls'
 import axiosFetcher from './axiosFetcher'
 import i18n from '@/i18n'
+import Router from '@/router'
 
 // todo move to snippets.js, rename
 // every dedicated search endpoint
@@ -81,9 +82,6 @@ const searchInLocation = (route, queryParams) => {
   let pathVariables = {}
   
   switch(route.name) {
-    case 'feed':
-      url = urls.snippet.snippets
-      break;
     case 'tag-snippets':
       url = urls.tags.getTagSnippets
       pathVariables.id = route.params.id
@@ -113,7 +111,17 @@ const searchInLocation = (route, queryParams) => {
       url = urls.snippet.flagged
       break;
     case 'explore':
+      queryParams.title = queryParams.q
+      delete queryParams.q 
+      Router.replace({
+        query: queryParams
+      })
       return explore(queryParams)
+    case 'feed':
+    default:
+      console.log('default')
+      url = urls.snippet.snippets
+      break;
   }
 
   return axiosFetcher.get(url, {

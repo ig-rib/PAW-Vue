@@ -103,12 +103,8 @@ export default {
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
-      console.log('beforeRouteEnter: from', from)
       vm.prevRoute = from
     })
-  },
-  mounted () {
-    console.log(this.prevRoute)
   }
 }
 </script>
