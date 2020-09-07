@@ -1,13 +1,13 @@
 <template>
   <v-container>
-    <div class="text-center">
+    <v-layout justify-center mb-10 class="text-center">
       <v-pagination
         v-model="pagination.page"
         @input="paginationChange"
         :length="pagination.length" 
         :total-visible="pagination.visible"
       ></v-pagination>
-    </div>
+    </v-layout>
     <v-layout>
       <v-layout class="grid-progress-circle" v-if="status === 'l'" justify-center>
         <v-progress-circular
@@ -40,14 +40,14 @@
         </v-flex>
       </v-layout>
     </v-layout>
-    <div v-if="status === ''" class="text-center">
+    <v-layout justify-center mt-10 v-if="status === ''" class="text-center">
       <v-pagination
         v-model="pagination.page"
         @input="paginationChange"
         :length="pagination.length" 
         :total-visible="pagination.visible"
       ></v-pagination>
-    </div>
+    </v-layout>
   </v-container>
 </template>
 

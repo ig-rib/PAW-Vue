@@ -2,14 +2,14 @@
   <v-container>
     <div>
       <p> {{ $t('tags.title') }} </p>
-      <div class="text-center">
+      <v-layout justify-center mb-10 class="text-center">
         <v-pagination
           v-model="pagination.page"
           @input="paginationChange"
           :length="pagination.length" 
           :total-visible="pagination.visible"
         ></v-pagination>
-      </div>
+      </v-layout>
       <v-layout 
         class="grid-error-layout"
         align-center

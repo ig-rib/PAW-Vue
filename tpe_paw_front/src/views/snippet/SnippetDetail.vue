@@ -399,6 +399,7 @@ export default {
   @media #{map-get($display-breakpoints, 'sm-and-up')} {
     #snippet-detail-card > .container {
     height: 750px !important;
+    max-width: 650px;
     display: flex;
     flex-direction: column;
   }
