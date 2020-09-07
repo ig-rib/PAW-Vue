@@ -61,7 +61,12 @@ const axiosFetcher = (url = '', params = {}, method = 'get', data = {}, headers 
     })
     .catch(e => {
       if (e.response.status === 404) {
-        Store.dispatch('snackError', e.response.data.message)
+        Router.push({
+          name: 'error',
+          params: {
+            errNo: 404
+          }
+        })
       }
       if (e.response.status === 401) {
         Router.push({ name: 'login' })

@@ -27,6 +27,8 @@ import Flagged from '@/views/admin/Flagged.vue'
 import AddTags from '@/views/admin/AddTags.vue'
 import AddLanguages from '@/views/admin/AddLanguages.vue'
 
+import ErrorView from '@/views/error/Error.vue'
+
 Vue.use(VueRouter)
 
 const defaultLang = 'en'
@@ -191,9 +193,14 @@ const routes = [
             path: 'admin/add-languages',
             name: 'add-languages',
             component: AddLanguages
+          },
+          {
+            path: 'error/:errNo',
+            name: 'error',
+            component: ErrorView
           }
         ]
-      },
+      }
     ]
   }
 ]

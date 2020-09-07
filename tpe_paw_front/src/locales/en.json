@@ -202,6 +202,11 @@
       "languages": "There's been an error loading these languages",
       "snippets": "There's been an error loading these snippets",
       "tryAgain": "Try Again"
+    },
+    "goBackHome": "You Can Go Back Home!",
+    "goHome": "Go Home",
+    "404": {
+      "title": "Content Not Found"
     }
   },
   "snackbar": {
