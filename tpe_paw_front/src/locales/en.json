@@ -206,7 +206,12 @@
     "goBackHome": "You Can Go Back Home!",
     "goHome": "Go Home",
     "404": {
-      "title": "Content Not Found"
+      "name": "Content Not Found",
+      "desc": "This Content Isn't Available Right Now"
+    },
+    "403": {
+      "name": "Forbidden",
+      "desc": "Keep Away! This content isn't meant for you!"
     }
   },
   "snackbar": {

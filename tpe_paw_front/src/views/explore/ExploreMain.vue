@@ -1,8 +1,8 @@
 <template>
   <v-container>
-    <v-layout wrap>
-      <v-flex lg3 md4>
-        <v-card ma-2>
+    <v-layout justify-center wrap>
+      <v-flex lg3 md4 sm4>
+        <v-card mx-1 my-5>
           <v-container>
             <v-layout>
               {{ $t('explore.order.title') }}
@@ -62,11 +62,13 @@
                   {{ $t('explore.language') }}
                 </v-layout>
                 <v-layout>
-                  <language-select
-                    :multiple="true"
-                    :closeOnSelect="false"
-                    v-model="exploreParams.languages"
-                  ></language-select>
+                  <v-flex>
+                    <language-select
+                      :multiple="true"
+                      :closeOnSelect="false"
+                      v-model="exploreParams.languages"
+                    ></language-select>
+                  </v-flex>
                 </v-layout>
               </v-flex>
               <v-flex>
@@ -74,11 +76,13 @@
                   {{ $t('explore.tag')}}
                 </v-layout>
                 <v-layout>
-                  <tag-select
-                    :multiple="true"
-                    :closeOnSelect="false"
-                    v-model="exploreParams.tags"
-                  ></tag-select>
+                  <v-flex>
+                    <tag-select
+                      :multiple="true"
+                      :closeOnSelect="false"
+                      v-model="exploreParams.tags"
+                    ></tag-select>
+                  </v-flex>
                 </v-layout>
               </v-flex>
             </v-layout>
@@ -175,7 +179,7 @@
           </v-container>
         </v-card>
       </v-flex>
-      <v-flex lg9 md8>
+      <v-flex lg9 md8 sm8>
         <snippet-grid ref="exploreSnippets"></snippet-grid>
       </v-flex>
     </v-layout>

@@ -60,16 +60,21 @@ const axiosFetcher = (url = '', params = {}, method = 'get', data = {}, headers 
       return Promise.resolve(r)
     })
     .catch(e => {
-      if (e.response.status === 404) {
-        Router.push({
-          name: 'error',
-          params: {
-            errNo: 404
-          }
-        })
-      }
-      if (e.response.status === 401) {
-        Router.push({ name: 'login' })
+      switch (e.response.status) {
+        case 401:
+          Router.push({ name: 'login' })
+          break;
+        case 403:
+        case 404:
+          Router.push({
+            name: 'error',
+            params: {
+              errNo: e.response.status
+            }
+          })            
+          break;
+        default:
+          break;
       }
       return Promise.reject(e)
     })

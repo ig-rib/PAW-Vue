@@ -7,7 +7,7 @@
         </v-layout>
         <v-layout class="error-title-layout">
           <v-flex>
-            {{ errorData.title }}
+            {{ errorData.name }}
           </v-flex>
         </v-layout>
         <v-layout class="error-gohome-text-layout">
