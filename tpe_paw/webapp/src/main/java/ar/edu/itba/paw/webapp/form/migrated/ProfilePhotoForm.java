@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.form;
+package ar.edu.itba.paw.webapp.form.migrated;
 
 import ar.edu.itba.paw.webapp.validations.File;
 import org.springframework.web.multipart.MultipartFile;

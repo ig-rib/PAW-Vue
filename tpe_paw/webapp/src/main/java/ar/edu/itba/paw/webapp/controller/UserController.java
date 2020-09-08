@@ -19,6 +19,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.IOException;
@@ -299,7 +300,7 @@ public class UserController {
 
     @PUT
     @Path("{id}/user-data")
-    public Response updateUserData(@PathParam(value="id") final long id, UserDataDto userDataDto) {
+    public Response updateUserData(@PathParam(value="id") final long id, @Valid UserDataDto userDataDto) {
         User user = userService.findUserById(id).orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();

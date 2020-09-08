@@ -1,7 +1,13 @@
 package ar.edu.itba.paw.webapp.dto;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.Size;
+
 public class ReportDto {
 
+    @NotBlank
+    @Size(max=300)
     private String detail;
     private String baseUri;
 

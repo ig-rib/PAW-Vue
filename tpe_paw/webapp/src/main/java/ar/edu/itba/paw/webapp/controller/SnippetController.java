@@ -28,7 +28,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Path("/snippet")
-@Validated
 public class SnippetController {
 
     @Autowired private UserService userService;
@@ -239,7 +238,7 @@ public class SnippetController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response reportSnippet(
             @PathParam(value="id") long id,
-            ReportDto reportDto
+            @Valid ReportDto reportDto
     ) {
         //TODO: Check from where we gonna obtain the base url of the report.
         // Getting the url of the server

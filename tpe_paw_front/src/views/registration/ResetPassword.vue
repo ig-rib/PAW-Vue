@@ -33,7 +33,8 @@ export default {
   },
   methods: {
     resetPassword () {
-      registration.resetPassword(this.id, this.password, this.repeatPssword, this.token)
+      console.log(this.repeatPassword)
+      registration.resetPassword(this.id, this.password, this.repeatPassword, this.token)
         .then(r => {
           // Show password successfully reset...
           this.$router.push({

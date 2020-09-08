@@ -1,8 +1,12 @@
 package ar.edu.itba.paw.webapp.dto;
 
+import javax.validation.constraints.Size;
+
 public class UserDataDto {
 
     private String encodedPhoto;
+    
+    @Size(max=300, message = "{Size.profileForm.description}")
     private String description;
 
     public String getEncodedPhoto() {

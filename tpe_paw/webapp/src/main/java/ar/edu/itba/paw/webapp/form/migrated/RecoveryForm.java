@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.form;
+package ar.edu.itba.paw.webapp.form.migrated;
 
 import ar.edu.itba.paw.webapp.validations.FieldExists;
 import org.hibernate.validator.constraints.Email;

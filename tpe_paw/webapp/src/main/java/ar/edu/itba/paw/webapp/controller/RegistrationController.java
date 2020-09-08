@@ -13,6 +13,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -45,7 +47,7 @@ public class RegistrationController {
     @POST
     @Path("/register")
     @Consumes(value = {MediaType.APPLICATION_JSON})
-    public Response register(LoginDto registrationData) {
+    public Response register(@Valid RegistrationDto registrationData) {
         // Check if user and email exist
         boolean emailExists = userService.emailExists(registrationData.getEmail());
         boolean usernameExists = !userService.isUsernameUnique(registrationData.getUsername());
@@ -81,7 +83,7 @@ public class RegistrationController {
 
     @POST
     @Path(value = "/verify-email")
-    public Response completeVerifyEmail(VerificationDto verificationDto) {
+    public Response completeVerifyEmail(@Valid VerificationDto verificationDto) {
         User currentUser = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
         if (currentUser == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
@@ -101,7 +103,7 @@ public class RegistrationController {
 
     @PUT
     @Path("/send-recovery-email")
-    public Response sendResetEmail(RecoveryDto recoveryDto) {
+    public Response sendResetEmail(@Valid RecoveryDto recoveryDto) {
         User user = this.userService.findUserByEmail(recoveryDto.getEmail()).orElse(null);
         if (user == null) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
@@ -120,7 +122,7 @@ public class RegistrationController {
     @PUT
     @Path("/reset-password")
     public Response changePassword(@QueryParam("id") final long id,
-                                      ResetPasswordDto resetPasswordDto) {
+                                      @Valid ResetPasswordDto resetPasswordDto) {
         Optional<User> userOpt = userService.findUserById(id);
         if(!userOpt.isPresent()) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();

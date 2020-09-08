@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.form;
+package ar.edu.itba.paw.webapp.form.migrated;
 
 public class FollowForm {
     private boolean follows;

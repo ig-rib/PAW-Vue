@@ -5,8 +5,8 @@ import ar.edu.itba.paw.interfaces.service.TagService;
 import ar.edu.itba.paw.models.Snippet;
 import ar.edu.itba.paw.models.Tag;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.webapp.form.FavoriteForm;
-import ar.edu.itba.paw.webapp.form.FollowForm;
+import ar.edu.itba.paw.webapp.form.migrated.FavoriteForm;
+import ar.edu.itba.paw.webapp.form.migrated.FollowForm;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
