@@ -14,9 +14,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.time.Instant;
@@ -24,6 +28,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Path("/snippet")
+@Validated
 public class SnippetController {
 
     @Autowired private UserService userService;

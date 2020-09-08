@@ -5,8 +5,10 @@ import ar.edu.itba.paw.webapp.validations.FieldExists;
 import ar.edu.itba.paw.webapp.validations.NotBlankWithSpaces;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
+
 
 public class SnippetCreateDto {
 

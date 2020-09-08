@@ -11,11 +11,16 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     <load-on-startup>1</load-on-startup>
     <init-param>
       <param-name>jersey.config.server.provider.packages</param-name>
-      <param-value>ar.edu.itba.paw.webapp.controller</param-value>
+      <param-value>ar.edu.itba.paw.webapp.controller;
+        ar.edu.itba.paw.webapp.provider</param-value>
     </init-param>
     <init-param>
       <param-name>jersey.config.server.provider.classnames</param-name>
       <param-value>org.glassfish.jersey.media.multipart.MultiPartFeature</param-value>
+    </init-param>
+    <init-param>
+      <param-name>jersey.config.beanValidation.enableOutputValidationErrorEntity.server</param-name>
+      <param-value>true</param-value>
     </init-param>
   </servlet>
 

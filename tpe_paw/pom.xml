@@ -15,7 +15,7 @@
         <jstl.version>1.2</jstl.version>
         <org.postgresql.version>42.2.5</org.postgresql.version>
         <javax.validation-api.version>1.0.0.GA</javax.validation-api.version>
-        <org.hibernate.validator>4.3.1.Final</org.hibernate.validator>
+        <org.hibernate.validator>5.1.3.Final</org.hibernate.validator>
         <javax.xml.bind.version>2.3.0</javax.xml.bind.version>
         <org.slf4j.version>1.7.5</org.slf4j.version>
         <logback.version>1.1.2</logback.version>
@@ -37,6 +37,7 @@
         <eclipse.persistence.moxy.version>2.7.4</eclipse.persistence.moxy.version>
         <hk2.version>2.5.0-b05</hk2.version>
         <jersey.multipart.version>2.21</jersey.multipart.version>
+        <jersey.bean.validation.version>2.31</jersey.bean.validation.version>
 <!--        <mimepull.version>1.9.3</mimepull.version>-->
     </properties>
 
@@ -167,6 +168,17 @@
                 <version>2.11.1</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.glassfish.jersey.ext</groupId>
+                <artifactId>jersey-bean-validation</artifactId>
+                <version>${jersey.bean.validation.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-validator</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>

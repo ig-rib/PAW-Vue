@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.controller;
+package ar.edu.itba.paw.webapp.provider;
 
 import ar.edu.itba.paw.webapp.dto.ErrorMessageDto;
 import org.springframework.beans.factory.annotation.Autowired;
