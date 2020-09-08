@@ -205,6 +205,13 @@
     },
     "goBackHome": "You Can Go Back Home!",
     "goHome": "Go Home",
+    "unknown": "Unknown Error",
+    "400": {
+      "name": "Bad Request",
+      "desc": "Your request has validation errors",
+      "singleError": "Error in field {fieldName}: {errorMessage}",
+      "multipleErrors": "Multiple errors in sent request"
+    },
     "404": {
       "name": "Content Not Found",
       "desc": "This Content Isn't Available Right Now"

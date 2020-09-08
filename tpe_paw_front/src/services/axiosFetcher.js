@@ -3,6 +3,7 @@ import Store from '@/store'
 import Router from '@/router'
 import querystring from 'querystring'
 import { cacheAdapterEnhancer } from 'axios-extensions'
+import i18n from '@/i18n.js'
 
 axios.defaults.paramsSerializer = params => {
   return querystring.stringify(params)
@@ -61,6 +62,17 @@ const axiosFetcher = (url = '', params = {}, method = 'get', data = {}, headers 
     })
     .catch(e => {
       switch (e.response.status) {
+        case 400:
+          if (e.response.data.length == null) {
+            Store.dispatch('snackError', i18n.t('error.unknown'))
+          } else if (e.response.data.length === 1) {
+            let errorObj = e.response.data[0]
+            console.log(errorObj, e.response.data)
+            Store.dispatch('snackError', i18n.t('error.400.singleError', errorObj))
+          } else {
+            Store.dispatch('snackError', i18n.t('error.400.multipleErrors'))
+          }
+          break;
         case 401:
           Router.push({ name: 'login' })
           break;

@@ -5,10 +5,15 @@ import ar.edu.itba.paw.interfaces.service.*;
 import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
 import ar.edu.itba.paw.webapp.dto.ErrorMessageDto;
 import ar.edu.itba.paw.webapp.dto.SnippetDto;
+import ar.edu.itba.paw.webapp.validations.BeforeToday;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -68,13 +73,23 @@ public class SnippetExploreController {
                                       // with a given format...
                                       final @QueryParam("minDate") String minDate,
                                       final @QueryParam("maxDate") String maxDate,
+                                      @Max(value = Integer.MAX_VALUE, message = "{Integer.maxValue}")
+                                      @Min(value = Integer.MIN_VALUE, message = "{Integer.minValue}")
                                       final @QueryParam("minRep") Integer minRep,
+                                      @Max(value = Integer.MAX_VALUE, message = "{Integer.maxValue}")
+                                      @Min(value = Integer.MIN_VALUE, message = "{Integer.minValue}")
                                       final @QueryParam("maxRep") Integer maxRep,
+                                      @Max(value = Integer.MAX_VALUE, message = "{Integer.maxValue}")
+                                      @Min(value = Integer.MIN_VALUE, message = "{Integer.minValue}")
                                       final @QueryParam("minVotes") Integer minVotes,
+                                      @Max(value = Integer.MAX_VALUE, message = "{Integer.maxValue}")
+                                      @Min(value = Integer.MIN_VALUE, message = "{Integer.minValue}")
                                       final @QueryParam("maxVotes") Integer maxVotes,
                                       final @QueryParam("langId") List<Long> langIds,
                                       final @QueryParam("tagId") List<Long> tagIds,
+                                      @Size(max=50)
                                       final @QueryParam("uname") String username,
+                                      @Size(max=50)
                                       final @QueryParam("title") String title,
                                       final @QueryParam("field") String field,
                                       final @QueryParam("includeFlagged") @DefaultValue("false") Boolean includeFlagged) {
