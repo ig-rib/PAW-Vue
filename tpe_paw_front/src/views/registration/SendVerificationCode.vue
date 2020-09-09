@@ -14,12 +14,16 @@
           :label="$t('registration.verificationCode')"
           outlined
           limit="6"
+          :rules="[rules.codePattern]"
+          return-masked-value
           v-model="code">
         </v-text-field>
       </v-flex>
       <v-flex>
         <v-layout justify-center>
-          <v-btn @click="sendVerificationCode">
+          <v-btn
+            :disabled="!allRulesAlright" 
+            @click="sendVerificationCode">
             {{ $t('registration.sendVerificationCode') }}
           </v-btn>
         </v-layout>
@@ -49,6 +53,16 @@ export default {
           this.code = ''
         })
     }
+  },
+  computed: {
+    rules () {
+      return {
+        codePattern: () => validations.codePattern(this.code)
+      }
+    },
+    allRulesAlright () {
+      return Object.keys(this.rules).filter(rule => this.rules[rule]() !== true).length === 0 && !this.usernameExists && !this.emailExists
+    },
   }
 }
 </script>
