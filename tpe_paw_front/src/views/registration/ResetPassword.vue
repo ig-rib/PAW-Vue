@@ -14,7 +14,7 @@
       :rules="[rules.equalsPassword]"
       v-model="repeatPassword">
     </v-text-field>
-    <v-btn @click="resetPassword">{{ $t('registration.resetPassword') }}</v-btn>
+    <v-btn :disabled="!allRulesAlright" @click="resetPassword">{{ $t('registration.resetPassword') }}</v-btn>
   </v-container>
 </template>
 
@@ -62,6 +62,9 @@ export default {
         equalsPassword: () => this.password === this.repeatPassword || this.$t('validations.nonMatchingPasswords'),
         password: () => validations.validPassword(this.password)
       }
+    },
+    allRulesAlright () {
+      return Object.keys(this.rules).filter(rule => this.rules[rule]() !== true).length === 0 && !this.usernameExists && !this.emailExists
     }
   }
 }

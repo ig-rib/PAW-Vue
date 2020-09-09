@@ -106,6 +106,7 @@
   "user": {
     "profile": {
       "editProfile": "Edit Profile",
+      "editDescription": "Edit description",
       "cancel": "Cancel",
       "done": "Done",
       "verifyAccount": {

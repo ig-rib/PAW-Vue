@@ -62,7 +62,7 @@ export default {
     },
     allRulesAlright () {
       return Object.keys(this.rules).filter(rule => this.rules[rule]() !== true).length === 0 && !this.usernameExists && !this.emailExists
-    },
+    }
   }
 }
 </script>

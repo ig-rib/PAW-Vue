@@ -12,11 +12,9 @@ const register = (username, email, password) => axiosFetcher.post(urls.registrat
   password
 })
 
-const sendRecoveryEmail = (email) => {
-  axiosFetcher.put(urls.registration.sendRecoveryEmail, {}, {
+const sendRecoveryEmail = (email) => axiosFetcher.put(urls.registration.sendRecoveryEmail, {}, {
   email
 })
-}
 
 const resetPassword = (id, password, repeatPassword, token) => axiosFetcher.put(urls.registration.resetPassword, {
   queryParams: {

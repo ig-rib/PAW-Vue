@@ -58,6 +58,7 @@
               </v-flex>
               <v-flex>
                 <v-btn
+                  :disabled="!allRulesAlright"
                   @click="saveChanges">
                 {{ $t('user.profile.done') }}
               </v-btn>
@@ -71,8 +72,14 @@
               {{ user.description }}
             </div>
             <div v-if="editing">
-              <v-text-field v-model="description">
-              </v-text-field>
+              <v-textarea
+                rounded
+                outlined
+                no-resize
+                :placeholder="$t('user.profile.editDescription')"
+                :rules="[rules.description]"
+                v-model="description">
+              </v-textarea>
             </div>
           </v-flex>
         </v-layout>
@@ -96,6 +103,7 @@
 <script>
 import user from '@/services/user.js'
 import urls from '@/services/urls.js'
+import validations from '@/functions/validations'
 
   export default {
     data () {
@@ -185,6 +193,14 @@ import urls from '@/services/urls.js'
       },
       currentAndUnverified () {
         return this.isLoggedInUser && !this.$store.getters.user.verified
+      },
+      rules () {
+        return {
+          description: () => validations.maxLength(this.description, 300)
+        }
+      },
+      allRulesAlright () {
+        return Object.keys(this.rules).filter(rule => this.rules[rule]() !== true).length === 0 && !this.usernameExists && !this.emailExists
       }
     },
     mounted () {
