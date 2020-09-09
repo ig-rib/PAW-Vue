@@ -9,12 +9,14 @@
                   outlined
                   dense
                   rounded
-                  hide-details
+                  :rules="[rules.title]"
                   v-model="title"
                   :label="$t('snippets.createSnippet.title')"></v-text-field>
               </v-flex>
               <v-flex>
-                <language-select v-model="language"/>
+                <language-select
+                  :allowEmpty="false"
+                  v-model="language"/>
               </v-flex>
             </v-layout>
             <v-divider></v-divider>
@@ -27,6 +29,7 @@
                   rounded
                   outlined
                   no-resize
+                  :rules="[rules.description]"
                   v-model="description">
                 </v-textarea>
               </v-flex>
@@ -41,6 +44,7 @@
                 rounded
                 outlined
                 no-resize
+                :rules="[rules.code]"
                 v-model="code"
                 ></v-textarea>
               </v-flex>
@@ -55,7 +59,7 @@
                   :label="$t('snippets.createSnippet.tags')"></tag-select>
               </v-flex>
               <v-flex class="save-btn-flex">
-                <v-btn @click="saveSnippet">
+                <v-btn :disabled="!allRulesAlright" @click="saveSnippet">
                   {{ $t('snippets.createSnippet.createSnippet') }}
                 </v-btn>
               </v-flex>
@@ -68,6 +72,7 @@
 
 <script>
 import snippetService from '@/services/snippets.js'
+import validations from '@/functions/validations'
 
 export default {
   data () {
@@ -88,6 +93,19 @@ export default {
         code: this.code,
         tags: this.tags.map(tag => tag.id)
       })
+    }
+  },
+  computed: {
+    rules () {
+      return {
+        title: () => validations.lengthBetween(this.title, 5, 50),
+        description: () => validations.maxLength(this.description, 500),
+        code: () => validations.maxLength(this.code, 30000)
+      }
+    },
+    allRulesAlright () {
+      return Object.keys(this.rules).filter(rule => this.rules[rule]() !== true).length === 0 &&
+        this.language != null
     }
   }
 }

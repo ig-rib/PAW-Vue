@@ -197,7 +197,8 @@
       "selectTag": "Select A Tag"
     },
     "languageSelect": {
-      "selectLanguage": "Select A Language"
+      "selectLanguage": "Select A Language",
+      "notNull": "One language must be selected"
     }
   },
   "error": {

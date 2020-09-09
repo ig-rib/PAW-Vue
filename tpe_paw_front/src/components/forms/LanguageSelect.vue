@@ -5,7 +5,8 @@
       :options="languages"
       @search-change="updateSelectionSet"
       :close-on-select="closeOnSelect"
-      :cler-on-select="false"
+      :clear-on-select="false"
+      :allowEmpty="allowEmpty"
       :placeholder="$t('components.languageSelect.selectLanguage')"
       label="name"
       track-by="id"
@@ -18,6 +19,7 @@
         </v-btn>
       </template>
     </v-multiselect>
+    <div v-if="displayEmptyError">{{ $t('components.languageSelect.notNull') }}</div>
   </v-container>
 </template>
 <script>
@@ -37,6 +39,10 @@ export default {
       default: false
     },
     closeOnSelect: {
+      type: Boolean,
+      default: true
+    },
+    allowEmpty: {
       type: Boolean,
       default: true
     }
@@ -83,6 +89,9 @@ export default {
   computed: {
     hasNext () {
       return this.links.next != null
+    },
+    displayEmptyError () {
+      return !this.allowEmpty && (this.selectedLangs == null || this.selectedLangs.length === 0)
     }
   }
 }
