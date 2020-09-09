@@ -177,7 +177,11 @@
     "userNameExists": "User Name already exists",
     "invalidEmail": "Invalid Email",
     "emailExists": "Email already exists",
-    "nonMatchingPasswords": "Passwords must be equal"
+    "nonMatchingPasswords": "Passwords must be equal",
+    "maxLength": "Length must be at most {maxLength}",
+    "minLength": "Length must be at least {minLength}",
+    "lengthBetween": "Length must be between {minLength} and {maxLength}",
+    "usernamePattern": "Username can only contain numbers, letters, -, _, or ."
   },
   "components": {
     "tfDatePicker": {

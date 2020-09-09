@@ -34,11 +34,25 @@ const sendVerificationCode = (code) => axiosFetcher.post(urls.registration.verif
   code
 })
 
+const usernameExists = (username) => axiosFetcher.get(urls.registration.usernameExists, {
+  queryParams: {
+    uname: username
+  }
+})
+
+const emailExists = (email) => axiosFetcher.get(urls.registration.emailExists, {
+  queryParams: {
+    email
+  }
+})
+
 export default { 
   login,
   register,
   sendRecoveryEmail,
   resetPassword,
   verifyEmail,
-  sendVerificationCode
+  sendVerificationCode,
+  usernameExists,
+  emailExists
 }

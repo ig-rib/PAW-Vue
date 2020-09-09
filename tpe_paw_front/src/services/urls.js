@@ -19,11 +19,14 @@ const urls = {
   },
   registration: {
     login: localDomain + 'login',
-    register: localDomain + 'register',
-    verifyEmail: localDomain + 'verify-email',
-    resendEmailVerification: localDomain + 'resend-email-verification',
-    sendRecoveryEmail: localDomain + 'send-recovery-email',
-    resetPassword: localDomain + 'reset-password'
+    register: localDomain + 'registration/register',
+    verifyEmail: localDomain + 'registration/verify-email',
+    resendEmailVerification: localDomain + 'registration/resend-email-verification',
+    sendRecoveryEmail: localDomain + 'registration/send-recovery-email',
+    resetPassword: localDomain + 'registration/reset-password',
+    usernameExists: localDomain + 'registration/username-exists',
+    emailExists: localDomain + 'registration/email-exists'
+
   },
   tags: {
     tags: localDomain + 'tags',

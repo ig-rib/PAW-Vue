@@ -25,7 +25,7 @@ import java.util.Optional;
 
 import static ar.edu.itba.paw.webapp.utility.Constants.FRONT_BASE_URL_LOCAL;
 
-@Path("/")
+@Path("registration")
 @Controller
 public class RegistrationController {
 
@@ -43,6 +43,22 @@ public class RegistrationController {
     @Autowired private LoginAuthentication loginAuthentication;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
+
+    @GET
+    @Path("/username-exists")
+    public Response userExists(final @QueryParam("uname") String username) {
+        if (username == null || userService.isUsernameUnique(username))
+            return Response.ok(ExistsDto.of(false)).build();
+        return Response.ok(ExistsDto.of(true)).build();
+    }
+
+    @GET
+    @Path("/email-exists")
+    public Response emailExists(final @QueryParam("email") String email) {
+        if (email == null || !userService.emailExists(email))
+            return Response.ok(ExistsDto.of(false)).build();
+        return Response.ok(ExistsDto.of(true)).build();
+    }
 
     @POST
     @Path("/register")

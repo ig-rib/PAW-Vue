@@ -10,6 +10,11 @@
         <v-text-field
           :label="$t('registration.username')"
           outlined
+          @input="checkUsernameExists"
+          :rules="[rules.usernameLength,
+              rules.usernamePattern]"
+          :error-messages="usernameErrorMessages"
+          ref="usernameTextField"
           v-model="username">
         </v-text-field>
       </v-flex>
@@ -17,7 +22,9 @@
         <v-text-field
           :label="$t('registration.email')"
           outlined
-          :rules="[rules.email]"
+          @input="checkEmailExists"
+          :rules="[this.rules.email]"
+          :error-messages="emailErrorMessages"
           v-model="email">
         </v-text-field>
       </v-flex>
@@ -26,6 +33,7 @@
           type="password"
           :label="$t('registration.password')"
           outlined
+          ref="emailTextField"
           :rules="[rules.password]"
           v-model="password">
         </v-text-field>
@@ -41,12 +49,10 @@
       </v-flex>
       <v-flex>
         <v-layout justify-center>
-          <v-btn @click="register">{{$t('registration.register')}}</v-btn>
+          <v-btn :disabled="!allRulesAlright" @click="register">{{$t('registration.register')}}</v-btn>
         </v-layout>
       </v-flex>
     </v-layout>
-    <v-card-text class="error-text" v-if="usesExistingEmail">{{ $t('validations.emailExists') }}</v-card-text>
-    <v-card-text class="error-text" v-if="usesExistingUname">{{ $t('validations.userNameExists') }}</v-card-text>
     <v-layout class="registration-navigation-layout" column>
       <v-layout>
         <v-btn text @click="goToLogin">{{ $t('registration.hasAccount') }} {{ $t('registration.goToLogin') }}</v-btn>
@@ -69,8 +75,8 @@ export default {
       email: '',
       password: '',
       repeatPassword: '',
-      usesExistingUname: false,
-      usesExistingEmail: false
+      usernameExists: false,
+      emailExists: false
     }
   },
   methods: {
@@ -81,8 +87,8 @@ export default {
         }))
         .catch(e => {
           const data = e.response.data
-          this.usesExistingUname = data.usernameExists
-          this.usesExistingEmail = data.emailExists
+          this.usernameExists = data.usernameExists
+          this.emailExists = data.emailExists
         })
     },
     goToLogin () {
@@ -94,17 +100,42 @@ export default {
       this.$router.push({
         name:'send-recovery-email'
       })
+    },
+    checkUsernameExists (newUsername) {
+      registration.usernameExists(newUsername)
+        .then(r => {
+          this.usernameExists = r.data.exists
+        })
+    },
+    checkEmailExists (newEmail) {
+      registration.emailExists(newEmail)
+        .then(r => {
+          this.emailExists = r.data.exists
+        })
     }
   },
   computed: {
     rules () {
       return {
         email: () => validations.email(this.email),
-        // nonUsedEmail: () => !this.usesExistingEmail || this.$t('validations.emailExists'),
-        // nonUsedUname: () => !this.usesExistingUname || this.$t('validations.userNameExists'),
+        usernameLength: () => validations.lengthBetween(this.username, 6, 50),
+        usernamePattern: () => validations.usernamePattern(this.username), 
         equalsPassword: () => this.password === this.repeatPassword || this.$t('validations.nonMatchingPasswords'),
-        password: () => validations.validPassword(this.password)
+        password: () => validations.validPassword(this.password),
+        nonexistingUsername: () => !this.usernameExists || this.$t('validations.userNameExists'),
+        nonexistingEmail: () => !this.emailExists || this.$t('validations.emailExists')
       }
+    },
+    allRulesAlright () {
+      return Object.keys(this.rules).filter(rule => this.rules[rule]() !== true).length === 0 && !this.usernameExists && !this.emailExists
+    },
+    usernameErrorMessages () {
+      return [this.rules.nonexistingUsername]
+              .filter(rule => rule() !== true)
+    },
+    emailErrorMessages () {
+      return [this.rules.nonexistingEmail]
+              .filter(rule => rule() !== true)
     }
   }
 }

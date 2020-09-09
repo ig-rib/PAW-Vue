@@ -163,9 +163,11 @@
         <v-dialog v-model="reportDialog">
           <v-card>
             <v-card-title>{{ $t('snippets.snippetDetail.report.whatIsWrong') }}</v-card-title>
-            <v-textarea v-model="reportMessage"></v-textarea>
+            <v-textarea
+            :rules="[rules.maxLength]"
+            v-model="reportMessage"></v-textarea>
             <v-card-actions>
-              <v-btn @click="sendReport">{{ $t('snippets.snippetDetail.report.confirm') }}</v-btn>
+              <v-btn :disabled="rules.maxLength() !== true" @click="sendReport">{{ $t('snippets.snippetDetail.report.confirm') }}</v-btn>
               <v-btn @click="cancelReport">{{ $t('snippets.snippetDetail.report.cancel')}}</v-btn>
             </v-card-actions>
           </v-card>
@@ -180,6 +182,7 @@ import snippets from '@/services/snippets.js'
 import user from '@/services/user.js'
 import axiosFetcher from '@/services/axiosFetcher.js'
 import urls from '@/services/urls.js'
+import validations from '@/functions/validations'
 
 export default {
   data () {
@@ -310,6 +313,11 @@ export default {
     },
     allowedToReport () {
       return this.$store.getters.user.reputation >= 10
+    },
+    rules () {
+      return {
+        maxLength: () => validations.maxLength(this.reportMessage, 300)
+      }
     }
   },
   mounted () {
