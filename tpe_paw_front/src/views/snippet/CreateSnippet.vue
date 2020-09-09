@@ -9,7 +9,7 @@
                   outlined
                   dense
                   rounded
-                  :rules="[rules.title]"
+                  :rules="[rules.title, rules.titleNotBlankWithSpaces]"
                   v-model="title"
                   :label="$t('snippets.createSnippet.title')"></v-text-field>
               </v-flex>
@@ -44,7 +44,7 @@
                 rounded
                 outlined
                 no-resize
-                :rules="[rules.code]"
+                :rules="[rules.code, rules.codeNotBlankWithSpaces]"
                 v-model="code"
                 ></v-textarea>
               </v-flex>
@@ -100,7 +100,9 @@ export default {
       return {
         title: () => validations.lengthBetween(this.title, 5, 50),
         description: () => validations.maxLength(this.description, 500),
-        code: () => validations.maxLength(this.code, 30000)
+        code: () => validations.lengthBetween(this.code, 5, 30000),
+        titleNotBlankWithSpaces: () => validations.notBlankWithSpaces(this.title),
+        codeNotBlankWithSpaces: () => validations.notBlankWithSpaces(this.code)
       }
     },
     allRulesAlright () {

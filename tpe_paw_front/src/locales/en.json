@@ -181,7 +181,8 @@
     "maxLength": "Length must be at most {maxLength}",
     "minLength": "Length must be at least {minLength}",
     "lengthBetween": "Length must be between {minLength} and {maxLength}",
-    "usernamePattern": "Username can only contain numbers, letters, -, _, or ."
+    "usernamePattern": "Username can only contain numbers, letters, -, _, or .",
+    "notBlankWithSpaces": "This field cannot contain only spaces"
   },
   "components": {
     "tfDatePicker": {
