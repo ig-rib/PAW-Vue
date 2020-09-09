@@ -132,6 +132,10 @@ import validations from '@/functions/validations'
           .catch(e => this.resetUserData())
       },
       saveImage (event) {
+        if (event.target.files[0].size > 1048576) {
+          this.$store.dispatch('snackError', this.$t('validations.profilePhoto'))
+          return
+        }
         this.hasPhotoPreview = true
         this.profilePhoto = event.target.files[0]
         const reader = new FileReader()

@@ -11,6 +11,7 @@ public final class Constants {
     public static final int MENU_FOLLOWING_TAG_AMOUNT = 7;
     public static final int FOLLOWING_FEED_TAG_AMOUNT = 25;
     public static final int MAX_PHOTO_UPLOAD_SIZE = (int) (1_048_576 * 1.4);
+//    public static final int MAX_PHOTO_UPLOAD_SIZE = (int) (1_048 * 1.4);
 
 
     public static final String REFERER = "Referer";

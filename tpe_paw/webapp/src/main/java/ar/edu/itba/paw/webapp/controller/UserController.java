@@ -279,7 +279,7 @@ public class UserController {
     @Path("{id}/profile-photo64")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response uploadPhoto64(@PathParam(value="id") final long id,
-                                final ProfilePhotoDto profilePhotoDto
+                                final @Valid ProfilePhotoDto profilePhotoDto
     ) {
         User user = userService.findUserById(id).orElse(null);
         if (user == null){

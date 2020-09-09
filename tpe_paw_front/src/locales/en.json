@@ -184,7 +184,8 @@
     "lengthBetween": "Length must be between {minLength} and {maxLength}",
     "usernamePattern": "Username can only contain numbers, letters, -, _, or .",
     "notBlankWithSpaces": "This field cannot contain only spaces",
-    "codePattern": "Code must be 6 characters long and contain only numbers"
+    "codePattern": "Code must be 6 characters long and contain only numbers",
+    "profilePhoto": "Profile photo must be at most 1MB"
   },
   "components": {
     "tfDatePicker": {
