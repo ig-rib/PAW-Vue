@@ -1,9 +1,9 @@
 <template>
   <v-container v-if="snippet != null" id="snippet-card-container">
-      <v-card min-width="300px" height="400px" class="snippet-card-card" @click="goToSnippetDetail">
-        <v-container class="snippet-card-inner-container">
+      <v-card min-width="300px" max-width="350px" min-height="350px" class="snippet-card-card" @click="goToSnippetDetail">
+        <!-- <v-container class="snippet-card-inner-container"> -->
         <!-- User and language -->
-          <v-layout dense>
+          <v-layout class="user-language-layout" dense>
               <v-flex dense>
                 <v-list-item two-line>
                   <v-avatar class="mr-2" color="indigo">
@@ -81,7 +81,7 @@
               <p class="snippet-card-code-fade">a</p>
             </v-textarea>
           </v-layout>
-        </v-container>
+        <!-- </v-container> -->
       </v-card>
   </v-container>
   
@@ -166,11 +166,23 @@ export default {
     max-height: 30px;
     max-width: 30px;
   }
+  .user-language-layout {
+    flex-grow: 0;
+  }
   .title-description-layout {
-    // max-width: 300px;
+    flex-grow: 0;
   }
   .code-layout {
-    // max-width: 300px;
+    flex-grow: 1;
+    div {
+      height: auto;
+    }
+    .v-input__control {
+      div {
+        height: 100%;
+      }
+      height: 100%;
+    }
   }
   .snippet-language-flex {
     display: flex;
@@ -198,9 +210,14 @@ export default {
     .v-ripple__container {
       opacity: 0.1 !important;
     }
+    display: flex;
+    padding: 3% 5% 4% 3%;
+    flex-direction: column;
   }
   .snippet-card-inner-container {
-
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 }
 </style>
