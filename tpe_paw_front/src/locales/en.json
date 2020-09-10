@@ -34,7 +34,8 @@
     "from": "From",
     "to": "To",
     "min": "Min",
-    "max": "Max"
+    "max": "Max",
+    "showFilters": "Show Filters"
   },
   "languages": {
     "title": "Languages",
