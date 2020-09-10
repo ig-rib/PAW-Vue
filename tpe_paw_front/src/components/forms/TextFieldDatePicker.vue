@@ -16,6 +16,7 @@
           rounded
           outlined
           dense
+          hide-details
         ></v-text-field>
       </template>
       <v-layout>

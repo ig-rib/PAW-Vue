@@ -1,6 +1,7 @@
 <template>
-  <v-container>
+  <v-container class="language-select-container">
     <v-multiselect
+      class="languages-multiselect"
       v-model="selectedLangs"
       :options="languages"
       @search-change="updateSelectionSet"
@@ -96,3 +97,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.language-select-container {
+  .multiselect__tags {
+    max-height: 100px !important;
+    overflow-y: hidden;
+  }
+}
+</style>

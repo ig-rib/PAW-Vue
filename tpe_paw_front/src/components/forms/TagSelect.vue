@@ -1,22 +1,24 @@
 <template>
-  <v-multiselect
-    v-model="selectedTags"
-    :options="tags"
-    @search-change="updateSelectionSet"
-    :close-on-select="closeOnSelect"
-    :clear-on-select="false"
-    :placeholder="$t('components.tagSelect.selectTag')"
-    label="name"
-    track-by="id"
-    :multiple="multiple"
-  >
-    <template slot="afterList" v-if="hasNext">
-      <v-btn
-        @click="loadMore">
-        {{ $t('components.shared.pagination.loadMore')}}
-      </v-btn>
-    </template>
-  </v-multiselect>
+  <v-container class="tag-select-container">
+    <v-multiselect
+      v-model="selectedTags"
+      :options="tags"
+      @search-change="updateSelectionSet"
+      :close-on-select="closeOnSelect"
+      :clear-on-select="false"
+      :placeholder="$t('components.tagSelect.selectTag')"
+      label="name"
+      track-by="id"
+      :multiple="multiple"
+    >
+      <template slot="afterList" v-if="hasNext">
+        <v-btn
+          @click="loadMore">
+          {{ $t('components.shared.pagination.loadMore')}}
+        </v-btn>
+      </template>
+    </v-multiselect>
+  </v-container>
 </template>
 <script>
 import tags from '@/services/tags'
@@ -85,3 +87,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.tag-select-container {
+  .multiselect__tags {
+    max-height: 100px;
+    overflow-y: hidden;
+  }
+}
+</style>

@@ -1,12 +1,18 @@
 <template>
-  <v-card mx-1 my-5>
+  <v-card id="explore-pad-card" min-width="350px" mx-1 mb-5>
     <v-container>
+      <v-layout justify-center class="explore-pad-title">
+        {{ $t('explore.padTitle') }}
+      </v-layout>
       <v-layout>
-        {{ $t('explore.order.title') }}
+        <div class="explore-pad-section-title">
+          {{ $t('explore.order.title') }}
+        </div>
       </v-layout>
       <v-layout my-2>
-        <v-flex>
+        <v-flex px-2>
           <v-select
+            hide-details
             v-model="exploreParams.orderBy"
             :items="types"
             item-text="name"
@@ -16,8 +22,9 @@
             outlined
             dense></v-select>
         </v-flex>
-        <v-flex>
+        <v-flex px-2>
           <v-select
+            hide-details
             v-model="exploreParams.sort"
             :items="sortOrders"
             item-text="name"
@@ -30,22 +37,28 @@
       </v-layout>
       <v-divider></v-divider>
       <v-layout>
-        {{ $t('explore.flagged.title') }}
+        <div class="explore-pad-section-title">
+          {{ $t('explore.flagged.title') }}
+        </div>
       </v-layout>
       <v-layout>
         <v-layout>
-          <v-checkbox v-model="exploreParams.includeFlagged"
+          <v-checkbox :ripple="false" hide-details class="explore-pad-include-flagged-checkbox" v-model="exploreParams.includeFlagged"
             :label="$t('explore.flagged.includeFlagged')"
             ></v-checkbox>
         </v-layout>
       </v-layout>
       <v-divider></v-divider>
       <v-layout>
-        {{ $t('explore.title.title') }}
+        <div class="explore-pad-section-title">
+          {{ $t('explore.title.title') }}
+        </div>
       </v-layout>
       <v-layout>
-        <v-layout>
-          <v-text-field v-model="exploreParams.snippetTitle"
+        <v-layout mb-2>
+          <v-text-field 
+            hide-details
+            v-model="exploreParams.snippetTitle"
             :label="$t('explore.title.label')"
             rounded
             outlined
@@ -54,9 +67,11 @@
       </v-layout>
       <v-divider></v-divider>
       <v-layout>
-        <v-flex>
+        <v-flex md6 sm6 xs6>
           <v-layout>
-            {{ $t('explore.language') }}
+            <div class="explore-pad-section-title">
+              {{ $t('explore.language') }}
+            </div>
           </v-layout>
           <v-layout>
             <v-flex>
@@ -68,9 +83,11 @@
             </v-flex>
           </v-layout>
         </v-flex>
-        <v-flex>
+        <v-flex md6 sm6 xs6>
           <v-layout>
-            {{ $t('explore.tag')}}
+            <div class="explore-pad-section-title">
+              {{ $t('explore.tag')}}
+            </div>
           </v-layout>
           <v-layout>
             <v-flex>
@@ -85,11 +102,15 @@
       </v-layout>
       <v-divider></v-divider>
       <v-layout>
-        {{ $t('explore.username') }}
+        <div class="explore-pad-section-title">
+          {{ $t('explore.username') }}
+        </div>
       </v-layout>
-      <v-layout>
+      <v-layout mb-2>
         <v-layout>
-          <v-text-field v-model="exploreParams.username"
+          <v-text-field
+            hide-details
+            v-model="exploreParams.username"
             :label="$t('explore.username')"
             rounded
             outlined
@@ -98,77 +119,81 @@
       </v-layout>
       <v-divider></v-divider>
       <v-layout>
-        {{ $t('explore.dateUploaded') }}
+        <div class="explore-pad-section-title">
+          {{ $t('explore.dateUploaded') }}
+        </div>
       </v-layout>
-      <v-layout>
-        <v-layout>
-          <v-flex>
-            <tf-date-picker
-              v-model="exploreParams.fromDate"
-              :label="$t('explore.from')"
-            ></tf-date-picker>
-          </v-flex>
-          <v-flex>
-            <tf-date-picker
-              v-model="exploreParams.toDate"
-              :label="$t('explore.to')"
-            ></tf-date-picker>
-          </v-flex>
-        </v-layout>
-      </v-layout>
-      <v-divider></v-divider>
-      <v-layout>
-        {{ $t('explore.userReputation.title') }}
-      </v-layout>
-      <v-layout>
-        <v-layout>
-          <v-flex>
-            <v-text-field
-              :label="$t('explore.min')"
-              v-model="exploreParams.minRep"
-              rounded
-              outlined
-              dense
-            ></v-text-field>
-          </v-flex>
-          <v-flex>
-            <v-text-field
-              :label="$t('explore.max')"
-              v-model="exploreParams.maxRep"
-              rounded
-              outlined
-              dense
-            ></v-text-field>
-          </v-flex>
-        </v-layout>
+      <v-layout mb-2>
+        <v-flex px-1 md6 sm6 xs6>
+          <tf-date-picker
+            v-model="exploreParams.fromDate"
+            :label="$t('explore.from')"
+          ></tf-date-picker>
+        </v-flex>
+        <v-flex px-1 md6 sm6 xs6>
+          <tf-date-picker
+            v-model="exploreParams.toDate"
+            :label="$t('explore.to')"
+          ></tf-date-picker>
+        </v-flex>
       </v-layout>
       <v-divider></v-divider>
       <v-layout>
-        {{ $t('explore.snippetVotes.title') }}
+        <div class="explore-pad-section-title">
+          {{ $t('explore.userReputation.title') }}
+        </div>
       </v-layout>
-      <v-layout>
-        <v-layout>
-          <v-flex>
-            <v-text-field
-              :label="$t('explore.min')"
-              v-model="exploreParams.minVotes"
-              rounded
-              outlined
-              dense
-            ></v-text-field>
-          </v-flex>
-          <v-flex>
-            <v-text-field
-              :label="$t('explore.max')"
-              v-model="exploreParams.maxVotes"
-              rounded
-              outlined
-              dense
-            ></v-text-field>
-          </v-flex>
-        </v-layout>
+      <v-layout mb-2>
+        <v-flex md6 sm6 xs6 px-2>
+          <v-text-field
+            hide-details
+            :label="$t('explore.min')"
+            v-model="exploreParams.minRep"
+            rounded
+            outlined
+            dense
+          ></v-text-field>
+        </v-flex>
+        <v-flex md6 sm6 xs6 px-2>
+          <v-text-field
+            hide-details
+            :label="$t('explore.max')"
+            v-model="exploreParams.maxRep"
+            rounded
+            outlined
+            dense
+          ></v-text-field>
+        </v-flex>
       </v-layout>
+      <v-divider></v-divider>
       <v-layout>
+        <div class="explore-pad-section-title">
+          {{ $t('explore.snippetVotes.title') }}
+        </div>
+      </v-layout>
+      <v-layout mb-2>
+        <v-flex px-2>
+          <v-text-field
+            hide-details
+            :label="$t('explore.min')"
+            v-model="exploreParams.minVotes"
+            rounded
+            outlined
+            dense
+          ></v-text-field>
+        </v-flex>
+        <v-flex px-2>
+          <v-text-field
+            hide-details
+            :label="$t('explore.max')"
+            v-model="exploreParams.maxVotes"
+            rounded
+            outlined
+            dense
+          ></v-text-field>
+        </v-flex>
+      </v-layout>
+      <v-layout justify-end mt-5 mb-2>
         <v-btn @click="exploreSearch">
           {{ $t('explore.explore') }}
         </v-btn>
@@ -245,3 +270,24 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+#explore-pad-card {
+  .explore-pad-title {
+    font-size: 36px;
+    font-weight: 300;
+  }
+  .explore-pad-section-title {
+    font-size: 20px;
+    font-weight: 300 !important;
+    padding: 0 0 2% 0;
+    margin: 1% 0 1% 0;
+  }
+  .explore-pad-include-flagged-checkbox {
+    margin: 0 0 5px 0;
+    .v-ripple__container {
+      display: none;
+    }
+  }
+}
+</style>

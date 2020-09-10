@@ -4,7 +4,7 @@
       <v-flex :class="`${$vuetify.breakpoint.mdAndUp ? 'my-15' : ''}`" md4 lg3 sm12>
         <explore-pad v-if="$vuetify.breakpoint.mdAndUp"
           @searchResults="updateResults"></explore-pad>
-        <v-btn v-else @click="showExplorePad = !showExplorePad">
+        <v-btn rounded v-else @click="showExplorePad = !showExplorePad">
           {{ $t('explore.showFilters') }}
         </v-btn>
       </v-flex>
@@ -12,7 +12,7 @@
         <snippet-grid ref="exploreSnippets"></snippet-grid>
       </v-flex>
     </v-layout>
-    <v-dialog max-width="50%" id="explore-pad-dialog" v-model="showExplorePad">
+    <v-dialog width="450px" id="explore-pad-dialog" v-model="showExplorePad">
       <v-layout>
         <v-flex>
           <explore-pad

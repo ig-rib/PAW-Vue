@@ -113,6 +113,7 @@
             <template v-if="resultType == 'snippet'">
               <v-flex class="search-select-flex" shrink px-2>
                 <v-select
+                hide-details
                 :items="searchTypes"
                 item-text="name"
                 item-value="value"

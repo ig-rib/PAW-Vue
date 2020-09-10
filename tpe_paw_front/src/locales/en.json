@@ -6,21 +6,22 @@
   },
   "explore": {
     "explore": "Explore",
+    "padTitle": "Explore Snippets",
     "order": {
       "title": "Order",
       "orderBy": "Order By",
       "sort": "Sort"
     },
     "flagged": {
-      "title": "Flagged",
-      "includeFlagged": "Include Flagged"
+      "title": "Flagged Snippets",
+      "includeFlagged": "Include Flagged Snippets"
     },
     "title": {
       "title": "Title",
       "label": "Snippet Title"
     },
-    "language": "Language",
-    "tag": "Tag",
+    "language": "Languages",
+    "tag": "Tags",
     "username": "Username",
     "dateUploaded": "Date Uploaded",
     "userReputation": {
