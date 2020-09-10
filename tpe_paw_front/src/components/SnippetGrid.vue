@@ -105,7 +105,7 @@ export default {
           console.log(error)
           this.status = 'e'
           })
-    },
+    }
   },
   mounted () {
     const queryParams = this.$route.query

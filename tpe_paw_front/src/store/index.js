@@ -7,7 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   plugins: [createPersistedState({
-    storage: window.sessionStorage,
+    storage: window.sessionStorage
   })],
   state: {
     token: {
@@ -28,7 +28,7 @@ export default new Vuex.Store({
     setUser (state, userData) {
       state.user = userData
     },
-    setSnackbar(state, snackbarData) {
+    setSnackbar (state, snackbarData) {
       for (const [key, value] of Object.entries(snackbarData)) {
         state.snackbar[key] = value
       }
@@ -61,14 +61,14 @@ export default new Vuex.Store({
       window.sessionStorage.clear()
     },
     snackError ({ commit }, payload) {
-      let message = payload || i18n.$t('snackbar.error.defaultMessage')
+      const message = payload || i18n.$t('snackbar.error.defaultMessage')
       commit('setSnackbar', {
         show: true,
         message
       })
     },
     snackSuccess ({ commit }, payload) {
-      let message = payload || i18n.$t('snackbar.success.defaultMessage')
+      const message = payload || i18n.$t('snackbar.success.defaultMessage')
       commit('setSnackbar', {
         show: true,
         message

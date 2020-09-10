@@ -25,9 +25,7 @@
 </template>
 
 <script>
-import SnippetComponent from '@/components/Snippet.vue'
 import languages from '@/services/languages.js'
-import helpers from '@/functions/helpers.js'
 
 export default {
     name: 'LanguagesSnippets',

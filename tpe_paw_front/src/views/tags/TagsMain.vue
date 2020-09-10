@@ -76,7 +76,6 @@
 <script>
 import tagService from '@/services/tags.js'
 import helpers from '@/functions/helpers.js'
-import search from '@/services/search'
 
 export default {
   name: 'tagsMain',

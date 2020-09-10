@@ -39,7 +39,7 @@ const uploadProfilePhoto = (id, photo) => axiosFetcher.put(urls.user.profilePhot
 },
   photo,
   {
-    'Content-Type' : 'multipart/form-data;charset=utf-8'
+    'Content-Type': 'multipart/form-data;charset=utf-8'
   })
 
 const uploadProfilePhoto64 = (id, photo64) => axiosFetcher.post(urls.user.profilePhoto64, {

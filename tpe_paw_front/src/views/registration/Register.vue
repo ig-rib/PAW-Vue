@@ -98,7 +98,7 @@ export default {
     },
     goToPassRecovery () {
       this.$router.push({
-        name:'send-recovery-email'
+        name: 'send-recovery-email'
       })
     },
     checkUsernameExists (newUsername) {

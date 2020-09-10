@@ -81,11 +81,11 @@ export default {
       this.newTags.splice(index, 1)
     },
     postAllTags () {
-      let promises = this.newTags.map(tagName => tags.addTag(tagName))
+      const promises = this.newTags.map(tagName => tags.addTag(tagName))
       Promise.all(promises)
         .then(r => {
           // TODO handle responses
-          let correct = r.filter(r => r.status < 300).length
+          const correct = r.filter(r => r.status < 300).length
         })
     }
   },

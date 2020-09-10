@@ -239,7 +239,6 @@ export default {
     },
     report () {
       this.reporting = true
-      let promise = {}
       if (this.snippet.reported) {
         snippets.unreportSnippet(this.snippet.id)
           .then(r => {
@@ -326,9 +325,9 @@ export default {
     snippets.getSnippet(this.$route.params.id)
       .then(snippetResponse => {
         this.snippet = snippetResponse.data
-        let ownerRequest = axiosFetcher.get(snippetResponse.data.owner)
-        let languageRequest = axiosFetcher.get(snippetResponse.data.language)
-        let allRequests = []
+        const ownerRequest = axiosFetcher.get(snippetResponse.data.owner)
+        const languageRequest = axiosFetcher.get(snippetResponse.data.language)
+        const allRequests = []
         allRequests.push(...snippetResponse.data.tags.map(tagUri => axiosFetcher.get(tagUri)))
         allRequests.push(ownerRequest)
         allRequests.push(languageRequest)

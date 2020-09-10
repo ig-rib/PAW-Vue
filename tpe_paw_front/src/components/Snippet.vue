@@ -1,7 +1,7 @@
 <template>
   <v-container v-if="snippet != null" id="snippet-card-container">
-      <v-card min-width="300px" class="snippet-card-card" @click="goToSnippetDetail">
-        <v-container>
+      <v-card min-width="300px" height="400px" class="snippet-card-card" @click="goToSnippetDetail">
+        <v-container class="snippet-card-inner-container">
         <!-- User and language -->
           <v-layout dense>
               <v-flex dense>
@@ -146,7 +146,7 @@ export default {
       }
       promise.then(r => { this.snippet.favorite = !this.snippet.favorite })
       .finally(() => { this.faving = false })
-    },
+    }
   },
   mounted () {
     axiosFetcher.get(this.snippet.owner).then(r => { this.owner = r.data })
@@ -198,6 +198,9 @@ export default {
     .v-ripple__container {
       opacity: 0.1 !important;
     }
+  }
+  .snippet-card-inner-container {
+
   }
 }
 </style>

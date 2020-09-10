@@ -79,9 +79,9 @@ const searchInLocation = (route, queryParams) => {
   // resultArray.shift()
   // const pathSuffix = resultArray.join('/')
   let url = ''
-  let pathVariables = {}
+  const pathVariables = {}
   
-  switch(route.name) {
+  switch (route.name) {
     case 'tag-snippets':
       url = urls.tags.getTagSnippets
       pathVariables.id = route.params.id

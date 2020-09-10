@@ -81,11 +81,11 @@ export default {
       this.newLanguages.splice(index, 1)
     },
     postAllLanguages () {
-      let promises = this.newLanguages.map(languageName => languages.addLanguage(languageName))
+      const promises = this.newLanguages.map(languageName => languages.addLanguage(languageName))
       Promise.all(promises)
         .then(r => {
           // TODO handle responses
-          let correct = r.filter(r => r.status < 300).length
+          const correct = r.filter(r => r.status < 300).length
         })
     }
   },
