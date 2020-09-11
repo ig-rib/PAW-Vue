@@ -1,10 +1,10 @@
 <template>
   <v-container v-if="snippet != null" id="snippet-card-container">
-      <v-card min-width="300px" max-width="350px" min-height="350px" class="snippet-card-card" @click="goToSnippetDetail">
+      <v-card min-width="300px" max-width="400px" min-height="400px" class="snippet-card-card" @click="goToSnippetDetail">
         <!-- <v-container class="snippet-card-inner-container"> -->
         <!-- User and language -->
           <v-layout class="user-language-layout" dense>
-              <v-flex dense>
+              <v-flex xs6 sm6 md6 lg6 dense>
                 <v-list-item two-line>
                   <v-avatar class="mr-2" color="indigo">
                     <img v-if="!error" @error="error = true" class="profile-circle" :src="owner.icon"/>
@@ -17,11 +17,11 @@
                 </v-list-item>
               </v-flex>
 
-              <v-flex class="pr-2 snippet-language-flex">
+              <v-flex xs6 sm6 md6 lg6 class="snippet-language-flex">
                 <v-layout class="pr-2" justify-end>
                   <v-flex class="flex-grow-0 pa-1">
                     <v-btn 
-                      class="snippet-toggle-btn color-crimson"
+                      class="fav-btn snippet-toggle-btn color-crimson"
                       icon
                       @mousedown="$event.stopPropagation()"
                       @click="fav">
@@ -30,9 +30,9 @@
                       </v-icon>
                     </v-btn>
                   </v-flex>
-                  <v-flex v-if="snippet.flagged">
-                    <v-btn icon aria-disabled>
-                      <v-icon class="snippet-toggle-btn" color="red">mdi-flag</v-icon>
+                  <v-flex class="pa-1" v-if="snippet.flagged">
+                    <v-btn class="snippet-toggle-btn" icon aria-disabled>
+                      <v-icon color="red">mdi-flag</v-icon>
                     </v-btn>
                   </v-flex>
                   <v-flex class="flex-grow-0 pa-1">
@@ -226,14 +226,16 @@ export default {
     i, .v-btn, i:active {
       font-size: 30px;
     }
+  }
+  .snippet-toggle-btn.fav-btn {
     i:hover {
       font-size: 35px;
     }
   }
   .snippet-toggle-btn::before {
-    background-color: transparent;
+    background-color: transparent !important;
   }
-  .snippet-toggle-btn::before:hover {
+  .snippet-toggle-btn.fav-btn::before:hover {
     font-size: 60px;
   }
 }

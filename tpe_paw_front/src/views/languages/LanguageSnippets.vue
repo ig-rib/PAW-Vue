@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-layout>
-      <v-flex v-cloak>
+      <v-flex class="view-title" v-cloak>
         {{ $t('languages.languageSnippets', { langName: language.name}) }}
       </v-flex>
       <v-flex v-if="isAdmin" ml-auto>

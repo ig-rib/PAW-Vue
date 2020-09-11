@@ -1,6 +1,10 @@
 <template>
   <v-container>
-    <p>{{$t('languages.title')}}</p>
+    <v-layout>
+      <v-flex class="view-title">
+        {{$t('languages.title')}}
+      </v-flex>
+    </v-layout>
     <v-layout justify-center mb-10 class="text-center">
       <v-pagination
         v-model="pagination.page"

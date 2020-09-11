@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-layout>
-      <v-flex>
+      <v-flex class="view-title">
         {{ $t('tags.tagSnippets', { tagName: tag.name}) }}
       </v-flex>
       <v-flex v-if="isAdmin" ml-auto>

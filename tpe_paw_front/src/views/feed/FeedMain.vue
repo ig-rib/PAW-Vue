@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-layout>
-      <v-flex>
+      <v-flex class="view-title">
         {{ $t('feed.title') }}
       </v-flex>
     </v-layout>

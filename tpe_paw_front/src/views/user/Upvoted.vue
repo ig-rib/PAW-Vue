@@ -1,7 +1,9 @@
 <template>
   <v-container>
     <v-layout>
-      UPVOTED
+      <v-flex class="view-title">
+        {{ $t('user.upvoted.title') }}
+      </v-flex>
     </v-layout>
     <v-layout>
       <snippet-grid ref="userFavoritesSnippetGrid"></snippet-grid>

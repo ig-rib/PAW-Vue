@@ -451,7 +451,7 @@ export default {
         font-size: 50px;
       }
       i:hover {
-        font-size: 65px;
+        font-size: 60px;
       }
     }
     .v-btn::before {

@@ -1,7 +1,11 @@
 <template>
   <v-container>
     <div>
-      <p> {{ $t('tags.title') }} </p>
+      <v-layout>
+        <v-flex class="view-title">
+          {{ $t('tags.title') }}
+        </v-flex>
+      </v-layout>
       <v-layout justify-center mb-10 class="text-center">
         <v-pagination
           v-model="pagination.page"

@@ -1,14 +1,19 @@
 <template>
   <v-container id="explore-container">
+    <v-layout>
+      <v-flex class="view-title">
+        {{ $t('explore.explore') }}
+      </v-flex>
+    </v-layout>
     <v-layout justify-center wrap>
-      <v-flex :class="`${$vuetify.breakpoint.mdAndUp ? 'my-15' : ''}`" md4 lg3 sm12>
+      <v-flex :class="`${$vuetify.breakpoint.mdAndUp ? 'my-15' : ''}`" md4 lg4 sm12>
         <explore-pad v-if="$vuetify.breakpoint.mdAndUp"
           @searchResults="updateResults"></explore-pad>
         <v-btn rounded v-else @click="showExplorePad = !showExplorePad">
           {{ $t('explore.showFilters') }}
         </v-btn>
       </v-flex>
-      <v-flex lg9 md8>
+      <v-flex lg8 md8>
         <snippet-grid ref="exploreSnippets"></snippet-grid>
       </v-flex>
     </v-layout>

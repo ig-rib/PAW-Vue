@@ -1,7 +1,9 @@
 <template>
   <v-container>
     <v-layout>
-      FLAGGED
+      <v-flex class="view-title">
+        {{ $t('admin.flagged') }}
+      </v-flex>
     </v-layout>
     <v-layout>
       <snippet-grid ref="userFlaggedSnippetGrid"></snippet-grid>

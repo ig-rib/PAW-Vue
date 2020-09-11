@@ -71,6 +71,7 @@
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </v-list-item>
                 <v-list-item
+                  v-if="isAdmin"
                   :to="{ name: 'flagged' }"
                 >
                   <v-list-item-title>{{ $t('admin.flagged') }}</v-list-item-title>
