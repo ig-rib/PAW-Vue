@@ -19,9 +19,10 @@
 
               <v-flex class="pr-2 snippet-language-flex">
                 <v-layout class="pr-2" justify-end>
-                  <v-flex class="flex-grow-0 pa-0">
-                    <v-btn icon
-                      color="red"
+                  <v-flex class="flex-grow-0 pa-1">
+                    <v-btn 
+                      class="snippet-toggle-btn color-crimson"
+                      icon
                       @mousedown="$event.stopPropagation()"
                       @click="fav">
                       <v-icon :disabled="faving">
@@ -31,10 +32,10 @@
                   </v-flex>
                   <v-flex v-if="snippet.flagged">
                     <v-btn icon aria-disabled>
-                      <v-icon color="red">mdi-flag</v-icon>
+                      <v-icon class="snippet-toggle-btn" color="red">mdi-flag</v-icon>
                     </v-btn>
                   </v-flex>
-                  <v-flex class="flex-grow-0 pa-0">
+                  <v-flex class="flex-grow-0 pa-1">
                     <v-btn
                       outlined
                       color="light-blue"
@@ -209,15 +210,31 @@ export default {
     user-select: none; /* Standard */
     .v-ripple__container {
       opacity: 0.1 !important;
+      border-radius: 10px;
     }
     display: flex;
     padding: 3% 5% 4% 3%;
     flex-direction: column;
+    border-radius: 10px;
   }
   .snippet-card-inner-container {
     height: 100%;
     display: flex;
     flex-direction: column;
+  }
+  .snippet-toggle-btn {
+    i, .v-btn, i:active {
+      font-size: 30px;
+    }
+    i:hover {
+      font-size: 35px;
+    }
+  }
+  .snippet-toggle-btn::before {
+    background-color: transparent;
+  }
+  .snippet-toggle-btn::before:hover {
+    font-size: 60px;
   }
 }
 </style>

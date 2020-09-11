@@ -194,7 +194,7 @@
         </v-flex>
       </v-layout>
       <v-layout justify-end mt-5 mb-2>
-        <v-btn @click="exploreSearch">
+        <v-btn class="explore-btn" rounded @click="exploreSearch">
           {{ $t('explore.explore') }}
         </v-btn>
       </v-layout>
@@ -288,6 +288,14 @@ export default {
     .v-ripple__container {
       display: none;
     }
+  }
+  .explore-btn {
+    .v-ripple__container {
+      opacity: 0.1 !important;
+    }
+  }
+  .explore-btn::after {
+    box-shadow: 0px !important;
   }
 }
 </style>

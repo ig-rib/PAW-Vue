@@ -140,11 +140,13 @@
                 <v-layout column> -->
               <v-flex px-2 shrink class="search-checkbox">
                 <v-checkbox
+                  :ripple="false"
                   v-model="showEmpty"
                   :label="$t('search.showEmpty')"></v-checkbox>
               </v-flex>
               <v-flex px-2 shrink class="search-checkbox" v-if="resultType == 'tag' && $store.getters.loggedIn">
                 <v-checkbox
+                  :ripple="false"
                   v-model="showOnlyFollowing"
                   :label="$t('search.showOnlyFollowing')"
                   ></v-checkbox>

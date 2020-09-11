@@ -25,7 +25,7 @@
               </div>
             </v-flex>
             <v-flex shrink ml-auto>
-              <v-btn color="light-blue" :to="{
+              <v-btn :ripple="false" color="light-blue" :to="{
                 name: 'language-snippets',
                 params: { id: language.id }
               }" text outlined v-cloak>
@@ -64,7 +64,7 @@
               :key="tag.name"
               shrink
               px-2>
-              <v-btn 
+              <v-btn :ripple="false" 
                 depressed
                 color="light-blue"
                 class="white--text"
@@ -81,19 +81,19 @@
           <!-- ACTION BAR - ACTION ICONS AND OWNER DATA -->
           <v-layout id="snippet-detail-action-bar">
             <!-- ACTION ICONS -->
-            <v-flex class="action-icons" sm7 md7 lg7 mx-2>
+            <v-flex class="action-icons" sm8 md8 lg8 mx-2>
               <v-layout class="action-icons-layout">
                 <v-flex v-if="isSnippetOwner">
-                  <v-btn v-if="!snippet.deleted" :disabled="deleting" @click="deleteSnippet" icon>
+                  <v-btn :ripple="false" v-if="!snippet.deleted" :disabled="deleting" @click="deleteSnippet" icon>
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
-                  <v-btn v-else :disabled="deleting" @click="restoreSnippet" icon>
+                  <v-btn :ripple="false" v-else :disabled="deleting" @click="restoreSnippet" icon>
                     <v-icon>mdi-delete-restore</v-icon>
                   </v-btn>
                 </v-flex>
                 <!-- FAV -->
                 <v-flex>
-                  <v-btn :class="`fav-btn ${snippet.favorite ? 'color-crimson' : '' }`" :disabled="faving" @click="fav" icon>
+                  <v-btn :ripple="false" :class="`fav-btn ${snippet.favorite ? 'color-crimson' : '' }`" :disabled="faving" @click="fav" icon>
                     <v-icon>{{`mdi-heart${snippet.favorite ? '' : '-outline'}`}}</v-icon>
                   </v-btn>
                 </v-flex>
@@ -102,7 +102,7 @@
                   <v-layout>
                     <!-- UPVOTE -->
                     <v-flex>
-                      <v-btn :color="`${ isUpvoted ? 'green' : '' }`" class="thumb-up-btn" :disabled="voting" @click="vote(true)" icon>
+                      <v-btn :ripple="false" :color="`${ isUpvoted ? 'green' : '' }`" class="thumb-up-btn" :disabled="voting" @click="vote(true)" icon>
                         <v-icon>{{`mdi-thumb-up${isUpvoted ? '' : '-outline'}`}}</v-icon>
                       </v-btn>
                     </v-flex>
@@ -112,7 +112,7 @@
                     </v-flex>
                     <!-- DOWNVOTE -->
                     <v-flex>
-                      <v-btn :color="`${ isDownvoted ? 'red' : '' }`" class="thumb-down-btn" :disabled="voting" @click="vote(false)" icon>
+                      <v-btn :ripple="false" :color="`${ isDownvoted ? 'red' : '' }`" class="thumb-down-btn" :disabled="voting" @click="vote(false)" icon>
                         <v-icon>{{`mdi-thumb-down${isDownvoted ? '' : '-outline'}`}}</v-icon>
                       </v-btn>
                     </v-flex>
@@ -120,11 +120,11 @@
                 </v-flex>
                 <v-flex v-if="isAdmin || allowedToReport">
                   <!-- FLAG -->
-                  <v-btn :color="`${ snippet.flagged ? 'red' : '' }`" class="flag-btn" v-if="isAdmin" :disabled="flagging" @click="flag" icon>
+                  <v-btn :ripple="false" :color="`${ snippet.flagged ? 'red' : '' }`" class="flag-btn" v-if="isAdmin" :disabled="flagging" @click="flag" icon>
                     <v-icon>{{`mdi-flag${snippet.flagged ? '' : '-outline'}`}}</v-icon>
                   </v-btn>
                   <!-- REPORT -->
-                  <v-btn :class="`fav-btn ${snippet.reported ? 'color-sandybrown' : '' }`" class="report-btn" v-else :disabled="reporting" @click="report" icon>
+                  <v-btn :ripple="false" :class="`fav-btn ${snippet.reported ? 'color-sandybrown' : '' }`" class="report-btn" v-else :disabled="reporting" @click="report" icon>
                     <v-icon>{{`mdi-alert-octagon${snippet.reported ? '' : '-outline'}`}}</v-icon>
                   </v-btn>
                 </v-flex>
@@ -167,8 +167,8 @@
             :rules="[rules.maxLength]"
             v-model="reportMessage"></v-textarea>
             <v-card-actions>
-              <v-btn :disabled="rules.maxLength() !== true" @click="sendReport">{{ $t('snippets.snippetDetail.report.confirm') }}</v-btn>
-              <v-btn @click="cancelReport">{{ $t('snippets.snippetDetail.report.cancel')}}</v-btn>
+              <v-btn :ripple="false" :disabled="rules.maxLength() !== true" @click="sendReport">{{ $t('snippets.snippetDetail.report.confirm') }}</v-btn>
+              <v-btn :ripple="false" @click="cancelReport">{{ $t('snippets.snippetDetail.report.cancel')}}</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -364,6 +364,7 @@ export default {
 @import '@/styles/noticeCard.scss';
 
   #snippet-detail-card {
+    border-radius: 10px;
     .owner-image {
       border-radius: 40px;
     }
@@ -444,11 +445,20 @@ export default {
     .action-icons-layout > .flex {
       flex-grow:0;
       // width: max-content;
-      i, .v-btn {
+      i, .v-btn, i:active {
         width: 75px;
         height: 75px;
         font-size: 50px;
       }
+      i:hover {
+        font-size: 65px;
+      }
+    }
+    .v-btn::before {
+      background-color: transparent;
+    }
+    .v-btn::before:hover {
+      font-size: 60px;
     }
   }
   #snippet-detail-action-bar > .flex {

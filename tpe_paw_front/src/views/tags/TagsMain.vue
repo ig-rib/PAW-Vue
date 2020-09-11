@@ -189,7 +189,7 @@ export default {
 
 .tag-follow-btn {
   transition: 0.3s;
-  border-radius: 20px;
+  border-radius: 20px !important;
   font-weight: 400;
   padding: 3px !important;
 }
