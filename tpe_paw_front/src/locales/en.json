@@ -214,6 +214,15 @@
     "languageSelect": {
       "selectLanguage": "Select A Language",
       "notNull": "One language must be selected"
+    },
+    "snippetGrid": {
+      "profile": {
+        "noSnippetsInOwnProfileActive": "You don't have any snippets",
+        "noSnippetsInOwnProfileDeleted": "You don't have any deleted snippets",
+        "createOne": "Create One",
+        "noSnippetsInAnotherProfile": "This user does not have any snippets"
+      },
+      "noSnippets": "No Snippets Here"
     }
   },
   "error": {

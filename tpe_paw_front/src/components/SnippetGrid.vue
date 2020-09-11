@@ -2,11 +2,37 @@
   <v-container>
     <v-layout justify-center mb-10 class="text-center">
       <v-pagination
+        v-if="snippets.length > 0"
         v-model="pagination.page"
         @input="paginationChange"
         :length="pagination.length" 
         :total-visible="pagination.visible"
       ></v-pagination>
+    </v-layout>
+    <v-layout column align-center justify-center py-10 v-if="snippets.length === 0 && inOwnProfileActive">
+      <v-flex shrink class="no-snippets-text" mb-10>
+        {{ $t('components.snippetGrid.profile.noSnippetsInOwnProfileActive') }}
+      </v-flex>
+      <v-flex shrink>
+        <v-btn :ripple="false" :to="{ name: 'create-snippet' }">
+          {{ $t('components.snippetGrid.profile.createOne') }}
+        </v-btn>
+      </v-flex>
+    </v-layout>
+    <v-layout align-center justify-center py-10 v-else-if="snippets.length === 0 && inAnotherProfile">
+      <v-flex shrink class="no-snippets-text">
+        {{ $t('components.snippetGrid.profile.noSnippetsInAnotherProfile') }}
+      </v-flex>
+    </v-layout>
+    <v-layout align-center justify-center py-10 v-else-if="snippets.length === 0 && inOwnProfileDeleted">
+      <v-flex shrink class="no-snippets-text">
+        {{ $t('components.snippetGrid.profile.noSnippetsInOwnProfileDeleted') }}
+      </v-flex>
+    </v-layout>
+    <v-layout align-center justify-center py-10 v-else-if="snippets.length === 0">
+      <v-flex shrink class="no-snippets-text">
+        {{ $t('components.snippetGrid.noSnippets') }}
+      </v-flex>
     </v-layout>
     <v-layout>
       <v-layout class="grid-progress-circle" v-if="status === 'l'" justify-center>
@@ -42,6 +68,7 @@
     </v-layout>
     <v-layout justify-center mt-10 v-if="status === ''" class="text-center">
       <v-pagination
+        v-if="snippets.length > 0"
         v-model="pagination.page"
         @input="paginationChange"
         :length="pagination.length" 
@@ -107,6 +134,19 @@ export default {
           })
     }
   },
+  computed: {
+    inOwnProfileActive () {
+      return this.$route.name === 'active-snippets' && 
+            parseInt(this.$route.params.id) === this.$store.getters.user.id
+    },
+    inOwnProfileDeleted () {
+      return this.$route.name === 'deleted-snippets' && 
+            parseInt(this.$route.params.id) === this.$store.getters.user.id
+    },
+    inAnotherProfile () {
+      return this.$route.name === 'active-snippets' && parseInt(this.$route.params.id) !== this.$store.getters.user.id
+    }
+  },
   mounted () {
     const queryParams = this.$route.query
     this.status = 'l'
@@ -140,4 +180,8 @@ export default {
 
 <style lang="scss">
   @import '@/styles/main.scss';
+  .no-snippets-text {
+    font-size: 30px;
+    font-weight: 300;
+  }
 </style>
