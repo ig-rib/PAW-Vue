@@ -6,13 +6,8 @@
     <v-layout py-10 class="registration-title-layout" align-center justify-center>
       {{ $t('registration.verifyAccount') }}
     </v-layout>
-    <v-layout column py-10 class="registration-title-layout" align-center>
-      <h1>
-        WELCOME TO SNIPPIT
-      </h1>
-      <div>
-        Enter the code you received on your email
-      </div>
+    <v-layout column pb-2 class="registration-subtitle-layout" align-center>
+      {{ $t('registration.enterCode') }}
     </v-layout>
     <v-layout column class="registration-data-layout">
       <v-flex>

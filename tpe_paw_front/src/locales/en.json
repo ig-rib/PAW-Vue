@@ -180,6 +180,7 @@
     "verifyAccount": "Verify Your Account",
     "recoveryEmailSent": "Email Sent!",
     "mailSentInfo": "You can now visit the link we sent you and change your password.",
+    "enterCode": "Enter the code you received on your email.",
     "successfulVerification": "Successfully verified account!"
   },
   "validations": {

@@ -16,12 +16,12 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <v-layout>
+    <v-layout py-10>
       <v-flex shrink>
         <v-img
           v-if="!editing"
-          width="150px"
-          height="150px"
+          width="220px"
+          height="220px"
           :src="renderableImage"
           class="user-profile-profile-pic"
           />
@@ -29,45 +29,48 @@
           v-else
           @click="$refs.file.click()">
           <v-img
-          width="150px"
-          height="150px"
+          width="220px"
+          height="220px"
           :src="editableImage"
           class="user-profile-profile-pic"
           />
           <input class="user-profile-photo-input" ref="file" type="file" @change="saveImage" accept="image/*" />
         </v-btn>
       </v-flex>
-      <v-flex pt-5 px-5 sm9 md9 lg9>
-        <v-layout>
-          <v-flex grow>
+      <v-flex class="user-profile-info-flex" px-5 sm9 md9 lg9>
+        <v-layout class="user-profile-username-layout">
+          <v-flex class="user-profile-username" grow>
             {{ user.username }}
           </v-flex>
-          <v-flex shrink v-if="isLoggedInUser">            
+          <v-layout align-center shrink v-if="isLoggedInUser">            
             <v-btn
+              :ripple="false"
               v-if="!editing"
               @click="editing = true"
             >
               {{ $t('user.profile.editProfile') }}
             </v-btn>
             <v-layout v-else>
-              <v-flex>
+              <v-flex px-2>
                 <v-btn
+                  :ripple="false"
                   @click="cancelEditing">
                 {{ $t('user.profile.cancel') }}
               </v-btn>
               </v-flex>
-              <v-flex>
+              <v-flex px-2>
                 <v-btn
+                  :ripple="false"
                   :disabled="!allRulesAlright"
                   @click="saveChanges">
                 {{ $t('user.profile.done') }}
               </v-btn>
               </v-flex>
             </v-layout>
-          </v-flex>
+          </v-layout>
         </v-layout>
-        <v-layout mt-10>
-          <v-flex>
+        <v-layout class="user-profile-description-layout">
+          <v-flex class="user-profile-description">
             <div v-if="!editing">
               {{ user.description }}
             </div>
@@ -85,11 +88,9 @@
         </v-layout>
       </v-flex>
     </v-layout>
-    <v-layout>
-    </v-layout>
     <v-divider></v-divider>
     <v-layout v-if="!editing">
-      <v-tabs class="justify-center" v-if="isLoggedInUser">
+      <v-tabs class="justify-center user-profile-active-toggle" v-if="isLoggedInUser">
         <v-tab :to="{ name: 'active-snippets' }" @click="$refs.userProfileRouterView.$emit('updated')">{{ $t('user.active') }}</v-tab>
         <v-tab :to="{ name: 'deleted-snippets' }" @click="$refs.userProfileRouterView.$emit('updated')">{{ $t('user.deleted') }}</v-tab>
       </v-tabs>
@@ -240,6 +241,34 @@ import validations from '@/functions/validations'
     }
     .user-profile-photo-input {
       display: none;
+    }
+    .user-profile-info-flex {
+      display: flex;
+      flex-direction: column;
+      align-items: space-between;
+    }
+    .user-profile-username-layout {
+      flex-grow: 0;
+    }
+    .user-profile-username {
+      font-size: 50px;
+      font-weight: 300;
+    }
+    .user-profile-description-layout {
+      flex-grow: 0;
+    }
+    .user-profile-description {
+      font-size: 25px;
+      textarea {
+        font-size: 25px;
+      }
+      font-weight: 300;
+    }
+    .user-profile-active-toggle {
+      background: #fafafa;
+      .v-tab {
+        background: #fafafa;
+      }
     }
   }
 </style>
