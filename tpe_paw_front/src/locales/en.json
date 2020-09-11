@@ -53,7 +53,8 @@
   },
   "snippets": {
     "createSnippet": {
-      "createSnippet": "Create Snippet",
+      "createSnippet": "Create A Snippet",
+      "create": "Create",
       "title": "Title",
       "description": "Description",
       "code": "Code",

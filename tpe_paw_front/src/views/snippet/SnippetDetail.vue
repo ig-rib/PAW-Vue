@@ -18,7 +18,7 @@
     <v-layout justify-center>
       <v-card id="snippet-detail-card" v-if="!loading">
         <v-container px-12>
-          <v-layout class="snippet-title-line">
+          <v-layout shrink mt-5 mb-3 class="snippet-title-line">
             <v-flex>
               <div class="snippet-title">
                 {{ snippet.title }}
@@ -33,18 +33,18 @@
               </v-btn>
             </v-flex>
           </v-layout>
-          <v-layout class="description-line">
+          <v-layout mb-3 shrink class="description-line">
             <v-flex>
               <div>
                 {{snippet.description}}
               </div>
             </v-flex>
           </v-layout>
-          <v-layout class="divider-line">
+          <v-layout shrink mb-3 class="divider-line">
             <v-divider></v-divider>
           </v-layout>
           <!-- CODE LAYOUT -->
-          <v-layout class="snippet-code-layout">
+          <v-layout mb-3 class="snippet-code-layout">
             <v-flex>
               <v-textarea
               readonly
@@ -58,12 +58,12 @@
             </v-flex>
           </v-layout>
           <!-- TAGS LINE -->
-          <v-layout class="tags-line" v-if="tags.length > 0" wrap>
+          <v-layout shrink mb-3 class="tags-line" v-if="tags.length > 0" wrap>
             <v-flex
               v-for="tag in tags"
               :key="tag.name"
               shrink
-              px-2>
+              pa-2>
               <v-btn :ripple="false" 
                 depressed
                 color="light-blue"
@@ -79,7 +79,7 @@
             </v-flex>
           </v-layout>
           <!-- ACTION BAR - ACTION ICONS AND OWNER DATA -->
-          <v-layout id="snippet-detail-action-bar">
+          <v-layout shrink mb-5 id="snippet-detail-action-bar">
             <!-- ACTION ICONS -->
             <v-flex class="action-icons" sm8 md8 lg8 mx-2>
               <v-layout class="action-icons-layout">
@@ -379,17 +379,17 @@ export default {
       }
       .snippet-title {
         font-size: 38px;
+        line-height: 1;
       }
     }
     .description-line {
-      max-height: 10%;
     }
     .divider-line {
       flex-grow: 0;
       margin: 0px 0px 2.5% 0px;
     }
     .snippet-code-layout {
-      min-height: 50%;
+      min-height: 300px;
       .snippet-detail-code-textarea {
         border-radius: 10px;
         height: 100%;
@@ -406,7 +406,7 @@ export default {
 
   @media #{map-get($display-breakpoints, 'sm-and-up')} {
     #snippet-detail-card > .container {
-    height: 750px !important;
+    min-height: 750px !important;
     max-width: 650px;
     display: flex;
     flex-direction: column;

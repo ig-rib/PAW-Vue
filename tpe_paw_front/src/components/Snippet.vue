@@ -1,6 +1,6 @@
 <template>
   <v-container v-if="snippet != null" id="snippet-card-container">
-      <v-card min-width="300px" max-width="400px" min-height="400px" class="snippet-card-card" @click="goToSnippetDetail">
+      <v-card min-width="300px" max-width="400px" min-height="375px" class="snippet-card-card" @click="goToSnippetDetail">
         <!-- <v-container class="snippet-card-inner-container"> -->
         <!-- User and language -->
           <v-layout class="user-language-layout" dense>
@@ -62,8 +62,8 @@
             </v-flex> -->
             <v-list-item two-line>
               <v-list-item-content class="pa-0"> 
-                <v-list-item-title class="headline mb-1">{{ snippet.title }}</v-list-item-title>
-                <p>{{ snippet.description }}</p>
+                <div class="snippet-title headline mb-1">{{ snippet.title }}</div>
+                <div class="snippet-description">{{ snippet.description }}</div>
               </v-list-item-content>
             </v-list-item>
           </v-layout>
@@ -237,6 +237,16 @@ export default {
   }
   .snippet-toggle-btn.fav-btn::before:hover {
     font-size: 60px;
+  }
+  .snippet-title {
+    font-weight: 400;
+  }
+  .snippet-description {
+    font-weight: 300;
+    margin-bottom: 2%;
+    max-height: 100px;
+    overflow-y: hidden;
+    max-width: 100%;
   }
 }
 </style>

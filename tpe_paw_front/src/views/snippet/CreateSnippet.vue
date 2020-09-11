@@ -1,10 +1,15 @@
 <template>
   <v-container id="snippet-create-container">
     <v-layout justify-center>
+      <v-flex shrink class="view-title">
+        {{ $t('snippets.createSnippet.createSnippet')}}
+      </v-flex>
+    </v-layout>
+    <v-layout justify-center>
         <v-card class="snippet-create-card">
           <v-container>
             <v-layout class="title-row">
-              <v-flex>
+              <v-flex lg7 md7 sm7 xs7>
                 <v-text-field
                   outlined
                   dense
@@ -13,7 +18,7 @@
                   v-model="title"
                   :label="$t('snippets.createSnippet.title')"></v-text-field>
               </v-flex>
-              <v-flex>
+              <v-flex lg5 md5 sm5 xs5>
                 <language-select
                   :allowEmpty="false"
                   v-model="language"/>
@@ -51,7 +56,7 @@
             </v-layout>
             <v-divider></v-divider>
             <v-layout class="tags-line">
-              <v-flex md6 sm6>
+              <v-flex md6 sm6 xs6>
                 <tag-select
                   multiple
                   v-model="tags"
@@ -60,7 +65,7 @@
               </v-flex>
               <v-flex class="save-btn-flex">
                 <v-btn :disabled="!allRulesAlright" @click="saveSnippet">
-                  {{ $t('snippets.createSnippet.createSnippet') }}
+                  {{ $t('snippets.createSnippet.create') }}
                 </v-btn>
               </v-flex>
             </v-layout>
@@ -126,7 +131,8 @@ export default {
       }
     }
     .snippet-create-card {
-      min-width: max-content;
+      min-width: 500px;
+      max-width: 500px;
     }
     .description-line {
     }
