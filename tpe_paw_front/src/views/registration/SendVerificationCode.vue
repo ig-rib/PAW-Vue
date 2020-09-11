@@ -1,5 +1,11 @@
 <template>
   <v-container class="registration-container">
+    <v-layout pt-10 align-center justify-center class="registration-snippit-logo">
+      {{ $t('snippit') }}
+    </v-layout>
+    <v-layout py-10 class="registration-title-layout" align-center justify-center>
+      {{ $t('registration.verifyAccount') }}
+    </v-layout>
     <v-layout column py-10 class="registration-title-layout" align-center>
       <h1>
         WELCOME TO SNIPPIT
@@ -47,7 +53,13 @@ export default {
       registration.sendVerificationCode(this.code)
         // TODO send to success page
         // or move to success tab
-        .then(r => /* Success */ r)
+        .then(r => {
+          this.$store.dispatch('snackSuccess', this.$t('registration.successfulVerification'))
+          // TODO do not allow going back to login
+          this.$router.push({
+            name: 'feed'
+          })
+        })
         .catch(e => e)
         .finally(() => {
           this.code = ''

@@ -2,13 +2,13 @@
     TO manually populate database in terminal: psql -U postgres -d paw -a -f populate.sql
  */
 delete from snippets where true;
-delete from votes_for where true;
-delete from favorites where true;
-delete from follows where true;
-delete from snippet_tags where true;
-delete from languages where true;
-delete from tags where true;
-delete from users where true;
+-- delete from votes_for where true;
+-- delete from favorites where true;
+-- delete from follows where true;
+-- delete from snippet_tags where true;
+-- delete from languages where true;
+-- delete from tags where true;
+-- delete from users where true;
 
 insert into roles(role) values('ADMIN');
 insert into roles(role) values('USER');

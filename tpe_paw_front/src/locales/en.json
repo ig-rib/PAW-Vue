@@ -1,6 +1,6 @@
 {
   "message": "hello i18n !!",
-  "snippit": "Snippit",
+  "snippit": "{ Snippit }",
   "feed": {
     "title": "Feed"
   },
@@ -163,7 +163,7 @@
     "email": "Email",
     "repeatPassword": "Repeat Password",
     "register": "Register",
-    "resetPassword": "Reset Password",
+    "resetPassword": "Reset Your Password",
     "sendRecoveryEmail": "Send",
     "verificationCode": "Verification Code",
     "sendVerificationCode": "Send",
@@ -171,9 +171,16 @@
     "goToRegister": "Register here",
     "hasAccount": "Already have an account?",
     "goToLogin": "Go to login",
-    "forgotPassword": "Forgot Password?",
-    "goToPassRecovery": "Recover password here",
-    "knowYourPassword": "Know your password?"
+    "forgotPassword": "Forgot your password?",
+    "goToPassRecovery": "Recover your password here",
+    "knowYourPassword": "Know your password?",
+    "welcome": "Welcome To Snippit",
+    "createAccount": "Create An Account",
+    "recoverPassword": "Recover Your Password",
+    "verifyAccount": "Verify Your Account",
+    "recoveryEmailSent": "Email Sent!",
+    "mailSentInfo": "You can now visit the link we sent you and change your password.",
+    "successfulVerification": "Successfully verified account!"
   },
   "validations": {
     "invalidPassword": "Password must be at least 8 characters long",

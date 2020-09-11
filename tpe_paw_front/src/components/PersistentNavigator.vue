@@ -13,11 +13,9 @@
           <v-app-bar-nav-icon @click="navDrawer = !navDrawer"></v-app-bar-nav-icon>
         </v-flex>
         <!-- Title -->
-        <v-flex md1 sm1 v-if="$vuetify.breakpoint.mdAndUp">
-          <v-btn depressed class="title-btn">
-            <v-toolbar-title
-              @click="goHome"
-              >{{ $t('snippit') }}</v-toolbar-title>
+        <v-flex class="title-flex" md1 sm1 v-if="$vuetify.breakpoint.lgAndUp">
+          <v-btn @click="goHome" :ripple="false" depressed class="title-btn">
+            {{ $t('snippit') }}
           </v-btn>
         </v-flex>
 
@@ -30,6 +28,7 @@
               :key="item.title"
             >
               <v-btn
+                :ripple="false"
                 elevation="0"
                 :to="item.path"
                 class="nav-button"
@@ -48,6 +47,7 @@
             <v-menu v-if="$store.getters.loggedIn" offset-y>
               <template v-slot:activator="{ on }">
                 <v-btn
+                :ripple="false"
                 elevation="0"
                 class="nav-button"
                 v-on="on"
@@ -184,7 +184,12 @@
             
           </template>
           <template v-else>
-            <v-btn v-if="$vuetify.breakpoint.lgAndUp" :to="{ name: 'create-snippet' }">
+            <v-btn 
+              class="create-snippet-btn"
+              rounded
+              :ripple="false"
+              v-if="$vuetify.breakpoint.lgAndUp"
+              :to="{ name: 'create-snippet' }">
               {{ $t('snippets.createSnippet.createSnippet') }}
             </v-btn>
             <v-btn v-else icon :to="{ name: 'create-snippet' }">
@@ -194,12 +199,12 @@
         </v-flex>
         <!-- Registration/Login/User section -->
         <v-flex shrink v-if="$vuetify.breakpoint.lgAndUp">
-          <v-layout v-if="!$store.getters.loggedIn">
-            <v-flex shrink>
-              <v-btn @click="goToLogin">{{ $t('registration.login') }}</v-btn>
+          <v-layout v-if="!$store.getters.loggedIn && !inRegistrationPage">
+            <v-flex ma-2 shrink>
+              <v-btn class="white--text" color="green" :ripple="false" @click="goToLogin">{{ $t('registration.login') }}</v-btn>
             </v-flex>
           </v-layout>
-          <v-layout v-else>
+          <v-layout v-if="$store.getters.loggedIn">
             <v-flex shrink>
               <v-btn x-large icon @click="goToProfile">
                 <img v-if="!profileImageError" @error="profileImageError = true" class="navbar-profile-circle" :src="currentUser.icon"/>
@@ -220,9 +225,9 @@
       absolute
       temporary
       v-model="navDrawer">
-      <h3>
-        {{`Snippit`}}
-      </h3>
+      <v-layout justify-center align-center class="drawer-title-layout">
+        {{ $t('snippit') }}
+      </v-layout>
         <v-list>
           <v-list-item
             v-for="item in generalPaths"
@@ -268,12 +273,12 @@
             </v-layout>
         </v-list-item>
       </v-list>
-    <v-layout v-if="!$store.getters.loggedIn">
-      <v-flex>
-        <v-btn @click="goToLogin">{{ $t('registration.login') }}</v-btn>
+    <v-layout v-if="!$store.getters.loggedIn && !inRegistrationPage">
+      <v-flex ma-2>
+        <v-btn class="white--text" color="green" :ripple="false" @click="goToLogin">{{ $t('registration.login') }}</v-btn>
       </v-flex>
     </v-layout>
-    <v-layout v-else>
+    <v-layout v-if="$store.getters.loggedIn">
       <v-flex shrink>
         <v-btn x-large icon @click="goToProfile">
           <img v-if="!profileImageError" @error="profileImageError = true" class="navbar-profile-circle" :src="currentUser.icon"/>
@@ -405,6 +410,9 @@ export default {
           break;
       }
       return this.$t('search.searchBarHint', params)
+    },
+    inRegistrationPage () {
+      return this.$route.path.includes('registration')
     }
   },
   methods: {
@@ -539,9 +547,16 @@ export default {
 <style lang="scss">
 @import '@/styles/alignmentUtils.scss';
 #persistent-navigator-div {
-
   div.v-toolbar__content {
     padding: 0px;
+  }
+  .drawer-title-layout {
+    min-height: 100px;
+    font-size: 40px;
+    -webkit-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none;
+    user-select: none;
   }
   .nav-layout {
     .flex {
@@ -554,14 +569,21 @@ export default {
     max-width: 40px;
     border-radius: 40px;
   }
+  .title-flex {
+    display: flex;
+    justify-content: center;
+  }
   .title-btn {
     height: 100% !important;
     border-radius: 3px !important;
     .a {
       border-radius: 3px !important;
     }
-    width: max-content;
+    width: 100%;
     padding: 0px;
+    font-weight: 400;
+    font-size: 24px !important;
+    letter-spacing: 0;
   }
   .nav-search-text-field {
     background: white;
@@ -580,6 +602,8 @@ export default {
     .a {
       border-radius: 0px !important;
     }
+  }
+  .create-snippet-btn {
   }
   #search-bar-flex {
     & > .layout {

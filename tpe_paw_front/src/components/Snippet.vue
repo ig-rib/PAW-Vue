@@ -1,10 +1,10 @@
 <template>
   <v-container v-if="snippet != null" id="snippet-card-container">
-      <v-card min-width="300px" max-width="400px" min-height="375px" class="snippet-card-card" @click="goToSnippetDetail">
+      <v-card min-width="300px" min-height="375px" :class="`${cardMaxWidthClass} snippet-card-card`" @click="goToSnippetDetail">
         <!-- <v-container class="snippet-card-inner-container"> -->
         <!-- User and language -->
           <v-layout class="user-language-layout" dense>
-              <v-flex xs6 sm6 md6 lg6 dense>
+              <v-flex dense>
                 <v-list-item two-line>
                   <v-avatar class="mr-2" color="indigo">
                     <img v-if="!error" @error="error = true" class="profile-circle" :src="owner.icon"/>
@@ -16,8 +16,7 @@
                   </v-list-item-content>
                 </v-list-item>
               </v-flex>
-
-              <v-flex xs6 sm6 md6 lg6 class="snippet-language-flex">
+              <v-flex class="snippet-language-flex">
                 <v-layout class="pr-2" justify-end>
                   <v-flex class="flex-grow-0 pa-1">
                     <v-btn 
@@ -116,6 +115,15 @@ export default {
   computed: {
     standardDate () {
       return this.snippet.dateCreated.split('T')[0]
+    },
+    cardMaxWidthClass () {
+      if (this.$vuetify.breakpoint.lgAndUp) {
+        return 'max-800';
+      } else if (this.$vuetify.breakpoint.md) {
+        return 'max-600';
+      } else {
+        return 'max-400';
+      }
     }
   },
   methods: {
@@ -158,9 +166,10 @@ export default {
 
 <style lang="scss">
 @import '@/styles/colours.scss';
+@import '@/styles/main.scss';
 
 #snippet-card-container {
-  max-width: 450px;
+  // max-width: 450px;
   // max-width: 33%;
   // margin: 5%;
   .account-circle {

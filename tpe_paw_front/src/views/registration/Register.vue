@@ -1,9 +1,10 @@
 <template>
   <v-container class="registration-container">
+    <v-layout pt-10 align-center justify-center class="registration-snippit-logo">
+      {{ $t('snippit') }}
+    </v-layout>
     <v-layout py-10 class="registration-title-layout" align-center justify-center>
-      <h1>
-        WELCOME TO SNIPPIT
-      </h1>
+      {{ $t('registration.createAccount') }}
     </v-layout>
     <v-layout class="registration-data-layout" column>
       <v-flex>
@@ -53,13 +54,15 @@
         </v-layout>
       </v-flex>
     </v-layout>
-    <v-layout class="registration-navigation-layout" column>
-      <v-layout>
-        <v-btn text @click="goToLogin">{{ $t('registration.hasAccount') }} {{ $t('registration.goToLogin') }}</v-btn>
-      </v-layout>
-      <v-layout>
-        <v-btn text @click="goToPassRecovery">{{ $t('registration.forgotPassword') }} {{ $t('registration.goToPassRecovery') }}</v-btn>
-      </v-layout>
+    <v-layout mt-8 align-center class="registration-navigation-layout" column>
+        <v-flex>
+          {{ $t('registration.hasAccount') }}
+          <a @click="goToLogin">{{ $t('registration.goToLogin') }}</a>
+        </v-flex>
+        <v-flex>
+          {{ $t('registration.forgotPassword') }}
+          <a @click="goToPassRecovery">{{ $t('registration.goToPassRecovery') }}</a>
+        </v-flex>
     </v-layout>
   </v-container>
 </template>

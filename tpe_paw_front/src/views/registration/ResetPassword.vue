@@ -1,5 +1,11 @@
 <template>
   <v-container>
+    <v-layout pt-10 align-center justify-center class="registration-snippit-logo">
+      {{ $t('snippit') }}
+    </v-layout>
+    <v-layout py-10 class="registration-title-layout" align-center justify-center>
+      {{ $t('registration.resetPassword') }}
+    </v-layout>
     <v-text-field
       type="password"
       :label="$t('registration.password')"

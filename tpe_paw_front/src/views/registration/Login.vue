@@ -1,9 +1,10 @@
 <template>
   <v-container id="login-container">
+    <v-layout pt-10 align-center justify-center class="registration-snippit-logo">
+      {{ $t('snippit') }}
+    </v-layout>
     <v-layout py-10 class="registration-title-layout" align-center justify-center>
-      <h1>
-        WELCOME TO SNIPPIT
-      </h1>
+      {{ $t('registration.welcome') }}
     </v-layout>
     <v-layout class="registration-data-layout" column>
       <v-flex>
@@ -25,21 +26,25 @@
       </v-flex>
       <v-flex>
         <v-layout justify-center>
+          <div v-if="invalid" class="error-text">
+            {{ $t('validations.usernameOrPasswordInvalid') }}
+          </div>
+        </v-layout>
+        <v-layout mt-5 justify-center>
           <v-flex shrink>
             <v-btn @click="login">{{ $t('registration.login') }}</v-btn>
           </v-flex>
         </v-layout>
       </v-flex>
     </v-layout>
-    <v-layout class="registration-navigation-layout" column>
-      <div v-if="invalid" class="error-text">
-        {{ $t('registration.validations.usernameOrPasswordInvalid') }}
-      </div>
-      <v-flex>
-        <v-btn text @click="goToRegister">{{ $t('registration.noAccount') }} {{ $t('registration.goToRegister') }}</v-btn>
+    <v-layout mt-8 shrink justify-center align-center class="registration-navigation-layout" column>
+      <v-flex shrink>
+          {{ $t('registration.noAccount') }}
+          <a @click="goToRegister">{{ $t('registration.goToRegister') }}</a>
       </v-flex>
-      <v-flex>
-        <v-btn text @click="goToPassRecovery">{{ $t('registration.forgotPassword') }} {{ $t('registration.goToPassRecovery') }}</v-btn>
+      <v-flex shrink>
+          {{ $t('registration.forgotPassword') }}
+          <a @click="goToPassRecovery">{{ $t('registration.goToPassRecovery') }}</a>
       </v-flex>
     </v-layout>
   </v-container>
