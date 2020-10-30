@@ -46,7 +46,7 @@
           <!-- CODE LAYOUT -->
           <v-layout mb-3 class="snippet-code-layout">
             <v-flex>
-              <v-textarea
+              <!-- <v-textarea
               readonly
               no-resize
               hide-details
@@ -55,12 +55,16 @@
               class="snippet-detail-code-textarea"
               id="code-textarea"
               v-model="snippet.code" v-cloak>
-              </v-textarea>
+              </v-textarea> -->
+              <ssh-pre class="snippet-detail-code-textarea" language="js" copy-button @copied="copiedToClipboard">
+                {{snippet.code}}
+                <template v-slot:copy-button>
+                  <v-btn icon><v-icon>mdi-content-copy</v-icon></v-btn>
+                </template>
+              </ssh-pre>
               <input class="hidden-input" type="hidden" id="code-input" :value="snippet.code">
             </v-flex>
-            <v-flex>
-              <v-btn @click="copyToClipboard">COPY to CLIPBOARD</v-btn>
-            </v-flex>
+              <!-- <v-btn icon @click="copyToClipboard"><v-icon>mdi-clipboard</v-icon></v-btn> -->
           </v-layout>
           <!-- TAGS LINE -->
           <v-layout shrink mb-3 class="tags-line" v-if="tags.length > 0" wrap>
@@ -188,8 +192,14 @@ import user from '@/services/user.js'
 import axiosFetcher from '@/services/axiosFetcher.js'
 import urls from '@/services/urls.js'
 import validations from '@/functions/validations'
+import SshPre from 'simple-syntax-highlighter'
+import 'simple-syntax-highlighter/dist/sshpre.css'
+
 
 export default {
+  components: {
+    'ssh-pre': SshPre
+  },
   data () {
     return {
       snippet: {},
@@ -301,17 +311,16 @@ export default {
         }
       })
     },
-    copyToClipboard () {
-      // StackOverflow code
-      const codeToCopy = document.querySelector('#code-textarea')
-      codeToCopy.select()
-      try {
-        document.execCommand('copy')
-        this.clearSelection()
-        this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.copiedToClipboard'))
-      } catch (exc) {
-        this.$store.dispatch('snackError', this.$t('error.snippet.detail.copying'))
-      }
+    copiedToClipboard () {
+      // const codeToCopy = document.querySelector('#code-textarea')
+      // codeToCopy.select()
+      // try {
+      //   document.execCommand('copy')
+      //   this.clearSelection()
+      this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.copiedToClipboard'))
+      // } catch (exc) {
+      //   this.$store.dispatch('snackError', this.$t('error.snippet.detail.copying'))
+      // }
     },
     clearSelection() {
       let sel;

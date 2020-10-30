@@ -11,6 +11,8 @@ import LanguageSelect from './components/forms/LanguageSelect.vue'
 import Snippet from './components/Snippet.vue'
 import SnippetGrid from './components/SnippetGrid.vue'
 
+// import VueHighlightJS from 'vue-highlightjs'
+
 Vue.config.productionTip = false
 
 Vue.component('tf-date-picker', TextFieldDatePicker)
@@ -18,6 +20,8 @@ Vue.component('tag-select', TagSelect)
 Vue.component('language-select', LanguageSelect)
 Vue.component('snippet', Snippet)
 Vue.component('snippet-grid', SnippetGrid)
+
+// Vue.use(VueHighlightJS)
 
 new Vue({
   router,
