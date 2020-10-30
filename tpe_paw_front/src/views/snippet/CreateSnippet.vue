@@ -11,6 +11,7 @@
             <v-layout class="title-row">
               <v-flex lg7 md7 sm7 xs7>
                 <v-text-field
+                  pt-12
                   outlined
                   dense
                   rounded

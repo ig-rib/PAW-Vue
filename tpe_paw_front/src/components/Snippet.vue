@@ -86,11 +86,11 @@
             >
               <p class="snippet-card-code-fade">a</p>
             </v-textarea> -->
-            <ssh-pre class="snippet-card-code-textarea" language="js" copy-button @copied="copiedToClipboard">
+            <ssh-pre @click="$event.stopPropagation()" @click.stop="null" @mousedown="$event.stopPropagation()" class="snippet-card-code-textarea" language="js" @copied="copiedToClipboard()">
               {{snippet.code}}
-              <template v-slot:copy-button>
-                <v-btn @click="$event.stopPropagation()" icon><v-icon>mdi-content-copy</v-icon></v-btn>
-              </template>
+              <!-- <template @mousedown="$event.stopPropagation()" @click="clicked('template'); $event.stopPropagation()" v-slot:copy-button>
+                <v-btn @mousedown="$event.stopPropagation()" @click="clicked('button')" icon><v-icon>mdi-content-copy</v-icon></v-btn>
+              </template> -->
             </ssh-pre>
           </v-layout>
         <!-- </v-container> -->
@@ -220,6 +220,7 @@ export default {
     border-radius: 10px;
     max-height: 300px;
     overflow: hidden;
+    width: 100%;
     // textarea {
     //   overflow: hidden !important;
     //   -webkit-user-select: none; /* Safari */        

@@ -44,7 +44,7 @@
             <v-divider></v-divider>
           </v-layout>
           <!-- CODE LAYOUT -->
-          <v-layout mb-3 class="snippet-code-layout">
+          <v-layout mb-8 class="snippet-code-layout">
             <v-flex>
               <!-- <v-textarea
               readonly
@@ -439,6 +439,8 @@ export default {
       .snippet-detail-code-textarea {
         border-radius: 10px;
         height: 100%;
+        max-height: 500px;
+        overflow: auto;
         div {
           height: 100%;
         }
