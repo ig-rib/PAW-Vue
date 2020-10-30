@@ -54,7 +54,7 @@ export default {
 
 <style lang="scss">
 @import "@/styles/multiselect.scss";
-
+@import "@/styles/colours.scss";
 #app {
   background: #fafafa;
 }

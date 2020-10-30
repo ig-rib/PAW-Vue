@@ -104,6 +104,8 @@
                     <v-btn
                       height="100%"
                       @click="search"
+                      class="search-btn"
+                      :ripple="false"
                       icon>
                       <v-icon>mdi-magnify</v-icon>
                     </v-btn>
@@ -546,6 +548,8 @@ export default {
 
 <style lang="scss">
 @import '@/styles/alignmentUtils.scss';
+@import '@/styles/colours.scss';
+
 #persistent-navigator-div {
   div.v-toolbar__content {
     padding: 0px;
@@ -584,6 +588,7 @@ export default {
     font-weight: 400;
     font-size: 24px !important;
     letter-spacing: 0;
+    color: $prussian-blue;
   }
   .nav-search-text-field {
     background: white;
@@ -602,12 +607,14 @@ export default {
     .a {
       border-radius: 0px !important;
     }
+    color: $prussian-blue;
   }
   .create-snippet-btn {
   }
   #search-bar-flex {
-    & > .layout {
+    & > .layout, .v-card {
       height: 100%;
+      border-radius: 8px;
     }
     .v-text-field__details, .v-messages.theme--light {
       visibility: hidden;
@@ -621,6 +628,15 @@ export default {
     }
     .search-select-flex .v-input__control {
       height: 0px;
+    }
+    .search-btn {
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px;
+      border-top-right-radius: 8px;
+      border-bottom-right-radius: 8px;
+      .v-ripple__container {
+        display: none !important;
+      }
     }
   }
 }
