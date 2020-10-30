@@ -1,12 +1,12 @@
 <template>
-  <v-container id="explore-container">
+  <div id="explore-container">
     <v-layout>
       <v-flex class="view-title">
         {{ $t('explore.explore') }}
       </v-flex>
     </v-layout>
-    <v-layout justify-center wrap>
-      <v-flex :class="`${$vuetify.breakpoint.mdAndUp ? 'my-15' : ''}`" md4 lg4 sm12>
+    <v-layout justify-space-around wrap>
+      <v-flex :class="`explore-pad-flex ${$vuetify.breakpoint.mdAndUp ? 'my-15' : ''}`" md4 lg4 sm12>
         <explore-pad v-if="$vuetify.breakpoint.mdAndUp"
           @searchResults="updateResults"></explore-pad>
         <v-btn rounded v-else @click="showExplorePad = !showExplorePad">
@@ -16,7 +16,7 @@
       <v-flex lg8 md8>
         <snippet-grid ref="exploreSnippets"></snippet-grid>
       </v-flex>
-    </v-layout>
+    </v-layout >
     <v-dialog width="450px" id="explore-pad-dialog" v-model="showExplorePad">
       <v-layout>
         <v-flex>
@@ -25,7 +25,7 @@
         </v-flex>
       </v-layout>
     </v-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -59,5 +59,8 @@ export default {
 
 <style lang="scss">
   #explore-container {
+    .explore-pad-flex {
+      margin-left: auto;
+    }
   }
 </style>

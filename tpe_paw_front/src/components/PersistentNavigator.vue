@@ -83,8 +83,8 @@
 
         <!-- Search bar -->
         <v-flex id="search-bar-flex" px-2>
-          <v-layout>
-            <v-flex grow>
+          <v-layout justify-center>
+            <v-flex shrink>
               <v-card height="70%" width="100%">
                 <v-layout fill-height>
                   <v-flex>
@@ -549,6 +549,7 @@ export default {
 <style lang="scss">
 @import '@/styles/alignmentUtils.scss';
 @import '@/styles/colours.scss';
+@import "@/styles/main.scss";
 
 #persistent-navigator-div {
   div.v-toolbar__content {

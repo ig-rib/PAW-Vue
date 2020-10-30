@@ -1,5 +1,5 @@
 <template>
-  <v-container id="user-profile-container">
+  <div id="user-profile-container">
     <v-layout justify-center pa-5 v-if="currentAndUnverified">
       <v-flex shrink>
         <v-card class="notice-card">
@@ -98,7 +98,7 @@
     <v-layout>
       <router-view ref="userProfileRouterView"></router-view>
     </v-layout>
-  </v-container>
+  </div>
 </template>
 
 <script>

@@ -273,6 +273,7 @@ export default {
 
 <style lang="scss">
 #explore-pad-card {
+  margin-left: auto;
   .explore-pad-title {
     font-size: 36px;
     font-weight: 300;

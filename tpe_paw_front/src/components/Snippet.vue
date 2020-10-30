@@ -1,6 +1,12 @@
 <template>
   <v-container v-if="snippet != null" id="snippet-card-container">
-      <v-card min-width="300px" min-height="375px" :class="`${cardMaxWidthClass} snippet-card-card`" @click="goToSnippetDetail">
+      <!-- min-width="300px"
+        min-height="375px" -->
+      <v-card
+        min-width="300px"
+        max-width="400px !important"
+        class="snippet-card-card" 
+        :class="`${cardMaxWidthClass} snippet-card-card`" @click="goToSnippetDetail">
         <!-- <v-container class="snippet-card-inner-container"> -->
         <!-- User and language -->
           <v-layout class="user-language-layout" dense>

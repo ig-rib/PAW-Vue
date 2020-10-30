@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div class="fill-width">
     <v-layout justify-center mb-10 class="text-center">
       <v-pagination
         v-if="snippets.length > 0"
@@ -56,8 +56,11 @@
           <v-btn @click="tryLoadingAgain">{{ $t('error.grid.tryAgain') }}</v-btn>
         </v-flex>
       </v-layout>
-      <v-layout v-else row wrap justify-center>
-        <v-flex shrink
+      <v-layout v-else justify-center wrap>
+        <v-flex
+
+            class="snippet-card-flex"
+            shrink
             v-for="snippet in snippets"
             :key="snippet.id"
           >
@@ -75,7 +78,7 @@
         :total-visible="pagination.visible"
       ></v-pagination>
     </v-layout>
-  </v-container>
+  </div>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div class="fill-width">
     <v-layout>
       <v-flex class="view-title">
         {{ $t('user.following.title') }}
@@ -8,7 +8,7 @@
     <v-layout>
       <snippet-grid ref="userFavoritesSnippetGrid"></snippet-grid>
     </v-layout>
-  </v-container>
+  </div>
 </template>
 
 <script>
