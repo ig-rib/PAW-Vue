@@ -7,6 +7,7 @@
     </v-layout>
     <v-layout justify-center mb-10 class="text-center">
       <v-pagination
+        v-if="status === ''"
         v-model="pagination.page"
         v-on:input="paginationChange"
         :length="pagination.length" 

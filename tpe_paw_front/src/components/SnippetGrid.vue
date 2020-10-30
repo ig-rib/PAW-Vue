@@ -29,7 +29,7 @@
         {{ $t('components.snippetGrid.profile.noSnippetsInOwnProfileDeleted') }}
       </v-flex>
     </v-layout>
-    <v-layout align-center justify-center py-10 v-else-if="snippets.length === 0">
+    <v-layout align-center justify-center py-10 v-else-if="snippets.length === 0 && status !== 'l' && status !== 'e'">
       <v-flex shrink class="no-snippets-text">
         {{ $t('components.snippetGrid.noSnippets') }}
       </v-flex>
