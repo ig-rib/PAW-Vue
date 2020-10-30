@@ -1,5 +1,5 @@
 <template>
-  <v-card id="explore-pad-card" min-width="350px" max-width="450px" mx-1 mb-5>
+  <v-card id="explore-pad-card" min-width="250px" max-width="100% !important" mx-1 mb-5>
     <v-container>
       <v-layout justify-center class="explore-pad-title">
         {{ $t('explore.padTitle') }}
@@ -9,8 +9,9 @@
           {{ $t('explore.order.title') }}
         </div>
       </v-layout>
+      <!-- Order by and Sort -->
       <v-layout my-2>
-        <v-flex px-2>
+        <v-flex 6 px-2>
           <v-select
             hide-details
             v-model="exploreParams.orderBy"
@@ -22,7 +23,7 @@
             outlined
             dense></v-select>
         </v-flex>
-        <v-flex px-2>
+        <v-flex 6 px-2>
           <v-select
             hide-details
             v-model="exploreParams.sort"
@@ -36,6 +37,7 @@
         </v-flex>
       </v-layout>
       <v-divider></v-divider>
+      <!-- Include Flagged -->
       <v-layout>
         <div class="explore-pad-section-title">
           {{ $t('explore.flagged.title') }}
@@ -49,6 +51,7 @@
         </v-layout>
       </v-layout>
       <v-divider></v-divider>
+      <!-- Title -->
       <v-layout>
         <div class="explore-pad-section-title">
           {{ $t('explore.title.title') }}
@@ -66,7 +69,9 @@
         </v-layout>
       </v-layout>
       <v-divider></v-divider>
-      <v-layout>
+      <!-- Language -->
+      <v-layout wrap>
+        <!-- Language -->
         <v-flex md6 sm6 xs6>
           <v-layout>
             <div class="explore-pad-section-title">
@@ -83,6 +88,7 @@
             </v-flex>
           </v-layout>
         </v-flex>
+        <!-- Tags -->
         <v-flex md6 sm6 xs6>
           <v-layout>
             <div class="explore-pad-section-title">
@@ -194,7 +200,7 @@
         </v-flex>
       </v-layout>
       <v-layout justify-end mt-5 mb-2>
-        <v-btn class="explore-btn" rounded @click="exploreSearch">
+        <v-btn class="explore-btn" @click="exploreSearch">
           {{ $t('explore.explore') }}
         </v-btn>
       </v-layout>

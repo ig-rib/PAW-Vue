@@ -80,7 +80,8 @@
         "title": "Beware!",
         "text1": "The following snippet has been marked as incorrect by the administrator.",
         "text2": "It may not work or be unsafe to use."
-      }
+      },
+      "copiedToClipboard": "Code copied to clipboard!"
     }
   },
   "navigation": {
@@ -248,6 +249,11 @@
     "403": {
       "name": "Forbidden",
       "desc": "Keep Away! This content isn't meant for you!"
+    },
+    "snippet": {
+      "detail": {
+        "copying": "Error copying code to clipboard"
+      }
     }
   },
   "snackbar": {

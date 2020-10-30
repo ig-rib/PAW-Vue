@@ -1,7 +1,7 @@
 <template>
-  <v-container>
-    <v-layout>
-      <v-flex class="view-title">
+  <div>
+    <v-layout class="view-title-layout">
+      <v-flex shrink class="view-title">
         {{$t('languages.title')}}
       </v-flex>
     </v-layout>
@@ -56,7 +56,7 @@
       </v-layout>
     </div>
     
-  </v-container>
+  </div>
 </template>
 
 <script>

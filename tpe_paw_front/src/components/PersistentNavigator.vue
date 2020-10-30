@@ -14,7 +14,7 @@
         </v-flex>
         <!-- Title -->
         <v-flex class="title-flex" md1 sm1 v-if="$vuetify.breakpoint.lgAndUp">
-          <v-btn @click="goHome" :ripple="false" depressed class="title-btn">
+          <v-btn min-width="max-content" @click="goHome" :ripple="false" depressed class="title-btn">
             {{ $t('snippit') }}
           </v-btn>
         </v-flex>
@@ -294,7 +294,7 @@
       </v-flex>
     </v-layout>
     </v-navigation-drawer>
-    <div>
+    <div class="px-10">
       <router-view ref="persistentNavigatorRouterView"></router-view>
     </div>
   </div>
@@ -577,6 +577,7 @@ export default {
   .title-flex {
     display: flex;
     justify-content: center;
+    min-width: max-content;
   }
   .title-btn {
     height: 100% !important;

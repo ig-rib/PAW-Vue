@@ -53,8 +53,13 @@
               rounded
               filled
               class="snippet-detail-code-textarea"
+              id="code-textarea"
               v-model="snippet.code" v-cloak>
               </v-textarea>
+              <input class="hidden-input" type="hidden" id="code-input" :value="snippet.code">
+            </v-flex>
+            <v-flex>
+              <v-btn @click="copyToClipboard">COPY to CLIPBOARD</v-btn>
             </v-flex>
           </v-layout>
           <!-- TAGS LINE -->
@@ -295,6 +300,37 @@ export default {
           id: this.owner.id
         }
       })
+    },
+    copyToClipboard () {
+      // StackOverflow code
+      const codeToCopy = document.querySelector('#code-textarea')
+      codeToCopy.select()
+      try {
+        document.execCommand('copy')
+        this.clearSelection()
+        this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.copiedToClipboard'))
+      } catch (exc) {
+        this.$store.dispatch('snackError', this.$t('error.snippet.detail.copying'))
+      }
+    },
+    clearSelection() {
+      let sel;
+      if ((sel = document.selection) && sel.empty) {
+        sel.empty();
+      } else {
+          if (window.getSelection) {
+            window.getSelection().removeAllRanges();
+          }
+          let activeEl = document.activeElement;
+          if (activeEl) {
+              let tagName = activeEl.nodeName.toLowerCase();
+              if (tagName === 'textarea' ||
+                      (tagName === 'input' && activeEl.type === 'text')) {
+                  // Collapse the selection to the end
+                activeEl.selectionStart = activeEl.selectionEnd;
+              }
+          }
+      }
     }
   },
   computed: {

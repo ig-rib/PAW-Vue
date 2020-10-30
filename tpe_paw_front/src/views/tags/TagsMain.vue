@@ -1,80 +1,78 @@
 <template>
-  <v-container>
-    <div>
-      <v-layout>
-        <v-flex class="view-title">
-          {{ $t('tags.title') }}
-        </v-flex>
-      </v-layout>
-      <v-layout justify-center mb-10 class="text-center">
-        <v-pagination
-          v-model="pagination.page"
-          @input="paginationChange"
-          :length="pagination.length" 
-          :total-visible="pagination.visible"
-        ></v-pagination>
-      </v-layout>
-      <v-layout 
-        class="grid-error-layout"
-        align-center
-        column
-        justify-center
-        v-if="status === 'e'">
-        <v-flex my-2 shrink>
-          {{ $t('error.grid.tags') }}
-        </v-flex>
-        <v-flex my-2>
-          <v-btn @click="tryLoadingAgain">{{ $t('error.grid.tryAgain') }}</v-btn>
-        </v-flex>
-      </v-layout>
-      <v-layout class="grid-progress-circle" v-if="status === 'l'" justify-center>
-        <v-progress-circular
-          :size="70"
-          :width="7"
-          color="primary"
-          indeterminate>
-        </v-progress-circular>
-      </v-layout>
-      <v-layout v-else wrap justify-center>
-        <v-flex my-2
-          :class="`lg3 md4 sm4 ${ $vuetify.breakpoint.lgAndUp ? 'px-2' : 'mx-2' }`"
-          v-for="tag in tags"
-          :key="tag.id">
-          <!-- <v-container> -->
+  <div>
+    <v-layout class="view-title-layout">
+      <v-flex shrink class="view-title">
+        {{ $t('tags.title') }}
+      </v-flex>
+    </v-layout>
+    <v-layout justify-center mb-10 class="text-center">
+      <v-pagination
+        v-model="pagination.page"
+        @input="paginationChange"
+        :length="pagination.length" 
+        :total-visible="pagination.visible"
+      ></v-pagination>
+    </v-layout>
+    <v-layout 
+      class="grid-error-layout"
+      align-center
+      column
+      justify-center
+      v-if="status === 'e'">
+      <v-flex my-2 shrink>
+        {{ $t('error.grid.tags') }}
+      </v-flex>
+      <v-flex my-2>
+        <v-btn @click="tryLoadingAgain">{{ $t('error.grid.tryAgain') }}</v-btn>
+      </v-flex>
+    </v-layout>
+    <v-layout class="grid-progress-circle" v-if="status === 'l'" justify-center>
+      <v-progress-circular
+        :size="70"
+        :width="7"
+        color="primary"
+        indeterminate>
+      </v-progress-circular>
+    </v-layout>
+    <v-layout v-else wrap justify-center>
+      <v-flex my-2
+        :class="`lg3 md4 sm4 ${ $vuetify.breakpoint.lgAndUp ? 'px-2' : 'mx-2' }`"
+        v-for="tag in tags"
+        :key="tag.id">
+        <!-- <v-container> -->
 
-          <v-card elevation="1"
-            class="card-chip"
-            @click="goToTagSnippets(tag.id)"
-            >
-            <v-layout width="100%">
-              <v-flex class="tag-name-flex">
-                {{ tag.name }}
-              </v-flex>
-              <v-flex shrink ml-auto>
-                <v-btn
-                  elevation="0"
-                  class="tag-follow-btn ma-1"
-                  color="primary"
-                  :outlined="!tag.userFollowing"
-                  @click="tag.userFollowing ? unfollowTag(tag) : followTag(tag)"
-                  @mousedown.stop="null"
-                  @click.stop="null"
-                >
-                <template v-if="tag.userFollowing">
-                  {{ $t('tags.following') }}
-                </template>
-                <template v-else>
-                  {{ $t('tags.follow') }}
-                </template>
-                </v-btn>
-              </v-flex>
-            </v-layout>            
-          </v-card>
-          <!-- </v-container> -->
-        </v-flex>
-      </v-layout>
-    </div>
-  </v-container>
+        <v-card elevation="1"
+          class="card-chip"
+          @click="goToTagSnippets(tag.id)"
+          >
+          <v-layout width="100%">
+            <v-flex class="tag-name-flex">
+              {{ tag.name }}
+            </v-flex>
+            <v-flex shrink ml-auto>
+              <v-btn
+                elevation="0"
+                class="tag-follow-btn ma-1"
+                color="primary"
+                :outlined="!tag.userFollowing"
+                @click="tag.userFollowing ? unfollowTag(tag) : followTag(tag)"
+                @mousedown.stop="null"
+                @click.stop="null"
+              >
+              <template v-if="tag.userFollowing">
+                {{ $t('tags.following') }}
+              </template>
+              <template v-else>
+                {{ $t('tags.follow') }}
+              </template>
+              </v-btn>
+            </v-flex>
+          </v-layout>            
+        </v-card>
+        <!-- </v-container> -->
+      </v-flex>
+    </v-layout>
+  </div>
 </template>
 
 <script>

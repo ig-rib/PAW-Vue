@@ -1,7 +1,7 @@
 <template>
   <div class="fill-width">
-    <v-layout>
-      <v-flex class="view-title">
+    <v-layout class="view-title-layout">
+      <v-flex shrink class="view-title">
         {{ $t('user.upvoted.title') }}
       </v-flex>
     </v-layout>
