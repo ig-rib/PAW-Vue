@@ -75,7 +75,7 @@
 
           <!-- Code preview -->
           <v-layout class="code-layout">
-            <v-textarea
+            <!-- <v-textarea
               no-resize
               hide-details
               rounded
@@ -85,7 +85,13 @@
               :value="snippet.code"
             >
               <p class="snippet-card-code-fade">a</p>
-            </v-textarea>
+            </v-textarea> -->
+            <ssh-pre class="snippet-card-code-textarea" language="js" copy-button @copied="copiedToClipboard">
+              {{snippet.code}}
+              <template v-slot:copy-button>
+                <v-btn @click="$event.stopPropagation()" icon><v-icon>mdi-content-copy</v-icon></v-btn>
+              </template>
+            </ssh-pre>
           </v-layout>
         <!-- </v-container> -->
       </v-card>
@@ -96,12 +102,14 @@
 <script>
 import snippets from '@/services/snippets.js'
 import axiosFetcher from '@/services/axiosFetcher.js'
+import SshPre from 'simple-syntax-highlighter'
+import 'simple-syntax-highlighter/dist/sshpre.css'
 
 export default {
   name: 'SnippetComponent', 
 
   components: {
-    // TagComponent
+    'ssh-pre': SshPre
   },
   props: {
     snippet: {
@@ -161,6 +169,9 @@ export default {
       }
       promise.then(r => { this.snippet.favorite = !this.snippet.favorite })
       .finally(() => { this.faving = false })
+    },
+    copiedToClipboard () {
+      this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.copiedToClipboard'))
     }
   },
   mounted () {
@@ -207,12 +218,18 @@ export default {
   }
   .snippet-card-code-textarea {
     border-radius: 10px;
-    textarea {
-      overflow: hidden !important;
-      -webkit-user-select: none; /* Safari */        
-      -moz-user-select: none; /* Firefox */
-      -ms-user-select: none; /* IE10+/Edge */
-      user-select: none; /* Standard */
+    max-height: 300px;
+    overflow: hidden;
+    // textarea {
+    //   overflow: hidden !important;
+    //   -webkit-user-select: none; /* Safari */        
+    //   -moz-user-select: none; /* Firefox */
+    //   -ms-user-select: none; /* IE10+/Edge */
+    //   user-select: none; /* Standard */
+    // }
+    .v-ripple__container, .v-ripple__container > div {
+      opacity: 0.1 !important;
+      border-radius: 10px !important;
     }
   }
   .snippet-card-code-fade {
@@ -224,6 +241,9 @@ export default {
     -ms-user-select: none; /* IE10+/Edge */
     user-select: none; /* Standard */
     .v-ripple__container {
+      v-ripple__animation.v-ripple__animation--visible.v-ripple__animation--in {
+        border-radius: 10px !important;
+      }
       opacity: 0.1 !important;
       border-radius: 10px;
     }
@@ -263,5 +283,6 @@ export default {
     overflow-y: hidden;
     max-width: 100%;
   }
+
 }
 </style>

@@ -312,6 +312,7 @@ export default {
       })
     },
     copiedToClipboard () {
+      // TODO eventually remove commented code
       // const codeToCopy = document.querySelector('#code-textarea')
       // codeToCopy.select()
       // try {
