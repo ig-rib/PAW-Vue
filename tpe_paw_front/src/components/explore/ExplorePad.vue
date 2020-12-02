@@ -1,5 +1,5 @@
 <template>
-  <v-card id="explore-pad-card" min-width="250px" max-width="100% !important" mx-1 mb-5>
+  <v-card id="explore-pad-card" min-width="300px" max-width="100% !important" mx-1 mb-5>
     <v-container>
       <v-layout justify-center class="explore-pad-title">
         {{ $t('explore.padTitle') }}

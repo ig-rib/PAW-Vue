@@ -1,5 +1,9 @@
 @import './alignmentUtils.scss';
 
+$primary: #1565c0;
+$accent: #2286c3;
+$secondary: #64b5f6;
+
 .error-text {
     color: red !important;
     transition: 0.3s;
@@ -14,6 +18,7 @@
 }
 
 .view-title-layout {
+    justify-content: center;
 }
 
 .view-title {

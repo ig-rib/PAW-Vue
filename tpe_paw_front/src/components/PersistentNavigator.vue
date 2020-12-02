@@ -2,7 +2,7 @@
   <div id="persistent-navigator-div">
     <v-app-bar
       pa-0
-      color="lightgrey"
+      color="#d4d8dc"
       elevate-on-scroll
       scroll-target="#scrolling-techniques-7"
       height="68px"
@@ -232,6 +232,7 @@
       </v-layout>
         <v-list>
           <v-list-item
+            color="primary"
             v-for="item in generalPaths"
             :key="item.title"
             :to="item.path"
@@ -262,6 +263,7 @@
             </v-layout>
         </v-list-item>
         <v-list-item
+          color="primary"
           v-for="item in loggedInPaths"
           :key="item.title"
           :to="item.path">
@@ -562,6 +564,7 @@ export default {
     -moz-user-select: none; 
     -ms-user-select: none;
     user-select: none;
+    // color: $primary !important;
   }
   .nav-layout {
     .flex {
@@ -590,7 +593,8 @@ export default {
     font-weight: 400;
     font-size: 24px !important;
     letter-spacing: 0;
-    color: $prussian-blue;
+    // color: $primary;
+    background: transparent;
   }
   .nav-search-text-field {
     background: white;
@@ -604,12 +608,13 @@ export default {
     }
   }
   .nav-button {
+    background: transparent;
     height: 100% !important;
     border-radius: 0px !important;
     .a {
       border-radius: 0px !important;
     }
-    color: $prussian-blue;
+    // color: $primary;
   }
   .create-snippet-btn {
   }
