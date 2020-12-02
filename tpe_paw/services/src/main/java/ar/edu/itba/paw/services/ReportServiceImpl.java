@@ -61,7 +61,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     @Transactional
-    public void dismissReportsForSnippet(long snippetId) {
-        this.reportDao.dismissReportsForSnippet(snippetId);
+    public void dismissReportsForSnippet(long snippetId, long reporterId) {
+        this.reportDao.dismissReportsForSnippet(snippetId, reporterId);
     }
 }

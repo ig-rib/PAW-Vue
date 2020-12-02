@@ -27,8 +27,6 @@ import java.util.stream.Collectors;
 
 import static ar.edu.itba.paw.webapp.utility.Constants.LANGUAGE_PAGE_SIZE;
 
-//TODO: Repeated code: modularize
-
 @Component
 @Path("languages")
 public class LanguagesController {

@@ -95,14 +95,12 @@ public class SnippetController {
         User user = loginAuthentication.getLoggedInUser().orElse(null);
         Snippet snippet = this.snippetService.findSnippetById(id).orElse(null);
 
-        //TODO: Check what should we respond in the body in case of an error
         if (snippet == null) {
             return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
         }
         if (user == null || user.getUsername().compareTo(snippet.getOwner().getUsername()) != 0) {
             return buildErrorResponse("error.403.snippet", Response.Status.FORBIDDEN, snippet.getId());
         } else {
-            //TODO: Adapt to be able to restore snippet
             if (!this.snippetService.deleteOrRestoreSnippet(snippet, user.getId(), true)) {
                 /* Operation was unsuccessful */
                 return buildErrorResponse("error.409.snippet", Response.Status.CONFLICT, loginAuthentication.getLoggedInUsername());
@@ -117,14 +115,12 @@ public class SnippetController {
         User user = loginAuthentication.getLoggedInUser().orElse(null);
         Snippet snippet = this.snippetService.findSnippetById(id).orElse(null);
 
-        //TODO: Check what should we respond in the body in case of an error
         if (snippet == null) {
             return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
         }
         if (user == null || user.getUsername().compareTo(snippet.getOwner().getUsername()) != 0) {
             return buildErrorResponse("error.403.snippet", Response.Status.FORBIDDEN, snippet.getId());
         } else {
-            //TODO: Adapt to be able to restore snippet
             if (!this.snippetService.deleteOrRestoreSnippet(snippet, user.getId(), true)) {
                 /* Operation was unsuccessful */
                 return buildErrorResponse("error.409.snippet", Response.Status.CONFLICT, loginAuthentication.getLoggedInUsername());
@@ -234,7 +230,7 @@ public class SnippetController {
             return buildErrorResponse("error.403.snippet.report.owner", Response.Status.FORBIDDEN, null);
         } else if (!this.reportService.canReport(user)) {
             // TODO uncomment when not testing
-//            return buildErrorResponse("error.403.snippet.report.reputation", Response.Status.FORBIDDEN, null);
+            // return buildErrorResponse("error.403.snippet.report.reputation", Response.Status.FORBIDDEN, null);
         }
 
         try {
@@ -261,7 +257,6 @@ public class SnippetController {
         return Response.created(uriInfo.getBaseUriBuilder().path("snippet").path(String.valueOf(snippetId)).build()).build();
     }
 
-    //TODO: Check if delete is appropriate for this operation.
     @DELETE
     @Path("/{id}/report")
     public Response unreportSnippet(@PathParam(value="id") long id) {
@@ -270,11 +265,10 @@ public class SnippetController {
         if(snippet == null){
             return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, id);
         }
-        // TODO add OR !user.equals(report.owner)
         if (user == null) {
             return buildErrorResponse("error.404.username", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
         }
-        this.reportService.dismissReportsForSnippet(id);
+        this.reportService.dismissReportsForSnippet(id, user.getId());
         return Response.ok().build();
     }
 

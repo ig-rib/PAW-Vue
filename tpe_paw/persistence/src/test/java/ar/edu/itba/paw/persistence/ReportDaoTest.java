@@ -102,7 +102,8 @@ public class ReportDaoTest {
         Report r1 = TestMethods.insertReport(em, reporter, snippet, TestConstants.REPORT_DETAIL, false);
         Report r2 = TestMethods.insertReport(em, user2, snippet, TestConstants.REPORT_DETAIL, false);
 
-        this.reportDao.dismissReportsForSnippet(snippet.getId());
+        this.reportDao.dismissReportsForSnippet(snippet.getId(), reporter.getId());
+        this.reportDao.dismissReportsForSnippet(snippet.getId(), user2.getId());
         Assert.assertTrue(r1.isOwnerDismissed());
         Assert.assertTrue(r2.isOwnerDismissed());
     }
@@ -112,7 +113,7 @@ public class ReportDaoTest {
         User user2 = TestMethods.insertUser(em, TestConstants.USER_USERNAME3, TestConstants.USER_PASSWORD, TestConstants.USER_EMAIL3, TestConstants.USER_DATE, TestConstants.LOCALE_EN, TestConstants.USER_VERIFIED);
         Report r1 = TestMethods.insertReport(em, reporter, snippet, TestConstants.REPORT_DETAIL, false);
 
-        this.reportDao.dismissReportsForSnippet(snippet.getId());
+        this.reportDao.dismissReportsForSnippet(snippet.getId(), reporter.getId());
         Report r2 = TestMethods.insertReport(em, user2, snippet, TestConstants.REPORT_DETAIL, false);
         Assert.assertTrue(r1.isOwnerDismissed());
         Assert.assertFalse(r2.isOwnerDismissed());

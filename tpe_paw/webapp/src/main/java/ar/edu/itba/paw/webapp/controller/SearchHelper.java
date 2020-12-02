@@ -12,15 +12,12 @@ import java.util.*;
 
 import static ar.edu.itba.paw.webapp.utility.Constants.*;
 
-// TODO Modularize...
-
 @Component
 public class SearchHelper {
 
     private final static Map<String, SnippetDao.Types> typesMap;
     static {
         final Map<String, SnippetDao.Types> types = new HashMap<>();
-//        types.put(null, SnippetDao.Types.ALL);
         types.put("all", SnippetDao.Types.ALL);
         types.put("tag", SnippetDao.Types.TAG);
         types.put("title", SnippetDao.Types.TITLE);
@@ -33,7 +30,6 @@ public class SearchHelper {
     private final static Map<String, SnippetDao.Orders> ordersMap;
     static {
         final Map<String, SnippetDao.Orders> orders = new HashMap<>();
-//        orders.put(null, SnippetDao.Orders.NO);
         orders.put("asc", SnippetDao.Orders.ASC);
         orders.put("desc", SnippetDao.Orders.DESC);
         orders.put("no", SnippetDao.Orders.NO);

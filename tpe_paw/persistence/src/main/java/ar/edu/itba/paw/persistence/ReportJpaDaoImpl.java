@@ -50,9 +50,10 @@ public class ReportJpaDaoImpl implements ReportDao {
     }
 
     @Override
-    public void dismissReportsForSnippet(long snippetId){
-        final TypedQuery<Report> query = this.em.createQuery("from Report as r where r.snippet.id = :snippet_id", Report.class)
-                .setParameter("snippet_id",snippetId);
+    public void dismissReportsForSnippet(long snippetId, long reporterId){
+        final TypedQuery<Report> query = this.em.createQuery("from Report as r where r.snippet.id = :snippet_id and r.reportedBy.id = :reporter_id", Report.class)
+                .setParameter("snippet_id",snippetId)
+                .setParameter("reporter_id", reporterId);
 
         for (Report report : query.getResultList()) {
             report.setOwnerDismissed(true);
