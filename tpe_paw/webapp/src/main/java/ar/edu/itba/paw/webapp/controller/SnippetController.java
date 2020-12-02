@@ -229,8 +229,8 @@ public class SnippetController {
         if (user == null || user.equals(snippet.getOwner())) {
             return buildErrorResponse("error.403.snippet.report.owner", Response.Status.FORBIDDEN, null);
         } else if (!this.reportService.canReport(user)) {
-            // TODO uncomment when not testing
-            // return buildErrorResponse("error.403.snippet.report.reputation", Response.Status.FORBIDDEN, null);
+
+            return buildErrorResponse("error.403.snippet.report.reputation", Response.Status.FORBIDDEN, null);
         }
 
         try {
