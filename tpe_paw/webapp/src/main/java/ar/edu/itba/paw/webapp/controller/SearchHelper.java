@@ -2,24 +2,13 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.dao.SnippetDao;
 import ar.edu.itba.paw.interfaces.service.*;
-import ar.edu.itba.paw.models.Language;
 import ar.edu.itba.paw.models.Snippet;
-import ar.edu.itba.paw.models.Tag;
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.webapp.auth.LoginAuthentication;
-import ar.edu.itba.paw.webapp.dto.ErrorMessageDto;
 import ar.edu.itba.paw.webapp.dto.SnippetDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static ar.edu.itba.paw.webapp.utility.Constants.*;
 
@@ -55,9 +44,7 @@ public class SearchHelper {
     private SnippetService snippetService;
 
     public Collection<Snippet> findByCriteria(String type, String query, SnippetDao.Locations location, String sort, Long userId, Long resourceId, int page) {
-//        if (!typesMap.containsKey(type) || !ordersMap.containsKey(sort)) {
-//            return Collections.emptyList();
-//        } else {
+
             return this.snippetService.findSnippetByCriteria(
                     typesMap.getOrDefault(type, SnippetDao.Types.ALL),
                     query == null ? "" : query,
@@ -67,10 +54,19 @@ public class SearchHelper {
                     resourceId,
                     page,
                     SNIPPET_PAGE_SIZE);
-//        }
     }
 
-    public Response generateResponseWithLinks(Request request, int page, Map<String, Object> queryParams, List<SnippetDto> snippets, int totalSnippetCount, UriInfo uriInfo) {
+    public Response getResponse(String query, String type, String userId, String sort, int page, List<SnippetDto> snippets, int totalSnippetCount, UriInfo uriInfo) {
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("q", query);
+        queryParams.put("t", type);
+        queryParams.put("uid", userId);
+        queryParams.put("s", sort);
+
+        return generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
+    }
+
+    public Response generateResponseWithLinks(int page, Map<String, Object> queryParams, List<SnippetDto> snippets, int totalSnippetCount, UriInfo uriInfo) {
         int pageCount = (totalSnippetCount/SNIPPET_PAGE_SIZE) + ((totalSnippetCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);
 
         UriBuilder basePath = uriInfo.getAbsolutePathBuilder();
@@ -79,17 +75,6 @@ public class SearchHelper {
                 basePath.queryParam(key, value);
             }
         });
-
-//        CacheControl cc = new CacheControl();
-//        List<Object> list = new ArrayList<>(queryParams.values());
-//        list.add(snippets);
-//        EntityTag eTag = new EntityTag(Integer.toString(Objects.hash(list.toArray())));
-//        Response.ResponseBuilder builder = request.evaluatePreconditions(eTag);
-//
-//        if (builder == null) {
-//            builder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {});
-//            builder.tag(eTag);
-//        }
 
         Response.ResponseBuilder builder = Response.ok(new GenericEntity<List<SnippetDto>>(snippets) {});
 
@@ -102,7 +87,6 @@ public class SearchHelper {
             builder.link(UriBuilder.fromUri(basePath.build()).queryParam("page", page+1).build(), "next");
 
         return builder
-//                .cacheControl(cc)
                 .build();
     }
 

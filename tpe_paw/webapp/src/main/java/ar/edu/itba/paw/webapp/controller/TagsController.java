@@ -100,15 +100,11 @@ public class TagsController {
                 .collect(Collectors.toList());
         int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.TAGS, null, tagId);
 
-        Map<String, Object> queryParams = new HashMap<>();
-        queryParams.put("q", query);
-        queryParams.put("t", type);
-        queryParams.put("uid", userId);
-        queryParams.put("s", sort);
+        return searchHelper.getResponse(query, type, userId, sort, page, snippets, totalSnippetCount, uriInfo);
+    }
 
-        return searchHelper.generateResponseWithLinks(request, page, queryParams, snippets, totalSnippetCount, uriInfo);    }
 
-    //TODO: Check follow/unfollow repsonse and how info is received
+
     @POST
     @Path("tags/{tagId}/follow")
     @Consumes(value = {MediaType.APPLICATION_JSON})
@@ -151,15 +147,6 @@ public class TagsController {
         // Find the user, check if it exists
         Long userId = loginAuthentication.getLoggedInUser().map(User::getId).orElse(null);
 
-        // Check if showOnlyFollowing is activated --> If user is not logged return unauthorized.
-//        List<TagDto> tags = tagService.findTagsByName(query, showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)
-//                .stream()
-//                .map(TagDto::fromTag)
-//                .collect(Collectors.toList());
-//        int tagsCount = this.tagService.getAllTagsCountByName(query, showEmpty, showOnlyFollowing, userId);
-
-
-        //TODO: See if better just to store the following data in the user.
         final List<TagDto> tags = new ArrayList<>();
         for(Tag t: tagService.findTagsByName(q, showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)){
             TagDto tagDto = TagDto.fromTag(t);
@@ -167,13 +154,6 @@ public class TagsController {
             tags.add(tagDto);
         }
 
-//        CacheControl cc = new CacheControl();
-//        cc.setNoCache(true);
-//        EntityTag eTag = new EntityTag(Integer.toString(Objects.hash(tags, page, showEmpty, showOnlyFollowing, q)));
-//        Response.ResponseBuilder builder = request.evaluatePreconditions(eTag);
-
-//        if (builder == null)
-//            builder = Response.ok(new GenericEntity<List<TagDto>>(tags){}).tag(eTag);
 
         int tagsCount = tagService.getAllTagsCountByName(q, showEmpty, showOnlyFollowing, userId);
         int pageCount = (tagsCount/TAG_PAGE_SIZE) + ((tagsCount % TAG_PAGE_SIZE == 0) ? 0 : 1);
@@ -186,7 +166,6 @@ public class TagsController {
         if (page < pageCount)
             builder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).queryParam("showEmpty", showEmpty).queryParam("showOnlyFollowing", showOnlyFollowing).queryParam("q", q).build(), "next");
         return builder
-//                .cacheControl(cc)
                 .build();
     }
 

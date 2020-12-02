@@ -78,8 +78,7 @@ public class LanguagesController {
                                      final @QueryParam("uid") String userId,
                                      final @QueryParam("s") String sort,
                                      final @QueryParam("page") @DefaultValue("1") int page,
-                                     final @PathParam(value = "langId") long langId,
-                                     final @Context Request request) {
+                                     final @PathParam(value = "langId") long langId) {
 
         Language language = this.languageService.findById(langId).orElse(null);
         if (language == null) {
@@ -93,13 +92,7 @@ public class LanguagesController {
                 .collect(Collectors.toList());
         int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.LANGUAGES, null, langId);
 
-        Map<String, Object> queryParams = new HashMap<>();
-        queryParams.put("q", query);
-        queryParams.put("t", type);
-        queryParams.put("uid", userId);
-        queryParams.put("s", sort);
-
-        return searchHelper.generateResponseWithLinks(request, page, queryParams, snippets, totalSnippetCount, uriInfo);
+        return searchHelper.getResponse(query, type, userId, sort, page, snippets, totalSnippetCount, uriInfo);
     }
 
     @GET
@@ -107,8 +100,7 @@ public class LanguagesController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response searchInAllLanguages(@QueryParam("page") @DefaultValue("1") int page,
                                          @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
-                                         @QueryParam("q") @DefaultValue("") String q,
-                                         @Context Request request){
+                                         @QueryParam("q") @DefaultValue("") String q){
 
         Collection<Language> allLanguages = this.languageService.findAllLanguagesByName(q, showEmpty, page, LANGUAGE_PAGE_SIZE);
         int languageCount = this.languageService.getAllLanguagesCountByName(q, showEmpty);
@@ -121,13 +113,6 @@ public class LanguagesController {
         final List<LanguageDto> languagesDto = allLanguages.stream()
                 .map(LanguageDto::fromLanguage).collect(Collectors.toList());
 
-//        CacheControl cc = new CacheControl();
-//        EntityTag eTag = new EntityTag(String.valueOf(languagesDto.hashCode()));
-//        Response.ResponseBuilder builder = request.evaluatePreconditions(eTag);
-//
-//        if (builder == null)
-//            builder = Response.ok(new GenericEntity<List<LanguageDto>>(languagesDto) {}).tag(eTag);
-
         Response.ResponseBuilder builder =  Response.ok(new GenericEntity<List<LanguageDto>>(languagesDto) {});
         builder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).queryParam("showEmpty", showEmpty).queryParam("q", q).build(), "first")
                 .link(uriInfo.getAbsolutePathBuilder().queryParam("page",pageCount).queryParam("showEmpty", showEmpty).queryParam("q", q).build(), "last");
@@ -137,7 +122,6 @@ public class LanguagesController {
             builder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).queryParam("showEmpty", showEmpty).queryParam("q", q).build(), "next");
 
         return builder
-//                .cacheControl(cc)
                 .build();
     }
 

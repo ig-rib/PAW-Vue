@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 
@@ -84,7 +83,7 @@ public class UserController {
         queryParams.put("t", type);
         queryParams.put("s", sort);
 
-        return searchHelper.generateResponseWithLinks(request, page, queryParams, snippets, totalSnippetCount, uriInfo);
+        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
     }
 
     @GET
@@ -114,13 +113,7 @@ public class UserController {
                 .collect(Collectors.toList());
         int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.DELETED, id, null);
 
-        Map<String, Object> queryParams = new HashMap<>();
-        queryParams.put("q", query);
-        queryParams.put("t", type);
-        queryParams.put("uid", userId);
-        queryParams.put("s", sort);
-
-        return searchHelper.generateResponseWithLinks(request, page, queryParams, snippets, totalSnippetCount, uriInfo);
+        return searchHelper.getResponse(query, type, userId, sort, page, snippets, totalSnippetCount, uriInfo);
     }
 
     @GET
@@ -138,13 +131,7 @@ public class UserController {
                 .collect(Collectors.toList());
         int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.USER, id, null);
 
-        Map<String, Object> queryParams = new HashMap<>();
-        queryParams.put("q", query);
-        queryParams.put("t", type);
-        queryParams.put("uid", userId);
-        queryParams.put("s", sort);
-
-        return searchHelper.generateResponseWithLinks(request, page, queryParams, snippets, totalSnippetCount, uriInfo);
+        return searchHelper.getResponse(query, type, userId, sort, page, snippets, totalSnippetCount, uriInfo);
     }
 
     @GET
@@ -171,7 +158,7 @@ public class UserController {
         queryParams.put("t", type);
         queryParams.put("s", sort);
 
-        return searchHelper.generateResponseWithLinks(request, page, queryParams, snippets, totalSnippetCount, uriInfo);
+        return searchHelper.generateResponseWithLinks(page, queryParams, snippets, totalSnippetCount, uriInfo);
     }
 
     @GET
@@ -194,13 +181,7 @@ public class UserController {
                 .map(sn -> SnippetDto.fromSnippet(sn, uriInfo, loginAuthentication.getLoggedInUser().orElse(null)))
                 .collect(Collectors.toList());
         int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.FOLLOWING, user.getId(), null);
-        Map<String, Object> queryParams = new HashMap<>();
-        queryParams.put("q", query);
-        queryParams.put("t", type);
-        queryParams.put("uid", userId);
-        queryParams.put("s", sort);
-
-        return searchHelper.generateResponseWithLinks(request, page, queryParams, snippets, totalSnippetCount, uriInfo);
+        return searchHelper.getResponse(query, type, userId, sort, page, snippets, totalSnippetCount, uriInfo);
     }
 
     @GET
@@ -217,7 +198,6 @@ public class UserController {
     }
 
     @GET
-    @Cacheable(cacheNames="profile-photo", key="#id")
     @Path("{id}/profile-photo")
     @Produces(MediaType.MULTIPART_FORM_DATA)
     public Response getProfilePhoto(final @PathParam("id") long id,
