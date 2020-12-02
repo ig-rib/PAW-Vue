@@ -53,10 +53,11 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/styles/multiselect.scss";
 @import "@/styles/colours.scss";
 @import "@/styles/main.scss";
 #app {
   background: #fafafa;
 }
 </style>
+
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
