@@ -169,16 +169,25 @@
           </v-flex>
           </v-layout>
         </v-container>
-        <v-dialog v-model="reportDialog">
-          <v-card>
+        <v-dialog content-class="report-dialog" v-model="reportDialog">
+          <v-card class="dialog-card">
             <v-card-title>{{ $t('snippets.snippetDetail.report.whatIsWrong') }}</v-card-title>
-            <v-textarea
-            :rules="[rules.maxLength]"
-            v-model="reportMessage"></v-textarea>
-            <v-card-actions>
-              <v-btn :ripple="false" :disabled="rules.maxLength() !== true" @click="sendReport">{{ $t('snippets.snippetDetail.report.confirm') }}</v-btn>
-              <v-btn :ripple="false" @click="cancelReport">{{ $t('snippets.snippetDetail.report.cancel')}}</v-btn>
-            </v-card-actions>
+            <v-layout px-5>
+              <v-textarea
+              rounded
+              outlined
+              no-resize
+              :rules="[rules.maxLength]"
+              v-model="reportMessage"></v-textarea>
+            </v-layout>
+            <v-layout pa-5 justify-end>
+              <v-flex shrink mr-2>
+                <v-btn rounded outlined :disabled="rules.maxLength() !== true" @click="sendReport">{{ $t('snippets.snippetDetail.report.confirm') }}</v-btn>
+              </v-flex>
+              <v-flex shrink>
+                <v-btn rounded outlined @click="cancelReport">{{ $t('snippets.snippetDetail.report.cancel')}}</v-btn>
+              </v-flex>
+            </v-layout>
           </v-card>
         </v-dialog>
       </v-card>
@@ -408,6 +417,12 @@ export default {
 <style lang="scss">
 @import '~vuetify/src/styles/settings/_variables';
 @import '@/styles/noticeCard.scss';
+  
+  .report-dialog {
+    .dialog-card {
+      border-radius: 12px !important;
+    }
+  }
 
   #snippet-detail-card {
     border-radius: 10px;
