@@ -272,7 +272,6 @@ public class SnippetController {
         return Response.ok().build();
     }
 
-    // TODO check flagging endpoints
     @PUT
     @Path(value="/{id}/flag")
     public Response flagSnippet(

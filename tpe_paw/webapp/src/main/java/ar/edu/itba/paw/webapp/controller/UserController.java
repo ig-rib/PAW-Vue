@@ -209,22 +209,12 @@ public class UserController {
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
         byte[] icon = user.getIcon();
-        // handle case where no icon exists
-        CacheControl cc = new CacheControl();
-        // TODO set constant
-//        cc.setMaxAge(86400);
-        EntityTag etag = new EntityTag(Integer.toString(Arrays.hashCode(icon)));
-        Response.ResponseBuilder builder = request.evaluatePreconditions(etag);
-        if (builder == null) {
-            builder = Response.ok(icon);
-            builder.tag(etag);
-        }
-        builder.cacheControl(cc);
+        Response.ResponseBuilder builder;
+        builder = Response.ok(icon);
         return builder.build();
     }
 
     @PUT
-    @CachePut(cacheNames="profile-photo", key="#id")
     @Path("{id}/profile-photo")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadPhoto(@PathParam(value="id") final long id,
