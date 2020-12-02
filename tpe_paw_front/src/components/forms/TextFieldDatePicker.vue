@@ -19,18 +19,22 @@
           hide-details
         ></v-text-field>
       </template>
-      <v-layout>
-        <v-date-picker
-          :min="minDate"
-          :max="maxDate"
-          v-model="dateValue"
-          no-title
-          @input="updateDate"
-        ></v-date-picker>
-      </v-layout>
-      <v-layout>
-        <v-btn @click="clearDate">{{ $t('components.tfDatePicker.clearDate') }}</v-btn>
-      </v-layout>
+      <v-card>
+        <v-layout column justify-center align-center>
+          <v-flex>
+            <v-date-picker
+              :min="minDate"
+              :max="maxDate"
+              v-model="dateValue"
+              no-title
+              @input="updateDate"
+            ></v-date-picker>
+          </v-flex>
+          <v-flex py-2>
+            <v-btn @click="clearDate">{{ $t('components.tfDatePicker.clearDate') }}</v-btn>
+          </v-flex>
+        </v-layout>
+      </v-card>
     </v-menu>
   </v-layout>
 </template>

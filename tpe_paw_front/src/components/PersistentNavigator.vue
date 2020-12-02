@@ -2,7 +2,7 @@
   <div id="persistent-navigator-div">
     <v-app-bar
       pa-0
-      color="#d4d8dc"
+      color="#dee2e6"
       elevate-on-scroll
       scroll-target="#scrolling-techniques-7"
       height="68px"
