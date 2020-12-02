@@ -83,8 +83,8 @@
 
         <!-- Search bar -->
         <v-flex id="search-bar-flex" px-2>
-          <v-layout justify-center>
-            <v-flex shrink>
+          <v-layout justify-start>
+            <v-flex>
               <v-card height="70%" width="100%">
                 <v-layout fill-height>
                   <v-flex>
