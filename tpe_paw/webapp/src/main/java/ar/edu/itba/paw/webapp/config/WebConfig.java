@@ -62,10 +62,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     private Resource populatorSql;
     @Value("classpath:populateRole.sql")
     private Resource populatorRoleSql;
-    */
-
     @Value("classpath:dbImprovements.sql")
     private Resource dbImprovementsSql;
+    */
 
     @Bean
     public ViewResolver viewResolver() {
@@ -99,9 +98,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public DatabasePopulator databasePopulator(){
-        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-        populator.addScript(dbImprovementsSql);
-        return populator;
+        return new ResourceDatabasePopulator();
     }
 
     @Bean

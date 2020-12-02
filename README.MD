@@ -15,6 +15,11 @@ Credenciales para un usuario de prueba:
 User: JaneRoe
 Pass: password
 
+Credenciales para un usuario con suficiente reputación para reportar snippets:
+
+User: GonzaloHirsch
+Pass: AdminPaw123!
+
 ### Integrantes del Grupo
 
 Ignacio Ribas - 59442

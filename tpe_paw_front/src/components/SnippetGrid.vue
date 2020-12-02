@@ -2,7 +2,7 @@
   <div class="fill-width">
     <v-layout justify-center mb-10 class="text-center">
       <v-pagination
-        v-if="snippets.length > 0"
+        v-if="pagination.length > 1"
         v-model="pagination.page"
         @input="paginationChange"
         :length="pagination.length" 
