@@ -1,19 +1,19 @@
 <template>
-  <v-container>
-    <v-card>
+  <v-layout my-8 justify-center>
+    <v-card width="600px" class="error-card">
       <v-container>
-        <v-layout class="error-logo-layout">
+        <v-layout mb-8 mt-4 justify-center class="error-logo-layout">
           {{ errorCode }}
         </v-layout>
-        <v-layout class="error-title-layout">
-          <v-flex>
+        <v-layout  my-2 justify-center class="error-title-layout">
+          <v-flex shrink>
             {{ errorData.name }}
           </v-flex>
         </v-layout>
-        <v-layout class="error-gohome-text-layout">
+        <v-layout mb-2 justify-center class="error-gohome-text-layout">
           {{ $t('error.goBackHome') }}
         </v-layout>
-        <v-layout justify-center class="error-gohome-btn-layout">
+        <v-layout my-3 justify-center class="error-gohome-btn-layout">
           <v-flex shrink>
             <v-btn @click="goHome">
               {{ $t('error.goHome') }}
@@ -22,7 +22,7 @@
         </v-layout>
       </v-container>
     </v-card>
-  </v-container>
+  </v-layout>
 </template>
 
 <script>
@@ -46,3 +46,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import "@/styles/error.scss";
+</style>
