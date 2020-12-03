@@ -137,132 +137,132 @@
     },
     "admin": {
       "addTags": {
-        "addTags": "Add Tags",
-        "addNewTags": "Add New Tags",
-        "emptyListText": "New tags will be shown here",
-        "placeholder": "Write a new tag name here"
+        "addTags": "Agregar Tags",
+        "addNewTags": "Agregar Tags nuevos",
+        "emptyListText": "Tags nuevos seran mostrados aquí",
+        "placeholder": "Escribe un tag nuevo"
       },
       "addLanguages": {
-        "addLanguages": "Add Languages",
-        "addNewLanguages": "Add New Languages",
-        "emptyListText": "New languages will be shown here",
-        "placeholder": "Write a new language name here"
+        "addLanguages": "Agregar lenaguajes",
+        "addNewLanguages": "Agregar un lenguaje nuevo",
+        "emptyListText": "Los lenguajes neuvos serán mostrados aqui",
+        "placeholder": "Escribe el nombre del lenguaje nuevo aquí"
       },
-      "confirmDeletion": "Confirm Deletion",
-      "languageDeletionDisclaimer": "Are you sure you want to delete \"{langName}\" from Languages? Deleted languages will no longer be available for new snippets and will not appear in the language list unless added again by an administrator.",
-      "tagDeletionDisclaimer": "Are you sure you want to delete \"{tagName}\" from Tags? Deleted tags will be removed from all the snippets containing it and from all users following list. This action cant be undone.",
-      "confirm": "Confirm",
-      "cancel": "Cancel",
-      "flagged": "Flagged"
+      "confirmDeletion": "Confirmar borrado",
+      "languageDeletionDisclaimer": "Estas seguro que quiere borrar \"{langName}\" de Lenguajes? Lenguajes borrados serán quitados de todos los snippets coteniendolo y de todas las listas de usuarios que los siguen. Esta accion no se puede deshacer.",
+      "tagDeletionDisclaimer": "Estas seguro que quiere borrar  \"{tagName}\" de Tags? Tags borrados serán quitados de todos los snippets coteniendolo y de todas las listas de usuarios que los siguen. Esta acción no se puede deshacer.",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar",
+      "flagged": "Marcados"
     },
     "registration": {
-      "username": "User Name",
-      "password": "Password",
-      "profile": "Profile",
-      "logout": "Log Out",
-      "login": "Log In",
+      "username": "Usuario",
+      "password": "Contraseña",
+      "profile": "Perfil",
+      "logout": "Log out",
+      "login": "Ingresar",
       "email": "Email",
-      "repeatPassword": "Repeat Password",
-      "register": "Register",
-      "resetPassword": "Reset Your Password",
-      "sendRecoveryEmail": "Send",
-      "verificationCode": "Verification Code",
-      "sendVerificationCode": "Send",
-      "noAccount": "No Account?",
-      "goToRegister": "Register here",
-      "hasAccount": "Already have an account?",
-      "goToLogin": "Go to login",
-      "forgotPassword": "Forgot your password?",
-      "goToPassRecovery": "Recover your password here",
-      "knowYourPassword": "Know your password?",
-      "welcome": "Welcome To Snippit",
-      "createAccount": "Create An Account",
-      "recoverPassword": "Recover Your Password",
-      "verifyAccount": "Verify Your Account",
-      "recoveryEmailSent": "Email Sent!",
-      "mailSentInfo": "You can now visit the link we sent you and change your password.",
-      "enterCode": "Enter the code you received on your email.",
-      "successfulVerification": "Successfully verified account!"
+      "repeatPassword": "Repetir Contraseña",
+      "register": "Registrar",
+      "resetPassword": "Resetear Contraseña",
+      "sendRecoveryEmail": "Envair",
+      "verificationCode": "Código de verificación",
+      "sendVerificationCode": "Enviar",
+      "noAccount": "Sin cuenta?",
+      "goToRegister": "Registrar aquí",
+      "hasAccount": "Ya tienes una cuenta?",
+      "goToLogin": "Ir al login",
+      "forgotPassword": "Olvidaste tu contraseña?",
+      "goToPassRecovery": "Recuperar contraseña aquí",
+      "knowYourPassword": "Sabes tu contraseña?",
+      "welcome": "Bienvenido a Snippit",
+      "createAccount": "Crear una cuenta",
+      "recoverPassword": "Recuperar contraseña",
+      "verifyAccount": "Verificar tu cuenta",
+      "recoveryEmailSent": "Email Enviado!",
+      "mailSentInfo": "Ya puedes visitar el link y recuperar tu contraseña",
+      "enterCode": "Ingresar el código que has recibido en el mail",
+      "successfulVerification": "Verificamos tu cuenta satisfactoriamente!"
     },
     "validations": {
-      "invalidPassword": "Password must be at least 8 characters long",
-      "usernameOrPasswordInvalid": "User Name Or Password Invalid",
-      "userNameExists": "User Name already exists",
-      "invalidEmail": "Invalid Email",
-      "emailExists": "Email already exists",
-      "nonMatchingPasswords": "Passwords must be equal",
-      "maxLength": "Length must be at most {maxLength}",
-      "minLength": "Length must be at least {minLength}",
-      "lengthBetween": "Length must be between {minLength} and {maxLength}",
-      "usernamePattern": "Username can only contain numbers, letters, -, _, or .",
-      "notBlankWithSpaces": "This field cannot contain only spaces",
-      "codePattern": "Code must be 6 characters long and contain only numbers",
-      "profilePhoto": "Profile photo must be at most 1MB"
+      "invalidPassword": "La contraseña debe tener mas de 8 caracteres",
+      "usernameOrPasswordInvalid": "Usuario o contraseña invalidos",
+      "userNameExists": "Usuario ya existente",
+      "invalidEmail": "Email invalido",
+      "emailExists": "Email ya existente",
+      "nonMatchingPasswords": "Las contraseñas deben ser iguales",
+      "maxLength": "El largo no debe exceder {maxLength}",
+      "minLength": "El largo debe ser menor a {minLength}",
+      "lengthBetween": "El largo debe estar entre {minLength} y {maxLength}",
+      "usernamePattern": "El usuario solo puede contener números, letras, -, _, o .",
+      "notBlankWithSpaces": "Este campo solo no puede contener espacios",
+      "codePattern": "El codigo debe tener al menos 6 caracteres y no contener espacios",
+      "profilePhoto": "El tamaño de la foto de perfil no debe exceder 1MB"
     },
     "components": {
       "tfDatePicker": {
-        "defaultLabel": "Select Date",
-        "clearDate": "Clear Date"
+        "defaultLabel": "Elegir fecha",
+        "clearDate": "Borrar fecha"
       },
       "shared": {
         "pagination": {
-          "loadMore": "Load More"
+          "loadMore": "Cargar más"
         }
       },
       "tagSelect": {
-        "selectTag": "Select A Tag"
+        "selectTag": "Seleccionar un tag"
       },
       "languageSelect": {
-        "selectLanguage": "Select A Language",
-        "notNull": "One language must be selected"
+        "selectLanguage": "Seleccionar un lenguaje",
+        "notNull": "Al menos un lenguaje debe ser seleccionado"
       },
       "snippetGrid": {
         "profile": {
-          "noSnippetsInOwnProfileActive": "You don't have any snippets",
-          "noSnippetsInOwnProfileDeleted": "You don't have any deleted snippets",
-          "createOne": "Create One",
-          "noSnippetsInAnotherProfile": "This user does not have any snippets"
+          "noSnippetsInOwnProfileActive": "No tienes ningun snippet",
+          "noSnippetsInOwnProfileDeleted": "No tienes ningun snippet borrado",
+          "createOne": "Crea uno",
+          "noSnippetsInAnotherProfile": "Este usuario no tiene snippets"
         },
-        "noSnippets": "No Snippets Here"
+        "noSnippets": "No hay snippets aquí"
       }
     },
     "error": {
       "grid": {
-        "tags": "There's been an error loading these tags",
-        "languages": "There's been an error loading these languages",
-        "snippets": "There's been an error loading these snippets",
-        "tryAgain": "Try Again"
+        "tags": "Error cargando tags",
+        "languages": "Error cargando languajes",
+        "snippets": "Error cargando snippets",
+        "tryAgain": "Intenta nuevamente"
       },
-      "goBackHome": "You Can Go Back Home!",
-      "goHome": "Go Home",
-      "unknown": "Unknown Error",
+      "goBackHome": "Puedes volver al Home!",
+      "goHome": "Volver al home",
+      "unknown": "Error desconocido",
       "400": {
-        "name": "Bad Request",
-        "desc": "Your request has validation errors",
-        "singleError": "Error in field {fieldName}: {errorMessage}",
-        "multipleErrors": "Multiple errors in sent request"
+        "name": "Request invalido",
+        "desc": "Tu request tiene errores de validación",
+        "singleError": "Error en el campo{fieldName}: {errorMessage}",
+        "multipleErrors": "Múltiples errores en la request"
       },
       "404": {
-        "name": "Content Not Found",
-        "desc": "This Content Isn't Available Right Now"
+        "name": "Contenido no encontrado",
+        "desc": "El contenido no esta disponible ahora mismo"
       },
       "403": {
-        "name": "Forbidden",
-        "desc": "Keep Away! This content isn't meant for you!"
+        "name": "Prohibido",
+        "desc": "Este contenido no es para ti!"
       },
       "snippet": {
         "detail": {
-          "copying": "Error copying code to clipboard"
+          "copying": "Error copiando al clipboard"
         }
       }
     },
     "snackbar": {
       "error": {
-        "defaultMessage": "There's been an error performing that action"
+        "defaultMessage": "Error realizando la acción"
       },
       "success": {
-        "defaultMessage": "Action performed correctly"
+        "defaultMessage": "Acción realizada de forma exitosa"
       },
-      "hide": "hide"
+      "hide": "ocultar"
     }
   }

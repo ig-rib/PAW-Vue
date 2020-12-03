@@ -156,7 +156,7 @@
     "flagged": "Flagged"
   },
   "registration": {
-    "username": "User Name",
+    "username": "Username",
     "password": "Password",
     "profile": "Profile",
     "logout": "Log Out",
