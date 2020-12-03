@@ -1,0 +1,268 @@
+{
+    "message": "hola i18n !!",
+    "snippit": "{ Snippit }",
+    "feed": {
+      "title": "Feed"
+    },
+    "explore": {
+      "explore": "Explorar",
+      "padTitle": "Filtros",
+      "order": {
+        "title": "Orden",
+        "orderBy": "Ordenar por",
+        "sort": "Ordenar"
+      },
+      "flagged": {
+        "title": "Snippets marcados",
+        "includeFlagged": "Incluir Snippets marcados"
+      },
+      "title": {
+        "title": "Titulo",
+        "label": "Titulo del Snippet"
+      },
+      "language": "Lenguajes",
+      "tag": "Tags",
+      "username": "Usuario",
+      "dateUploaded": "Fecha Subido",
+      "userReputation": {
+        "title": "Reputación del usuario",
+        "label": "Reputación"
+      },
+      "snippetVotes": {
+        "title": "Votos del snippet",
+        "label": "Votos"
+      },
+      "from": "De",
+      "to": "Para",
+      "min": "Min",
+      "max": "Max",
+      "showFilters": "Mostrar filtros"
+    },
+    "languages": {
+      "title": "Lenguaejs",
+      "languageSnippets": "Snippets para el lenguaje: {langName}"
+    },
+    "tags": {
+      "title": "Tags",
+      "follow": "Seguir",
+      "following": "Siguiendo",
+      "search" : "Buscar un tag",
+      "showEmpty": "Mostrar vacíos",
+      "showOnlyFollowing": "Mostrar seguidos",
+      "tagSnippets": "Snippets para el tag {tagName}"
+    },
+    "snippets": {
+      "createSnippet": {
+        "createSnippet": "Crear un Snippet",
+        "create": "Crear",
+        "title": "Título",
+        "description": "Descripción",
+        "code": "Código",
+        "tags": "Tags",
+        "language": "Languaje"
+      },
+      "feed": {
+        "title": "Snippets Feed",
+        "favorites": {
+          "title": "Favoritos"
+        },
+        "following": {
+          "title": "Siguiendo"
+        }
+      },
+      "snippetDetail": {
+        "report": {
+          "whatIsWrong": "Que hay de malo con este snippet?",
+          "confirm": "Confirmar",
+          "cancel": "Cancelar"
+        },
+        "flagged": {
+          "title": "Cuidado!",
+          "text1": "El siguiente snippet ha sido marcado como incorrecto por el administrador.",
+          "text2": "Puede que no funcione o sea inseguro"
+        },
+        "copiedToClipboard": "Código copiado al clipboard!"
+      }
+    },
+    "navigation": {
+      "forUser": "Para ti"
+    },
+    "search": {
+      "showOnlyFollowing": "Mostrar solo seguidos",
+      "showEmpty": "Mostrar vacios",
+      "selectType": "Tipo",
+      "selectOrder": "Orden",
+      "type": {
+        "all": "Todos",
+        "tag": "Tag",
+        "title": "Título",
+        "content": "Contenido",
+        "username": "Usuario",
+        "language": "Languaje"
+      },
+      "order": {
+        "asc": "Ascendente",
+        "desc": "Descendente",
+        "no": "Sin orden"
+      },
+      "searchBarHint": "Buscar {objectType} aquí"
+    },
+    "user": {
+      "profile": {
+        "editProfile": "Editar perfil",
+        "editDescription": "Editar descripción",
+        "cancel": "Cancelar",
+        "done": "Listo",
+        "verifyAccount": {
+          "title": "Verificar tu cuenta",
+          "text1": "Tu email no ha sido verificado. No recibirás emails de nosotros",
+          "text2": "Para verificar tu email haz click aquí",
+          "here": "aquí"
+        }
+      },
+      "active": "Snippets activos",
+      "deleted": "Snippets borrados",
+      "following": {
+        "title": "Snippets For Tags que sigues",
+        "following": "Siguiendo"
+      },
+      "favorites": {
+        "title": "Snippets marcados como favoritos",
+        "favorites": "Favoritos"
+      },
+      "upvoted": {
+        "title": "Snippets que haz votado positivamente",
+        "upvoted": "Votos positivos"
+      }
+    },
+    "admin": {
+      "addTags": {
+        "addTags": "Add Tags",
+        "addNewTags": "Add New Tags",
+        "emptyListText": "New tags will be shown here",
+        "placeholder": "Write a new tag name here"
+      },
+      "addLanguages": {
+        "addLanguages": "Add Languages",
+        "addNewLanguages": "Add New Languages",
+        "emptyListText": "New languages will be shown here",
+        "placeholder": "Write a new language name here"
+      },
+      "confirmDeletion": "Confirm Deletion",
+      "languageDeletionDisclaimer": "Are you sure you want to delete \"{langName}\" from Languages? Deleted languages will no longer be available for new snippets and will not appear in the language list unless added again by an administrator.",
+      "tagDeletionDisclaimer": "Are you sure you want to delete \"{tagName}\" from Tags? Deleted tags will be removed from all the snippets containing it and from all users following list. This action cant be undone.",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "flagged": "Flagged"
+    },
+    "registration": {
+      "username": "User Name",
+      "password": "Password",
+      "profile": "Profile",
+      "logout": "Log Out",
+      "login": "Log In",
+      "email": "Email",
+      "repeatPassword": "Repeat Password",
+      "register": "Register",
+      "resetPassword": "Reset Your Password",
+      "sendRecoveryEmail": "Send",
+      "verificationCode": "Verification Code",
+      "sendVerificationCode": "Send",
+      "noAccount": "No Account?",
+      "goToRegister": "Register here",
+      "hasAccount": "Already have an account?",
+      "goToLogin": "Go to login",
+      "forgotPassword": "Forgot your password?",
+      "goToPassRecovery": "Recover your password here",
+      "knowYourPassword": "Know your password?",
+      "welcome": "Welcome To Snippit",
+      "createAccount": "Create An Account",
+      "recoverPassword": "Recover Your Password",
+      "verifyAccount": "Verify Your Account",
+      "recoveryEmailSent": "Email Sent!",
+      "mailSentInfo": "You can now visit the link we sent you and change your password.",
+      "enterCode": "Enter the code you received on your email.",
+      "successfulVerification": "Successfully verified account!"
+    },
+    "validations": {
+      "invalidPassword": "Password must be at least 8 characters long",
+      "usernameOrPasswordInvalid": "User Name Or Password Invalid",
+      "userNameExists": "User Name already exists",
+      "invalidEmail": "Invalid Email",
+      "emailExists": "Email already exists",
+      "nonMatchingPasswords": "Passwords must be equal",
+      "maxLength": "Length must be at most {maxLength}",
+      "minLength": "Length must be at least {minLength}",
+      "lengthBetween": "Length must be between {minLength} and {maxLength}",
+      "usernamePattern": "Username can only contain numbers, letters, -, _, or .",
+      "notBlankWithSpaces": "This field cannot contain only spaces",
+      "codePattern": "Code must be 6 characters long and contain only numbers",
+      "profilePhoto": "Profile photo must be at most 1MB"
+    },
+    "components": {
+      "tfDatePicker": {
+        "defaultLabel": "Select Date",
+        "clearDate": "Clear Date"
+      },
+      "shared": {
+        "pagination": {
+          "loadMore": "Load More"
+        }
+      },
+      "tagSelect": {
+        "selectTag": "Select A Tag"
+      },
+      "languageSelect": {
+        "selectLanguage": "Select A Language",
+        "notNull": "One language must be selected"
+      },
+      "snippetGrid": {
+        "profile": {
+          "noSnippetsInOwnProfileActive": "You don't have any snippets",
+          "noSnippetsInOwnProfileDeleted": "You don't have any deleted snippets",
+          "createOne": "Create One",
+          "noSnippetsInAnotherProfile": "This user does not have any snippets"
+        },
+        "noSnippets": "No Snippets Here"
+      }
+    },
+    "error": {
+      "grid": {
+        "tags": "There's been an error loading these tags",
+        "languages": "There's been an error loading these languages",
+        "snippets": "There's been an error loading these snippets",
+        "tryAgain": "Try Again"
+      },
+      "goBackHome": "You Can Go Back Home!",
+      "goHome": "Go Home",
+      "unknown": "Unknown Error",
+      "400": {
+        "name": "Bad Request",
+        "desc": "Your request has validation errors",
+        "singleError": "Error in field {fieldName}: {errorMessage}",
+        "multipleErrors": "Multiple errors in sent request"
+      },
+      "404": {
+        "name": "Content Not Found",
+        "desc": "This Content Isn't Available Right Now"
+      },
+      "403": {
+        "name": "Forbidden",
+        "desc": "Keep Away! This content isn't meant for you!"
+      },
+      "snippet": {
+        "detail": {
+          "copying": "Error copying code to clipboard"
+        }
+      }
+    },
+    "snackbar": {
+      "error": {
+        "defaultMessage": "There's been an error performing that action"
+      },
+      "success": {
+        "defaultMessage": "Action performed correctly"
+      },
+      "hide": "hide"
+    }
+  }
