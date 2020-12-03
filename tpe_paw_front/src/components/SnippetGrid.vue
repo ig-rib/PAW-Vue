@@ -1,13 +1,6 @@
 <template>
   <div class="fill-width">
     <v-layout justify-center mb-10 class="text-center">
-      <v-pagination
-        v-if="pagination.length > 1"
-        v-model="pagination.page"
-        @input="paginationChange"
-        :length="pagination.length" 
-        :total-visible="pagination.visible"
-      ></v-pagination>
     </v-layout>
     <v-layout column align-center justify-center py-10 v-if="snippets.length === 0 && inOwnProfileActive">
       <v-flex shrink class="no-snippets-text" mb-10>
@@ -69,7 +62,7 @@
         </v-flex>
       </v-layout>
     </v-layout>
-    <v-layout justify-center mt-10 v-if="status === ''" class="text-center">
+    <v-layout justify-center mt-10 mb-10 v-if="status === ''" class="text-center">
       <v-pagination
         v-if="snippets.length > 0"
         v-model="pagination.page"

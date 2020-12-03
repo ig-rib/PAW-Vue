@@ -5,15 +5,6 @@
         {{ $t('tags.title') }}
       </v-flex>
     </v-layout>
-    <v-layout justify-center mb-10 class="text-center">
-      <v-pagination
-        v-if="status === ''"
-        v-model="pagination.page"
-        @input="paginationChange"
-        :length="pagination.length" 
-        :total-visible="pagination.visible"
-      ></v-pagination>
-    </v-layout>
     <v-layout 
       class="grid-error-layout"
       align-center
@@ -72,6 +63,16 @@
         </v-card>
         <!-- </v-container> -->
       </v-flex>
+    </v-layout>
+
+    <v-layout justify-center my-10 class="text-center">
+      <v-pagination
+        v-if="status === ''"
+        v-model="pagination.page"
+        @input="paginationChange"
+        :length="pagination.length" 
+        :total-visible="pagination.visible"
+      ></v-pagination>
     </v-layout>
   </div>
 </template>
