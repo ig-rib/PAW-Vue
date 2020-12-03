@@ -51,12 +51,12 @@
                 @mousedown.stop="null"
                 @click.stop="null"
               >
-              <template v-if="tag.userFollowing">
+              <p v-if="tag.userFollowing" class="tag-follow-btn-txt">
                 {{ $t('tags.following') }}
-              </template>
-              <template v-else>
+              </p>
+              <p v-else class="tag-follow-btn-txt">
                 {{ $t('tags.follow') }}
-              </template>
+              </p>
               </v-btn>
             </v-flex>
           </v-layout>            
@@ -196,6 +196,13 @@ export default {
   border-radius: 20px !important;
   font-weight: 400;
   padding: 3px !important;
+}
+
+.tag-follow-btn-txt{
+  padding-top: 18px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 13px;
 }
 
 </style>
