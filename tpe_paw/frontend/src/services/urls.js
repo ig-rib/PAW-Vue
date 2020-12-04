@@ -1,72 +1,73 @@
 const localDomain = 'http://localhost:8080/'
+const localDomainApi = localDomain + 'api/'
 
 const urls = {
   localDomain,
   user: {
     current: localDomain + 'user/current',
-    activeSnippets: localDomain + 'user/:id/snippets/active',
-    deletedSnippets: localDomain + 'user/:id/snippets/deleted',
-    upvotedSnippets: localDomain + 'user/snippets/upvoted',
-    followingSnippets: localDomain + 'user/snippets/following',
-    favoriteSnippets: localDomain + 'user/snippets/favorites',
-    getUser: localDomain + 'user/:id',
-    profilePhoto: localDomain + 'user/:id/profile-photo',
-    profilePhoto64: localDomain + 'user/:id/profile-photo64',
-    updateUserData: localDomain + 'user/:id/user-data'
+    activeSnippets: localDomainApi + 'user/:id/snippets/active',
+    deletedSnippets: localDomainApi + 'user/:id/snippets/deleted',
+    upvotedSnippets: localDomainApi + 'user/snippets/upvoted',
+    followingSnippets: localDomainApi + 'user/snippets/following',
+    favoriteSnippets: localDomainApi + 'user/snippets/favorites',
+    getUser: localDomainApi + 'user/:id',
+    profilePhoto: localDomainApi + 'user/:id/profile-photo',
+    profilePhoto64: localDomainApi + 'user/:id/profile-photo64',
+    updateUserData: localDomainApi + 'user/:id/user-data'
   },
   admin: {
-    add: localDomain + 'admin/add'
+    add: localDomainApi + 'admin/add'
   },
   registration: {
     login: localDomain + 'login',
-    register: localDomain + 'registration/register',
-    verifyEmail: localDomain + 'registration/verify-email',
-    resendEmailVerification: localDomain + 'registration/resend-email-verification',
-    sendRecoveryEmail: localDomain + 'registration/send-recovery-email',
-    resetPassword: localDomain + 'registration/reset-password',
-    usernameExists: localDomain + 'registration/username-exists',
-    emailExists: localDomain + 'registration/email-exists'
+    register: localDomainApi + 'registration/register',
+    verifyEmail: localDomainApi + 'registration/verify-email',
+    resendEmailVerification: localDomainApi + 'registration/resend-email-verification',
+    sendRecoveryEmail: localDomainApi + 'registration/send-recovery-email',
+    resetPassword: localDomainApi + 'registration/reset-password',
+    usernameExists: localDomainApi + 'registration/username-exists',
+    emailExists: localDomainApi + 'registration/email-exists'
 
   },
   tags: {
-    tags: localDomain + 'tags',
-    tag: localDomain + 'tags/:id',
-    getTagSnippets: localDomain + 'tags/:id/snippets',
-    followTag: localDomain + 'tags/:id/follow',
-    unfollowTag: localDomain + 'tags/:id/unfollow'
+    tags: localDomainApi + 'tags',
+    tag: localDomainApi + 'tags/:id',
+    getTagSnippets: localDomainApi + 'tags/:id/snippets',
+    followTag: localDomainApi + 'tags/:id/follow',
+    unfollowTag: localDomainApi + 'tags/:id/unfollow'
   },
   search: {
-    searchHome: localDomain + 'search',
-    searchFavorites: localDomain + 'favorites/search',
-    searchFollowing: localDomain + 'following/search',
-    searchUpvoted: localDomain + 'upvoted/search',
-    searchFlagged: localDomain + 'flagged/search',
-    searchInLanguage: localDomain + 'langugages/:id/search',
-    searchInTag: localDomain + 'tags/:id/search',
-    searchInActiveUserSnippets: localDomain + 'user/:id/active/search',
-    searchInDeletedUserSnippets: localDomain + 'user/:id/deleted/search'
+    searchHome: localDomainApi + 'search',
+    searchFavorites: localDomainApi + 'favorites/search',
+    searchFollowing: localDomainApi + 'following/search',
+    searchUpvoted: localDomainApi + 'upvoted/search',
+    searchFlagged: localDomainApi + 'flagged/search',
+    searchInLanguage: localDomainApi + 'langugages/:id/search',
+    searchInTag: localDomainApi + 'tags/:id/search',
+    searchInActiveUserSnippets: localDomainApi + 'user/:id/active/search',
+    searchInDeletedUserSnippets: localDomainApi + 'user/:id/deleted/search'
   },
   explore: {
-    search: localDomain + 'explore'
+    search: localDomainApi + 'explore'
   },
   snippet: {
-    snippets: localDomain + 'snippet',
-    snippet: localDomain + 'snippet/:id',
-    restore: localDomain + 'snippet/:id/restore',
-    voteSnippet: localDomain + 'snippet/:id/vote', // Pass isPositive in body
-    favSnippet: localDomain + 'snippet/:id/favorite', // For both faving and unfaving
-    reportSnippet: localDomain + 'snippet/:id/report',
-    flagSnippet: localDomain + 'snippet/:id/flag',
-    create: localDomain + 'snippet',
-    flagged: localDomain + 'snippet/flagged'
+    snippets: localDomainApi + 'snippet',
+    snippet: localDomainApi + 'snippet/:id',
+    restore: localDomainApi + 'snippet/:id/restore',
+    voteSnippet: localDomainApi + 'snippet/:id/vote', // Pass isPositive in body
+    favSnippet: localDomainApi + 'snippet/:id/favorite', // For both faving and unfaving
+    reportSnippet: localDomainApi + 'snippet/:id/report',
+    flagSnippet: localDomainApi + 'snippet/:id/flag',
+    create: localDomainApi + 'snippet',
+    flagged: localDomainApi + 'snippet/flagged'
   },
   languages: {
-    languages: localDomain + 'languages',
-    language: localDomain + 'languages/:id',
-    getLanguageSnippets: localDomain + 'languages/:id/snippets'
+    languages: localDomainApi + 'languages',
+    language: localDomainApi + 'languages/:id',
+    getLanguageSnippets: localDomainApi + 'languages/:id/snippets'
   },
   test: {
-    jerseyTest: localDomain + 'jersey-test'
+    jerseyTest: localDomainApi + 'jersey-test'
   }
 }
 
