@@ -40,4 +40,4 @@ target/
 hs_err_pid*
 
 # node_modules for front-end
-tpe_paw_front/node_modules
+frontend/node_modules
