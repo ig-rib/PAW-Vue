@@ -1,4 +1,4 @@
-const localDomain = 'http://localhost:8080/'
+const localDomain = window.location.protocol + '//' + window.location.host + '/';
 const localDomainApi = localDomain + 'api/'
 
 const urls = {
