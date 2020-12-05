@@ -38,7 +38,8 @@
         <hk2.version>2.5.0-b05</hk2.version>
         <jersey.multipart.version>2.21</jersey.multipart.version>
         <jersey.bean.validation.version>2.31</jersey.bean.validation.version>
-<!--        <mimepull.version>1.9.3</mimepull.version>-->
+        <frontend-maven-plugin.version>1.10.4</frontend-maven-plugin.version>
+        <!--        <mimepull.version>1.9.3</mimepull.version>-->
     </properties>
 
     <dependencyManagement>
@@ -122,11 +123,11 @@
                 <version>${jersey.version}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/org.jvnet.mimepull/mimepull -->
-<!--            <dependency>-->
-<!--                <groupId>org.jvnet.mimepull</groupId>-->
-<!--                <artifactId>mimepull</artifactId>-->
-<!--                <version>${mimepull.version}</version>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>org.jvnet.mimepull</groupId>-->
+            <!--                <artifactId>mimepull</artifactId>-->
+            <!--                <version>${mimepull.version}</version>-->
+            <!--            </dependency>-->
 
             <!-- Java 10 compatible -->
             <dependency>
@@ -385,20 +386,141 @@
 
         </dependencies>
     </dependencyManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>${maven-war-plugin.version}</version>
-                <configuration>
-                    <packagingExcludes>**/logback-test.xml</packagingExcludes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
+    <profiles>
+        <profile>
+            <id>frontend build</id>
+            <activation>
+                <file>
+                    <!--puts this in another value if you are developing with jetty so it wont run every time-->
+                    <exists>./src/main/java/ar/edu/itba/paw/webapp</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>${maven-war-plugin.version}</version>
+                        <configuration>
+                            <packagingExcludes>**/logback-test.xml</packagingExcludes>
+                            <webResources>
+                                <resource>
+                                    <directory>../frontend/dist</directory>
+                                </resource>
+                            </webResources>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>${frontend-maven-plugin.version}</version>
+                        <configuration>
+                            <workingDirectory>../frontend</workingDirectory>
+                        </configuration>
+                        <executions>
+                            <!-- Install our node and npm version to run npm/node scripts-->
+                            <execution>
+                                <id>install node and npm</id>
+                                <goals>
+                                    <goal>install-node-and-npm</goal>
+                                </goals>
+                                <configuration>
+                                    <nodeVersion>v12.18.2</nodeVersion>
+                                </configuration>
+                            </execution>
+                            <!-- Install all project dependencies -->
+                            <execution>
+                                <id>npm install</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <!-- optional: default phase is "generate-resources" -->
+                                <phase>generate-resources</phase>
+                                <!-- Optional configuration which provides for running any npm command -->
+                                <configuration>
+                                    <arguments>install</arguments>
+                                </configuration>
+                            </execution>
+                            <!-- Build and minify static files -->
+                            <execution>
+                                <id>npm run build</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>run build</arguments>
+                                </configuration>
+                            </execution>
+                            <!-- Unit tests -->
+                            <execution>
+                                <id>npm run test:unit</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <phase>test</phase>
+                                <configuration>
+                                    <arguments>run test:unit</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>Copy Vue.js frontend assets</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>src/main/resources/static</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <directory>../frontend/dist</directory>
+                                            <includes>
+                                                <include>css/</include>
+                                                <include>js/</include>
+                                                <include>index.html</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>Copy Vue.js frontend assets</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>src/main/resources/static</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <directory>../frontend/dist</directory>
+                                            <includes>
+                                                <include>css/</include>
+                                                <include>js/</include>
+                                                <include>index.html</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <!-- \frontend build profile -->
+    </profiles>
     <repositories>
         <repository>
             <id>jersey-snapshot</id>
