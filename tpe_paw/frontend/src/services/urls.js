@@ -4,7 +4,7 @@ const localDomainApi = localDomain + 'api/'
 const urls = {
   localDomain,
   user: {
-    current: localDomain + 'user/current',
+    current: localDomainApi + 'user/current',
     activeSnippets: localDomainApi + 'user/:id/snippets/active',
     deletedSnippets: localDomainApi + 'user/:id/snippets/deleted',
     upvotedSnippets: localDomainApi + 'user/snippets/upvoted',

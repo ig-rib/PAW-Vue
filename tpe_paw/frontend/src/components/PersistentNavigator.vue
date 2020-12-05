@@ -480,7 +480,7 @@ export default {
     logout () {
       window.localStorage.removeItem('token')
       this.$store.dispatch('logout')
-      this.$router.go()
+      this.$router.go({ name: 'nothing' })
     },
     goToAdd () {
       if (this.isAdmin) {
