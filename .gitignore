@@ -29,6 +29,8 @@ target/
 
 # Package Files #
 *.jar
+
+tpe_paw/
 *.war
 *.nar
 *.ear
@@ -41,3 +43,4 @@ hs_err_pid*
 
 # node_modules for front-end
 tpe_paw_front/node_modules
+tpe_paw/frontend/node_modules
