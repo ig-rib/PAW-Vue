@@ -22,11 +22,24 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
       <param-name>jersey.config.beanValidation.enableOutputValidationErrorEntity.server</param-name>
       <param-value>true</param-value>
     </init-param>
+    <init-param>
+      <param-name>jersey.config.servlet.filter.staticContentRegex</param-name>
+      <param-value>/static/*</param-value>
+    </init-param>
+    <init-param>
+      <param-name>jersey.config.servlet.filter.forwardOn404</param-name>
+      <param-value>true</param-value>
+    </init-param>
   </servlet>
 
   <servlet-mapping>
     <servlet-name>jersey-servlet</servlet-name>
-    <url-pattern>/*</url-pattern>
+    <url-pattern>/login</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>jersey-servlet</servlet-name>
+    <url-pattern>/api/*</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
@@ -41,7 +54,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 
   <servlet-mapping>
     <servlet-name>default</servlet-name>
-    <url-pattern>*.jpg</url-pattern>
+    <url-pattern>*.html</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
