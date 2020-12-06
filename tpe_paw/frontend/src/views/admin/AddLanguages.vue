@@ -17,7 +17,8 @@
                   @keyup.enter="addLanguage"
                   :append-outer-icon="'mdi-plus'"
                   @click:append-outer="addLanguage"
-                  v-model="newLanguage">
+                  v-model="newLanguage"
+                  :rules="[rules.newLanguage]">
                 </v-text-field>
               </v-flex>
             </v-layout>
@@ -62,6 +63,7 @@
 
 <script>
 import languages from '@/services/languages.js'
+import validations from '@/functions/validations'
 
 export default {
   data () {
@@ -72,7 +74,7 @@ export default {
   },
   methods: {
     addLanguage () {
-      if (!this.newLanguages.includes(this.newLanguage)) {
+      if (this.allRulesAlright && !this.newLanguages.includes(this.newLanguage)) {
         this.newLanguages.push(this.newLanguage)
         this.newLanguage = ''
       }
@@ -90,6 +92,14 @@ export default {
     }
   },
   computed: {
+    rules () {
+      return {
+        newLanguage: () => validations.lengthBetween(this.newLanguage, 1, 50),
+      }
+    },
+    allRulesAlright () {
+      return Object.keys(this.rules).filter(rule => this.rules[rule]() !== true).length === 0
+    },
     hasNewLanguages () {
       return this.newLanguages.length > 0
     }
