@@ -28,6 +28,7 @@
 import tags from '@/services/tags.js'
 
 export default {
+  title: 'Snippit - Tags',
     name: 'TagsSnippets',
     data () {
       return {

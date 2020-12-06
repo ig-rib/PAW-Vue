@@ -5,6 +5,7 @@
 <script>
 // There is no way of knowing 
 export default {
+  title: 'Snippit - Tags',
   name: 'TagsSuper',
   mounted () {
     this.$on('searchResults', (r) => {

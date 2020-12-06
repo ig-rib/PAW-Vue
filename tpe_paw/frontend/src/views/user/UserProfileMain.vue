@@ -107,6 +107,7 @@ import urls from '@/services/urls.js'
 import validations from '@/functions/validations'
 
   export default {
+    title: 'Snippit - Profile',
     data () {
       return {
         editing: false,

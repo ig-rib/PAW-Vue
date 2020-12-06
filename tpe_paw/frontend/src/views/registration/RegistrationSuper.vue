@@ -12,6 +12,7 @@
 
 <script>
 export default {
+  title: 'Snippit ',
   name: 'RegistrationSuper'
 }
 </script>

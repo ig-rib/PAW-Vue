@@ -206,6 +206,7 @@ import 'simple-syntax-highlighter/dist/sshpre.css'
 
 
 export default {
+  title: 'Snippit - Snippet Detail',
   components: {
     'ssh-pre': SshPre
   },

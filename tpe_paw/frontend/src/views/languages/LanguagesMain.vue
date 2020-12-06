@@ -66,6 +66,7 @@ import languages from '@/services/languages.js'
 import helpers from '@/functions/helpers.js'
 
 export default {
+  title: 'Snippit - Languages',
   name: 'languagesMain',
   data () {
     return {

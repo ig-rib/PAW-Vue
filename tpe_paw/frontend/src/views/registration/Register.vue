@@ -72,6 +72,7 @@ import validations from '@/functions/validations'
 import registration from '@/services/registration'
 
 export default {
+  title: 'Snippit - Register',
   data () {
     return {
       username: '',

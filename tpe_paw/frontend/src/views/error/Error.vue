@@ -27,6 +27,7 @@
 
 <script>
 export default {
+  title: 'Snippit Error',
   data () {
     return {
       errorCode: null,

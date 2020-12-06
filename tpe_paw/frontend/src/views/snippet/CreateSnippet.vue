@@ -81,6 +81,7 @@ import snippetService from '@/services/snippets.js'
 import validations from '@/functions/validations'
 
 export default {
+  title: 'Snippit - Create Snippet',
   data () {
     return {
       title: '',
@@ -98,7 +99,9 @@ export default {
         description: this.description,
         code: this.code,
         tags: this.tags.map(tag => tag.id)
-      })
+      }).then(
+
+      )
     }
   },
   computed: {

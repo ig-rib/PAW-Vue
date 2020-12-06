@@ -12,6 +12,7 @@
 <script>
 
 export default {
+  title: 'Snippit - Feed',
   name: 'Feed',
   mounted () {
     this.$on('searchResults', (r) => this.$refs.feedSnippets.$emit('searchResults', r))

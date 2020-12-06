@@ -66,6 +66,7 @@ import languages from '@/services/languages.js'
 import validations from '@/functions/validations'
 
 export default {
+  title: 'Snippit Add Language',
   data () {
     return {
       newLanguage: '',

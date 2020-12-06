@@ -13,6 +13,7 @@
 
 <script>
 export default {
+  title: 'Snippit Flagged',
   mounted () {
     this.$on('searchResults', r => this.$refs.userFlaggedSnippetGrid.$emit('searchResults', r))
   }

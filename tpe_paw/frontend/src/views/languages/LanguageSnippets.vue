@@ -28,6 +28,7 @@
 import languages from '@/services/languages.js'
 
 export default {
+  title: 'Snippit - Snippet for Language',
     name: 'LanguagesSnippets',
     data () {
       return {

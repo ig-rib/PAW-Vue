@@ -29,6 +29,7 @@ import registration from '@/services/registration'
 import validations from '@/functions/validations'
 
 export default {
+  title: 'Snippit - Reset Password',
   data () {
     return {
       id: '',

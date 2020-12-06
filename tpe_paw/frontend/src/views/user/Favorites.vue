@@ -13,6 +13,7 @@
 
 <script>
 export default {
+  title: 'Snippit - Favs',
   mounted () {
     this.$on('searchResults', r => this.$refs.userFavoritesSnippetGrid.$emit('searchResults', r))
   }
