@@ -1,5 +1,7 @@
 //const localDomain = window.location.protocol + '//' + window.location.host + '/';
-const localDomain = 'http://pawserver.it.itba.edu.ar/paw-2020a-2/';
+const localDomain = 'http://localhost:8080/'
+//TODO: change before last deploy
+//const localDomain = 'http://pawserver.it.itba.edu.ar/paw-2020a-2/';
 const localDomainApi = localDomain + 'api/'
 
 const urls = {
