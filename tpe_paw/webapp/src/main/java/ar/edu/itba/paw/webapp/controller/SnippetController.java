@@ -147,7 +147,7 @@ public class SnippetController {
         return searchHelper.getResponse(query, type, userId, sort, page, snippets, totalSnippetCount, uriInfo);
     }
 
-    @POST
+    @PUT
     @Path("/{id}/vote")
     @Consumes(value = {MediaType.APPLICATION_JSON})
     @Produces(value = {MediaType.APPLICATION_JSON})
@@ -159,7 +159,8 @@ public class SnippetController {
         User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
 
         if (user == null) {
-            return buildErrorResponse("error.403.snippet", Response.Status.FORBIDDEN, loginAuthentication.getLoggedInUsername());
+            //return buildErrorResponse("error.403.snippet.fav", Response.Status.FORBIDDEN, null);
+            return buildErrorResponse("error.403.snippet.vote", Response.Status.FORBIDDEN, null);
         } else {
             Snippet snippet = snippetService.findSnippetById(id).orElse(null);
             if(snippet == null){
@@ -337,7 +338,8 @@ public class SnippetController {
     private Response buildErrorResponse(String errorMessage, Response.StatusType errorStatus, Object errorObject){
         ErrorMessageDto errorMessageDto = new ErrorMessageDto();
         errorMessageDto.setMessage(messageSource.getMessage(errorMessage, new Object[]{errorObject}, LocaleContextHolder.getLocale()));
-        return Response.status(errorStatus).entity(errorMessageDto).build();
+        Response resp = Response.status(errorStatus).entity(errorMessageDto).build();
+        return resp;
     }
 
 }
