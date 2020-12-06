@@ -111,11 +111,11 @@ public class TagsController {
     public Response followTag(@PathParam(value="tagId") final long tagId,
                                           final FollowDto followDto,
                                           @Context SecurityContext securityContext) {
-        User user = userService.findUserByUsername(securityContext.getUserPrincipal().getName()).orElse(null);
+        User user = loginAuthentication.getLoggedInUser().orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{securityContext.getUserPrincipal().getName()}, LocaleContextHolder.getLocale()));
-            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+            errorMessageDto.setMessage(messageSource.getMessage("error.403.tag.follow", new Object[]{null}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.FORBIDDEN).entity(errorMessageDto).build();
         }
         tagService.followTag(user.getId(), tagId);
         return Response.ok(followDto).build();
@@ -129,8 +129,8 @@ public class TagsController {
         User user = loginAuthentication.getLoggedInUser().orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
-            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+            errorMessageDto.setMessage(messageSource.getMessage("error.403.tag.follow", new Object[]{null}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.FORBIDDEN).entity(errorMessageDto).build();
         }
         tagService.unfollowTag(user.getId(), tagId);
         return Response.ok(followDto).build();

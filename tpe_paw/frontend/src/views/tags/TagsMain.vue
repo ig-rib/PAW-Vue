@@ -132,7 +132,6 @@ export default {
           })
     },
     followTag: function (tag) {
-      // TODO: Verify no logged out user handling is necessary.
       tagService.followTag(tag.id)
         .then(
           tag.userFollowing = true
@@ -140,7 +139,6 @@ export default {
       event.stopPropagation()
     },
     unfollowTag: function (tag) {
-      // TODO: Verify no logged out user handling is necessary.
       tagService.unfollowTag(tag.id)
         .then(
           tag.userFollowing = false
