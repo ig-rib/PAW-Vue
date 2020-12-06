@@ -74,9 +74,9 @@ const axiosFetcher = (url = '', params = {}, method = 'get', data = {}, headers 
           }
           break;
         case 401:
+        case 403:  
           Router.push({ name: 'login' })
           break;
-        case 403:
         case 404:
           Router.push({
             name: 'error',
