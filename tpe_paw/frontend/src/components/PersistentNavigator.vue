@@ -207,7 +207,7 @@
             </v-flex>
           </v-layout>
           <v-layout v-if="$store.getters.loggedIn">
-            <v-flex shrink>
+            <v-flex shrink v-if="!isAdmin">
               <v-btn x-large icon @click="goToProfile">
                 <img v-if="!profileImageError" @error="profileImageError = true" class="navbar-profile-circle" :src="currentUser.icon"/>
                 <v-icon v-else>mdi-account-circle</v-icon>

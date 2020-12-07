@@ -117,6 +117,7 @@
       "cancel": "Cancel",
       "done": "Done",
       "profileInfoUpdated": "Profile information updated!",
+      "admin": "Admins do not have profile",
       "verifyAccount": {
         "title": "Verify your account",
         "text1": "Your email has not been verified, meaning you will not receive any emails from us.",

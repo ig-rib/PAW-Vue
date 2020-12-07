@@ -117,6 +117,7 @@
         "cancel": "Cancelar",
         "done": "Listo",
         "profileInfoUpdated": "El perfil se actualizó correctamente",
+        "admin": "Admins no tienen perfil",
         "verifyAccount": {
           "title": "Verificar tu cuenta",
           "text1": "Tu email no ha sido verificado. No recibirás emails de nosotros",

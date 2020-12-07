@@ -1,5 +1,5 @@
 <template>
-  <div id="user-profile-container">
+  <div id="user-profile-container" v-if="!isAdmin">
     <v-layout justify-center pa-5 v-if="currentAndUnverified">
       <v-flex shrink>
         <v-card class="notice-card">
@@ -99,6 +99,13 @@
       <router-view ref="userProfileRouterView"></router-view>
     </v-layout>
   </div>
+  <div v-else>
+    <v-layout class="view-title-layout">
+      <v-flex shrink class="view-title">
+        {{ $t('user.profile.admin') }}
+      </v-flex>
+    </v-layout>
+  </div>
 </template>
 
 <script>
@@ -117,7 +124,8 @@ import validations from '@/functions/validations'
         image64: '',
         oldDescription: '',
         user: () => {},
-        hasPhotoPreview: false
+        hasPhotoPreview: false,
+        isAdmin: false
       }
     },
     methods: {
@@ -209,6 +217,7 @@ import validations from '@/functions/validations'
         .then(r => {
           this.user = r.data
           this.oldDescription = this.description = this.user.description
+          this.isAdmin = r.data.admin
         })
       this.$on('searchResults', (r) => this.$refs.userProfileRouterView.$emit('searchResults', r))
     }

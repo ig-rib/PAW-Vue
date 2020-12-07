@@ -62,6 +62,7 @@ module.exports = {
     "no-mixed-spaces-and-tabs": 'warn',
     "spaced-comment": 'warn',
     "key-spacing": 'warn',
+    "object-curly-spacing": 'warn',
   },
   overrides: [
     {
