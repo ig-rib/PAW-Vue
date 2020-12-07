@@ -47,4 +47,7 @@ $secondary: #64b5f6;
 #footer {
     display: flex;
     margin-top: auto !important;
+    div {
+        padding: 5px;
+    }
 }

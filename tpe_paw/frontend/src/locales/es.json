@@ -113,6 +113,7 @@
         "editDescription": "Editar descripción",
         "cancel": "Cancelar",
         "done": "Listo",
+        "profileInfoUpdated": "El perfil se actualizó correctamente",
         "verifyAccount": {
           "title": "Verificar tu cuenta",
           "text1": "Tu email no ha sido verificado. No recibirás emails de nosotros",

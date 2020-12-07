@@ -121,18 +121,6 @@ import validations from '@/functions/validations'
       }
     },
     methods: {
-      uploadPhoto () {
-        const formData = new FormData()
-        formData.append('photo', this.profilePhoto)
-        user.uploadProfilePhoto64(this.$route.params.id, btoa(this.profilePhoto)).then(r => {
-
-        })
-      },
-      updateDescription () {
-        user.updateUserData(75, this.description)
-          .then(r => this.updateOldDescription())
-          .catch(e => this.resetUserData())
-      },
       saveImage (event) {
         if (event.target.files[0].size > 1048576) {
           this.$store.dispatch('snackError', this.$t('validations.profilePhoto'))
@@ -165,6 +153,7 @@ import validations from '@/functions/validations'
           const newUserData = this.$store.getters.user
           newUserData.description = this.description
           this.$store.dispatch('setUser', newUserData)
+          this.$store.dispatch('snackSuccess', this.$t('user.profile.profileInfoUpdated'))
         })
         .finally(() => {
           this.editing = false

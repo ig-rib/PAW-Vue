@@ -2,7 +2,7 @@
   <div class="fill-width">
     <v-layout justify-center mb-10 class="text-center">
     </v-layout>
-    <v-layout column align-center justify-center py-10 v-if="snippets.length === 0 && inOwnProfileActive">
+    <v-layout column align-center justify-center py-10 v-if="snippets.length === 0 && status !== 'l' && inOwnProfileActive">
       <v-flex shrink class="no-snippets-text" mb-10>
         {{ $t('components.snippetGrid.profile.noSnippetsInOwnProfileActive') }}
       </v-flex>
@@ -12,12 +12,12 @@
         </v-btn>
       </v-flex>
     </v-layout>
-    <v-layout align-center justify-center py-10 v-else-if="snippets.length === 0 && inAnotherProfile">
+    <v-layout align-center justify-center py-10 v-else-if="snippets.length === 0 && status !== 'l' && inAnotherProfile">
       <v-flex shrink class="no-snippets-text">
         {{ $t('components.snippetGrid.profile.noSnippetsInAnotherProfile') }}
       </v-flex>
     </v-layout>
-    <v-layout align-center justify-center py-10 v-else-if="snippets.length === 0 && inOwnProfileDeleted">
+    <v-layout align-center justify-center py-10 v-else-if="snippets.length === 0 && status !== 'l' && inOwnProfileDeleted">
       <v-flex shrink class="no-snippets-text">
         {{ $t('components.snippetGrid.profile.noSnippetsInOwnProfileDeleted') }}
       </v-flex>
