@@ -7,7 +7,7 @@
     </v-layout>
     <v-layout justify-center wrap>
       <v-flex 
-        :class="`explore-pad-flex ${$vuetify.breakpoint.mdAndUp ? 'my-15' : ''}`"
+        :class="`explore-pad-flex ${$vuetify.breakpoint.mdAndUp ? 'my-15' : 'justify-center'}`"
         md3 lg3 sm12>
         <explore-pad v-if="$vuetify.breakpoint.mdAndUp"
           @searchResults="updateResults"></explore-pad>

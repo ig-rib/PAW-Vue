@@ -11,13 +11,16 @@
       :placeholder="$t('components.languageSelect.selectLanguage')"
       label="name"
       track-by="id"
+      :select-label="false"
       :multiple="multiple"
     >
       <template slot="afterList" v-if="hasNext">
-        <v-btn
-          @click="loadMore">
-          {{ $t('components.shared.pagination.loadMore')}}
-        </v-btn>
+        <v-layout justify-center py-2>
+          <v-btn
+            @click="loadMore">
+            {{ $t('components.shared.pagination.loadMore')}}
+          </v-btn>
+        </v-layout>
       </template>
     </v-multiselect>
     <div v-if="displayEmptyError">{{ $t('components.languageSelect.notNull') }}</div>
@@ -103,6 +106,9 @@ export default {
   .multiselect__tags {
     max-height: 100px !important;
     overflow-y: hidden;
+  }
+  .multiselect__content-wrapper {
+    min-width: 200px !important;
   }
 }
 </style>
