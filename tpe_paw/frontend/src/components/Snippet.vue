@@ -10,14 +10,14 @@
         <!-- <v-container class="snippet-card-inner-container"> -->
         <!-- User and language -->
           <v-layout class="user-language-layout" dense>
-              <v-flex dense>
+              <v-flex class="username-date-flex" dense>
                 <v-list-item two-line>
                   <v-avatar class="mr-2" color="indigo">
                     <img v-if="!error" @error="error = true" class="profile-circle" :src="owner.icon"/>
                     <v-icon v-else>mdi-account-circle</v-icon>
                   </v-avatar>
                   <v-list-item-content> 
-                    <v-list-item-title class="headline mb-1">{{ owner.username }}</v-list-item-title>
+                    <v-list-item-title class="username-text headline mb-1">{{ owner.username }}</v-list-item-title>
                     <v-list-item-subtitle>{{ standardDate }}</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
@@ -195,6 +195,12 @@ export default {
   }
   .user-language-layout {
     flex-grow: 0;
+  }
+  .username-date-flex {
+    max-width: 50%;
+    .username-text {
+      font-size: 18px !important;
+    }
   }
   .title-description-layout {
     flex-grow: 0;
