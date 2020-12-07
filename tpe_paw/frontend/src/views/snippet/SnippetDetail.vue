@@ -19,12 +19,12 @@
       <v-card id="snippet-detail-card" v-if="!loading">
         <v-container px-12>
           <v-layout shrink mt-5 mb-3 class="snippet-title-line">
-            <v-flex>
+            <v-flex sm10 md10 lg10 xl10>
               <div class="snippet-title">
                 {{ snippet.title }}
               </div>
             </v-flex>
-            <v-flex shrink ml-auto>
+            <v-flex class="justify-end" sm2 md2 lg2 xl2 shrink ml-auto>
               <v-btn :ripple="false" color="light-blue" :to="{
                 name: 'language-snippets',
                 params: { id: language.id }
@@ -468,6 +468,7 @@ export default {
     }
     min-width: min-content;
     .snippet-title-line {
+      overflow: hidden;
       > .flex {
         display: flex;
         align-items: center;
@@ -484,7 +485,7 @@ export default {
       margin: 0px 0px 2.5% 0px;
     }
     .snippet-code-layout {
-      min-height: 300px;
+      min-height: 200px;
       .snippet-detail-code-textarea {
         border-radius: 10px;
         height: 100%;
@@ -503,7 +504,7 @@ export default {
 
   @media #{map-get($display-breakpoints, 'sm-and-up')} {
     #snippet-detail-card > .container {
-    min-height: 750px !important;
+    min-height: 650px !important;
     max-width: 650px;
     display: flex;
     flex-direction: column;
