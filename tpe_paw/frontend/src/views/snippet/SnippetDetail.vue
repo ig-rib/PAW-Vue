@@ -111,8 +111,8 @@
                   <v-layout>
                     <!-- UPVOTE -->
                     <v-flex>
-                      <v-btn :ripple="false" :color="`${ isUpvoted ? 'green' : '' }`" class="thumb-up-btn" :disabled="voting" @click="vote(true)" icon>
-                        <v-icon>{{`mdi-thumb-up${isUpvoted ? '' : '-outline'}`}}</v-icon>
+                      <v-btn :ripple="false" :color="`${ snippet.vote != null && snippet.vote.positive ? 'green' : '' }`" class="thumb-up-btn" :disabled="voting" @click="vote(true)" icon>
+                        <v-icon>{{`mdi-thumb-up${snippet.vote != null && snippet.vote.positive ? '' : '-outline'}`}}</v-icon>
                       </v-btn>
                     </v-flex>
                     <!-- SCORE -->
@@ -121,8 +121,8 @@
                     </v-flex>
                     <!-- DOWNVOTE -->
                     <v-flex>
-                      <v-btn :ripple="false" :color="`${ isDownvoted ? 'red' : '' }`" class="thumb-down-btn" :disabled="voting" @click="vote(false)" icon>
-                        <v-icon>{{`mdi-thumb-down${isDownvoted ? '' : '-outline'}`}}</v-icon>
+                      <v-btn :ripple="false" :color="`${ snippet.vote != null && !snippet.vote.positive ? 'red' : '' }`" class="thumb-down-btn" :disabled="voting" @click="vote(false)" icon>
+                        <v-icon>{{`mdi-thumb-down${snippet.vote != null && !snippet.vote.positive ? '' : '-outline'}`}}</v-icon>
                       </v-btn>
                     </v-flex>
                   </v-layout>
