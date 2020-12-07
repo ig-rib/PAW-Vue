@@ -79,8 +79,10 @@
 <script>
 import snippetService from '@/services/snippets.js'
 import validations from '@/functions/validations'
+import helpers from '@/functions/helpers.js'
 
 export default {
+  title: 'Snippit - Create Snippet',
   data () {
     return {
       title: '',
@@ -98,7 +100,18 @@ export default {
         description: this.description,
         code: this.code,
         tags: this.tags.map(tag => tag.id)
-      })
+      }).then(
+        r => {
+            let str = r.headers.location.split('/'); 
+            let snippet_id = str[str.length - 1]
+            this.$router.push({
+              name: 'snippet-detail',
+              params: {
+              id: snippet_id
+            }
+          })
+        }
+      )
     }
   },
   computed: {

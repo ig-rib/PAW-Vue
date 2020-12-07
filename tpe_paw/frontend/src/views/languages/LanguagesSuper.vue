@@ -4,6 +4,7 @@
 
 <script>
 export default {
+  title: 'Snippit - Languages Super',
   name: 'LanguagesSuper',
   mounted () {
     this.$on('searchResults', (r) => {

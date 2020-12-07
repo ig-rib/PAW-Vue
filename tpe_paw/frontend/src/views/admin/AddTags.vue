@@ -17,7 +17,8 @@
                   @keyup.enter="addTag"
                   :append-outer-icon="'mdi-plus'"
                   @click:append-outer="addTag"
-                  v-model="newTag">
+                  v-model="newTag"
+                  :rules="[rules.newTag]">
                 </v-text-field>
               </v-flex>
             </v-layout>
@@ -62,8 +63,10 @@
 
 <script>
 import tags from '@/services/tags.js'
+import validations from '@/functions/validations'
 
 export default {
+  title: 'Snippit Add Tag',
   data () {
     return {
       newTag: '',
@@ -72,7 +75,7 @@ export default {
   },
   methods: {
     addTag () {
-      if (!this.newTags.includes(this.newTag)) {
+      if (this.allRulesAlright && !this.newTags.includes(this.newTag)) {
         this.newTags.push(this.newTag)
         this.newTag = ''
       }
@@ -90,6 +93,14 @@ export default {
     }
   },
   computed: {
+    rules () {
+      return {
+        newTag: () => validations.lengthBetween(this.newTag, 1, 30),
+      }
+    },
+    allRulesAlright () {
+      return Object.keys(this.rules).filter(rule => this.rules[rule]() !== true).length === 0
+    },
     hasNewTags () {
       return this.newTags.length > 0
     }

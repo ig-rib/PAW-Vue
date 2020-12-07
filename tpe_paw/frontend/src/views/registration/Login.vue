@@ -55,6 +55,7 @@ import registration from '@/services/registration.js'
 import user from '@/services/user.js'
 
 export default {
+  title: 'Snippit - Login',
   data () {
     return {
       username: '',
