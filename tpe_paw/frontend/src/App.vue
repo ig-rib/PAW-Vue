@@ -15,6 +15,11 @@
       </template>
     </v-snackbar>
     <router-view></router-view>
+    <v-footer id="footer">
+      <v-card-text class="justify-center">
+        2020 - Snippit
+      </v-card-text>
+    </v-footer>
   </v-app>
 </template>
 
