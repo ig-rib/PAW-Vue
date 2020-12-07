@@ -99,7 +99,7 @@ public class SnippetController {
             return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
         }
         if (user == null || user.getUsername().compareTo(snippet.getOwner().getUsername()) != 0) {
-            return buildErrorResponse("error.403.snippet", Response.Status.FORBIDDEN, snippet.getId());
+            return buildErrorResponse("error.403.snippet.delete", Response.Status.FORBIDDEN, snippet.getId());
         } else {
             if (!this.snippetService.deleteOrRestoreSnippet(snippet, user.getId(), true)) {
                 /* Operation was unsuccessful */
@@ -119,7 +119,7 @@ public class SnippetController {
             return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
         }
         if (user == null || user.getUsername().compareTo(snippet.getOwner().getUsername()) != 0) {
-            return buildErrorResponse("error.403.snippet", Response.Status.FORBIDDEN, snippet.getId());
+            return buildErrorResponse("error.403.snippet.restore", Response.Status.FORBIDDEN, snippet.getId());
         } else {
             if (!this.snippetService.deleteOrRestoreSnippet(snippet, user.getId(), true)) {
                 /* Operation was unsuccessful */
@@ -159,8 +159,7 @@ public class SnippetController {
         User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
 
         if (user == null) {
-            //return buildErrorResponse("error.403.snippet.fav", Response.Status.FORBIDDEN, null);
-            return buildErrorResponse("error.403.snippet.vote", Response.Status.FORBIDDEN, null);
+            return buildErrorResponse("error.401.snippet.vote", Response.Status.UNAUTHORIZED, null);
         } else {
             Snippet snippet = snippetService.findSnippetById(id).orElse(null);
             if(snippet == null){
@@ -183,7 +182,7 @@ public class SnippetController {
         User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
 
         if (user == null) {
-            return buildErrorResponse("error.403.snippet.fav", Response.Status.FORBIDDEN, null);
+            return buildErrorResponse("error.401.snippet.fav", Response.Status.UNAUTHORIZED, null);
         } else {
             this.favService.updateFavorites(user.getId(), id, true);
             LOGGER.debug("User {} updated favorite on snippet {}", user.getUsername(), id);
@@ -201,7 +200,7 @@ public class SnippetController {
         User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
 
         if (user == null) {
-            return buildErrorResponse("error.403.snippet.fav", Response.Status.FORBIDDEN, null);
+            return buildErrorResponse("error.401.snippet.fav", Response.Status.UNAUTHORIZED, null);
         } else {
             this.favService.updateFavorites(user.getId(), id, true);
             LOGGER.debug("User {} updated favorite on snippet {}", user.getUsername(), id);

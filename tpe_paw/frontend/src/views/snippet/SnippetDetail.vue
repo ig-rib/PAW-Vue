@@ -274,6 +274,11 @@ export default {
           .then(r => {
             this.snippet.reported = false
           })
+          .catch(e => {
+            if (e.response.status === 403) {
+              this.$store.dispatch('snackError', e.response.data.message)
+            }
+          })
           .finally(() => { this.reporting = false })
       } else {
         this.reportDialog = true
@@ -287,6 +292,11 @@ export default {
       }).then(r => {
         this.snippet.reported = true
         this.resetReportData()
+      })
+      .catch(e => {
+        if (e.response.status === 403) {
+          this.$store.dispatch('snackError', e.response.data.message)
+        }
       })
       // TODO add catch clause
     },
