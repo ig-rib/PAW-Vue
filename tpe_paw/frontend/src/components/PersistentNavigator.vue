@@ -574,9 +574,18 @@ export default {
     }
   }
   .navbar-profile-circle {
-    max-height: 40px;
-    max-width: 40px;
-    border-radius: 40px;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    overflow: hidden;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .title-flex {
     display: flex;
