@@ -111,6 +111,11 @@ export default {
             }
           })
         }
+      ).catch(e => {
+            if (e.response.status === 403) {
+              this.$store.dispatch('snackError', e.response.data.message)
+            }
+          }
       )
     }
   },
