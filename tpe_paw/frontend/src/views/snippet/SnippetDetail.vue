@@ -298,6 +298,7 @@ export default {
       snippets.deleteSnippet(this.snippet.id)
         .then(r => {
           this.snippet.deleted = true
+          this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.snippetDeleted'))
         })
         .finally(() => {
           this.deleting = false
@@ -308,6 +309,7 @@ export default {
       snippets.restoreDeletedSnippet(this.snippet.id)
         .then(r => {
           this.snippet.deleted = false
+          this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.snippetRestored'))
         })
         .finally(() => {
           this.deleting = false

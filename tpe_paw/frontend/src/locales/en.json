@@ -81,6 +81,8 @@
         "text1": "The following snippet has been marked as incorrect by the administrator.",
         "text2": "It may not work or be unsafe to use."
       },
+      "snippetDeleted": "Successfully deleted snippet",
+      "snippetRestored": "Successfully restored snippet",
       "copiedToClipboard": "Code copied to clipboard!"
     }
   },
@@ -219,7 +221,7 @@
     },
     "snippetGrid": {
       "profile": {
-        "noSnippetsInOwnProfileActive": "You don't have any snippets",
+        "noSnippetsInOwnProfileActive": "You don't have any snippets here",
         "noSnippetsInOwnProfileDeleted": "You don't have any deleted snippets",
         "createOne": "Create One",
         "noSnippetsInAnotherProfile": "This user does not have any snippets"

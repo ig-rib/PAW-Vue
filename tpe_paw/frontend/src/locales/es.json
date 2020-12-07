@@ -81,6 +81,8 @@
           "text1": "El siguiente snippet ha sido marcado como incorrecto por el administrador.",
           "text2": "Puede que no funcione o sea inseguro"
         },
+        "snippetDeleted": "Snippet borrado correctamente",
+        "snippetRestored": "Snippet restaurado correctamente",
         "copiedToClipboard": "Código copiado al clipboard!"
       }
     },
