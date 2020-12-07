@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import i18n from './i18n'
+import VueProgressBar from 'vue-progressbar'
 
 import TextFieldDatePicker from './components/forms/TextFieldDatePicker.vue'
 import TagSelect from './components/forms/TagSelect.vue'
@@ -24,6 +25,17 @@ Vue.component('snippet', Snippet)
 Vue.component('snippet-grid', SnippetGrid)
 
 Vue.mixin(helpers)
+
+Vue.use(VueProgressBar, {
+  color: 'rgb(143, 255, 199)',
+  failedColor: 'red',
+  thickness: '4px',
+  transition: {
+    speed: '0.1s',
+    opacity: '0.6s',
+    termination: 300
+  },
+})
 
 // Vue.use(VueHighlightJS)
 

@@ -15,6 +15,7 @@
       </template>
     </v-snackbar>
     <router-view></router-view>
+    <vue-progress-bar></vue-progress-bar>
     <v-footer id="footer">
       <v-card-text class="justify-center">
         2020 - Snippit

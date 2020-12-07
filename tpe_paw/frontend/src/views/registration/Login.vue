@@ -66,6 +66,7 @@ export default {
   },
   methods: {
     login () {
+      this.$Progress.start()
       registration.login(this.username, this.password)
         .then(r => {
           this.invalid = false
@@ -89,8 +90,12 @@ export default {
           })
         .catch(e => {
           this.invalid = true
+          this.$Progress.fail()
         })
-        .finally(() => this.blankFields())
+        .finally(() => {
+          this.blankFields()
+          this.$Progress.finish()
+        })
     },
     blankFields () {
       this.username = ''
