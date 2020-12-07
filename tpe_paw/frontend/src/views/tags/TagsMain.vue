@@ -173,7 +173,7 @@ export default {
         this.status = 'e'
       })
     this.$on('searchResults', r => {
-      this.pagination.page = parseInt(queryParams.page) || 1
+      this.pagination.page = 1
       this.handleSearchResponse(r)
     })
   }
