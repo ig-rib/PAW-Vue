@@ -114,8 +114,8 @@ public class TagsController {
         User user = loginAuthentication.getLoggedInUser().orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.401.tag.follow", new Object[]{null}, LocaleContextHolder.getLocale()));
-            return Response.status(Response.Status.UNAUTHORIZED).entity(errorMessageDto).build();
+            errorMessageDto.setMessage(messageSource.getMessage("error.403.tag.follow", new Object[]{null}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.FORBIDDEN).entity(errorMessageDto).build();
         }
         tagService.followTag(user.getId(), tagId);
         return Response.ok(followDto).build();
@@ -129,8 +129,8 @@ public class TagsController {
         User user = loginAuthentication.getLoggedInUser().orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.401.tag.follow", new Object[]{null}, LocaleContextHolder.getLocale()));
-            return Response.status(Response.Status.UNAUTHORIZED).entity(errorMessageDto).build();
+            errorMessageDto.setMessage(messageSource.getMessage("error.403.tag.follow", new Object[]{null}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.FORBIDDEN).entity(errorMessageDto).build();
         }
         tagService.unfollowTag(user.getId(), tagId);
         return Response.ok(followDto).build();
@@ -165,8 +165,8 @@ public class TagsController {
             builder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).queryParam("showEmpty", showEmpty).queryParam("showOnlyFollowing", showOnlyFollowing).queryParam("q", q).build(), "prev");
         if (page < pageCount)
             builder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).queryParam("showEmpty", showEmpty).queryParam("showOnlyFollowing", showOnlyFollowing).queryParam("q", q).build(), "next");
-        return builder
-                .build();
+        builder.header("Cache-Control", "no-store");
+        return builder.build();
     }
 
     /**
