@@ -11,7 +11,7 @@ import LanguageSelect from './components/forms/LanguageSelect.vue'
 import Snippet from './components/Snippet.vue'
 import SnippetGrid from './components/SnippetGrid.vue'
 
-// import titleMixin from './functions/titleMixin.js'
+import helpers from './functions/helpers.js'
 
 // import VueHighlightJS from 'vue-highlightjs'
 
@@ -23,7 +23,7 @@ Vue.component('language-select', LanguageSelect)
 Vue.component('snippet', Snippet)
 Vue.component('snippet-grid', SnippetGrid)
 
-// Vue.mixin(titleMixin)
+Vue.mixin(helpers)
 
 // Vue.use(VueHighlightJS)
 

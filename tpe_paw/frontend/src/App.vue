@@ -27,6 +27,7 @@
 import user from '@/services/user.js'
 
 export default {
+  title: 'Snippit',
   name: 'App',
   data: () => ({
     //
