@@ -248,6 +248,11 @@ export default {
         this.snippet.vote = r.data.vote
         this.snippet.score = r.data.snippetScore
         this.owner.reputation = r.data.ownerReputation
+        if (this.owner.email === this.$store.getters.user.email) {
+          let usr = this.$store.getters.user
+          usr.reputation = r.data.ownerReputation
+          this.$store.dispatch('setUser', usr)
+        }
       })
       .finally(() => { this.voting = false })
     },
@@ -479,6 +484,7 @@ export default {
       }
     }
     .description-line {
+      text-align: justify;
     }
     .divider-line {
       flex-grow: 0;
