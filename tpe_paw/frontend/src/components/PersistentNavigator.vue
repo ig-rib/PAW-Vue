@@ -521,6 +521,7 @@ export default {
         const params = {}
         Object.assign(params, this.$route.query)
         params.showOnlyFollowing = newVal
+        params.page = 1
         this.performSearch(params)
           .then(r => {
             // TODO handle data
