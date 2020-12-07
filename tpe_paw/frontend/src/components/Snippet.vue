@@ -257,7 +257,9 @@ export default {
     display: flex;
     padding: 3% 5% 4% 3%;
     flex-direction: column;
-    border-radius: 10px;
+    &, &:before {
+      border-radius: 10px;
+    }
   }
   .snippet-card-inner-container {
     height: 100%;
