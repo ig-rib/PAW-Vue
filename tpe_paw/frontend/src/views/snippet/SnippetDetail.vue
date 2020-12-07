@@ -143,16 +143,16 @@
             <v-flex shrink>
               <v-layout column>
                 <v-flex>
-                  {{snippet.dateCreated}}
+                  {{ readableDate }}
                 </v-flex>
                 <v-flex>
                   <v-card elevation="0" class="owner-data" @click="goToOwnerProfile">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-layout px-2>
+                      <v-flex class="owner-image-flex" mr-2 shrink>
                         <v-img class="owner-image" width="40px" height="40px" :src="owner.icon" v-if="user != null">
                         </v-img>
                       </v-flex>
-                      <v-flex>
+                      <v-flex class="no-select owner-name-score-flex">
                         <v-layout column>
                           <v-flex>
                             {{ owner.username }}
@@ -375,6 +375,10 @@ export default {
       return {
         maxLength: () => validations.maxLength(this.reportMessage, 300)
       }
+    },
+    readableDate () {
+      const theDate = new Date(this.snippet.dateCreated)
+      return this.$t('snippets.snippetDetail.postingDate', { date: `${theDate.getFullYear()}-${theDate.getMonth()}-${theDate.getDay()}`, time: `${theDate.getHours()}:${theDate.getMinutes()}` })
     }
   },
   mounted () {
@@ -431,6 +435,33 @@ export default {
     border-radius: 10px;
     .owner-image {
       border-radius: 40px;
+    }
+    .owner-data {
+      border: 1px solid lightgrey;
+      border-radius: 10px;
+      .owner-image-flex {
+        align-items: center;
+        justify-content: center;
+        display:flex
+      }
+      .owner-name-score-flex {
+        align-items: center;
+        justify-content: center;
+        font-weight: 500;
+        .flex {
+          max-width: 12ch !important;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+      &:before {
+        border-radius: 10px !important;
+      }
+      .v-ripple__container {
+        opacity: 0.2 !important;
+        border-radius: 10px !important;
+      }
     }
     .owner-data:hover {
       cursor: pointer;

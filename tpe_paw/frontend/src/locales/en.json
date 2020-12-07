@@ -81,6 +81,7 @@
         "text1": "The following snippet has been marked as incorrect by the administrator.",
         "text2": "It may not work or be unsafe to use."
       },
+      "postingDate": "{date} at {time}",
       "snippetDeleted": "Successfully deleted snippet",
       "snippetRestored": "Successfully restored snippet",
       "copiedToClipboard": "Code copied to clipboard!"
