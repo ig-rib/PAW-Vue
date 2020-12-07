@@ -8,14 +8,17 @@
       :clear-on-select="false"
       :placeholder="$t('components.tagSelect.selectTag')"
       label="name"
+      :select-label="false"
       track-by="id"
       :multiple="multiple"
     >
       <template slot="afterList" v-if="hasNext">
-        <v-btn
-          @click="loadMore">
-          {{ $t('components.shared.pagination.loadMore')}}
-        </v-btn>
+        <v-layout justify-center py-2>
+          <v-btn
+            @click="loadMore">
+            {{ $t('components.shared.pagination.loadMore')}}
+          </v-btn>
+        </v-layout>
       </template>
     </v-multiselect>
   </v-container>
@@ -93,6 +96,9 @@ export default {
   .multiselect__tags {
     max-height: 100px;
     overflow-y: hidden;
+  }
+  .multiselect__content-wrapper {
+    min-width: 200px !important;
   }
 }
 </style>
