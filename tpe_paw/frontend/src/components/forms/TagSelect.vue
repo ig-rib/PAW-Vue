@@ -93,6 +93,7 @@ export default {
 
 <style lang="scss">
 .tag-select-container {
+  width: 100%;
   .multiselect__tags {
     max-height: 100px;
     overflow-y: hidden;

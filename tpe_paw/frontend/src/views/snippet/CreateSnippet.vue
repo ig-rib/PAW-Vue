@@ -9,9 +9,9 @@
         <v-card class="snippet-create-card">
           <v-container>
             <v-layout class="title-row">
-              <v-flex lg7 md7 sm7 xs7>
+              <v-flex pt-3 lg7 md7 sm7 xs7>
                 <v-text-field
-                  pt-12
+                 class="custom-label-color"
                   outlined
                   dense
                   rounded
@@ -27,12 +27,11 @@
             </v-layout>
             <v-divider></v-divider>
             <v-layout column mt-2 class="description-line">
-              <v-flex>
+              <v-flex class="snippit-subtitle">
                 {{ $t('snippets.createSnippet.description') }}
               </v-flex>
               <v-flex>
                 <v-textarea
-                  rounded
                   outlined
                   no-resize
                   :rules="[rules.description]"
@@ -42,31 +41,31 @@
             </v-layout>
             <v-divider></v-divider>
             <v-layout column mt-2 class="code-line">
-              <v-flex>
+              <v-flex class="snippit-subtitle">
                 {{ $t('snippets.createSnippet.code') }}
               </v-flex>
               <v-flex>
                 <v-textarea
-                rounded
+                filled
                 outlined
-                no-resize
                 :rules="[rules.code, rules.codeNotBlankWithSpaces]"
                 v-model="code"
                 ></v-textarea>
               </v-flex>
             </v-layout>
             <v-divider></v-divider>
-            <v-layout class="tags-line">
-              <v-flex md6 sm6 xs6>
+            <v-layout mt-3 class="tags-line">
+              <v-flex lg9 md9 sm6 xs6>
                 <tag-select
                   multiple
                   v-model="tags"
                   :closeOnSelect="false"
                   :label="$t('snippets.createSnippet.tags')"></tag-select>
               </v-flex>
-              <v-flex class="save-btn-flex">
-                <v-btn :disabled="!allRulesAlright" @click="saveSnippet">
+              <v-flex class="save-btn-flex" lg2 md2 sm6 xs6>
+                <v-btn :disabled="!allRulesAlright" large color="info" @click="saveSnippet">
                   {{ $t('snippets.createSnippet.create') }}
+                   <v-icon right dark>mdi-cloud-upload</v-icon>
                 </v-btn>
               </v-flex>
             </v-layout>
@@ -94,6 +93,7 @@ export default {
   },
   methods: {
     saveSnippet () {
+      this.$Progress.start()
       snippetService.createSnippet({
         title: this.title,
         languageId: this.language.id,
@@ -115,8 +115,9 @@ export default {
             if (e.response.status === 403) {
               this.$store.dispatch('snackError', e.response.data.message)
             }
+            this.$Progress.fail()
           }
-      )
+      ).finally(() => this.$Progress.end())
     }
   },
   computed: {
@@ -126,7 +127,7 @@ export default {
         description: () => validations.maxLength(this.description, 500),
         code: () => validations.lengthBetween(this.code, 5, 30000),
         titleNotBlankWithSpaces: () => validations.notBlankWithSpaces(this.title),
-        codeNotBlankWithSpaces: () => validations.notBlankWithSpaces(this.code)
+        codeNotBlankWithSpaces: () => validations.notBlankWithSpaces(this.code),
       }
     },
     allRulesAlright () {
@@ -138,6 +139,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import '@/styles/main.scss';
+
   #snippet-create-container {
     .multiselect__single {
       white-space: nowrap !important;
@@ -150,19 +153,26 @@ export default {
       }
     }
     .snippet-create-card {
-      min-width: 500px;
-      max-width: 500px;
+      padding-right: 10px;
+      padding-left: 10px;
+      max-width: 650px;
+      min-width: 650px;
+      .custom-label-color .v-label {
+        opacity: 1;
+      }
     }
     .description-line {
     }
     .code-line {
     }
     .tags-line {
+      align-content: space-between;
       .flex {
-        max-width: 50%;
+        max-width: 100%;
       }
       .save-btn-flex {
         display: flex;
+        flex: 1;
         justify-content: flex-end;
         align-items: center;
       }

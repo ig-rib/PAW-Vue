@@ -22,7 +22,7 @@ $secondary: #64b5f6;
 }
 
 .view-title {
-    font-size: 75px;
+    font-size: 60px;
     font-weight: 300;
     margin: 2% 0 4% 0;
 }
@@ -57,4 +57,9 @@ $secondary: #64b5f6;
     -moz-user-select: none; 
     -ms-user-select: none;
     user-select: none;
+}
+
+.snippit-subtitle {
+    color: #2196f3 !important;
+    font-weight: 400;
 }

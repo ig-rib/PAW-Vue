@@ -63,6 +63,7 @@ module.exports = {
     "spaced-comment": 'warn',
     "key-spacing": 'warn',
     "object-curly-spacing": 'warn',
+    "space-in-parens": 'warn',
   },
   overrides: [
     {

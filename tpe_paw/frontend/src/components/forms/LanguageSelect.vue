@@ -1,6 +1,7 @@
 <template>
-  <v-container class="language-select-container">
+  <v-container pt-0 class="language-select-container">
     <v-multiselect
+      pt-0
       class="languages-multiselect"
       v-model="selectedLangs"
       :options="languages"
@@ -23,7 +24,9 @@
         </v-layout>
       </template>
     </v-multiselect>
-    <div v-if="displayEmptyError">{{ $t('components.languageSelect.notNull') }}</div>
+    <div v-if="displayEmptyError" class="error-message">
+          {{ $t('components.languageSelect.notNull') }}
+    </div>
   </v-container>
 </template>
 <script>
@@ -110,5 +113,19 @@ export default {
   .multiselect__content-wrapper {
     min-width: 200px !important;
   }
+}
+.error-message{
+  margin-top: 3px;
+  line-height: 12px;
+  font-size: 12px;
+  font-weight: 400;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+  color: #ff5252 !important;
+  caret-color: #ff5252 !important;
 }
 </style>
