@@ -64,6 +64,7 @@ export default new Vuex.Store({
       const message = payload || i18n.$t('snackbar.error.defaultMessage')
       commit('setSnackbar', {
         show: true,
+        color: 'red',
         message
       })
     },
@@ -71,6 +72,7 @@ export default new Vuex.Store({
       const message = payload || i18n.$t('snackbar.success.defaultMessage')
       commit('setSnackbar', {
         show: true,
+        color: 'green',
         message
       })
     },

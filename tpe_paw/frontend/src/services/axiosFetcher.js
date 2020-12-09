@@ -74,6 +74,11 @@ const axiosFetcher = (url = '', params = {}, method = 'get', data = {}, headers 
           }
           break;
         case 401:
+          let message = e.response.data.message
+          if(message == null){
+            message = i18n.t('error.401')
+          }
+          Store.dispatch('snackError', message)
           Router.push({ name: 'login' })
           break;
         case 403:

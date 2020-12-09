@@ -255,6 +255,7 @@
       "name": "Forbidden",
       "desc": "Keep Away! This content isn't meant for you!"
     },
+    "401": "You must be logged in to perform that action",
     "snippet": {
       "detail": {
         "copying": "Error copying code to clipboard"

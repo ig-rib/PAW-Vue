@@ -64,6 +64,7 @@ module.exports = {
     "key-spacing": 'warn',
     "object-curly-spacing": 'warn',
     "space-in-parens": 'warn',
+    "no-case-declarations": 'warn',
   },
   overrides: [
     {

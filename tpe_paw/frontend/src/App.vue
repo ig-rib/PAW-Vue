@@ -3,6 +3,7 @@
     <v-snackbar
       :value="snackbar.show"
       @input="hideSnackbar"
+      :color="snackbar.color"
     >
       {{ snackbar.message }}
       <template v-slot:action="{ attrs }">
@@ -36,7 +37,8 @@ export default {
   computed: {
     snackbar: {
       get () {
-        return this.$store.getters.snackbar
+        let snack = this.$store.getters.snackbar
+        return snack
       },
       set () {
         this.$store.dispatch('hideSnackbar')

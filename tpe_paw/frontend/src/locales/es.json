@@ -255,6 +255,7 @@
         "name": "Prohibido",
         "desc": "Este contenido no es para ti!"
       },
+      "401": "Debes iniciar sesión para realizar esa acción",
       "snippet": {
         "detail": {
           "copying": "Error copiando al clipboard"
