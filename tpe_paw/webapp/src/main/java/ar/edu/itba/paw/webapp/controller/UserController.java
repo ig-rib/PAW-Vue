@@ -70,8 +70,8 @@ public class UserController {
         User user = loginAuthentication.getLoggedInUser().orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
-            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+            errorMessageDto.setMessage(messageSource.getMessage("error.401.snippet.vote", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errorMessageDto).build();
         }
         List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.UPVOTED, sort, user.getId(), null, page)
                 .stream()
@@ -98,11 +98,11 @@ public class UserController {
         User user = userService.findUserById(id).orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
-            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+            errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errorMessageDto).build();
         }
         User currentUser = loginAuthentication.getLoggedInUser().orElse(null);
-        if (currentUser == null || !user.equals(currentUser)) {
+        if (!user.equals(currentUser)) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.FORBIDDEN).entity(errorMessageDto).build();
@@ -144,8 +144,8 @@ public class UserController {
         User user = loginAuthentication.getLoggedInUser().orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
-            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+            errorMessageDto.setMessage(messageSource.getMessage("error.401.snippet.fav", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errorMessageDto).build();
         }
         List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.FAVORITES, sort, user.getId(), null, page)
                 .stream()
@@ -173,8 +173,8 @@ public class UserController {
         User user = loginAuthentication.getLoggedInUser().orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
-            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+            errorMessageDto.setMessage(messageSource.getMessage("error.401.tag.follow", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errorMessageDto).build();
         }
         List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.FOLLOWING, sort, user.getId(), null, page)
                 .stream()
@@ -224,11 +224,11 @@ public class UserController {
         User user = userService.findUserById(id).orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{id}, LocaleContextHolder.getLocale()));
+            errorMessageDto.setMessage(messageSource.getMessage("error.401.profile.owner", new Object[]{id}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
         User currentUser =  loginAuthentication.getLoggedInUser().orElse(null);
-        if (currentUser == null || !user.equals(currentUser)) {
+        if (!user.equals(currentUser)) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.FORBIDDEN).entity(errorMessageDto).build();
@@ -254,11 +254,11 @@ public class UserController {
         User user = userService.findUserById(id).orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{id}, LocaleContextHolder.getLocale()));
-            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+            errorMessageDto.setMessage(messageSource.getMessage("error.401.profile.owner", new Object[]{id}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errorMessageDto).build();
         }
         User currentUser =  loginAuthentication.getLoggedInUser().orElse(null);
-        if (currentUser == null || !user.equals(currentUser)) {
+        if (!user.equals(currentUser)) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.FORBIDDEN).entity(errorMessageDto).build();
@@ -274,11 +274,11 @@ public class UserController {
         User user = userService.findUserById(id).orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
-            errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{id}, LocaleContextHolder.getLocale()));
-            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+            errorMessageDto.setMessage(messageSource.getMessage("error.401.profile.owner", new Object[]{id}, LocaleContextHolder.getLocale()));
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errorMessageDto).build();
         }
         User currentUser =  loginAuthentication.getLoggedInUser().orElse(null);
-        if (currentUser == null || !user.equals(currentUser)) {
+        if (!user.equals(currentUser)) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.FORBIDDEN).entity(errorMessageDto).build();

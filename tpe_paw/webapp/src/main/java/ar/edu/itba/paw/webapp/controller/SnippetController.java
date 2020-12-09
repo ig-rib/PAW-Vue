@@ -97,9 +97,13 @@ public class SnippetController {
         Snippet snippet = this.snippetService.findSnippetById(id).orElse(null);
 
         if (snippet == null) {
-            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
+            return buildErrorResponse("error.401.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
         }
-        if (user == null || user.getUsername().compareTo(snippet.getOwner().getUsername()) != 0) {
+        if (user == null){
+            // Same message only 401 vs 403
+            return buildErrorResponse("error.403.snippet.delete", Response.Status.UNAUTHORIZED, snippet.getId());
+        }
+        else if (user.getUsername().compareTo(snippet.getOwner().getUsername()) != 0) {
             return buildErrorResponse("error.403.snippet.delete", Response.Status.FORBIDDEN, snippet.getId());
         } else {
             if (!this.snippetService.deleteOrRestoreSnippet(snippet, user.getId(), true)) {
@@ -119,7 +123,10 @@ public class SnippetController {
         if (snippet == null) {
             return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
         }
-        if (user == null || user.getUsername().compareTo(snippet.getOwner().getUsername()) != 0) {
+        if(user == null){
+            return buildErrorResponse("error.403.snippet.restore", Response.Status.UNAUTHORIZED, snippet.getId());
+        }
+        if ( user.getUsername().compareTo(snippet.getOwner().getUsername()) != 0) {
             return buildErrorResponse("error.403.snippet.restore", Response.Status.FORBIDDEN, snippet.getId());
         } else {
             if (!this.snippetService.deleteOrRestoreSnippet(snippet, user.getId(), true)) {
@@ -227,7 +234,11 @@ public class SnippetController {
         }
         User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
 
-        if (user == null || user.equals(snippet.getOwner())) {
+        if(user == null){
+            return buildErrorResponse("error.401.snippet.report", Response.Status.UNAUTHORIZED, null);
+        }
+        else if(user.equals(snippet.getOwner())) {
+            // same message but 403
             return buildErrorResponse("error.403.snippet.report.owner", Response.Status.FORBIDDEN, null);
         } else if (!this.reportService.canReport(user)) {
 
@@ -273,7 +284,7 @@ public class SnippetController {
             return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, id);
         }
         if (user == null) {
-            return buildErrorResponse("error.404.username", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
+            return buildErrorResponse("error.401.snippet.report", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
         }
         this.reportService.dismissReportsForSnippet(id, user.getId());
         return Response.ok().build();
@@ -287,7 +298,7 @@ public class SnippetController {
         User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
 
         if (user == null) {
-            return buildErrorResponse("error.404.user", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
+            return buildErrorResponse("error.401.snippet.flag", Response.Status.UNAUTHORIZED, loginAuthentication.getLoggedInUsername());
         } else {
             Snippet snippet = snippetService.findSnippetById(id).orElse(null);
             if(snippet == null){
@@ -318,7 +329,7 @@ public class SnippetController {
         User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
 
         if (user == null) {
-            return buildErrorResponse("error.404.user", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
+            return buildErrorResponse("error.401.snippet.flag", Response.Status.UNAUTHORIZED, loginAuthentication.getLoggedInUsername());
         } else {
             Snippet snippet = snippetService.findSnippetById(id).orElse(null);
             if(snippet == null){

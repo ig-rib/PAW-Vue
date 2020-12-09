@@ -87,7 +87,7 @@ public class RegistrationController {
         if (currentUser == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
-            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errorMessageDto).build();
         }
         try {
             this.emailService.sendVerificationEmail(currentUser);
@@ -104,7 +104,7 @@ public class RegistrationController {
         if (currentUser == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
-            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errorMessageDto).build();
         }
         // Checking the code sent by the user is valid
         if (!this.cryptoService.checkValidTOTP(currentUser, verificationDto.getCode())) {
@@ -124,7 +124,7 @@ public class RegistrationController {
         if (user == null) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{recoveryDto.getEmail()}, LocaleContextHolder.getLocale()));
-            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errorMessageDto).build();
         }
         try {
             this.emailService.sendRecoveryEmail(user, FRONT_BASE_URL_LOCAL);
@@ -143,7 +143,7 @@ public class RegistrationController {
         if(!userOpt.isPresent()) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{id}, LocaleContextHolder.getLocale()));
-            return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errorMessageDto).build();
         }
         User user = userOpt.get();
         boolean pass = this.cryptoService.checkValidRecoverToken(user, resetPasswordDto.getToken());
