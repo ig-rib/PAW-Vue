@@ -18,13 +18,23 @@
     </v-layout>
     <v-layout py-10>
       <v-flex shrink>
-        <v-img
-          v-if="!editing"
+        <div v-if="!editing">
+          <v-img
+          v-if="!error_image"
+          @error="error_image = true" 
           width="220px"
           height="220px"
-          :src="renderableImage"
+          :src="user.icon"
           class="user-profile-profile-pic"
           />
+          <v-img
+           width="220px"
+           height="220px"
+           :src="renderableImage"
+           class="user-profile-profile-pic"
+           v-else></v-img>
+        </div>
+
         <v-btn class="user-profile-profile-pic-btn"
           v-else
           @click="$refs.file.click()">
@@ -125,7 +135,8 @@ import validations from '@/functions/validations'
         oldDescription: '',
         user: () => {},
         hasPhotoPreview: false,
-        isAdmin: false
+        isAdmin: false,
+        error_image: false,
       }
     },
     methods: {
@@ -176,7 +187,7 @@ import validations from '@/functions/validations'
     },
     computed: {
       renderableImage () {
-        return `${this.user.icon}`
+        return 'https://www.sogapar.info/wp-content/uploads/2015/12/default-user-image.png'
       },
       currentUser () {
         return this.$store.getters.user
