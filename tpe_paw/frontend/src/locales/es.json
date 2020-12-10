@@ -23,13 +23,13 @@
       "language": "Lenguajes",
       "tag": "Tags",
       "username": "Usuario",
-      "dateUploaded": "Fecha Subido",
+      "dateUploaded": "Fecha de Subida",
       "userReputation": {
-        "title": "Reputación del usuario",
+        "title": "Reputación del Usuario",
         "label": "Reputación"
       },
       "snippetVotes": {
-        "title": "Votos del snippet",
+        "title": "Votos del Snippet",
         "label": "Votos"
       },
       "from": "De",

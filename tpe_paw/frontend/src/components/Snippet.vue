@@ -3,7 +3,7 @@
       <!-- min-width="300px"
         min-height="375px" -->
       <v-card
-        min-width="300px"
+        min-width="350px !important"
         min-height="300px"
         max-width="400px !important"
         class="snippet-card-card" 

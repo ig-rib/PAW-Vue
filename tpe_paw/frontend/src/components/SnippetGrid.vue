@@ -27,7 +27,7 @@
         {{ $t('components.snippetGrid.noSnippets') }}
       </v-flex>
     </v-layout>
-    <v-layout>
+    <v-layout row wrap justify-center>
       <v-layout class="grid-progress-circle" v-if="status === 'l'" justify-center>
         <v-progress-circular
           :size="70"
@@ -49,9 +49,8 @@
           <v-btn @click="tryLoadingAgain">{{ $t('error.grid.tryAgain') }}</v-btn>
         </v-flex>
       </v-layout>
-      <v-layout v-else justify-center row   wrap>
+      <!-- <v-layout v-else justify-center row   wrap>
         <v-flex
-
             class="snippet-card-flex"
             shrink
             v-for="snippet in snippets"
@@ -62,7 +61,17 @@
           <snippet
             :snippet="snippet"/>
         </v-flex>
-      </v-layout>
+      </v-layout> -->
+        <masonry
+          class="masonry-flex"
+          v-else
+          :cols="{default: 4, 1700: 3, 1300: 2, 960: 1}"
+          :gutter="{default: '2px', 1600: '2px', 1300: '2px', 960: '2px'}"
+          >
+          <v-flex shrink class="snippet-flex" v-for="snippet in snippets" :key="snippet.id">
+            <snippet :snippet="snippet"/>
+          </v-flex>
+        </masonry>
     </v-layout>
     <v-layout justify-center mt-10 mb-10 v-if="status === ''" class="text-center">
       <v-pagination
@@ -180,5 +189,19 @@ export default {
   .no-snippets-text {
     font-size: 30px;
     font-weight: 300;
+  }
+  .masonry-flex {
+    // @media screen and (min-width: 1200px) {
+    //   min-width: 100%;
+    // }
+    justify-content: center;
+  }
+  .masonry-flex > div {
+    min-width: min-content !important;
+  }
+  .snippet-flex {
+    display: flex;
+    justify-content: center;
+    min-width: max-content !important;
   }
 </style>
