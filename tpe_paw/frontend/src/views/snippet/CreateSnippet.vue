@@ -26,28 +26,30 @@
               </v-flex>
             </v-layout>
             <v-divider></v-divider>
-            <v-layout column mt-2 class="description-line">
-              <v-flex class="snippit-subtitle">
+            <v-layout px-3 column mt-2 class="description-line">
+              <v-flex pb-3 class="snippit-subtitle">
                 {{ $t('snippets.createSnippet.description') }}
               </v-flex>
               <v-flex>
                 <v-textarea
                   outlined
                   no-resize
+                  class="description-textarea"
                   :rules="[rules.description]"
                   v-model="description">
                 </v-textarea>
               </v-flex>
             </v-layout>
             <v-divider></v-divider>
-            <v-layout column mt-2 class="code-line">
-              <v-flex class="snippit-subtitle">
+            <v-layout px-3 column mt-2 class="code-line">
+              <v-flex pb-3 class="snippit-subtitle">
                 {{ $t('snippets.createSnippet.code') }}
               </v-flex>
               <v-flex>
                 <v-textarea
                 filled
                 outlined
+                class="code-textarea"
                 :rules="[rules.code, rules.codeNotBlankWithSpaces]"
                 v-model="code"
                 ></v-textarea>
@@ -155,15 +157,18 @@ export default {
     .snippet-create-card {
       padding-right: 10px;
       padding-left: 10px;
-      max-width: 650px;
-      min-width: 650px;
+      max-width: 550px;
+      min-width: 550px;
+      border-radius: 10px;
       .custom-label-color .v-label {
         opacity: 1;
       }
     }
-    .description-line {
+    .description-textarea {
+      border-radius: 10px;
     }
-    .code-line {
+    .code-textarea {
+      border-radius: 10px;
     }
     .tags-line {
       align-content: space-between;
@@ -176,6 +181,9 @@ export default {
         justify-content: flex-end;
         align-items: center;
       }
+    }
+    .snippit-subtitle {
+      font-size: 18px;
     }
   }
 </style>
