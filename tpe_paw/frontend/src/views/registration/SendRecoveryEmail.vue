@@ -10,6 +10,7 @@
       <v-layout class="registration-data-layout" column>
         <v-flex>
           <v-text-field
+            @keypress.enter="sendRecoveryEmail"
             :label="$t('registration.email')"
             outlined
             :rules="[rules.email]"
