@@ -49,12 +49,14 @@
           <v-btn @click="tryLoadingAgain">{{ $t('error.grid.tryAgain') }}</v-btn>
         </v-flex>
       </v-layout>
-      <v-layout v-else justify-center wrap>
+      <v-layout v-else justify-center row   wrap>
         <v-flex
 
             class="snippet-card-flex"
             shrink
             v-for="snippet in snippets"
+            d-flex
+            child-flex
             :key="snippet.id"
           >
           <snippet

@@ -13,7 +13,7 @@
           <v-app-bar-nav-icon @click="navDrawer = !navDrawer"></v-app-bar-nav-icon>
         </v-flex>
         <!-- Title -->
-        <v-flex class="title-flex" md1 sm1 v-if="$vuetify.breakpoint.lgAndUp">
+        <v-flex ml-2 class="title-flex" md1 sm1 v-if="$vuetify.breakpoint.lgAndUp">
           <v-btn min-width="max-content" @click="goHome" :ripple="false" depressed class="title-btn">
             {{ $t('snippit') }}
           </v-btn>
@@ -33,18 +33,20 @@
                 :to="item.path"
                 class="nav-button"
               >
-                <v-layout>
-                  <v-flex v-if="item.icon.length === 1">
-                      <v-icon>{{ item.icon[0] }}</v-icon>
-                  </v-flex>
-                  <v-flex v-else>
-                      <v-icon small>{{ item.icon[0] }}</v-icon>
-                      <v-icon small>{{ item.icon[1] }}</v-icon>
-                  </v-flex>
-
+                <v-layout column align-center>
                   <v-flex>
                     <div>{{ item.title }}</div>
                   </v-flex>
+
+                  <v-flex v-if="item.icon.length === 1" align-self-center>
+                      <v-icon>{{ item.icon[0] }}</v-icon>
+                  </v-flex>
+                  <v-flex v-else>
+                      <v-icon>{{ item.icon[0] }}</v-icon>
+                      <v-icon>{{ item.icon[1] }}</v-icon>
+                  </v-flex>
+
+                  
                 </v-layout>
               </v-btn>
             </v-flex>
@@ -56,13 +58,12 @@
                 class="nav-button"
                 v-on="on"
               >
-                <v-layout>
-                  <v-flex>
-                    <v-icon>mdi-heart-box</v-icon>
-                  </v-flex>
-
+                <v-layout align-center column>
                   <v-flex>
                     <div>{{ $t('navigation.forUser') }}</div>
+                  </v-flex>
+                  <v-flex align-center>
+                    <v-icon>mdi-heart-box-outline</v-icon>
                   </v-flex>
                 </v-layout>
               </v-btn>
@@ -337,14 +338,14 @@ export default {
         },
         {
           title: this.$t('languages.title'),
-          icon: ['mdi-language-csharp', 'mdi-language-python', 'mdi-language-html5'],
+          icon: ['mdi-language-csharp', 'mdi-language-html5', 'mdi-language-python'],
           path: {
             name: 'languages-main'
           }
         },
         {
           title: this.$t('tags.title'),
-          icon: ['mdi-tag'],
+          icon: ['mdi-tag-outline'],
           path: {
             name: 'tags-main'
           }
