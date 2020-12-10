@@ -46,16 +46,6 @@
           <!-- CODE LAYOUT -->
           <v-layout mb-8 class="snippet-code-layout">
             <v-flex>
-              <!-- <v-textarea
-              readonly
-              no-resize
-              hide-details
-              rounded
-              filled
-              class="snippet-detail-code-textarea"
-              id="code-textarea"
-              v-model="snippet.code" v-cloak>
-              </v-textarea> -->
               <ssh-pre class="snippet-detail-code-textarea" language="js" copy-button @copied="copiedToClipboard">
                 {{snippet.code}}
                 <template v-slot:copy-button>
@@ -142,15 +132,22 @@
             <!-- OWNER DATA -->
             <v-flex shrink>
               <v-layout column>
-                <v-flex>
+                <v-flex ml-2>
                   {{ readableDate }}
                 </v-flex>
                 <v-flex>
                   <v-card elevation="0" class="owner-data" @click="goToOwnerProfile">
                     <v-layout px-2>
                       <v-flex class="owner-image-flex" mr-2 shrink>
-                        <v-img class="owner-image" width="40px" height="40px" :src="owner.icon" v-if="user != null">
+                        <v-img
+                          v-if="!error_image"
+                          @error="error_image = true" 
+                          class="owner-image" 
+                          width="40px"
+                          height="40px" 
+                          :src="owner.icon">
                         </v-img>
+                        <v-icon size="40" v-else>mdi-account-circle</v-icon>
                       </v-flex>
                       <v-flex class="no-select owner-name-score-flex">
                         <v-layout column>
@@ -223,7 +220,8 @@ export default {
       reporting: false,
       deleting: false,
       reportDialog: false,
-      reportMessage: ''
+      reportMessage: '',
+      error_image: false,
     }
   },
   methods: {
