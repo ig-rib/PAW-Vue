@@ -14,6 +14,8 @@ import SnippetGrid from './components/SnippetGrid.vue'
 
 import helpers from './functions/helpers.js'
 
+import VueMasonry from 'vue-masonry-css'
+
 // import VueHighlightJS from 'vue-highlightjs'
 
 Vue.config.productionTip = false
@@ -25,6 +27,8 @@ Vue.component('snippet', Snippet)
 Vue.component('snippet-grid', SnippetGrid)
 
 Vue.mixin(helpers)
+
+Vue.use(VueMasonry)
 
 Vue.use(VueProgressBar, {
   color: 'rgb(143, 255, 199)',

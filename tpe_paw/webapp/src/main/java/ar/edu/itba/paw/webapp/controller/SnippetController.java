@@ -210,7 +210,7 @@ public class SnippetController {
         if (user == null) {
             return buildErrorResponse("error.401.snippet.fav", Response.Status.UNAUTHORIZED, null);
         } else {
-            this.favService.updateFavorites(user.getId(), id, true);
+            this.favService.updateFavorites(user.getId(), id, false);
             LOGGER.debug("User {} updated favorite on snippet {}", user.getUsername(), id);
         }
 

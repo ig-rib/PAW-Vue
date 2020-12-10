@@ -7,15 +7,15 @@
     </v-layout>
     <v-layout justify-center wrap>
       <v-flex 
-        :class="`explore-pad-flex ${$vuetify.breakpoint.mdAndUp ? 'my-15' : 'justify-center'}`"
-        md3 lg3 sm12>
-        <explore-pad v-if="$vuetify.breakpoint.mdAndUp"
-          @searchResults="updateResults"></explore-pad>
-        <v-btn v-else @click="showExplorePad = !showExplorePad">
+        :class="`explore-pad-flex justify-center`"
+        sm12>
+        <!-- <explore-pad v-if="$vuetify.breakpoint.mdAndUp"
+          @searchResults="updateResults"></explore-pad> -->
+        <v-btn @click="showExplorePad = !showExplorePad">
           {{ $t('explore.showFilters') }}
         </v-btn>
       </v-flex>
-      <v-flex lg9 md9>
+      <v-flex>
         <snippet-grid ref="exploreSnippets"></snippet-grid>
       </v-flex>
     </v-layout >
