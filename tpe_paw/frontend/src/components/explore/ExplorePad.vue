@@ -5,7 +5,7 @@
         {{ $t('explore.padTitle') }}
       </v-layout>
       <v-layout>
-        <div class="explore-pad-section-title">
+        <div class="snippit-subtitle explore-pad-section-title">
           {{ $t('explore.order.title') }}
         </div>
       </v-layout>
@@ -39,7 +39,7 @@
       <v-divider></v-divider>
       <!-- Include Flagged -->
       <v-layout>
-        <div class="explore-pad-section-title">
+        <div class="snippit-subtitle explore-pad-section-title">
           {{ $t('explore.flagged.title') }}
         </div>
       </v-layout>
@@ -53,7 +53,7 @@
       <v-divider></v-divider>
       <!-- Title -->
       <v-layout>
-        <div class="explore-pad-section-title">
+        <div class="snippit-subtitle explore-pad-section-title">
           {{ $t('explore.title.title') }}
         </div>
       </v-layout>
@@ -62,7 +62,6 @@
           <v-text-field 
             hide-details
             v-model="exploreParams.snippetTitle"
-            :label="$t('explore.title.label')"
             rounded
             outlined
             dense></v-text-field>
@@ -74,7 +73,7 @@
         <!-- Language -->
         <v-flex md6 sm6 xs6>
           <v-layout>
-            <div class="explore-pad-section-title">
+            <div class="snippit-subtitle explore-pad-section-title">
               {{ $t('explore.language') }}
             </div>
           </v-layout>
@@ -91,7 +90,7 @@
         <!-- Tags -->
         <v-flex md6 sm6 xs6>
           <v-layout>
-            <div class="explore-pad-section-title">
+            <div class="snippit-subtitle explore-pad-section-title">
               {{ $t('explore.tag')}}
             </div>
           </v-layout>
@@ -108,7 +107,7 @@
       </v-layout>
       <v-divider></v-divider>
       <v-layout>
-        <div class="explore-pad-section-title">
+        <div class="snippit-subtitle explore-pad-section-title">
           {{ $t('explore.username') }}
         </div>
       </v-layout>
@@ -117,7 +116,6 @@
           <v-text-field
             hide-details
             v-model="exploreParams.username"
-            :label="$t('explore.username')"
             rounded
             outlined
             dense></v-text-field>
@@ -125,7 +123,7 @@
       </v-layout>
       <v-divider></v-divider>
       <v-layout>
-        <div class="explore-pad-section-title">
+        <div class="snippit-subtitle explore-pad-section-title">
           {{ $t('explore.dateUploaded') }}
         </div>
       </v-layout>
@@ -145,7 +143,7 @@
       </v-layout>
       <v-divider></v-divider>
       <v-layout>
-        <div class="explore-pad-section-title">
+        <div class="snippit-subtitle explore-pad-section-title">
           {{ $t('explore.userReputation.title') }}
         </div>
       </v-layout>
@@ -173,7 +171,7 @@
       </v-layout>
       <v-divider></v-divider>
       <v-layout>
-        <div class="explore-pad-section-title">
+        <div class="snippit-subtitle explore-pad-section-title">
           {{ $t('explore.snippetVotes.title') }}
         </div>
       </v-layout>
@@ -279,6 +277,7 @@ export default {
 
 <style lang="scss">
 #explore-pad-card {
+  border-radius: 10px;
   margin-left: auto;
   .explore-pad-title {
     font-size: 36px;

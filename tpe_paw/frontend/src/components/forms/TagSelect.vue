@@ -1,5 +1,5 @@
 <template>
-  <v-container class="tag-select-container">
+  <v-container pt-0 class="tag-select-container">
     <v-multiselect
       v-model="selectedTags"
       :options="tags"

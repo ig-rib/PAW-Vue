@@ -1,7 +1,6 @@
 <template>
   <v-container pt-0 class="language-select-container">
     <v-multiselect
-      pt-0
       class="languages-multiselect"
       v-model="selectedLangs"
       :options="languages"
