@@ -63,6 +63,9 @@ export default {
         .finally(() => {
           this.code = ''
         })
+    },
+    sendVerificationEmail () {
+      registration.sendVerificationEmail()
     }
   },
   computed: {
@@ -76,13 +79,7 @@ export default {
     }
   },
   mounted () {
-    registration.verifyEmail()
-      .then(r => {
-        this.$store.dispatch('snackSuccess', this.$t('user.profile.verifyAccount.emailSent'))
-      })
-      .catch(e => {
-        this.$store.dispatch('snackError', this.$t('user.profile.verifyAccount.emailError'))
-      })
+    registration.sendVerificationEmail()
   }
 }
 </script>

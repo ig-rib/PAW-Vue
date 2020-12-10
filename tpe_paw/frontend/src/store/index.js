@@ -1,11 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
-import i18n from '@/i18n.js'
+import i18n from '../i18n.js'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+let defaultAction = {
+  func: () => {
+    store.dispatch('hideSnackbar')
+  },
+  text: i18n.t('snackbar.hide')
+}
+
+const store = new Vuex.Store({
   plugins: [createPersistedState({
     storage: window.sessionStorage
   })],
@@ -16,7 +23,8 @@ export default new Vuex.Store({
     },
     snackbar: {
       show: false,
-      message: 'HELLO'
+      message: 'HELLO',
+      action: defaultAction
     },
     user: () => {}
   },
@@ -61,15 +69,16 @@ export default new Vuex.Store({
       window.sessionStorage.clear()
     },
     snackError ({ commit }, payload) {
-      const message = payload || i18n.$t('snackbar.error.defaultMessage')
+      const message = payload.message || i18n.t('snackbar.error.defaultMessage')
       commit('setSnackbar', {
         show: true,
         color: 'red',
-        message
+        message,
+        action: payload.action
       })
     },
     snackSuccess ({ commit }, payload) {
-      const message = payload || i18n.$t('snackbar.success.defaultMessage')
+      const message = payload || i18n.t('snackbar.success.defaultMessage')
       commit('setSnackbar', {
         show: true,
         color: 'green',
@@ -79,6 +88,13 @@ export default new Vuex.Store({
     hideSnackbar ({ commit }) {
       commit('setSnackbar', {
         show: false,
+        message: '',
+        action: defaultAction
+      })
+    },
+    hideSnackbarNoAction ({ commit }) {
+      commit('setSnackbar', {
+        show: false,
         message: ''
       })
     }
@@ -86,3 +102,9 @@ export default new Vuex.Store({
   modules: {
   }
 })
+
+// actionFunction = () => {
+//   store.dispatch('hideSnackbar')
+// }
+
+export default store

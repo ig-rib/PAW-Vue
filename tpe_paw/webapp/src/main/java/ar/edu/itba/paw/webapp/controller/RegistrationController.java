@@ -80,7 +80,7 @@ public class RegistrationController {
         return Response.accepted().build();
     }
 
-    @GET
+    @PUT
     @Path(value = "/verify-email")
     public Response verifyEmail() {
         User currentUser = loginAuthentication.getLoggedInUser().orElse(null);

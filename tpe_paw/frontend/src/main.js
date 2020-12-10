@@ -40,9 +40,9 @@ Vue.use(VueProgressBar, {
 // Vue.use(VueHighlightJS)
 
 new Vue({
+  i18n,
   router,
   store,
   vuetify,
-  i18n,
   render: h => h(App)
 }).$mount('#app')

@@ -10,8 +10,8 @@
         <v-btn
           text
           v-bind="attrs"
-          @click="hideSnackbar">
-          {{ $t('snackbar.hide') }}
+          @click="snackbar.action.func">
+          {{ snackbar.action.text }}
         </v-btn>
       </template>
     </v-snackbar>
