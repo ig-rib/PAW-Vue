@@ -22,8 +22,7 @@
         }
         .mid-container {
             background-color: #eeedf2;
-            border-bottom-left-radius: 30px;
-            border-bottom-right-radius: 30px;
+
             width: 100%;
         }
         .mid-container-info {
@@ -54,9 +53,8 @@
         .title-container {
             font-size: 60px !important;
             padding: 20px 0 20px 0;
-            border-bottom-left-radius: 30px;
-            border-bottom-right-radius: 30px;
-            background: #5E35B1;
+
+            background: #1565c0;
         }
         .bottom-container {
             max-height: 100px;
@@ -82,8 +80,8 @@
 </head>
 <body style="background-color: transparent;width: 100%;">
 <div class="full-width" style="font-family: Roboto, 'sans-serif';box-sizing: border-box;width: 100%;">
-    <div class="fw-100 mid-container" style="font-family: Roboto, 'sans-serif';box-sizing: border-box;background-color: #eeedf2;border-bottom-left-radius: 30px;border-bottom-right-radius: 30px;width: 100%;font-weight: 100;">
-        <div class="center white-text fw-300 title-container full-width" style="font-family: Roboto, 'sans-serif';box-sizing: border-box;font-weight: 300;padding: 20px 0 20px 0;border-bottom-left-radius: 30px;border-bottom-right-radius: 30px;background: #5E35B1;align-items: center;justify-content: center;text-align: center;width: 100%;color: white !important;font-size: 60px !important;">
+    <div class="fw-100 mid-container" style="font-family: Roboto, 'sans-serif';box-sizing: border-box;background-color: #eeedf2;width: 100%;font-weight: 100;">
+        <div class="center white-text fw-300 title-container full-width" style="font-family: Roboto, 'sans-serif';box-sizing: border-box;font-weight: 300;padding: 20px 0 20px 0;background: #1565c0;align-items: center;justify-content: center;text-align: center;width: 100%;color: white !important;font-size: 60px !important;">
             <span class="fw-500" style="font-family: Roboto, 'sans-serif';box-sizing: border-box;font-weight: 500;">#msg("email.app.title")</span>
         </div>
         <div class="mid-container-info" style="font-family: Roboto, 'sans-serif';box-sizing: border-box;padding: 20px;">
