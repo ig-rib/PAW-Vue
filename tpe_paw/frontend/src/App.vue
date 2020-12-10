@@ -43,6 +43,9 @@ export default {
       set () {
         this.$store.dispatch('hideSnackbar')
       }
+    },
+    language () {
+      return navigator.language
     }
   },
   methods: {

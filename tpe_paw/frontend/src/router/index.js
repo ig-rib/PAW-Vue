@@ -37,14 +37,14 @@ const routes = [
   {
     path: '/reset-password',
     name: 'redirect-reset-password',
-    redirect: '/' + defaultLang + '/registration/reset-password'
+    redirect: '/' + '/registration/reset-password'
   },
   {
     path: '/',
-    redirect: '/' + defaultLang + '/feed'
+    redirect: '/' + 'feed'
   },
   {
-    path: '/:langauge',
+    path: '/',
     name: 'nothing',
     redirect: {
       name: 'feed'
