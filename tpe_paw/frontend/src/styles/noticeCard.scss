@@ -1,4 +1,6 @@
+@import './main.scss';
 .notice-card {
+  background-color: $background !important;
   border-radius: 10px !important;
 }
 
@@ -6,4 +8,5 @@
   > p {
     margin: 0px;
   }
+  font-size: 15px;
 }

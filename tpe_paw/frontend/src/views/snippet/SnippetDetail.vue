@@ -1,15 +1,28 @@
 <template>
   <v-container class="snippet-detail-outer-container">
-    <v-layout justify-center pa-5 v-if="snippet.flagged">
-      <v-flex shrink>
+    <v-layout justify-center row pa-5 v-if="snippet.flagged || snippet.deleted">
+      <v-flex ma-3 shrink v-if="snippet.flagged">
         <v-card class="notice-card">
-          <v-card-title>
+          <v-card-title class="justify-center">
             {{ $t('snippets.snippetDetail.flagged.title') }}
           </v-card-title>
           <v-card-text class="notice-card-text">
             <p>{{ $t('snippets.snippetDetail.flagged.text1') }}</p>
             <p>
               {{ $t('snippets.snippetDetail.flagged.text2') }}
+            </p>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+      <v-flex ma-3 shrink v-if="snippet.deleted">
+        <v-card class="notice-card">
+          <v-card-title class="justify-center">
+            {{ $t('snippets.snippetDetail.deleted.title') }}
+          </v-card-title>
+          <v-card-text class="notice-card-text">
+            <p>{{ $t('snippets.snippetDetail.deleted.text1') }}</p>
+            <p>
+              {{ $t('snippets.snippetDetail.deleted.text2') }}
             </p>
           </v-card-text>
         </v-card>
@@ -46,16 +59,6 @@
           <!-- CODE LAYOUT -->
           <v-layout mb-8 class="snippet-code-layout">
             <v-flex>
-              <!-- <v-textarea
-              readonly
-              no-resize
-              hide-details
-              rounded
-              filled
-              class="snippet-detail-code-textarea"
-              id="code-textarea"
-              v-model="snippet.code" v-cloak>
-              </v-textarea> -->
               <ssh-pre class="snippet-detail-code-textarea" language="js" copy-button @copied="copiedToClipboard">
                 {{snippet.code}}
                 <template v-slot:copy-button>
@@ -102,7 +105,12 @@
                 </v-flex>
                 <!-- FAV -->
                 <v-flex>
-                  <v-btn :ripple="false" :class="`fav-btn ${snippet.favorite ? 'color-crimson' : '' }`" :disabled="faving" @click="fav" icon>
+                  <v-btn 
+                  :ripple="false" 
+                  :class="`fav-btn ${snippet.favorite ? 'color-crimson' : '' }`" 
+                  :disabled="faving || snippet.deleted" 
+                  @click="fav" icon
+                  >
                     <v-icon>{{`mdi-heart${snippet.favorite ? '' : '-outline'}`}}</v-icon>
                   </v-btn>
                 </v-flex>
@@ -111,7 +119,13 @@
                   <v-layout>
                     <!-- UPVOTE -->
                     <v-flex>
-                      <v-btn :ripple="false" :color="`${ snippet.vote != null && snippet.vote.positive ? 'green' : '' }`" class="thumb-up-btn" :disabled="voting" @click="vote(true)" icon>
+                      <v-btn 
+                      :ripple="false" 
+                      :color="`${ snippet.vote != null && snippet.vote.positive ? 'green' : '' }`" 
+                      class="thumb-up-btn" 
+                      :disabled="voting || snippet.deleted" 
+                      @click="vote(true)" 
+                      icon>
                         <v-icon>{{`mdi-thumb-up${snippet.vote != null && snippet.vote.positive ? '' : '-outline'}`}}</v-icon>
                       </v-btn>
                     </v-flex>
@@ -121,7 +135,12 @@
                     </v-flex>
                     <!-- DOWNVOTE -->
                     <v-flex>
-                      <v-btn :ripple="false" :color="`${ snippet.vote != null && !snippet.vote.positive ? 'red' : '' }`" class="thumb-down-btn" :disabled="voting" @click="vote(false)" icon>
+                      <v-btn 
+                      :ripple="false" 
+                      :color="`${ snippet.vote != null && !snippet.vote.positive ? 'red' : '' }`" 
+                      class="thumb-down-btn" 
+                      :disabled="voting || snippet.deleted" 
+                      @click="vote(false)" icon>
                         <v-icon>{{`mdi-thumb-down${snippet.vote != null && !snippet.vote.positive ? '' : '-outline'}`}}</v-icon>
                       </v-btn>
                     </v-flex>
@@ -142,15 +161,22 @@
             <!-- OWNER DATA -->
             <v-flex shrink>
               <v-layout column>
-                <v-flex>
+                <v-flex ml-2>
                   {{ readableDate }}
                 </v-flex>
                 <v-flex>
                   <v-card elevation="0" class="owner-data" @click="goToOwnerProfile">
                     <v-layout px-2>
                       <v-flex class="owner-image-flex" mr-2 shrink>
-                        <v-img class="owner-image" width="40px" height="40px" :src="owner.icon" v-if="user != null">
+                        <v-img
+                          v-if="!error_image"
+                          @error="error_image = true" 
+                          class="owner-image" 
+                          width="40px"
+                          height="40px" 
+                          :src="owner.icon">
                         </v-img>
+                        <v-icon size="40" v-else>mdi-account-circle</v-icon>
                       </v-flex>
                       <v-flex class="no-select owner-name-score-flex">
                         <v-layout column>
@@ -223,7 +249,8 @@ export default {
       reporting: false,
       deleting: false,
       reportDialog: false,
-      reportMessage: ''
+      reportMessage: '',
+      error_image: false,
     }
   },
   methods: {

@@ -8,8 +8,8 @@
     <v-layout justify-center>
         <v-card class="snippet-create-card">
           <v-container px-4>
-            <v-layout mt-2>
-              <v-flex pb-3 lg7 md7 sm7 xs7 class="snippit-subtitle">
+            <v-layout mt-2 mb-1> 
+              <v-flex lg7 md7 sm7 xs7 class="snippit-subtitle">
                 {{ $t('snippets.createSnippet.title') }}
               </v-flex>
               <v-flex pl-3 lg5 md5 sm5 xs5 class="snippit-subtitle">
@@ -27,8 +27,9 @@
                   v-model="title"
                   ></v-text-field>
               </v-flex>
-              <v-flex lg5 md5 sm5 xs5>
+              <v-flex lg5 md5 sm5 xs5 align-start>
                 <language-select
+                  align-start
                   :allowEmpty="false"
                   v-model="language"/>
               </v-flex>
@@ -64,7 +65,7 @@
               </v-flex>
             </v-layout>
             <v-divider></v-divider>
-            <v-layout mt-3>
+            <v-layout mt-1 py-2>
               <v-flex class="snippit-subtitle">
                 {{ $t('snippets.createSnippet.tags') }}
               </v-flex>
@@ -77,7 +78,7 @@
                   :closeOnSelect="false"
                   :label="$t('snippets.createSnippet.tags')"></tag-select>
               </v-flex>
-              <v-flex class="save-btn-flex" lg2 md2 sm6 xs6>
+              <v-flex class="save-btn-flex" lg2 md2 sm6 xs6 align-start>
                 <v-btn :disabled="!allRulesAlright" large color="info" @click="saveSnippet">
                   {{ $t('snippets.createSnippet.create') }}
                    <v-icon right dark>mdi-cloud-upload</v-icon>
@@ -170,8 +171,8 @@ export default {
     .snippet-create-card {
       padding-right: 10px;
       padding-left: 10px;
-      max-width: 550px;
-      min-width: 550px;
+      max-width: 600px;
+      min-width: 600px;
       border-radius: 10px;
       .custom-label-color .v-label {
         opacity: 1;

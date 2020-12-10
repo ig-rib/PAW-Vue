@@ -77,9 +77,14 @@
         "cancel": "Cancel"
       },
       "flagged": {
-        "title": "Beware!",
+        "title": "Flagged Snippet",
         "text1": "The following snippet has been marked as incorrect by the administrator.",
         "text2": "It may not work or be unsafe to use."
+      },
+      "deleted": {
+        "title": "Deleted Snippet",
+        "text1": "The following snippet has been deleted by its owner.",
+        "text2": "You wont be able to upvote or fav it."
       },
       "postingDateTime": "{month}/{day}/{year} at {time}",
       "snippetDeleted": "Successfully deleted snippet",

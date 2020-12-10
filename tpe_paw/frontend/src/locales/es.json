@@ -77,9 +77,14 @@
           "cancel": "Cancelar"
         },
         "flagged": {
-          "title": "Cuidado!",
+          "title": "Snippet Marcado",
           "text1": "El siguiente snippet ha sido marcado como incorrecto por el administrador.",
           "text2": "Puede que no funcione o sea inseguro"
+        },
+        "deleted": {
+          "title": "Snippet Borrado",
+          "text1": "El siguiente snippet ha sido borrado por su creador.",
+          "text2": "No podrás votar o guardarlo como favorito"
         },
         "postingDateTime": "{day}/{month}/{year} a las {time}",
         "snippetDeleted": "Snippet borrado correctamente",

@@ -13,7 +13,7 @@
           <v-app-bar-nav-icon @click="navDrawer = !navDrawer"></v-app-bar-nav-icon>
         </v-flex>
         <!-- Title -->
-        <v-flex class="title-flex" md1 sm1 v-if="$vuetify.breakpoint.lgAndUp">
+        <v-flex px-2 class="title-flex" md1 sm1 v-if="$vuetify.breakpoint.lgAndUp">
           <v-btn min-width="max-content" @click="goHome" :ripple="false" depressed class="title-btn">
             {{ $t('snippit') }}
           </v-btn>
@@ -201,7 +201,7 @@
         <v-flex shrink v-if="$vuetify.breakpoint.lgAndUp">
           <v-layout v-if="!$store.getters.loggedIn && !inRegistrationPage">
             <v-flex ma-2 shrink>
-              <v-btn class="white--text" color="green" :ripple="false" @click="goToLogin">{{ $t('registration.login') }}</v-btn>
+              <v-btn class="white--text" color="#2286c3" :ripple="false" @click="goToLogin">{{ $t('registration.login') }}</v-btn>
             </v-flex>
           </v-layout>
           <v-layout v-if="$store.getters.loggedIn">
@@ -605,7 +605,7 @@ export default {
     font-weight: 400;
     font-size: 24px !important;
     letter-spacing: 0;
-    // color: $primary;
+    color: $primary;
     background: transparent;
   }
   .nav-search-text-field {
@@ -629,6 +629,7 @@ export default {
     // color: $primary;
   }
   .create-snippet-btn {
+    background-color: $secondary;
   }
   #search-bar-flex {
     & > .layout, .v-card {
