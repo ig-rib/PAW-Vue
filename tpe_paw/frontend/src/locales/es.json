@@ -123,7 +123,9 @@
           "title": "Verificar tu cuenta",
           "text1": "Tu email no ha sido verificado. No recibirás emails de nosotros",
           "text2": "Para verificar tu email haz click aquí",
-          "here": "aquí"
+          "here": "aquí",
+          "emailSent": "Email de verificación enviado",
+          "emailError": "Error en el envío del email de verificación"
         }
       },
       "active": "Snippets activos",

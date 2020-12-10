@@ -123,7 +123,9 @@
         "title": "Verify your account",
         "text1": "Your email has not been verified, meaning you will not receive any emails from us.",
         "text2": "To verify your email, click",
-        "here": "here"
+        "here": "here",
+        "emailSent": "Verification email sent",
+        "emailError": "Error sending verification emails"
       }
     },
     "active": "Active Snippets",

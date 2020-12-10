@@ -52,6 +52,9 @@ export default {
         .then(r => {
           this.$store.dispatch('snackSuccess', this.$t('registration.successfulVerification'))
           // TODO do not allow going back to login
+          let user = this.$store.getters.user
+          user.verified = true
+          this.$store.dispatch('setUser', user)
           this.$router.push({
             name: 'feed'
           })
@@ -71,6 +74,15 @@ export default {
     allRulesAlright () {
       return Object.keys(this.rules).filter(rule => this.rules[rule]() !== true).length === 0 && !this.usernameExists && !this.emailExists
     }
+  },
+  mounted () {
+    registration.verifyEmail()
+      .then(r => {
+        this.$store.dispatch('snackSuccess', this.$t('user.profile.verifyAccount.emailSent'))
+      })
+      .catch(e => {
+        this.$store.dispatch('snackError', this.$t('user.profile.verifyAccount.emailError'))
+      })
   }
 }
 </script>
