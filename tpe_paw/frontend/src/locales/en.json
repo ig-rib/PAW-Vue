@@ -89,6 +89,8 @@
       "postingDateTime": "{month}/{day}/{year} at {time}",
       "snippetDeleted": "Successfully deleted snippet",
       "snippetRestored": "Successfully restored snippet",
+      "snippetFlagged": "Succesfully flagged snippet",
+      "snippetUnflagged": "Sucecesfully unflagged snippet",
       "copiedToClipboard": "Code copied to clipboard!"
     },
     "postingDate": "{month}/{day}/{year}"

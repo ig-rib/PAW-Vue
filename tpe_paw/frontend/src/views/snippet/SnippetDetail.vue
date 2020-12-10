@@ -291,8 +291,19 @@ export default {
       } else {
         promise = snippets.flagSnippet(this.snippet.id)
       }
-      promise.then(r => { this.snippet.flagged = !this.snippet.flagged })
-      .finally(() => { this.flagging = false })
+      promise.then(r => { 
+        this.snippet.flagged = !this.snippet.flagged 
+        this.owner.reputation += this.snippet.flagged ? -10 : 10
+      })
+      .finally(() => { 
+        this.flagging = false
+        if(this.snippet.flagged){
+          this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.snippetFlagged')) 
+        }
+        else{
+          this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.snippetUnflagged'))
+        }
+      })
     },
     report () {
       this.reporting = true
