@@ -23,7 +23,8 @@ import javax.ws.rs.core.SecurityContext;
 import java.time.Instant;
 import java.util.Optional;
 
-import static ar.edu.itba.paw.webapp.utility.Constants.FRONT_BASE_URL_LOCAL;
+import static ar.edu.itba.paw.webapp.utility.Constants.BASE_URL_LOCAL;
+import static ar.edu.itba.paw.webapp.utility.Constants.BASE_URL_DEPLOY;
 
 @Path("registration")
 @Controller
@@ -127,7 +128,9 @@ public class RegistrationController {
             return Response.status(Response.Status.UNAUTHORIZED).entity(errorMessageDto).build();
         }
         try {
-            this.emailService.sendRecoveryEmail(user, FRONT_BASE_URL_LOCAL);
+            // TODO change to deploy (better, automatize)
+            this.emailService.sendRecoveryEmail(user, BASE_URL_LOCAL);
+//            this.emailService.sendRecoveryEmail(user, BASE_URL_DEPLOY);
         } catch (Exception e) {
             LOGGER.error(e.getMessage() + "Failed to send recovery email to user {}", recoveryDto.getEmail());
             return Response.serverError().build();

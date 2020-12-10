@@ -13,9 +13,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static ar.edu.itba.paw.webapp.utility.Constants.BACK_BASE_URL_LOCAL;
-import static ar.edu.itba.paw.webapp.utility.Constants.FRONT_BASE_URL_LOCAL;
-
 public class SnippetDto {
 
     private Long id;
