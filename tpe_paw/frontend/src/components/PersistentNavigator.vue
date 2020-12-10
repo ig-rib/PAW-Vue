@@ -629,6 +629,7 @@ export default {
     // color: $primary;
   }
   .create-snippet-btn {
+    background-color: $secondary;
   }
   #search-bar-flex {
     & > .layout, .v-card {

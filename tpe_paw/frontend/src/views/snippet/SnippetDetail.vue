@@ -1,15 +1,28 @@
 <template>
   <v-container class="snippet-detail-outer-container">
-    <v-layout justify-center pa-5 v-if="snippet.flagged">
-      <v-flex shrink>
+    <v-layout justify-center row pa-5 v-if="snippet.flagged || snippet.deleted">
+      <v-flex ma-3 shrink v-if="snippet.flagged">
         <v-card class="notice-card">
-          <v-card-title>
+          <v-card-title class="justify-center">
             {{ $t('snippets.snippetDetail.flagged.title') }}
           </v-card-title>
           <v-card-text class="notice-card-text">
             <p>{{ $t('snippets.snippetDetail.flagged.text1') }}</p>
             <p>
               {{ $t('snippets.snippetDetail.flagged.text2') }}
+            </p>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+      <v-flex ma-3 shrink v-if="snippet.deleted">
+        <v-card class="notice-card">
+          <v-card-title class="justify-center">
+            {{ $t('snippets.snippetDetail.deleted.title') }}
+          </v-card-title>
+          <v-card-text class="notice-card-text">
+            <p>{{ $t('snippets.snippetDetail.deleted.text1') }}</p>
+            <p>
+              {{ $t('snippets.snippetDetail.deleted.text2') }}
             </p>
           </v-card-text>
         </v-card>
@@ -92,7 +105,12 @@
                 </v-flex>
                 <!-- FAV -->
                 <v-flex>
-                  <v-btn :ripple="false" :class="`fav-btn ${snippet.favorite ? 'color-crimson' : '' }`" :disabled="faving" @click="fav" icon>
+                  <v-btn 
+                  :ripple="false" 
+                  :class="`fav-btn ${snippet.favorite ? 'color-crimson' : '' }`" 
+                  :disabled="faving || snippet.deleted" 
+                  @click="fav" icon
+                  >
                     <v-icon>{{`mdi-heart${snippet.favorite ? '' : '-outline'}`}}</v-icon>
                   </v-btn>
                 </v-flex>
@@ -101,7 +119,13 @@
                   <v-layout>
                     <!-- UPVOTE -->
                     <v-flex>
-                      <v-btn :ripple="false" :color="`${ snippet.vote != null && snippet.vote.positive ? 'green' : '' }`" class="thumb-up-btn" :disabled="voting" @click="vote(true)" icon>
+                      <v-btn 
+                      :ripple="false" 
+                      :color="`${ snippet.vote != null && snippet.vote.positive ? 'green' : '' }`" 
+                      class="thumb-up-btn" 
+                      :disabled="voting || snippet.deleted" 
+                      @click="vote(true)" 
+                      icon>
                         <v-icon>{{`mdi-thumb-up${snippet.vote != null && snippet.vote.positive ? '' : '-outline'}`}}</v-icon>
                       </v-btn>
                     </v-flex>
@@ -111,7 +135,12 @@
                     </v-flex>
                     <!-- DOWNVOTE -->
                     <v-flex>
-                      <v-btn :ripple="false" :color="`${ snippet.vote != null && !snippet.vote.positive ? 'red' : '' }`" class="thumb-down-btn" :disabled="voting" @click="vote(false)" icon>
+                      <v-btn 
+                      :ripple="false" 
+                      :color="`${ snippet.vote != null && !snippet.vote.positive ? 'red' : '' }`" 
+                      class="thumb-down-btn" 
+                      :disabled="voting || snippet.deleted" 
+                      @click="vote(false)" icon>
                         <v-icon>{{`mdi-thumb-down${snippet.vote != null && !snippet.vote.positive ? '' : '-outline'}`}}</v-icon>
                       </v-btn>
                     </v-flex>

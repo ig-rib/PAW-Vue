@@ -13,9 +13,9 @@
           <v-layout class="user-language-layout" dense>
               <v-flex class="username-date-flex" dense>
                 <v-list-item two-line>
-                  <v-avatar class="mr-2" color="indigo">
-                    <img v-if="!error" @error="error = true" class="profile-circle" :src="owner.icon"/>
-                    <v-icon v-else>mdi-account-circle</v-icon>
+                  <v-avatar class="mr-2">
+                    <img v-if="!error" @error="error = true" :src="owner.icon"/>
+                    <v-icon v-else size="50">mdi-account-circle</v-icon>
                   </v-avatar>
                   <v-list-item-content> 
                     <v-list-item-title class="username-text headline mb-1">{{ owner.username }}</v-list-item-title>
