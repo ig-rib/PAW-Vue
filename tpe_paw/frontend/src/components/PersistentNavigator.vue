@@ -13,7 +13,7 @@
           <v-app-bar-nav-icon @click="navDrawer = !navDrawer"></v-app-bar-nav-icon>
         </v-flex>
         <!-- Title -->
-        <v-flex ml-2 class="title-flex" md1 sm1 v-if="$vuetify.breakpoint.lgAndUp">
+        <v-flex class="title-flex" md1 sm1 v-if="$vuetify.breakpoint.lgAndUp">
           <v-btn min-width="max-content" @click="goHome" :ripple="false" depressed class="title-btn">
             {{ $t('snippit') }}
           </v-btn>
@@ -35,18 +35,11 @@
               >
                 <v-layout column align-center>
                   <v-flex>
+                      <v-icon>{{ item.icon }}</v-icon>
+                  </v-flex>
+                  <v-flex>
                     <div>{{ item.title }}</div>
                   </v-flex>
-
-                  <v-flex v-if="item.icon.length === 1" align-self-center>
-                      <v-icon>{{ item.icon[0] }}</v-icon>
-                  </v-flex>
-                  <v-flex v-else>
-                      <v-icon>{{ item.icon[0] }}</v-icon>
-                      <v-icon>{{ item.icon[1] }}</v-icon>
-                  </v-flex>
-
-                  
                 </v-layout>
               </v-btn>
             </v-flex>
@@ -58,12 +51,12 @@
                 class="nav-button"
                 v-on="on"
               >
-                <v-layout align-center column>
+                <v-layout column align-center>
+                  <v-flex>
+                    <v-icon>mdi-heart-box-outline</v-icon>
+                  </v-flex>
                   <v-flex>
                     <div>{{ $t('navigation.forUser') }}</div>
-                  </v-flex>
-                  <v-flex align-center>
-                    <v-icon>mdi-heart-box-outline</v-icon>
                   </v-flex>
                 </v-layout>
               </v-btn>
@@ -227,6 +220,9 @@
         </v-flex>
       </v-layout>
     </v-app-bar>
+
+    <!-- Navigation Drawer -->
+    
     <v-navigation-drawer v-if="$vuetify.breakpoint.mdAndDown"
       disable-resize-watcher
       absolute
@@ -243,11 +239,11 @@
             :to="item.path"
           >
             <v-layout>
-              <v-flex>
+              <v-flex shrink>
                 <v-icon>{{ item.icon }}</v-icon>
               </v-flex>
 
-              <v-flex>
+              <v-flex pl-5>
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-flex>
             </v-layout>
@@ -259,7 +255,7 @@
           :to="{ name: 'flagged' }"
           v-if="isAdmin">
           <v-layout>
-              <v-flex>
+              <v-flex shrink>
                 <v-icon>mdi-flag</v-icon>
               </v-flex>
               <v-flex>
@@ -273,10 +269,10 @@
           :key="item.title"
           :to="item.path">
           <v-layout>
-              <v-flex>
+              <v-flex shrink>
                 <v-icon>{{ item.icon }}</v-icon>
               </v-flex>
-              <v-flex>
+              <v-flex pl-5>
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-flex>
             </v-layout>
@@ -324,28 +320,28 @@ export default {
       generalPaths: [
         {
           title: this.$t('feed.title'),
-          icon: ['mdi-home'],
+          icon: 'mdi-home',
           path: {
             name: 'feed'
           }
         },
         {
           title: this.$t('explore.explore'),
-          icon: ['mdi-magnify'],
+          icon: 'mdi-magnify',
           path: {
             name: 'explore'
           }
         },
         {
           title: this.$t('languages.title'),
-          icon: ['mdi-language-csharp', 'mdi-language-html5', 'mdi-language-python'],
+          icon: 'mdi-language-java',
           path: {
             name: 'languages-main'
           }
         },
         {
           title: this.$t('tags.title'),
-          icon: ['mdi-tag-outline'],
+          icon: 'mdi-tag-outline',
           path: {
             name: 'tags-main'
           }
