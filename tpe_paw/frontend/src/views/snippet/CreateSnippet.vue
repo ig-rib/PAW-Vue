@@ -7,17 +7,25 @@
     </v-layout>
     <v-layout justify-center>
         <v-card class="snippet-create-card">
-          <v-container>
+          <v-container px-4>
+            <v-layout mt-2>
+              <v-flex pb-3 lg7 md7 sm7 xs7 class="snippit-subtitle">
+                {{ $t('snippets.createSnippet.title') }}
+              </v-flex>
+              <v-flex pl-3 lg5 md5 sm5 xs5 class="snippit-subtitle">
+                {{ $t('snippets.createSnippet.language') }}
+              </v-flex>
+            </v-layout>
             <v-layout class="title-row">
-              <v-flex pt-3 lg7 md7 sm7 xs7>
+              <v-flex pt lg7 md7 sm7 xs7>
                 <v-text-field
-                 class="custom-label-color"
+                  class="custom-label-color"
                   outlined
                   dense
                   rounded
                   :rules="[rules.title, rules.titleNotBlankWithSpaces]"
                   v-model="title"
-                  :label="$t('snippets.createSnippet.title')"></v-text-field>
+                  ></v-text-field>
               </v-flex>
               <v-flex lg5 md5 sm5 xs5>
                 <language-select
@@ -26,7 +34,7 @@
               </v-flex>
             </v-layout>
             <v-divider></v-divider>
-            <v-layout px-3 column mt-2 class="description-line">
+            <v-layout column mt-2 class="description-line">
               <v-flex pb-3 class="snippit-subtitle">
                 {{ $t('snippets.createSnippet.description') }}
               </v-flex>
@@ -41,7 +49,7 @@
               </v-flex>
             </v-layout>
             <v-divider></v-divider>
-            <v-layout px-3 column mt-2 class="code-line">
+            <v-layout column mt-2 class="code-line">
               <v-flex pb-3 class="snippit-subtitle">
                 {{ $t('snippets.createSnippet.code') }}
               </v-flex>
@@ -56,7 +64,12 @@
               </v-flex>
             </v-layout>
             <v-divider></v-divider>
-            <v-layout mt-3 class="tags-line">
+            <v-layout mt-3>
+              <v-flex class="snippit-subtitle">
+                {{ $t('snippets.createSnippet.tags') }}
+              </v-flex>
+            </v-layout>
+            <v-layout class="tags-line">
               <v-flex lg9 md9 sm6 xs6>
                 <tag-select
                   multiple
