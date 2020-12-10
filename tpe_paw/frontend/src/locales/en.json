@@ -53,7 +53,7 @@
   },
   "snippets": {
     "createSnippet": {
-      "createSnippet": "Create A Snippet",
+      "createSnippet": "Create",
       "create": "Create",
       "title": "Title",
       "description": "Description",
@@ -197,7 +197,8 @@
     "recoveryEmailSent": "Email Sent!",
     "mailSentInfo": "You can now visit the link we sent you and change your password.",
     "enterCode": "Enter the code you received on your email.",
-    "successfulVerification": "Successfully verified account!"
+    "successfulVerification": "Successfully verified account!",
+    "successfullyResetPassword": " Successfully reseted password. Now you can login"
   },
   "validations": {
     "invalidPassword": "Password must be at least 8 characters long",

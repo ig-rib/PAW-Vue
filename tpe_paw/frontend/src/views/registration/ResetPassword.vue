@@ -43,13 +43,11 @@ export default {
       console.log(this.repeatPassword)
       registration.resetPassword(this.id, this.password, this.repeatPassword, this.token)
         .then(r => {
-          // Show password successfully reset...
-          this.$router.push({
-            name: 'feed'
-          })
+          this.$store.dispatch('snackSuccess', this.$t('registration.successfullyResetPassword'))
+          this.$router.push({name: 'login'})
         })
         .catch(e => {
-          // Show error
+          this.$store.dispatch('snackError', e.data)
         })
         .finally(() => {
           this.blankFields()

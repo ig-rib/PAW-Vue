@@ -53,7 +53,7 @@
     },
     "snippets": {
       "createSnippet": {
-        "createSnippet": "Crear un Snippet",
+        "createSnippet": "Crear",
         "create": "Crear",
         "title": "Título",
         "description": "Descripción",
@@ -197,7 +197,9 @@
       "recoveryEmailSent": "Email Enviado!",
       "mailSentInfo": "Ya puedes visitar el link y recuperar tu contraseña",
       "enterCode": "Ingresar el código que has recibido en el mail",
-      "successfulVerification": "Verificamos tu cuenta satisfactoriamente!"
+      "successfulVerification": "Verificamos tu cuenta satisfactoriamente!",
+      "successfullyResetPassword": "Contraseña cambiada con éxito. Puedes iniciar sesión."
+
     },
     "validations": {
       "invalidPassword": "La contraseña debe tener mas de 8 caracteres",

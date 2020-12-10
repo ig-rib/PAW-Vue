@@ -334,7 +334,7 @@ export default {
         },
         {
           title: this.$t('languages.title'),
-          icon: 'mdi-language-java',
+          icon: 'mdi-language-python  ',
           path: {
             name: 'languages-main'
           }
