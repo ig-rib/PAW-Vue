@@ -81,11 +81,12 @@
           "text1": "El siguiente snippet ha sido marcado como incorrecto por el administrador.",
           "text2": "Puede que no funcione o sea inseguro"
         },
-        "postingDate": "{date} a las {time}",
+        "postingDateTime": "{day}/{month}/{year} a las {time}",
         "snippetDeleted": "Snippet borrado correctamente",
         "snippetRestored": "Snippet restaurado correctamente",
         "copiedToClipboard": "Código copiado al clipboard!"
-      }
+      },
+      "postingDate": "{day}/{month}/{year}"
     },
     "navigation": {
       "forUser": "Para tí"

@@ -393,7 +393,7 @@ export default {
     },
     readableDate () {
       const theDate = new Date(this.snippet.dateCreated)
-      return this.$t('snippets.snippetDetail.postingDate', { date: `${theDate.getFullYear()}-${theDate.getMonth()}-${theDate.getDay()}`, time: `${theDate.getHours()}:${theDate.getMinutes()}` })
+      return this.$t('snippets.snippetDetail.postingDateTime', { year: theDate.getFullYear(), month: theDate.getMonth(), day: theDate.getDay(), time: `${theDate.getHours()}:${theDate.getMinutes()}` })
     }
   },
   mounted () {

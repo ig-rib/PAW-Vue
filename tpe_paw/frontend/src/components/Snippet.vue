@@ -4,6 +4,7 @@
         min-height="375px" -->
       <v-card
         min-width="300px"
+        min-height="300px"
         max-width="400px !important"
         class="snippet-card-card" 
         :class="`${cardMaxWidthClass} snippet-card-card`" @click="goToSnippetDetail">
@@ -128,7 +129,8 @@ export default {
   },
   computed: {
     standardDate () {
-      return this.snippet.dateCreated.split('T')[0]
+      const theDate = new Date(this.snippet.dateCreated)
+      return this.$t('snippets.postingDate', { year: theDate.getFullYear(), month: theDate.getMonth(), day: theDate.getDay() })
     },
     cardMaxWidthClass () {
       if (this.$vuetify.breakpoint.lgAndUp) {

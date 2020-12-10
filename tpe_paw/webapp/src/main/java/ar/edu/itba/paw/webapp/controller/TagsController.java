@@ -165,7 +165,9 @@ public class TagsController {
             builder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).queryParam("showEmpty", showEmpty).queryParam("showOnlyFollowing", showOnlyFollowing).queryParam("q", q).build(), "prev");
         if (page < pageCount)
             builder.link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).queryParam("showEmpty", showEmpty).queryParam("showOnlyFollowing", showOnlyFollowing).queryParam("q", q).build(), "next");
-        builder.header("Cache-Control", "no-store");
+        builder.header("Cache-Control", "no-cache, no-store, must-revalidate");
+        builder.header("Pragma", "no-cache");
+        builder.header("Expires", "0");
         return builder.build();
     }
 
