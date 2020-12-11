@@ -535,9 +535,6 @@ export default {
             // TODO let user know why
           })
       }
-    },
-    $route: function (neww, old) {
-      this.$refs.persistentNavigatorRouterView.$emit('updateData')
     }
   },
   mounted () {

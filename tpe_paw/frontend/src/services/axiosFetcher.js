@@ -10,7 +10,7 @@ axios.defaults.paramsSerializer = params => {
 }
 // axios.defaults.adapter = cacheAdapterEnhancer(axios.defaults.adapter)
 const http = axios.create({
-  adapter: cacheAdapterEnhancer(axios.defaults.adapter, { enabledByDefault: true, cacheFlag: 'useCache' })
+  // adapter: cacheAdapterEnhancer(axios.defaults.adapter, { enabledByDefault: false, cacheFlag: 'useCache' })
 })
 /**
  * Wrapper for axios
