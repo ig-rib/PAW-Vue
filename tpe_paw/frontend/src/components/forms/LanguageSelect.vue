@@ -11,7 +11,7 @@
       :placeholder="$t('components.languageSelect.selectLanguage')"
       label="name"
       track-by="id"
-      :select-label="false"
+      :select-label="''"
       :multiple="multiple"
     >
       <template slot="afterList" v-if="hasNext">

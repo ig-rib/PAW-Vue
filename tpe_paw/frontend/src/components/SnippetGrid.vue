@@ -138,6 +138,19 @@ export default {
           console.log(error)
           this.status = 'e'
           })
+    },
+    reloadData () {
+      const queryParams = this.$route.query
+      this.status = 'l'
+      searchService.searchInLocation(this.$route, queryParams)
+        .then(r => {
+          this.pagination.page = parseInt(queryParams.page) || 1
+          this.handleSearchResponse(r)
+          })
+        .catch(error => { 
+            console.log(error)
+            this.status = 'e'
+            })
     }
   },
   computed: {
@@ -154,17 +167,8 @@ export default {
     }
   },
   mounted () {
+    this.reloadData()
     const queryParams = this.$route.query
-    this.status = 'l'
-    searchService.searchInLocation(this.$route, queryParams)
-      .then(r => {
-        this.pagination.page = parseInt(queryParams.page) || 1
-        this.handleSearchResponse(r)
-        })
-      .catch(error => { 
-          console.log(error)
-          this.status = 'e'
-          })
     this.$on('searchResults', r => {
       this.pagination.page = parseInt(queryParams.page) || 1
       this.handleSearchResponse(r)

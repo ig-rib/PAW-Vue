@@ -9,11 +9,11 @@
     >
       <v-layout fill-height class="nav-layout">
         <!-- Hamburger button for navdrawer -->
-        <v-flex shrink v-if="$vuetify.breakpoint.mdAndDown">
+        <v-flex pl-1 shrink v-if="$vuetify.breakpoint.mdAndDown">
           <v-app-bar-nav-icon @click="navDrawer = !navDrawer"></v-app-bar-nav-icon>
         </v-flex>
         <!-- Title -->
-        <v-flex px-2 class="title-flex" md1 sm1 v-if="$vuetify.breakpoint.lgAndUp">
+        <v-flex class="title-flex" md1 sm1 v-if="$vuetify.breakpoint.lgAndUp">
           <v-btn min-width="max-content" @click="goHome" :ripple="false" depressed class="title-btn">
             {{ $t('snippit') }}
           </v-btn>
@@ -535,6 +535,9 @@ export default {
             // TODO let user know why
           })
       }
+    },
+    $route: function (neww, old) {
+      this.$refs.persistentNavigatorRouterView.$emit('updateData')
     }
   },
   mounted () {

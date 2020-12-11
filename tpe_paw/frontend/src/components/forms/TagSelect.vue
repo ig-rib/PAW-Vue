@@ -8,7 +8,7 @@
       :clear-on-select="false"
       :placeholder="$t('components.tagSelect.selectTag')"
       label="name"
-      :select-label="false"
+      :select-label="''"
       track-by="id"
       :multiple="multiple"
     >

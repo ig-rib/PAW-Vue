@@ -284,7 +284,7 @@ import validations from '@/functions/validations'
       font-weight: 300;
     }
     .user-profile-reputation {
-      font-size: 40px;
+      font-size: 30px;
       font-weight: 400;
       margin: 0 5% 0 0;
       align-items: center;

@@ -119,7 +119,6 @@ const searchInLocation = (route, queryParams) => {
       return explore(queryParams)
     case 'feed':
     default:
-      console.log('default')
       url = urls.snippet.snippets
       break;
   }
