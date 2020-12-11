@@ -49,7 +49,9 @@
     "search" : "Search for a tag",
     "showEmpty": "Show empty",
     "showOnlyFollowing": "Show following",
-    "tagSnippets": "Snippets for tag {tagName}"
+    "tagSnippets": "Snippets for tag {tagName}",
+    "errorFollow": "Error while following tag, try again later",
+    "errorUnfollow": "Error while unfollowing tag, try again later"
   },
   "snippets": {
     "createSnippet": {

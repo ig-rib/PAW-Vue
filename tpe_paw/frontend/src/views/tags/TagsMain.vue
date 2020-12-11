@@ -137,6 +137,7 @@ export default {
         .then(
           tag.userFollowing = true
         )
+        .catch(e => this.$store.dispatch('snackError', this.$t('tags.errorFollow')))
       event.stopPropagation()
     },
     unfollowTag: function (tag) {
@@ -144,6 +145,7 @@ export default {
         .then(
           tag.userFollowing = false
         )
+        .catch(e => this.$store.dispatch('snackError', this.$t('tags.errorUnfollow')))
       event.stopPropagation()
     },
     handleSearchResponse (response) {

@@ -49,7 +49,10 @@
       "search" : "Buscar un tag",
       "showEmpty": "Mostrar vacíos",
       "showOnlyFollowing": "Mostrar seguidos",
-      "tagSnippets": "Snippets para el tag {tagName}"
+      "tagSnippets": "Snippets para el tag {tagName}",
+      "errorFollow": "Error al seguir tag, intente mas tarde",
+      "errorUnfollow": "Error al dejar de seguir tag, intente mas tarde"
+
     },
     "snippets": {
       "createSnippet": {
