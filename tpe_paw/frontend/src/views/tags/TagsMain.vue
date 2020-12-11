@@ -59,7 +59,7 @@
               </p>
               </v-btn>
             </v-flex>
-            <v-flex shrink>
+            <v-flex v-if="isAdmin" shrink>
               <v-btn icon @click="openDialog(tag)">
                 <v-icon>
                   mdi-delete
@@ -202,6 +202,11 @@ export default {
             })
           })
       }
+  },
+  computed: {
+    isAdmin () {
+      return this.$store.getters.user.admin
+    }
   },
   mounted () {
     const queryParams = this.$route.query

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <v-layout class="view-title-layout">
       <v-flex shrink class="view-title">
         {{$t('languages.title')}}
@@ -58,7 +58,7 @@
       ></v-pagination>
     </v-layout>
     
-  </div>
+  </v-container>
 </template>
 
 <script>
