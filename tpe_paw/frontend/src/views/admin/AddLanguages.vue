@@ -1,12 +1,13 @@
 <template>
   <v-container id="admin-add-container">
-    <v-layout justify-center>
+    <v-layout justify-center pt-10>
       <v-flex lg5 md6 sm7>
         <v-card class="admin-add-card" min-width="max-content" min-height="max-content">
           <v-container class="admin-add-inner-container" px-5 py-5>
             <v-layout class="admin-add-title">
               {{ $t('admin.addLanguages.addLanguages') }}
             </v-layout>
+
             <v-layout justify-center align-center class="admin-add-text-field">
               <v-flex>
                 <v-text-field
@@ -48,9 +49,17 @@
               </v-flex>
             </v-layout>
             <v-layout justify-end class="admin-add-add-btn">
-              <v-flex shrink>
+              <v-flex pl-2 align-center>
+                <v-chip medium>
+                {{newLanguages.length}} {{ $t('admin.addLanguages.entered')}}
+                </v-chip>
+              </v-flex>
+              <v-flex ml-3 shrink align-start>
                 <v-btn 
                   rounded
+                  align-start
+                  :disabled="newLanguages.length < 1"
+                  color="#64b5f6"
                   @click="postAllLanguages">{{ $t('admin.addLanguages.addNewLanguages') }}</v-btn>
               </v-flex>
             </v-layout>
@@ -64,6 +73,7 @@
 <script>
 import languages from '@/services/languages.js'
 import validations from '@/functions/validations'
+
 
 export default {
   title: 'Snippit Add Language',
@@ -87,8 +97,13 @@ export default {
       const promises = this.newLanguages.map(languageName => languages.addLanguage(languageName))
       Promise.all(promises)
         .then(r => {
-          // TODO handle responses
-          const correct = r.filter(r => r.status < 300).length
+            this.$store.dispatch('snackSuccess', this.$t('admin.addLanguages.success'))
+            this.newLanguages = []
+            this.newLanguage = ''
+        })
+        .catch(e => {
+          this.$store.dispatch('snackError', this.$t('admin.addLanguages.error'))
+
         })
     }
   },
@@ -109,5 +124,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import '@/styles/colours.scss';
+@import "@/styles/main.scss";
 @import '@/styles/adminAdd.scss';
 </style>

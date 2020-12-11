@@ -166,7 +166,8 @@
         "addLanguages": "Agregar lenaguajes",
         "addNewLanguages": "Agregar un lenguaje nuevo",
         "emptyListText": "Los lenguajes neuvos serán mostrados aqui",
-        "placeholder": "Escribe el nombre del lenguaje nuevo aquí"
+        "placeholder": "Escribe el nombre del lenguaje nuevo aquí",
+        "entered": "languajes ingresados"
       },
       "confirmDeletion": "Confirmar borrado",
       "languageDeletionDisclaimer": "Estas seguro que quiere borrar \"{langName}\" de Lenguajes? Lenguajes borrados serán quitados de todos los snippets coteniendolo y de todas las listas de usuarios que los siguen. Esta accion no se puede deshacer.",

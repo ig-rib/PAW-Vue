@@ -165,7 +165,10 @@
       "addLanguages": "Add Languages",
       "addNewLanguages": "Add New Languages",
       "emptyListText": "New languages will be shown here",
-      "placeholder": "Write a new language name here"
+      "placeholder": "Write a new language name here",
+      "entered": "languages entered",
+      "success": "Successfully added new languages",
+      "error": "Error while adding languages, try again later"
     },
     "confirmDeletion": "Confirm Deletion",
     "languageDeletionDisclaimer": "Are you sure you want to delete \"{langName}\" from Languages? Deleted languages will no longer be available for new snippets and will not appear in the language list unless added again by an administrator.",

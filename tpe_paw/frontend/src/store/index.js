@@ -74,7 +74,6 @@ const store = new Vuex.Store({
         show: true,
         color: 'red',
         message,
-        action: payload.action
       })
     },
     snackSuccess ({ commit }, payload) {
