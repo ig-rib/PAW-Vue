@@ -32,8 +32,8 @@
         "title": "Votos del Snippet",
         "label": "Votos"
       },
-      "from": "De",
-      "to": "Para",
+      "from": "Desde",
+      "to": "Hasta",
       "min": "Min",
       "max": "Max",
       "showFilters": "Mostrar filtros"

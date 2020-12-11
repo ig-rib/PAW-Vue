@@ -231,6 +231,13 @@
           </v-card>
         </v-dialog>
       </v-card>
+      <v-flex class="snippet-detail-progress-flex" v-else>
+        <v-progress-circular
+          :size="70"
+          :width="7"
+          color="primary"
+          indeterminate></v-progress-circular>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -501,6 +508,13 @@ export default {
     .dialog-card {
       border-radius: 12px !important;
     }
+  }
+
+  .snippet-detail-progress-flex {
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   #snippet-detail-card {

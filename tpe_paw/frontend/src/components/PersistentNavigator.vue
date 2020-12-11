@@ -201,7 +201,7 @@
         <v-flex shrink v-if="$vuetify.breakpoint.lgAndUp">
           <v-layout v-if="!$store.getters.loggedIn && !inRegistrationPage">
             <v-flex ma-2 shrink>
-              <v-btn class="white--text" color="#2286c3" :ripple="false" @click="goToLogin">{{ $t('registration.login') }}</v-btn>
+              <v-btn class="white--text" color="accent" :ripple="false" @click="goToLogin">{{ $t('registration.login') }}</v-btn>
             </v-flex>
           </v-layout>
           <v-layout v-if="$store.getters.loggedIn">
@@ -280,7 +280,7 @@
       </v-list>
     <v-layout v-if="!$store.getters.loggedIn && !inRegistrationPage">
       <v-flex ma-2>
-        <v-btn class="white--text" color="green" :ripple="false" @click="goToLogin">{{ $t('registration.login') }}</v-btn>
+        <v-btn class="white--text" color="accent" :ripple="false" @click="goToLogin">{{ $t('registration.login') }}</v-btn>
       </v-flex>
     </v-layout>
     <v-layout v-if="$store.getters.loggedIn">
