@@ -134,7 +134,8 @@
           "here": "aquí",
           "emailSent": "Email de verificación enviado",
           "emailError": "Error en el envío del email de verificación"
-        }
+        },
+        "joined": "Se unió el {day}/{month}/{year}"
       },
       "active": "Snippets activos",
       "deleted": "Snippets borrados",

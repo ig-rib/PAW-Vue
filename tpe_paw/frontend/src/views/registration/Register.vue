@@ -50,7 +50,7 @@
       </v-flex>
       <v-flex>
         <v-layout justify-center>
-          <v-btn :disabled="!allRulesAlright" @click="register">{{$t('registration.register')}}</v-btn>
+          <v-btn color="accent" :disabled="!allRulesAlright" @click="register">{{$t('registration.register')}}</v-btn>
         </v-layout>
       </v-flex>
     </v-layout>

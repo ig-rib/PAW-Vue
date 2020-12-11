@@ -36,7 +36,8 @@ public class UserDto {
         dto.reputation = user.getReputation();
         dto.admin = isAdmin;
         dto.canReport = user.getReputation() >= MIN_REPUTATION_TO_REPORT;
-
+        dto.verified = user.isVerified();
+        dto.dateJoined = user.getDateJoined();
         return dto;
     }
 

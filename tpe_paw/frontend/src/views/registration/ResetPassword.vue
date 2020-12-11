@@ -20,7 +20,7 @@
       :rules="[rules.equalsPassword]"
       v-model="repeatPassword">
     </v-text-field>
-    <v-btn :disabled="!allRulesAlright" @click="resetPassword">{{ $t('registration.resetPassword') }}</v-btn>
+    <v-btn color="accent" :disabled="!allRulesAlright" @click="resetPassword">{{ $t('registration.resetPassword') }}</v-btn>
   </v-container>
 </template>
 

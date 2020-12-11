@@ -32,7 +32,7 @@
         </v-layout>
         <v-layout mt-5 justify-center>
           <v-flex shrink>
-            <v-btn @click="login">{{ $t('registration.login') }}</v-btn>
+            <v-btn color="accent" @click="login">{{ $t('registration.login') }}</v-btn>
           </v-flex>
         </v-layout>
       </v-flex>

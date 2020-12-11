@@ -23,6 +23,7 @@
       <v-flex>
         <v-layout justify-center>
           <v-btn
+            color="accent"
             :disabled="!allRulesAlright" 
             @click="sendVerificationCode">
             {{ $t('registration.sendVerificationCode') }}

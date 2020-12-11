@@ -48,8 +48,8 @@
         </v-btn>
       </v-flex>
       <v-flex class="user-profile-info-flex" px-5 sm9 md9 lg9>
-        <v-layout class="user-profile-username-layout">
-          <v-flex class="user-profile-username" grow>
+        <v-layout wrap class="user-profile-username-layout">
+          <v-flex grow class="user-profile-username">
             {{ user.username }}
           </v-flex>
           <v-layout align-center shrink v-if="isLoggedInUser">            
@@ -78,6 +78,17 @@
               </v-flex>
             </v-layout>
           </v-layout>
+        </v-layout>
+        <v-layout column>
+          <v-flex pt-1 class="user-profile-joined" shrink>
+            {{ joinedOn }}
+          </v-flex>
+          <v-flex shrink class="user-profile-reputation">
+            {{ user.reputation }}
+            <v-icon>
+              mdi-star
+            </v-icon>
+          </v-flex>
         </v-layout>
         <v-layout class="user-profile-description-layout">
           <v-flex class="user-profile-description">
@@ -215,6 +226,10 @@ import validations from '@/functions/validations'
       },
       allRulesAlright () {
         return Object.keys(this.rules).filter(rule => this.rules[rule]() !== true).length === 0 && !this.usernameExists && !this.emailExists
+      },
+      joinedOn () {
+        const dat = new Date(this.user.dateJoined)
+        return this.$t('user.profile.joined', { day: dat.getDay(), month: dat.getMonth(), year: dat.getFullYear() })
       }
     },
     mounted () {
@@ -263,6 +278,20 @@ import validations from '@/functions/validations'
     .user-profile-username {
       font-size: 50px;
       font-weight: 300;
+    }
+    .user-profile-joined {
+      font-size: 16px;
+      font-weight: 300;
+    }
+    .user-profile-reputation {
+      font-size: 40px;
+      font-weight: 400;
+      margin: 0 5% 0 0;
+      align-items: center;
+      display: flex;
+      i {
+        font-size: 25px;
+      }
     }
     .user-profile-description-layout {
       flex-grow: 0;

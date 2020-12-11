@@ -19,7 +19,7 @@
         </v-flex>
         <v-flex>
           <v-layout justify-center>
-            <v-btn :disabled="validEmail" @click="sendRecoveryEmail">
+            <v-btn color="accent" :disabled="validEmail" @click="sendRecoveryEmail">
               {{ $t('registration.sendRecoveryEmail') }}
             </v-btn>
           </v-layout>

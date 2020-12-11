@@ -134,7 +134,8 @@
         "here": "here",
         "emailSent": "Verification email sent",
         "emailError": "Error sending verification emails"
-      }
+      },
+      "joined": "Joined {month}/{day}/{year}"
     },
     "active": "Active Snippets",
     "deleted": "Deleted Snippets",
