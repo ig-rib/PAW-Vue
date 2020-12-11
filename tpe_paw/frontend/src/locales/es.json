@@ -160,14 +160,19 @@
         "addTags": "Agregar Tags",
         "addNewTags": "Agregar Tags nuevos",
         "emptyListText": "Tags nuevos seran mostrados aquí",
-        "placeholder": "Escribe un tag nuevo"
+        "placeholder": "Escribe un tag nuevo",
+        "entered": "tags ingresados",
+        "success": "Tags agregados existosamente",
+        "error": "Error al agregar tags, intentar mas tarde"
       },
       "addLanguages": {
         "addLanguages": "Agregar lenaguajes",
         "addNewLanguages": "Agregar un lenguaje nuevo",
         "emptyListText": "Los lenguajes neuvos serán mostrados aqui",
         "placeholder": "Escribe el nombre del lenguaje nuevo aquí",
-        "entered": "languajes ingresados"
+        "entered": "languajes ingresados",
+        "success": "Lenguajes agregados existosamente",
+        "error": "Error al agregar lenguajes, intentar mas tarde"
       },
       "confirmDeletion": "Confirmar borrado",
       "languageDeletionDisclaimer": "Estas seguro que quiere borrar \"{langName}\" de Lenguajes? Lenguajes borrados serán quitados de todos los snippets coteniendolo y de todas las listas de usuarios que los siguen. Esta accion no se puede deshacer.",

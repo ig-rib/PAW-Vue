@@ -103,7 +103,6 @@ export default {
         })
         .catch(e => {
           this.$store.dispatch('snackError', this.$t('admin.addLanguages.error'))
-
         })
     }
   },

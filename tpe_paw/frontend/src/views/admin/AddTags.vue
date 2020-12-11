@@ -1,6 +1,6 @@
 <template>
   <v-container id="admin-add-container">
-    <v-layout justify-center>
+    <v-layout justify-center pt-10>
       <v-flex lg5 md6 sm7>
         <v-card class="admin-add-card" min-width="max-content" min-height="max-content">
           <v-container class="admin-add-inner-container" px-5 py-5>
@@ -48,9 +48,17 @@
               </v-flex>
             </v-layout>
             <v-layout justify-end class="admin-add-add-btn">
+              <v-flex pl-2 align-center>
+                <v-chip medium>
+                {{newTags.length}} {{ $t('admin.addTags.entered')}}
+                </v-chip>
+              </v-flex>
               <v-flex shrink>
                 <v-btn 
                   rounded
+                  color="#64b5f6"
+                  align-start
+                  :disabled="newTags.length < 1"
                   @click="postAllTags">{{ $t('admin.addTags.addNewTags') }}</v-btn>
               </v-flex>
             </v-layout>
@@ -87,8 +95,12 @@ export default {
       const promises = this.newTags.map(tagName => tags.addTag(tagName))
       Promise.all(promises)
         .then(r => {
-          // TODO handle responses
-          const correct = r.filter(r => r.status < 300).length
+            this.$store.dispatch('snackSuccess', this.$t('admin.addTags.success'))
+            this.newTags = []
+            this.newTag = ''
+        })
+        .catch(e => {
+          this.$store.dispatch('snackError', this.$t('admin.addTags.error'))
         })
     }
   },

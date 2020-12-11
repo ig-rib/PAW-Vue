@@ -159,7 +159,11 @@
       "addTags": "Add Tags",
       "addNewTags": "Add New Tags",
       "emptyListText": "New tags will be shown here",
-      "placeholder": "Write a new tag name here"
+      "placeholder": "Write a new tag name here",
+      "entered": "tags entered",
+      "success": "Successfully added new tags",
+      "error": "Error while adding tags, try again later"
+
     },
     "addLanguages": {
       "addLanguages": "Add Languages",
