@@ -1,30 +1,48 @@
 <template>
   <v-container class="snippet-detail-outer-container">
-    <v-layout justify-center row pa-5 v-if="snippet.flagged || snippet.deleted">
+    <v-layout justify-center align-center column pa-5 v-if="snippet.flagged || snippet.deleted">
       <v-flex ma-3 shrink v-if="snippet.flagged">
         <v-card class="notice-card">
-          <v-card-title class="justify-center">
-            {{ $t('snippets.snippetDetail.flagged.title') }}
-          </v-card-title>
-          <v-card-text class="notice-card-text">
-            <p>{{ $t('snippets.snippetDetail.flagged.text1') }}</p>
-            <p>
-              {{ $t('snippets.snippetDetail.flagged.text2') }}
-            </p>
-          </v-card-text>
+          <v-layout>
+            <v-flex shrink class="notice-card-icon">
+              <v-icon color="red">
+                mdi-flag
+              </v-icon>
+            </v-flex>
+            <v-flex>
+              <v-card-title>
+                {{ $t('snippets.snippetDetail.flagged.title') }}
+              </v-card-title>
+              <v-card-text class="notice-card-text">
+                <p>{{ $t('snippets.snippetDetail.flagged.text1') }}</p>
+                <p>
+                  {{ $t('snippets.snippetDetail.flagged.text2') }}
+                </p>
+              </v-card-text>
+            </v-flex>
+          </v-layout>
         </v-card>
       </v-flex>
       <v-flex ma-3 shrink v-if="snippet.deleted">
         <v-card class="notice-card">
-          <v-card-title class="justify-center">
-            {{ $t('snippets.snippetDetail.deleted.title') }}
-          </v-card-title>
-          <v-card-text class="notice-card-text">
-            <p>{{ $t('snippets.snippetDetail.deleted.text1') }}</p>
-            <p>
-              {{ $t('snippets.snippetDetail.deleted.text2') }}
-            </p>
-          </v-card-text>
+          <v-layout>
+            <v-flex shrink class="notice-card-icon">
+              <v-icon color="red">
+                mdi-delete-sweep
+              </v-icon>
+            </v-flex>
+            <v-flex>
+              <v-card-title>
+                {{ $t('snippets.snippetDetail.deleted.title') }}
+              </v-card-title>
+              <v-card-text class="notice-card-text">
+                <p>{{ $t('snippets.snippetDetail.deleted.text1') }}</p>
+                <p>
+                  {{ $t('snippets.snippetDetail.deleted.text2') }}
+                </p>
+              </v-card-text>
+            </v-flex>
+          </v-layout>
         </v-card>
       </v-flex>
     </v-layout>
@@ -623,7 +641,7 @@ export default {
       .report-btn:hover, .color-sandybrown {
         color: sandybrown;
       }
-      .flag-btn {
+      .flag-btn:hover {
         color: red;
       }
     }

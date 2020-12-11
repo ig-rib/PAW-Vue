@@ -25,7 +25,12 @@
               </v-flex>
               <v-flex class="snippet-language-flex">
                 <v-layout class="pr-2" justify-end>
-                  <v-flex class="flex-grow-0 pa-1">
+                  <v-flex v-if="snippet.deleted" class="flex-grow-0 pa-1">
+                    <v-btn class="snippet-toggle-btn" icon aria-disabled>
+                      <v-icon color="red">mdi-delete-sweep</v-icon>
+                    </v-btn>
+                  </v-flex>
+                  <v-flex v-else class="flex-grow-0 pa-1">
                     <v-btn 
                       class="fav-btn snippet-toggle-btn color-crimson"
                       icon

@@ -258,7 +258,7 @@
               <v-flex shrink>
                 <v-icon>mdi-flag</v-icon>
               </v-flex>
-              <v-flex>
+              <v-flex pl-5>
                 <v-list-item-title>{{ $t('admin.flagged') }}</v-list-item-title>
               </v-flex>
             </v-layout>
