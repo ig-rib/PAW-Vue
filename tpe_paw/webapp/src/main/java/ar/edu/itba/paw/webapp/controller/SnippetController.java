@@ -241,15 +241,18 @@ public class SnippetController {
             // same message but 403
             return buildErrorResponse("error.403.snippet.report.owner", Response.Status.FORBIDDEN, null);
         } else if (!this.reportService.canReport(user)) {
-
             return buildErrorResponse("error.403.snippet.report.reputation", Response.Status.FORBIDDEN, null);
         }
 
         try {
-            reportService.reportSnippet(user, snippet, reportDto.getDetail(), reportDto.getBaseUri());
+            final boolean result = reportService.reportSnippet(user, snippet, reportDto.getDetail(), reportDto.getBaseUri());
+            // This happens if user already reported
+            if(!result){
+                return buildErrorResponse("error.403.snippet.report.repeated", Response.Status.FORBIDDEN, null);
+            }
         } catch (Exception e) {
-            LOGGER.error(e.getMessage() + "Failed report snippet: user {} about their snippet {}", snippet.getOwner().getUsername(), snippet.getId());
             return buildErrorResponse("error.500.snippet.report.failure", Response.Status.INTERNAL_SERVER_ERROR,snippet.getOwner().getUsername());
+            //LOGGER.error(e.getMessage() + "Failed report snippet: user {} about their snippet {}", snippet.getOwner().getUsername(), snippet.getId());
         }
         LOGGER.debug("User {} reported snippet {} with message {}", user.getUsername(), id, reportService);
 

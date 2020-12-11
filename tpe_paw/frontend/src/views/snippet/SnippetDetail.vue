@@ -203,17 +203,31 @@
               rounded
               outlined
               no-resize
-              :rules="[rules.maxLength]"
+              :rules="[rules.lengthBetween]"
               v-model="reportMessage"></v-textarea>
             </v-layout>
-            <v-layout pa-5 justify-end>
+            <v-layout px-3 pb-5 justify-end>
               <v-flex shrink mr-2>
-                <v-btn rounded outlined :disabled="rules.maxLength() !== true" @click="sendReport">{{ $t('snippets.snippetDetail.report.confirm') }}</v-btn>
+                <v-btn rounded outlined color="#2286c3" :disabled="rules.lengthBetween() !== true" @click="sendReport">{{ $t('snippets.snippetDetail.report.confirm') }}</v-btn>
               </v-flex>
               <v-flex shrink>
-                <v-btn rounded outlined @click="cancelReport">{{ $t('snippets.snippetDetail.report.cancel')}}</v-btn>
+                <v-btn rounded outlined color="red" @click="cancelReport">{{ $t('snippets.snippetDetail.report.cancel')}}</v-btn>
               </v-flex>
             </v-layout>
+          </v-card>
+        </v-dialog>
+         <v-dialog content-class="report-dialog" v-model="unreportDialog">
+          <v-card class="dialog-card">
+            <v-card-title class="justify-center">{{ $t('snippets.snippetDetail.report.unreport') }}</v-card-title>
+            <v-layout px-3 pb-5 justify-center>
+              <v-flex shrink mr-2>
+                <v-btn rounded outlined color="#2286c3" @click="sendUnreport">{{ $t('snippets.snippetDetail.report.confirm') }}</v-btn>
+              </v-flex>
+              <v-flex shrink>
+                <v-btn rounded outlined color="red" @click="cancelUnreport">{{ $t('snippets.snippetDetail.report.cancel')}}</v-btn>
+              </v-flex>
+            </v-layout>
+
           </v-card>
         </v-dialog>
       </v-card>
@@ -249,6 +263,7 @@ export default {
       reporting: false,
       deleting: false,
       reportDialog: false,
+      unreportDialog: false,
       reportMessage: '',
       error_image: false,
     }
@@ -308,16 +323,7 @@ export default {
     report () {
       this.reporting = true
       if (this.snippet.reported) {
-        snippets.unreportSnippet(this.snippet.id)
-          .then(r => {
-            this.snippet.reported = false
-          })
-          .catch(e => {
-            if (e.response.status === 403) {
-              this.$store.dispatch('snackError', e.response.data.message)
-            }
-          })
-          .finally(() => { this.reporting = false })
+        this.unreportDialog = true;
       } else {
         this.reportDialog = true
       }
@@ -329,21 +335,33 @@ export default {
         baseUri: urls.localDomain + this.$route.path
       }).then(r => {
         this.snippet.reported = true
-        this.resetReportData()
       })
       .catch(e => {
-        if (e.response.status === 403) {
-          this.$store.dispatch('snackError', e.response.data.message)
-        }
+        this.$store.dispatch('snackError', e.response.data.message)
       })
-      // TODO add catch clause
+      .finally(() => this.resetReportData())
     },
     cancelReport () {
+      this.resetReportData()
+    },
+    sendUnreport(){
+      snippets.unreportSnippet(this.snippet.id)
+          .then(r => {
+            this.snippet.reported = false
+          })
+          .catch(e => {
+            console.log(e.response)
+            this.$store.dispatch('snackError', e.response.data.message)
+          })
+          .finally(() => this.resetReportData())
+    },
+    cancelUnreport () {
       this.resetReportData()
     },
     resetReportData () {
       this.reportMessage = ''
       this.reportDialog = false
+      this.unreportDialog = false
       this.reporting = false
     },
     deleteSnippet () {
@@ -422,11 +440,11 @@ export default {
       return this.$store.getters.user.admin
     },
     allowedToReport () {
-      return this.$store.getters.user.reputation >= 10
+      return this.$store.getters.user.canReport
     },
     rules () {
       return {
-        maxLength: () => validations.maxLength(this.reportMessage, 300)
+        lengthBetween: () => validations.lengthBetween(this.reportMessage, 1, 300)
       }
     },
     readableDate () {
@@ -479,6 +497,7 @@ export default {
 @import '@/styles/noticeCard.scss';
   
   .report-dialog {
+    max-width: 600px;
     .dialog-card {
       border-radius: 12px !important;
     }

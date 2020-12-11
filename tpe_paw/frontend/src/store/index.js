@@ -69,7 +69,7 @@ const store = new Vuex.Store({
       window.sessionStorage.clear()
     },
     snackError ({ commit }, payload) {
-      const message = payload.message || i18n.t('snackbar.error.defaultMessage')
+      const message = payload || i18n.t('snackbar.error.defaultMessage')
       commit('setSnackbar', {
         show: true,
         color: 'red',

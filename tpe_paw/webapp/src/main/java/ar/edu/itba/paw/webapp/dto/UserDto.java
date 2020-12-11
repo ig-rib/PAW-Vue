@@ -8,6 +8,8 @@ import java.time.Instant;
 import java.util.Base64;
 import java.util.Objects;
 
+import static ar.edu.itba.paw.interfaces.service.ReportService.MIN_REPUTATION_TO_REPORT;
+
 public class UserDto {
     private long id;
     private String username;
@@ -21,6 +23,7 @@ public class UserDto {
     private String lang;
     private String region;
     private boolean admin;
+    private boolean canReport;
 
     public static UserDto fromUser(User user, boolean isAdmin, UriInfo uriInfo){
         final UserDto dto = new UserDto();
@@ -32,6 +35,7 @@ public class UserDto {
         dto.description = user.getDescription();
         dto.reputation = user.getReputation();
         dto.admin = isAdmin;
+        dto.canReport = user.getReputation() >= MIN_REPUTATION_TO_REPORT;
 
         return dto;
     }
@@ -132,6 +136,18 @@ public class UserDto {
         this.admin = admin;
     }
 
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public boolean isCanReport() {
+        return canReport;
+    }
+
+    public void setCanReport(boolean canReport) {
+        this.canReport = canReport;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -141,6 +157,7 @@ public class UserDto {
                 reputation == userDto.reputation &&
                 verified == userDto.verified &&
                 admin == userDto.admin &&
+                canReport == userDto.canReport &&
                 Objects.equals(username, userDto.username) &&
                 Objects.equals(email, userDto.email) &&
                 Objects.equals(password, userDto.password) &&
@@ -153,6 +170,6 @@ public class UserDto {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, email, password, description, reputation, dateJoined, icon, verified, lang, region, admin);
+        return Objects.hash(id, username, email, password, description, reputation, dateJoined, icon, verified, lang, region, admin, canReport);
     }
 }

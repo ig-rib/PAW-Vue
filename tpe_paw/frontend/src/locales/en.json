@@ -73,6 +73,7 @@
     "snippetDetail": {
       "report": {
         "whatIsWrong": "What is wrong with this snippet?",
+        "unreport": "Do you want to unreport this snippet?",
         "confirm": "Confirm",
         "cancel": "Cancel"
       },
