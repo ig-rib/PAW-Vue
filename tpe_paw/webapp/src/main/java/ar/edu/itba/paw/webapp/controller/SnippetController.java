@@ -129,7 +129,7 @@ public class SnippetController {
         if ( user.getUsername().compareTo(snippet.getOwner().getUsername()) != 0) {
             return buildErrorResponse("error.403.snippet.restore", Response.Status.FORBIDDEN, snippet.getId());
         } else {
-            if (!this.snippetService.deleteOrRestoreSnippet(snippet, user.getId(), true)) {
+            if (!this.snippetService.deleteOrRestoreSnippet(snippet, user.getId(), false)) {
                 /* Operation was unsuccessful */
                 return buildErrorResponse("error.409.snippet", Response.Status.CONFLICT, loginAuthentication.getLoggedInUsername());
             }
