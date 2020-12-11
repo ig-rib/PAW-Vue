@@ -175,8 +175,8 @@
         "error": "Error al agregar lenguajes, intentar mas tarde"
       },
       "confirmDeletion": "Confirmar borrado",
-      "languageDeletionDisclaimer": "Estas seguro que quiere borrar \"{langName}\" de Lenguajes? Lenguajes borrados serán quitados de todos los snippets coteniendolo y de todas las listas de usuarios que los siguen. Esta accion no se puede deshacer.",
-      "tagDeletionDisclaimer": "Estas seguro que quiere borrar  \"{tagName}\" de Tags? Tags borrados serán quitados de todos los snippets coteniendolo y de todas las listas de usuarios que los siguen. Esta acción no se puede deshacer.",
+      "languageDeletionDisclaimer": "Estas seguro que quiere borrar {langName} de Lenguajes? Lenguajes borrados serán quitados de todos los snippets coteniendolo y de todas las listas de usuarios que los siguen. Esta accion no se puede deshacer.",
+      "tagDeletionDisclaimer": "Estas seguro que quiere borrar  {tagName} de Tags? Tags borrados serán quitados de todos los snippets coteniendolo y de todas las listas de usuarios que los siguen. Esta acción no se puede deshacer.",
       "confirm": "Confirmar",
       "cancel": "Cancelar",
       "flagged": "Marcados"

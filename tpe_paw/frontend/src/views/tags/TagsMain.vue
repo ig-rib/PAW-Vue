@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <v-layout class="view-title-layout">
       <v-flex shrink class="view-title">
         {{ $t('tags.title') }}
@@ -59,6 +59,14 @@
               </p>
               </v-btn>
             </v-flex>
+            <v-flex shrink>
+              <v-btn icon @click="openDialog(tag)">
+                <v-icon>
+                  mdi-delete
+                </v-icon>
+              </v-btn>
+
+            </v-flex>
           </v-layout>            
         </v-card>
         <!-- </v-container> -->
@@ -74,7 +82,22 @@
         :total-visible="pagination.visible"
       ></v-pagination>
     </v-layout>
-  </div>
+        <v-dialog content-class="delete-dialog" v-model="deleting">
+          <v-card class="dialog-card">
+            <v-card-title mb-5 class="justify-center">{{ $t('admin.confirmDeletion') }}</v-card-title>
+            <v-card-subtitle class="justify-center dialog-subtitle">{{ $t('admin.tagDeletionDisclaimer', { tagName: deletingTag.name}) }}</v-card-subtitle>
+            <v-layout px-3 pb-5 justify-center>
+              <v-flex shrink mr-2>
+                <v-btn rounded outlined color="#2286c3" @click="deleteTag">{{ $t('admin.confirm') }}</v-btn>
+              </v-flex>
+              <v-flex shrink>
+                <v-btn rounded outlined color="red" @click="deleting=false">{{ $t('admin.cancel') }}</v-btn>
+              </v-flex>
+            </v-layout>
+
+          </v-card>
+    </v-dialog>
+  </v-container>
 </template>
 
 <script>
@@ -93,7 +116,9 @@ export default {
         length: 1,
         visible: 7
       },
-      status: 'l'
+      status: 'l',
+      deleting: false,
+      deletingTag: '',
     }
   },
   methods: {
@@ -161,7 +186,22 @@ export default {
           id: tagId
         }
       })
-    }
+    },
+    openDialog (tag){
+      this.deleting = true
+      this.deletingTag = tag
+      event.stopPropagation()
+    },
+    deleteTag () {
+        tagService.deleteTag(this.$route.params.id)
+          // TODO handle responses accordingly
+          .then(r => { 
+            this.deleting = false
+            this.$router.push({
+              name: 'tags'
+            })
+          })
+      }
   },
   mounted () {
     const queryParams = this.$route.query
@@ -185,6 +225,7 @@ export default {
 
 <style lang="scss">
 @import '@/styles/cardChip.scss';
+@import '@/styles/adminAdd.scss';
 
 .tag-name-flex {
   // min-width: 50%;

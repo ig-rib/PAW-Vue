@@ -1,26 +1,33 @@
 <template>
   <v-container>
-    <v-layout>
-      <v-flex class="view-title">
+    <v-layout align-center>
+      <v-flex class="view-title" shrink>
         {{ $t('tags.tagSnippets', { tagName: tag.name}) }}
       </v-flex>
-      <v-flex v-if="isAdmin" ml-auto>
-        <v-btn @click="deleting = true" icon>
-          <v-icon>mdi-delete</v-icon>
-        </v-btn>
+      <v-flex v-if="isAdmin" ml-10 pb-5>
+        <v-layout justify-start align-center>
+          <v-btn @click="deleting = true" icon>
+          <v-icon size="60">mdi-delete</v-icon>
+          </v-btn>
+        </v-layout>
       </v-flex>
     </v-layout>
     <snippet-grid ref="tagSnippets"></snippet-grid>
-    <v-dialog v-model="deleting">
-      <v-card>
-        <v-card-title>{{ $t('admin.confirmDeletion') }}</v-card-title>
-        <v-card-text>{{ $t('admin.tagDeletionDisclaimer') }}</v-card-text>
-        <v-card-actions>
-          <v-btn @click="deleteTag">{{ $t('admin.confirm') }}</v-btn>
-          <v-btn @click="deleting = false">{{ $t('admin.cancel') }}</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <v-dialog content-class="delete-dialog" v-model="deleting">
+          <v-card class="dialog-card">
+            <v-card-title mb-5 class="justify-center">{{ $t('admin.confirmDeletion') }}</v-card-title>
+            <v-card-subtitle class="justify-center dialog-subtitle">{{ $t('admin.tagDeletionDisclaimer', { tagName: tag.name}) }}</v-card-subtitle>
+            <v-layout px-3 pb-5 justify-center>
+              <v-flex shrink mr-2>
+                <v-btn rounded outlined color="#2286c3" @click="deleteTag">{{ $t('admin.confirm') }}</v-btn>
+              </v-flex>
+              <v-flex shrink>
+                <v-btn rounded outlined color="red" @click="deleting=false">{{ $t('admin.cancel') }}</v-btn>
+              </v-flex>
+            </v-layout>
+
+          </v-card>
+        </v-dialog>
   </v-container>
 </template>
 
@@ -62,3 +69,8 @@ export default {
 }
 
 </script>
+
+<style lang="scss">
+@import '@/styles/adminAdd.scss';
+</style>
+

@@ -71,3 +71,15 @@
 .list-name-flex {
   max-width: 75%;
 }
+
+.delete-dialog {
+  max-width: 700px;
+  .dialog-card {
+    border-radius: 12px !important;
+  }
+  .dialog-subtitle{
+    margin-top: 7px;
+    font-size: 17px;
+  }
+}
+
