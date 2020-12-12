@@ -5,7 +5,7 @@ import i18n from '../i18n.js'
 
 Vue.use(Vuex)
 
-let defaultAction = {
+const defaultAction = {
   func: () => {
     store.dispatch('hideSnackbar')
   },
@@ -90,7 +90,7 @@ const store = new Vuex.Store({
       commit('setSnackbar', {
         show: true,
         color: 'red',
-        message,
+        message
       })
     },
     snackSuccess ({ commit }, payload) {

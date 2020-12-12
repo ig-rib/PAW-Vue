@@ -97,7 +97,7 @@ import validations from '@/functions/validations'
 import helpers from '@/functions/helpers.js'
 
 export default {
-  title (){  return this.$t('titles.create')},
+  title () { return this.$t('titles.create') },
   data () {
     return {
       title: '',
@@ -118,8 +118,8 @@ export default {
         tags: this.tags.map(tag => tag.id)
       }).then(
         r => {
-            let str = r.headers.location.split('/'); 
-            let snippet_id = str[str.length - 1]
+            const str = r.headers.location.split('/'); 
+            const snippet_id = str[str.length - 1]
             this.$router.push({
               name: 'snippet-detail',
               params: {
@@ -143,7 +143,7 @@ export default {
         description: () => validations.maxLength(this.description, 500),
         code: () => validations.lengthBetween(this.code, 5, 30000),
         titleNotBlankWithSpaces: () => validations.notBlankWithSpaces(this.title),
-        codeNotBlankWithSpaces: () => validations.notBlankWithSpaces(this.code),
+        codeNotBlankWithSpaces: () => validations.notBlankWithSpaces(this.code)
       }
     },
     allRulesAlright () {

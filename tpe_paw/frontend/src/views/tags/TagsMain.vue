@@ -113,7 +113,7 @@ import tagService from '@/services/tags.js'
 import helpers from '@/functions/helpers.js'
 
 export default {
-  title (){  return this.$t('titles.tags')},
+  title () { return this.$t('titles.tags') },
   name: 'tagsMain',
   data () {
     return {
@@ -195,7 +195,7 @@ export default {
         }
       })
     },
-    openDialog (tag){
+    openDialog (tag) {
       this.deleting = true
       this.deletingTag = tag
       event.stopPropagation()
@@ -222,23 +222,23 @@ export default {
         this.status = 'e'
       })
     },
-    titleAbreviation(tag, size){
-      let name = tag.name
-      if(tag.snippetsUsingIsEmpty){
+    titleAbreviation (tag, size) {
+      const name = tag.name
+      if (tag.snippetsUsingIsEmpty) {
         size -= 3
       }
-      if(tag.userFollowing){
-        size -=3 
+      if (tag.userFollowing) {
+        size -= 3 
       }
-      if(this.isAdmin){
-        size -=2
+      if (this.isAdmin) {
+        size -= 2
       }
 
-      if(name.length > size){
-        return name.substr(0,size-2) + '...'
+      if (name.length > size) {
+        return name.substr(0, size - 2) + '...'
       }
       return name
-    },
+    }
   },
   computed: {
     isAdmin () {

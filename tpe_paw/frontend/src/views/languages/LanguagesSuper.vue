@@ -4,7 +4,7 @@
 
 <script>
 export default {
-    title (){  return this.$t('titles.languagesSuper')},
+    title () { return this.$t('titles.languagesSuper') },
   name: 'LanguagesSuper',
   mounted () {
     this.$on('searchResults', (r) => {

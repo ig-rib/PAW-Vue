@@ -35,7 +35,7 @@ import search from '@/services/search.js'
 import ExplorePad from '@/components/explore/ExplorePad.vue'
 
 export default {
-  title (){
+  title () {
     return this.$t('titles.explore')
   },
   components: {

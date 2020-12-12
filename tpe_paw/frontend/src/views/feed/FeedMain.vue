@@ -12,7 +12,7 @@
 <script>
 
 export default {
-  title (){ return this.$t('titles.feed') },
+  title () { return this.$t('titles.feed') },
   name: 'Feed',
   mounted () {
     this.$on('searchResults', (r) => this.$refs.feedSnippets.$emit('searchResults', r))

@@ -144,7 +144,7 @@ import urls from '@/services/urls.js'
 import validations from '@/functions/validations'
 
   export default {
-    title (){  return this.$t('titles.profile')},
+    title () { return this.$t('titles.profile') },
     data () {
       return {
         editing: false,
@@ -156,7 +156,7 @@ import validations from '@/functions/validations'
         user: () => {},
         hasPhotoPreview: false,
         isAdmin: false,
-        error_image: false,
+        error_image: false
       }
     },
     methods: {

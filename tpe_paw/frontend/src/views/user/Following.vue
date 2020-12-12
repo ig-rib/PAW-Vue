@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  title (){  return this.$t('titles.following')},
+  title () { return this.$t('titles.following') },
   mounted () {
     this.$on('searchResults', r => this.$refs.userFavoritesSnippetGrid.$emit('searchResults', r))
   },

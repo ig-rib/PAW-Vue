@@ -52,7 +52,7 @@
 import tags from '@/services/tags.js'
 
 export default {
-    title (){  return this.$t('titles.tagsSnippet')},
+    title () { return this.$t('titles.tagsSnippet') },
     name: 'TagsSnippets',
     data () {
       return {
@@ -129,4 +129,3 @@ export default {
   font-size: 13px;
 }
 </style>
-

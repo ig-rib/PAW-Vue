@@ -38,7 +38,7 @@ Vue.use(VueProgressBar, {
     speed: '0.1s',
     opacity: '0.6s',
     termination: 300
-  },
+  }
 })
 
 // Vue.use(VueHighlightJS)

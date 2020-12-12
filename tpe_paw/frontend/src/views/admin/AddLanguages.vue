@@ -74,9 +74,8 @@
 import languages from '@/services/languages.js'
 import validations from '@/functions/validations'
 
-
 export default {
-  title (){
+  title () {
     return this.$t('titles.addLanguages')
   },
   data () {
@@ -111,7 +110,7 @@ export default {
   computed: {
     rules () {
       return {
-        newLanguage: () => validations.lengthBetween(this.newLanguage, 1, 50),
+        newLanguage: () => validations.lengthBetween(this.newLanguage, 1, 50)
       }
     },
     allRulesAlright () {

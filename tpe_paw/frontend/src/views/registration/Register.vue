@@ -72,7 +72,7 @@ import validations from '@/functions/validations'
 import registration from '@/services/registration'
 
 export default {
-    title (){  return this.$t('titles.register')},
+    title () { return this.$t('titles.register') },
   data () {
     return {
       username: '',

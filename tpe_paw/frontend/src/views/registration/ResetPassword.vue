@@ -29,7 +29,7 @@ import registration from '@/services/registration'
 import validations from '@/functions/validations'
 
 export default {
-    title (){  return this.$t('titles.resetPassword')},
+    title () { return this.$t('titles.resetPassword') },
   data () {
     return {
       id: '',
@@ -44,7 +44,7 @@ export default {
       registration.resetPassword(this.id, this.password, this.repeatPassword, this.token)
         .then(r => {
           this.$store.dispatch('snackSuccess', this.$t('registration.successfullyResetPassword'))
-          this.$router.push({name: 'login'})
+          this.$router.push({ name: 'login' })
         })
         .catch(e => {
           this.$store.dispatch('snackError', e.data)
