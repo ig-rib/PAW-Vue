@@ -59,18 +59,18 @@
             </v-icon>
           </v-flex>
           <v-flex>
-            <v-layout align-center shrink v-if="isLoggedInUser" justify-end>            
+            <v-layout align-center shrink v-if="isLoggedInUser">            
             <v-btn
+              rounded outlined color="primary"
               :ripple="false"
               v-if="!editing"
               @click="editing = true"
-              color="#64b5f6"
             >
               {{ $t('user.profile.editProfile') }}
             </v-btn>
-            <v-flex v-else shrink justify-end>
+            <v-flex v-else shrink>
                <v-layout >
-                <v-flex px-2 justify-end shrink>
+                <v-flex px-2 shrink>
                   <v-btn
                     rounded outlined color="red"
                     :ripple="false"
@@ -78,7 +78,7 @@
                   {{ $t('user.profile.cancel') }}
                 </v-btn>
                 </v-flex>
-                <v-flex px-2 justify-end shrink>
+                <v-flex px-2 shrink>
                   <v-btn
                     rounded outlined color="#2286c3"
                     :ripple="false"
