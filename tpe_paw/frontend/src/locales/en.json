@@ -220,7 +220,8 @@
     "mailSentInfo": "You can now visit the link we sent you and change your password.",
     "enterCode": "Enter the code you received on your email.",
     "successfulVerification": "Successfully verified account!",
-    "successfullyResetPassword": " Successfully reseted password. Now you can login"
+    "successfullyResetPassword": " Successfully reseted password. Now you can login",
+    "keepMeSignedIn": "Keep me signed in"
   },
   "validations": {
     "invalidPassword": "Password must be at least 8 characters long",

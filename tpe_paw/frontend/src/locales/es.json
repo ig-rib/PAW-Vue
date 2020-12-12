@@ -219,8 +219,8 @@
       "mailSentInfo": "Ya puedes visitar el link y recuperar tu contraseña",
       "enterCode": "Ingresar el código que has recibido en el mail",
       "successfulVerification": "Verificamos tu cuenta satisfactoriamente!",
-      "successfullyResetPassword": "Contraseña cambiada con éxito. Puedes iniciar sesión."
-
+      "successfullyResetPassword": "Contraseña cambiada con éxito. Puedes iniciar sesión.",
+      "keepMeSignedIn": "Recordarme"
     },
     "validations": {
       "invalidPassword": "La contraseña debe tener mas de 8 caracteres",

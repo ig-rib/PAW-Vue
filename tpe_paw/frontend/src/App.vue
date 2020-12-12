@@ -47,6 +47,12 @@ export default {
     language () {
       return navigator.language
     }
+    // rememberMe () {
+    //   return window.localStorage.getItem('keepSignedIn')
+    // },
+    // token () {
+    //   return window.localStorage.getItem('token')
+    // }
   },
   methods: {
     hideSnackbar () {
@@ -54,12 +60,21 @@ export default {
     }
   },
   mounted () {
+    window.onbeforeunload = function () {
+      if (window.localStorage.getItem('token') != null && window.localStorage.getItem('keepSignedIn') !== 'true') {
+        window.localStorage.removeItem('token')
+        this.$store.dispatch('logout')
+      }
+    }
     if (window.localStorage.getItem('token') != null) {
       this.$store.dispatch('setToken', JSON.parse(window.localStorage.getItem('token')))
       user.getLoggedInUser().then(r => {
         this.$store.dispatch('setUser', r.data)
       })
     }
+    // else {
+    //   window.localStorage.removeItem('token')
+    // }
   }
 }
 </script>

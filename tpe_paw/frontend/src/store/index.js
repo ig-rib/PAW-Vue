@@ -12,6 +12,19 @@ let defaultAction = {
   text: i18n.t('snackbar.hide')
 }
 
+const defaultState = {
+  token: {
+    value: '',
+    expirationDate: null
+  },
+  snackbar: {
+    show: false,
+    message: 'HELLO',
+    action: defaultAction
+  },
+  user: () => {}
+}
+
 const store = new Vuex.Store({
   plugins: [createPersistedState({
     storage: window.sessionStorage
@@ -40,6 +53,9 @@ const store = new Vuex.Store({
       for (const [key, value] of Object.entries(snackbarData)) {
         state.snackbar[key] = value
       }
+    },
+    resetState (state) {
+      Object.assign(state, defaultState)
     }
   },
   getters: {
@@ -65,8 +81,9 @@ const store = new Vuex.Store({
     setUser ({ commit }, userData) {
       commit('setUser', userData)
     },
-    logout () {
+    logout (/* { commit } */) {
       window.sessionStorage.clear()
+      // commit('resetState')
     },
     snackError ({ commit }, payload) {
       const message = payload || i18n.t('snackbar.error.defaultMessage')

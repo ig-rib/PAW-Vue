@@ -24,6 +24,9 @@
           v-model="password">
         </v-text-field>
       </v-flex>
+      <v-flex justify-center shrink>
+        <v-checkbox :ripple="false" v-model="keepSignedIn" :label="$t('registration.keepMeSignedIn')"></v-checkbox>
+      </v-flex>
       <v-flex>
         <v-layout justify-center>
           <div v-if="invalid" class="error-text">
@@ -61,7 +64,8 @@ export default {
       username: '',
       password: '',
       invalid: false,
-      prevRoute: null
+      prevRoute: null,
+      keepSignedIn: false
     }
   },
   methods: {
@@ -72,6 +76,7 @@ export default {
           this.invalid = false
           this.$store.dispatch('setToken', r.data)
           window.localStorage.setItem('token', JSON.stringify(r.data))
+          window.localStorage.setItem('keepSignedIn', this.keepSignedIn)
           // Go to feed if user doesn't have a relevant navigation
           // history in this website
           if (this.prevRoute == null || this.prevRoute.name === 'register') {
