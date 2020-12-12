@@ -74,7 +74,7 @@ import tags from '@/services/tags.js'
 import validations from '@/functions/validations'
 
 export default {
-  title (){
+  title () {
     return this.$t('titles.addTags')
   },
   data () {
@@ -109,7 +109,7 @@ export default {
   computed: {
     rules () {
       return {
-        newTag: () => validations.lengthBetween(this.newTag, 1, 30),
+        newTag: () => validations.lengthBetween(this.newTag, 1, 30)
       }
     },
     allRulesAlright () {

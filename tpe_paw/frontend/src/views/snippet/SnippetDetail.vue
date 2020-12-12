@@ -269,9 +269,8 @@ import validations from '@/functions/validations'
 import SshPre from 'simple-syntax-highlighter'
 import 'simple-syntax-highlighter/dist/sshpre.css'
 
-
 export default {
-  title (){  return this.$t('titles.detail')},
+  title () { return this.$t('titles.detail') },
   components: {
     'ssh-pre': SshPre
   },
@@ -290,7 +289,7 @@ export default {
       reportDialog: false,
       unreportDialog: false,
       reportMessage: '',
-      error_image: false,
+      error_image: false
     }
   },
   methods: {
@@ -316,7 +315,7 @@ export default {
         this.snippet.score = r.data.snippetScore
         this.owner.reputation = r.data.ownerReputation
         if (this.owner.email === this.$store.getters.user.email) {
-          let usr = this.$store.getters.user
+          const usr = this.$store.getters.user
           usr.reputation = r.data.ownerReputation
           this.$store.dispatch('setUser', usr)
         }
@@ -337,10 +336,9 @@ export default {
       })
       .finally(() => { 
         this.flagging = false
-        if(this.snippet.flagged){
+        if (this.snippet.flagged) {
           this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.snippetFlagged')) 
-        }
-        else{
+        } else {
           this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.snippetUnflagged'))
         }
       })
@@ -369,7 +367,7 @@ export default {
     cancelReport () {
       this.resetReportData()
     },
-    sendUnreport(){
+    sendUnreport () {
       snippets.unreportSnippet(this.snippet.id)
           .then(r => {
             this.snippet.reported = false
@@ -431,7 +429,7 @@ export default {
       //   this.$store.dispatch('snackError', this.$t('error.snippet.detail.copying'))
       // }
     },
-    clearSelection() {
+    clearSelection () {
       let sel;
       if ((sel = document.selection) && sel.empty) {
         sel.empty();
@@ -439,9 +437,9 @@ export default {
           if (window.getSelection) {
             window.getSelection().removeAllRanges();
           }
-          let activeEl = document.activeElement;
+          const activeEl = document.activeElement;
           if (activeEl) {
-              let tagName = activeEl.nodeName.toLowerCase();
+              const tagName = activeEl.nodeName.toLowerCase();
               if (tagName === 'textarea' ||
                       (tagName === 'input' && activeEl.type === 'text')) {
                   // Collapse the selection to the end

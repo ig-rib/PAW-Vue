@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  title (){
+  title () {
     return this.$t('titles.flagged')
   },
   mounted () {

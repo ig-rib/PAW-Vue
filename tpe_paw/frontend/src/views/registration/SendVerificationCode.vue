@@ -39,7 +39,7 @@ import registration from '@/services/registration.js'
 import validations from '@/functions/validations.js'
 
 export default {
-    title (){  return this.$t('titles.verification')},
+    title () { return this.$t('titles.verification') },
   data () {
     return {
       code: ''
@@ -53,7 +53,7 @@ export default {
         .then(r => {
           this.$store.dispatch('snackSuccess', this.$t('registration.successfulVerification'))
           // TODO do not allow going back to login
-          let user = this.$store.getters.user
+          const user = this.$store.getters.user
           user.verified = true
           this.$store.dispatch('setUser', user)
           this.$router.push({

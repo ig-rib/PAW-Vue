@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 var localDomain = 'http://localhost:8080/';
 var urls = {
   localDomain: localDomain,
@@ -74,4 +74,4 @@ var urls = {
   }
 };
 var _default = urls;
-exports["default"] = _default;
+exports.default = _default;

@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  title (){  return this.$t('titles.favorites')},
+  title () { return this.$t('titles.favorites') },
   mounted () {
     this.$on('searchResults', r => this.$refs.userFavoritesSnippetGrid.$emit('searchResults', r))
   }

@@ -37,7 +37,7 @@ export default {
   computed: {
     snackbar: {
       get () {
-        let snack = this.$store.getters.snackbar
+        const snack = this.$store.getters.snackbar
         return snack
       },
       set () {

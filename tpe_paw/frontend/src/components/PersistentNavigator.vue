@@ -493,7 +493,7 @@ export default {
       window.localStorage.removeItem('token')
       window.localStorage.removeItem('keepSignedIn')
       this.$store.dispatch('logout')
-      this.$router.go({name: 'nothing'})
+      this.$router.go({ name: 'nothing' })
     },
     goToAdd () {
       if (this.isAdmin) {

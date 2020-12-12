@@ -58,7 +58,7 @@ import registration from '@/services/registration.js'
 import user from '@/services/user.js'
 
 export default {
-  title (){  return this.$t('titles.login')},
+  title () { return this.$t('titles.login') },
   data () {
     return {
       username: '',

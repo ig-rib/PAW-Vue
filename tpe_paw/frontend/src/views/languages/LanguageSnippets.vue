@@ -53,7 +53,7 @@
 import languages from '@/services/languages.js'
 
 export default {
-    title (){  return this.$t('titles.languagesSnippets')},
+    title () { return this.$t('titles.languagesSnippets') },
     name: 'LanguagesSnippets',
     data () {
       return {
@@ -72,7 +72,6 @@ export default {
             })
           })
          .catch(e => this.$store.dispatch('snackError', this.$t('languages.errorDelete')))
-
       }
     },
     computed: {

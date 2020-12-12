@@ -96,7 +96,7 @@ import languages from '@/services/languages.js'
 import helpers from '@/functions/helpers.js'
 
 export default {
-    title (){  return this.$t('titles.languages')},
+    title () { return this.$t('titles.languages') },
   name: 'languagesMain',
   data () {
     return {
@@ -187,9 +187,9 @@ export default {
             this.status = 'e'
             })
     },
-    titleAbreviation(name, size){
-      if(name.length > size){
-        let newName = name.substr(0,size-2) + '...'
+    titleAbreviation (name, size) {
+      if (name.length > size) {
+        const newName = name.substr(0, size - 2) + '...'
         return newName
       }
       return name
