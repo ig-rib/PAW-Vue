@@ -151,6 +151,7 @@ public class TagsController {
         for(Tag t: tagService.findTagsByName(q, showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)){
             TagDto tagDto = TagDto.fromTag(t);
             tagDto.setUserFollowing(userId != null && tagService.userFollowsTag(userId, t.getId()));
+            tagDto.setSnippetsUsingIsEmpty(t.getSnippetsUsing().size() == 0);
             tags.add(tagDto);
         }
 

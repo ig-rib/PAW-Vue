@@ -94,7 +94,6 @@
                 <v-btn rounded outlined color="red" @click="deleting=false">{{ $t('admin.cancel') }}</v-btn>
               </v-flex>
             </v-layout>
-
           </v-card>
     </v-dialog>
   </v-container>
@@ -118,7 +117,7 @@ export default {
       },
       status: 'l',
       deleting: false,
-      deletingTag: '',
+      deletingTag: {}
     }
   },
   methods: {
@@ -193,24 +192,22 @@ export default {
       event.stopPropagation()
     },
     deleteTag () {
-        tagService.deleteTag(this.$route.params.id)
-          // TODO handle responses accordingly
-          .then(r => { 
-            this.deleting = false
-            this.$router.push({
-              name: 'tags'
-            })
-          })
-      }
-  },
-  computed: {
-    isAdmin () {
-      return this.$store.getters.user.admin
-    }
-  },
-  mounted () {
-    const queryParams = this.$route.query
-    tagService.searchTags(queryParams)
+      tagService.deleteTag(this.deletingTag.id)
+        // TODO handle responses accordingly
+        .then(r => { 
+          this.deleting = false
+          this.deletingTag = {}
+          // this.$router.push({
+          //   name: 'tags'
+          // })
+          this.refreshTags()
+        })
+        // .finally(() => {
+        // })
+    },
+    refreshTags () {
+      const queryParams = this.$route.query
+      tagService.searchTags(queryParams)
       .then(response => {
         this.pagination.page = parseInt(queryParams.page) || 1
         this.handleSearchResponse(response)    
@@ -219,6 +216,15 @@ export default {
         console.log(e)
         this.status = 'e'
       })
+    }
+  },
+  computed: {
+    isAdmin () {
+      return this.$store.getters.user.admin
+    }
+  },
+  mounted () {
+    this.refreshTags()
     this.$on('searchResults', r => {
       this.pagination.page = 1
       this.handleSearchResponse(r)

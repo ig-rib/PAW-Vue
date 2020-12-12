@@ -9,6 +9,7 @@ public class LanguageDto {
     private Long id;
     private String name;
     private boolean deleted;
+    private boolean snippetsUsingIsEmpty;
 
     public static LanguageDto fromLanguage(Language language){
         final LanguageDto dto = new LanguageDto();
@@ -16,6 +17,7 @@ public class LanguageDto {
         dto.id = language.getId();
         dto.name = language.getName();
         dto.deleted = language.isDeleted();
+        dto.snippetsUsingIsEmpty = language.getSnippetsUsing().size() == 0;
 
         return dto;
     }
@@ -44,6 +46,14 @@ public class LanguageDto {
         this.name = name;
     }
 
+    public boolean getSnippetsUsingIsEmpty() {
+        return snippetsUsingIsEmpty;
+    }
+
+    public void setSnippetsUsingIsEmpty(boolean snippetsUsingIsEmpty) {
+        this.snippetsUsingIsEmpty = snippetsUsingIsEmpty;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,4 +68,5 @@ public class LanguageDto {
     public int hashCode() {
         return Objects.hash(id, name, deleted);
     }
+
 }

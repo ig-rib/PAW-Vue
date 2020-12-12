@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.dto;
 
-import ar.edu.itba.paw.models.Role;
 import ar.edu.itba.paw.models.Tag;
 
 import java.util.Objects;
@@ -17,7 +16,6 @@ public class TagDto {
 
         dto.id = tag.getId();
         dto.name = tag.getName();
-        dto.snippetsUsingIsEmpty = tag.getSnippetsUsingIsEmpty();
 
         return dto;
     }
