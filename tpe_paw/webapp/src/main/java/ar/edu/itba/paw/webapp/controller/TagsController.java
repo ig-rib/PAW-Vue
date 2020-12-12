@@ -83,7 +83,7 @@ public class TagsController {
 
     @GET
     @Path("/tags/{tagId}/snippets")
-    public Response searchInTag(final @QueryParam("q") String query,
+    public Response searchInTag(final @QueryParam("q") @DefaultValue("") String query,
                                 final @QueryParam("t") String type,
                                 final @QueryParam("uid") String userId,
                                 final @QueryParam("s") String sort,
@@ -91,17 +91,18 @@ public class TagsController {
                                 final @PathParam(value = "tagId") long tagId,
                                 final @Context Request request) {
 
+        String escapedQuery = query.replaceAll("%", "\\\\%");
         Tag tag = this.tagService.findTagById(tagId).orElse(null);
         if (tag == null) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.404.tag", new Object[]{tagId}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.TAGS, sort, null, tagId, page)
+        List<SnippetDto> snippets = searchHelper.findByCriteria(type, escapedQuery, SnippetDao.Locations.TAGS, sort, null, tagId, page)
                 .stream()
                 .map(sn -> SnippetDto.fromSnippet(sn, uriInfo, loginAuthentication.getLoggedInUser().orElse(null)))
                 .collect(Collectors.toList());
-        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.TAGS, null, tagId);
+        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, escapedQuery, SnippetDao.Locations.TAGS, null, tagId);
 
         return searchHelper.getResponse(query, type, userId, sort, page, snippets, totalSnippetCount, uriInfo);
     }
@@ -150,8 +151,10 @@ public class TagsController {
         // Find the user, check if it exists
         Long userId = loginAuthentication.getLoggedInUser().map(User::getId).orElse(null);
 
+        String escapedQuery = q.replaceAll("%", "\\\\%");
+
         final List<TagDto> tags = new ArrayList<>();
-        for(Tag t: tagService.findTagsByName(q, showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)){
+        for(Tag t: tagService.findTagsByName(escapedQuery, showEmpty, showOnlyFollowing, userId, page, TAG_PAGE_SIZE)){
             TagDto tagDto = TagDto.fromTag(t);
             tagDto.setUserFollowing(userId != null && tagService.userFollowsTag(userId, t.getId()));
             tagDto.setSnippetsUsingIsEmpty(t.getSnippetsUsing().size() == 0);
@@ -159,7 +162,7 @@ public class TagsController {
         }
 
 
-        int tagsCount = tagService.getAllTagsCountByName(q, showEmpty, showOnlyFollowing, userId);
+        int tagsCount = tagService.getAllTagsCountByName(escapedQuery, showEmpty, showOnlyFollowing, userId);
         int pageCount = (tagsCount/TAG_PAGE_SIZE) + ((tagsCount % TAG_PAGE_SIZE == 0) ? 0 : 1);
 
         Response.ResponseBuilder builder = Response.ok(new GenericEntity<List<TagDto>>(tags) {});

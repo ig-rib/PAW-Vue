@@ -71,7 +71,7 @@ public class LanguagesController {
 
     @GET
     @Path("/{langId}/snippets")
-    public Response searchInLanguage(final @QueryParam("q") String query,
+    public Response searchInLanguage(final @QueryParam("q") @DefaultValue("") String query,
                                      final @QueryParam("t") String type,
                                      final @QueryParam("uid") String userId,
                                      final @QueryParam("s") String sort,
@@ -84,11 +84,12 @@ public class LanguagesController {
             errorMessageDto.setMessage(messageSource.getMessage("error.404.language", new Object[]{langId}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
-        List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.LANGUAGES, sort, null, langId, page)
+        String escapedQuery = query.replaceAll("%", "\\\\%");
+        List<SnippetDto> snippets = searchHelper.findByCriteria(type, escapedQuery, SnippetDao.Locations.LANGUAGES, sort, null, langId, page)
                 .stream()
                 .map(sn -> SnippetDto.fromSnippet(sn, uriInfo, loginAuthentication.getLoggedInUser().orElse(null)))
                 .collect(Collectors.toList());
-        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.LANGUAGES, null, langId);
+        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, escapedQuery, SnippetDao.Locations.LANGUAGES, null, langId);
 
         return searchHelper.getResponse(query, type, userId, sort, page, snippets, totalSnippetCount, uriInfo);
     }
@@ -99,9 +100,9 @@ public class LanguagesController {
     public Response searchInAllLanguages(@QueryParam("page") @DefaultValue("1") int page,
                                          @QueryParam("showEmpty") @DefaultValue("true") boolean showEmpty,
                                          @QueryParam("q") @DefaultValue("") String q){
-
-        Collection<Language> allLanguages = this.languageService.findAllLanguagesByName(q, showEmpty, page, LANGUAGE_PAGE_SIZE);
-        int languageCount = this.languageService.getAllLanguagesCountByName(q, showEmpty);
+        String escapedQ = q.replaceAll("%", "\\\\%");
+        Collection<Language> allLanguages = this.languageService.findAllLanguagesByName(escapedQ, showEmpty, page, LANGUAGE_PAGE_SIZE);
+        int languageCount = this.languageService.getAllLanguagesCountByName(escapedQ, showEmpty);
 
         for (Language language : allLanguages) {
             this.snippetService.analizeSnippetsUsing(language);

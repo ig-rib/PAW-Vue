@@ -54,18 +54,20 @@ public class UserController {
 
     @GET
     @Path("/current")
-    public Response getLoggedInUser(final @QueryParam("uname") String username) {
+    public Response getLoggedInUser() {
         User user = loginAuthentication.getLoggedInUser().orElse(null);
         return Response.ok(UserDto.fromUser(user, roleService.isAdmin(user.getId()), uriInfo)).build();
     }
 
     @GET
     @Path("/snippets/upvoted")
-    public Response searchInUpvoted(final @QueryParam("q") String query,
+    public Response searchInUpvoted(final @QueryParam("q")  @DefaultValue("") String query,
                                     final @QueryParam("t") String type,
                                     final @QueryParam("s") String sort,
                                     final @QueryParam("page") @DefaultValue("1") int page,
                                     final @Context Request request) {
+
+        String escapedQuery = query.replaceAll("%", "\\\\%");
 
         User user = loginAuthentication.getLoggedInUser().orElse(null);
         if (user == null){
@@ -73,11 +75,11 @@ public class UserController {
             errorMessageDto.setMessage(messageSource.getMessage("error.401.snippet.vote", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.UNAUTHORIZED).entity(errorMessageDto).build();
         }
-        List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.UPVOTED, sort, user.getId(), null, page)
+        List<SnippetDto> snippets = searchHelper.findByCriteria(type, escapedQuery, SnippetDao.Locations.UPVOTED, sort, user.getId(), null, page)
                 .stream()
                 .map(sn -> SnippetDto.fromSnippet(sn, uriInfo, loginAuthentication.getLoggedInUser().orElse(null)))
                 .collect(Collectors.toList());
-        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.UPVOTED, user.getId(), null);
+        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, escapedQuery, SnippetDao.Locations.UPVOTED, user.getId(), null);
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("q", query);
         queryParams.put("t", type);
@@ -88,13 +90,16 @@ public class UserController {
 
     @GET
     @Path("{id}/snippets/deleted")
-    public Response searchInDeletedUserSnippets(final @QueryParam("q") String query,
+    public Response searchInDeletedUserSnippets(final @QueryParam("q")  @DefaultValue("") String query,
                                                 final @QueryParam("t") String type,
                                                 final @QueryParam("uid") String userId,
                                                 final @QueryParam("s") String sort,
                                                 final @QueryParam("page") @DefaultValue("1") int page,
                                                 final @PathParam(value = "id") long id,
                                                 final @Context Request request) {
+
+        String escapedQuery = query.replaceAll("%", "\\\\%");
+
         User user = userService.findUserById(id).orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
@@ -107,51 +112,57 @@ public class UserController {
             errorMessageDto.setMessage(messageSource.getMessage("error.403.profile.owner", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.FORBIDDEN).entity(errorMessageDto).build();
         }
-        List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.DELETED, sort, id, null, page)
+        List<SnippetDto> snippets = searchHelper.findByCriteria(type, escapedQuery, SnippetDao.Locations.DELETED, sort, id, null, page)
                 .stream()
                 .map(sn -> SnippetDto.fromSnippet(sn, uriInfo, loginAuthentication.getLoggedInUser().orElse(null)))
                 .collect(Collectors.toList());
-        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.DELETED, id, null);
+        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, escapedQuery, SnippetDao.Locations.DELETED, id, null);
 
         return searchHelper.getResponse(query, type, userId, sort, page, snippets, totalSnippetCount, uriInfo);
     }
 
     @GET
     @Path("/{id}/snippets/active")
-    public Response searchInActiveUserSnippets(final @QueryParam("q") String query,
+    public Response searchInActiveUserSnippets(final @QueryParam("q")  @DefaultValue("") String query,
                                                final @QueryParam("t") String type,
                                                final @QueryParam("uid") String userId,
                                                final @QueryParam("s") String sort,
                                                final @QueryParam("page") @DefaultValue("1") int page,
                                                final @PathParam(value = "id") long id,
                                                final @Context Request request) {
-        List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.USER, sort, id, null, page)
+
+        String escapedQuery = query.replaceAll("%", "\\\\%");
+
+        List<SnippetDto> snippets = searchHelper.findByCriteria(type, escapedQuery, SnippetDao.Locations.USER, sort, id, null, page)
                 .stream()
                 .map(sn -> SnippetDto.fromSnippet(sn, uriInfo, loginAuthentication.getLoggedInUser().orElse(null)))
                 .collect(Collectors.toList());
-        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.USER, id, null);
+        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, escapedQuery, SnippetDao.Locations.USER, id, null);
 
         return searchHelper.getResponse(query, type, userId, sort, page, snippets, totalSnippetCount, uriInfo);
     }
 
     @GET
     @Path("snippets/favorites")
-    public Response searchInFavorites(final @QueryParam("q") String query,
+    public Response searchInFavorites(final @QueryParam("q")  @DefaultValue("") String query,
                                       final @QueryParam("t") String type,
                                       final @QueryParam("s") String sort,
                                       final @QueryParam("page") @DefaultValue("1") int page,
                                       final @Context Request request) {
+
+        String escapedQuery = query.replaceAll("%", "\\\\%");
+
         User user = loginAuthentication.getLoggedInUser().orElse(null);
         if (user == null){
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.401.snippet.fav", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.UNAUTHORIZED).entity(errorMessageDto).build();
         }
-        List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.FAVORITES, sort, user.getId(), null, page)
+        List<SnippetDto> snippets = searchHelper.findByCriteria(type, escapedQuery, SnippetDao.Locations.FAVORITES, sort, user.getId(), null, page)
                 .stream()
                 .map(sn -> SnippetDto.fromSnippet(sn, uriInfo, loginAuthentication.getLoggedInUser().orElse(null)))
                 .collect(Collectors.toList());
-        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.FAVORITES, user.getId(), null);
+        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, escapedQuery, SnippetDao.Locations.FAVORITES, user.getId(), null);
 
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("q", query);
@@ -163,12 +174,14 @@ public class UserController {
 
     @GET
     @Path("/snippets/following")
-    public Response searchInFollowing(final @QueryParam("q") String query,
+    public Response searchInFollowing(final @QueryParam("q")  @DefaultValue("") String query,
                                       final @QueryParam("t") String type,
                                       final @QueryParam("uid") String userId,
                                       final @QueryParam("s") String sort,
                                       final @QueryParam("page") @DefaultValue("1") int page,
                                       final @Context Request request) {
+
+        String escapedQuery = query.replaceAll("%", "\\\\%");
 
         User user = loginAuthentication.getLoggedInUser().orElse(null);
         if (user == null){
@@ -176,11 +189,11 @@ public class UserController {
             errorMessageDto.setMessage(messageSource.getMessage("error.401.tag.follow", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.UNAUTHORIZED).entity(errorMessageDto).build();
         }
-        List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.FOLLOWING, sort, user.getId(), null, page)
+        List<SnippetDto> snippets = searchHelper.findByCriteria(type, escapedQuery, SnippetDao.Locations.FOLLOWING, sort, user.getId(), null, page)
                 .stream()
                 .map(sn -> SnippetDto.fromSnippet(sn, uriInfo, loginAuthentication.getLoggedInUser().orElse(null)))
                 .collect(Collectors.toList());
-        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.FOLLOWING, user.getId(), null);
+        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, escapedQuery, SnippetDao.Locations.FOLLOWING, user.getId(), null);
         return searchHelper.getResponse(query, type, userId, sort, page, snippets, totalSnippetCount, uriInfo);
     }
 
