@@ -207,7 +207,7 @@
           <v-layout v-if="$store.getters.loggedIn">
             <v-flex shrink v-if="!isAdmin">
               <v-btn x-large icon @click="goToProfile">
-                <img v-if="!profileImageError" @error="profileImageError = true" class="navbar-profile-circle" :src="currentUser.icon"/>
+                <img v-if="!profileImageError" @error="profileImageError = true" class="navbar-profile-circle" :src="$store.getters.user.icon"/>
                 <v-icon v-else>mdi-account-circle</v-icon>
               </v-btn>
             </v-flex>
@@ -287,7 +287,7 @@
     <v-layout my-2 v-if="$store.getters.loggedIn">
       <v-flex shrink>
         <v-btn x-large icon @click="goToProfile">
-          <img v-if="!profileImageError" @error="profileImageError = true" class="navbar-profile-circle" :src="currentUser.icon"/>
+          <img v-if="!profileImageError" @error="profileImageError = true" class="navbar-profile-circle" :src="$store.getters.user.icon"/>
           <v-icon v-else>mdi-account-circle</v-icon>  
         </v-btn>
       </v-flex>
@@ -399,9 +399,9 @@ export default {
           return 'snippet'
       }
     },
-    currentUser () {
-      return this.$store.getters.user
-    },
+    // currentUser () {
+    //   return this.$store.getters.user
+    // },
     generalPathsNoFeed () {
       return this.generalPaths.filter(item => item.path.name !== 'feed')
     },

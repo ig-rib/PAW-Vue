@@ -182,6 +182,8 @@ import validations from '@/functions/validations'
           this.user.description = this.description
           const newUserData = this.$store.getters.user
           newUserData.description = this.description
+          newUserData.icon = newUserData.icon + `?${new Date().getTime()}`
+          this.$emit('profilePicChanged')
           this.$store.dispatch('setUser', newUserData)
           this.$store.dispatch('snackSuccess', this.$t('user.profile.profileInfoUpdated'))
         })
