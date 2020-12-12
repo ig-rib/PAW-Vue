@@ -79,14 +79,16 @@ export default {
           window.localStorage.setItem('keepSignedIn', this.keepSignedIn)
           // Go to feed if user doesn't have a relevant navigation
           // history in this website
-          if (this.prevRoute == null || this.prevRoute.name === 'register') {
+          if (this.prevRoute == null || this.prevRoute.path.includes('registration')) {
             this.$router.push({
               name: 'feed'
             })
           } else {
+            console.log(this.prevRoute)
             this.$router.push({
               name: this.prevRoute.name,
-              query: this.prevRoute.query
+              query: this.prevRoute.query,
+              params: this.prevRoute.params
             })
           }
           user.getLoggedInUser().then(r => {

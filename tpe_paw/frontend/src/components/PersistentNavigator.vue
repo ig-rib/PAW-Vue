@@ -199,7 +199,7 @@
           </template>
         </v-flex>
         <!-- Registration/Login/User section -->
-        <v-flex shrink v-if="$vuetify.breakpoint.lgAndUp">
+        <v-flex :class="`${(!$store.getters.loggedIn) ? 'ml-auto' : ''}`" shrink v-if="$vuetify.breakpoint.lgAndUp">
           <v-layout v-if="!$store.getters.loggedIn && !inRegistrationPage">
             <v-flex ma-2 shrink>
               <v-btn class="white--text" color="accent" :ripple="false" @click="goToLogin">{{ $t('registration.login') }}</v-btn>
