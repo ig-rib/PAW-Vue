@@ -147,7 +147,8 @@
     "deleted": "Deleted Snippets",
     "following": {
       "title": "Snippets For Tags You Follow",
-      "following": "Following"
+      "following": "Following",
+      "manageFollowedTags": "Manage Followed Tags"
     },
     "favorites": {
       "title": "Snippets Marked As Favorite",

@@ -148,7 +148,8 @@
       "deleted": "Snippets borrados",
       "following": {
         "title": "Snippets Con Tags Que Sigues",
-        "following": "Siguiendo"
+        "following": "Siguiendo",
+        "manageFollowedTags": "Ver Tags Seguidos"
       },
       "favorites": {
         "title": "Snippets marcados como favoritos",
