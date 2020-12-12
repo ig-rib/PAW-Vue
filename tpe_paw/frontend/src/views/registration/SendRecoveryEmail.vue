@@ -55,7 +55,7 @@ import registration from '@/services/registration.js'
 import validations from '@/functions/validations.js'
 
 export default {
-  title: 'Snippit - Email',
+  title (){  return this.$t('titles.email')},
   data () {
     return {
       email: '',

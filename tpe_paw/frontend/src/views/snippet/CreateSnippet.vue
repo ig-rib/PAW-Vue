@@ -97,7 +97,7 @@ import validations from '@/functions/validations'
 import helpers from '@/functions/helpers.js'
 
 export default {
-  title: 'Snippit - Create Snippet',
+  title (){  return this.$t('titles.create')},
   data () {
     return {
       title: '',

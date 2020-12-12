@@ -76,7 +76,9 @@ import validations from '@/functions/validations'
 
 
 export default {
-  title: 'Snippit Add Language',
+  title (){
+    return this.$t('titles.addLanguages')
+  },
   data () {
     return {
       newLanguage: '',

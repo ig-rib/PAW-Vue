@@ -13,7 +13,9 @@
 
 <script>
 export default {
-  title: 'Snippit Flagged',
+  title (){
+    return this.$t('titles.flagged')
+  },
   mounted () {
     this.$on('searchResults', r => this.$refs.userFlaggedSnippetGrid.$emit('searchResults', r))
   }

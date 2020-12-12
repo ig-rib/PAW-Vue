@@ -96,7 +96,7 @@ import languages from '@/services/languages.js'
 import helpers from '@/functions/helpers.js'
 
 export default {
-  title: 'Snippit - Languages',
+    title (){  return this.$t('titles.languages')},
   name: 'languagesMain',
   data () {
     return {

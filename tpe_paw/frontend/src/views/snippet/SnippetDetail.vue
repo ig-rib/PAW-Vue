@@ -271,7 +271,7 @@ import 'simple-syntax-highlighter/dist/sshpre.css'
 
 
 export default {
-  title: 'Snippit - Snippet Detail',
+  title (){  return this.$t('titles.detail')},
   components: {
     'ssh-pre': SshPre
   },

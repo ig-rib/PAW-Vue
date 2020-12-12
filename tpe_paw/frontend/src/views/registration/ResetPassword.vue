@@ -29,7 +29,7 @@ import registration from '@/services/registration'
 import validations from '@/functions/validations'
 
 export default {
-  title: 'Snippit - Reset Password',
+    title (){  return this.$t('titles.resetPassword')},
   data () {
     return {
       id: '',

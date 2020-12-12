@@ -74,7 +74,9 @@ import tags from '@/services/tags.js'
 import validations from '@/functions/validations'
 
 export default {
-  title: 'Snippit Add Tag',
+  title (){
+    return this.$t('titles.addTags')
+  },
   data () {
     return {
       newTag: '',

@@ -27,7 +27,9 @@
 
 <script>
 export default {
-  title: 'Snippit Error',
+  title (){
+    return this.$t('titles.error')
+  },
   data () {
     return {
       errorCode: null,

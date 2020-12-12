@@ -113,7 +113,7 @@ import tagService from '@/services/tags.js'
 import helpers from '@/functions/helpers.js'
 
 export default {
-  title: 'Snippit - Tags',
+  title (){  return this.$t('titles.tags')},
   name: 'tagsMain',
   data () {
     return {

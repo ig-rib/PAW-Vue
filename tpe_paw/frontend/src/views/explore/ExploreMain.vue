@@ -35,7 +35,9 @@ import search from '@/services/search.js'
 import ExplorePad from '@/components/explore/ExplorePad.vue'
 
 export default {
-  title: 'Snippit - Explore',
+  title (){
+    return this.$t('titles.explore')
+  },
   components: {
     'explore-pad': ExplorePad
   },

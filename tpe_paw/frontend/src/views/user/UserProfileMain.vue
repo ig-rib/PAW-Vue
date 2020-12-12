@@ -144,7 +144,7 @@ import urls from '@/services/urls.js'
 import validations from '@/functions/validations'
 
   export default {
-    title: 'Snippit - Profile',
+    title (){  return this.$t('titles.profile')},
     data () {
       return {
         editing: false,

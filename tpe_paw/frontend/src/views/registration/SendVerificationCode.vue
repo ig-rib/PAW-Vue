@@ -39,7 +39,7 @@ import registration from '@/services/registration.js'
 import validations from '@/functions/validations.js'
 
 export default {
-  title: 'Snippit - Code',
+    title (){  return this.$t('titles.verification')},
   data () {
     return {
       code: ''

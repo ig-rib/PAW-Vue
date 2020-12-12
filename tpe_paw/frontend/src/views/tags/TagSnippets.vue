@@ -52,7 +52,7 @@
 import tags from '@/services/tags.js'
 
 export default {
-  title: 'Snippit - Tags',
+    title (){  return this.$t('titles.tagsSnippet')},
     name: 'TagsSnippets',
     data () {
       return {

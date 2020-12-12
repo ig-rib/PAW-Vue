@@ -304,5 +304,28 @@
       "defaultMessage": "Action performed correctly"
     },
     "hide": "hide"
+  },
+  "titles":{
+    "addLanguages": "Snippit - Add Languages",
+    "addTags": "Snippit - Add tags",
+    "flagged": "Snippit - Flagged",
+    "error": "Snippit - Error",
+    "explore" : "Snippit -  Explore",
+    "feed" : "Snippit - Feed",
+    "languages" : "Snippit - Languages ",
+    "languagesSnippets" : "Snippit - Snippets for language",
+    "login" : "Snippit - Login",
+    "register" : "Snippit - Register",
+    "resetPassword" : "Snippit - Reset Password",
+    "email" : "Snippit - Recovery Email",
+    "code" : "Snippit - Verification Code",
+    "create" : "Snippit - Create",
+    "detail" : "Snippit - Snippet Detail",
+    "tags" : "Snippit - Tags",
+    "tagsSnippet" : "Snippit - Snippets for tag",
+    "favorites" : "Snippit - Favs",
+    "following" : "Snippit - Following",
+    "upvoted" : "Snippit - Upvoted ",
+    "profile" : "Snippit - Profile"
   }
 }

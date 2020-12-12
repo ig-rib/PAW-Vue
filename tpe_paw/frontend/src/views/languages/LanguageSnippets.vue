@@ -53,7 +53,7 @@
 import languages from '@/services/languages.js'
 
 export default {
-  title: 'Snippit - Snippet for Language',
+    title (){  return this.$t('titles.languagesSnippets')},
     name: 'LanguagesSnippets',
     data () {
       return {
