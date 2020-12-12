@@ -16,7 +16,7 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <v-layout py-10>
+    <v-layout py-10 mt-4>
       <v-flex shrink>
         <div v-if="!editing">
           <v-img
@@ -52,46 +52,55 @@
           <v-flex shrink class="user-profile-username">
             {{ user.username }}
           </v-flex>
-          <v-flex mx-3 mr-5 shrink class="user-profile-reputation">
+          <v-flex mx-5 mr-5 pa-1 shrink class="user-profile-reputation">
             {{ user.reputation }}
-            <v-icon>
+            <v-icon color="#efb810">
               mdi-star
             </v-icon>
           </v-flex>
-          <v-layout align-center shrink v-if="isLoggedInUser">            
+          <v-flex>
+            <v-layout align-center shrink v-if="isLoggedInUser" justify-end>            
             <v-btn
               :ripple="false"
               v-if="!editing"
               @click="editing = true"
+              color="#64b5f6"
             >
               {{ $t('user.profile.editProfile') }}
             </v-btn>
-            <v-layout v-else>
-              <v-flex px-2>
-                <v-btn
-                  :ripple="false"
-                  @click="cancelEditing">
-                {{ $t('user.profile.cancel') }}
-              </v-btn>
-              </v-flex>
-              <v-flex px-2>
-                <v-btn
-                  :ripple="false"
-                  :disabled="!allRulesAlright"
-                  @click="saveChanges">
-                {{ $t('user.profile.done') }}
-              </v-btn>
-              </v-flex>
-            </v-layout>
+            <v-flex v-else shrink justify-end>
+               <v-layout >
+                <v-flex px-2 justify-end shrink>
+                  <v-btn
+                    rounded outlined color="red"
+                    :ripple="false"
+                    @click="cancelEditing">
+                  {{ $t('user.profile.cancel') }}
+                </v-btn>
+                </v-flex>
+                <v-flex px-2 justify-end shrink>
+                  <v-btn
+                    rounded outlined color="#2286c3"
+                    :ripple="false"
+                    :disabled="!allRulesAlright"
+                    @click="saveChanges">
+                  {{ $t('user.profile.done') }}
+                  </v-btn>
+                </v-flex>
+              </v-layout>
+            </v-flex>
+           
           </v-layout>
+          </v-flex>
+          
         </v-layout>
         <v-layout column>
-          <v-flex pt-1 class="user-profile-joined" shrink>
+          <v-flex pt-1 pb-3 pl-2 class="user-profile-joined" shrink>
             {{ joinedOn }}
           </v-flex>
         </v-layout>
         <v-layout class="user-profile-description-layout">
-          <v-flex shrink class="user-profile-description">
+          <v-flex class="user-profile-description">
             <div v-if="!editing">
               {{ user.description }}
             </div>
@@ -212,7 +221,7 @@ import validations from '@/functions/validations'
         if (this.hasPhotoPreview && this.imagePreview != null) {
           return this.imagePreview
         } else {
-          return this.renderableImage
+          return this.user.icon
         }
       },
       isLoggedInUser () {
@@ -291,8 +300,8 @@ import validations from '@/functions/validations'
       height: max-content;
       padding: 2px;
       border-radius: 30px;
-      border: 2px solid $primary;
-      // margin: 0 5% 0 0;
+      background-color: $background;
+      border: 2px solid $accent;
       align-items: center;
       display: flex;
       i {

@@ -36,7 +36,7 @@
             <v-card elevation="1" class="card-chip" @click="goToLanguageSnippets(lang)">
               <v-layout width="100%">
                 <v-flex px-2 class="tag-name-flex">
-                  {{ lang.name }}
+                  {{ titleAbreviation(lang.name,20)}}
                 </v-flex>
                 <v-flex v-if="lang.snippetsUsingIsEmpty" shrink ml-auto>
                   <v-icon>
@@ -182,6 +182,13 @@ export default {
             console.log(error)
             this.status = 'e'
             })
+    },
+    titleAbreviation(name, size){
+      if(name.length > size){
+        let newName = name.substr(0,size-2) + '...'
+        return newName
+      }
+      return name
     }
   },
   computed: {
