@@ -316,7 +316,7 @@ export default {
       searchQuery: '',
       searchType: '',
       searchOrder: '',
-      showEmpty: true,
+      showEmpty: false,
       showOnlyFollowing: false,
       generalPaths: [
         {
@@ -337,14 +337,20 @@ export default {
           title: this.$t('languages.title'),
           icon: 'mdi-language-python  ',
           path: {
-            name: 'languages-main'
+            name: 'languages-main',
+            query: {
+              showEmpty: false
+            }
           }
         },
         {
           title: this.$t('tags.title'),
           icon: 'mdi-tag-outline',
           path: {
-            name: 'tags-main'
+            name: 'tags-main',
+            query: {
+              showEmpty: false
+            }
           }
         }
       ],
@@ -504,19 +510,21 @@ export default {
   watch: {
     showEmpty: {
       handler: function (newVal, oldVal) {
-        const params = {}
-        Object.assign(params, this.$route.query)
-        params.showEmpty = newVal
-        this.performSearch(params)
-          .then(r => {
-            // TODO handle data
-            // this.$router.query.showEmpty = newVal
-          })
-          .catch(e => {
-            // Restores old value,
-            this.showEmpty = oldVal
-            // TODO let user know why
-          })
+        if (newVal !== oldVal) {
+          const params = {}
+          Object.assign(params, this.$route.query)
+          params.showEmpty = newVal
+          this.performSearch(params)
+            .then(r => {
+              // TODO handle data
+              // this.$router.query.showEmpty = newVal
+            })
+            .catch(e => {
+              // Restores old value,
+              this.showEmpty = oldVal
+              // TODO let user know why
+            })
+        }
       }
     },
     showOnlyFollowing: {
@@ -535,6 +543,12 @@ export default {
             this.showEmpty = oldVal
             // TODO let user know why
           })
+      }
+    },
+    $route: function (neww, old) {
+      if (neww.path !== old.path) {
+        this.showEmpty = false
+        this.showOnlyFollowing = false
       }
     }
   },
