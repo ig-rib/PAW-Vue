@@ -166,8 +166,10 @@ export default {
         .then(r => {
           this.deleting = false
           this.deletingLanguage = {}
+          this.$store.dispatch('snackSuccess', this.$t('languages.successDelete'))
           this.refreshLanguages()
         })
+        .catch(e => this.$store.dispatch('snackError', this.$t('languages.errorDelete')))
     },
     refreshLanguages () {
       const queryParams = this.$route.query

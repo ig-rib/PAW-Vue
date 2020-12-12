@@ -63,13 +63,14 @@ export default {
     methods: {
       deleteTag () {
         tags.deleteTag(this.$route.params.id)
-          // TODO handle responses accordingly
           .then(r => { 
             this.deleting = false
+            this.$store.dispatch('snackSuccess', this.$t('tags.successDelete'))
             this.$router.replace({
               name: 'tags-main'
             })
           })
+          .catch(e => this.$store.dispatch('snackError', this.$t('tags.errorDelete')))
       },
       followBtnClick () {
         if (this.tag.userFollowing) {
