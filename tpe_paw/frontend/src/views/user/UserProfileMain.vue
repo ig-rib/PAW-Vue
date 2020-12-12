@@ -48,9 +48,15 @@
         </v-btn>
       </v-flex>
       <v-flex class="user-profile-info-flex" px-5 sm9 md9 lg9>
-        <v-layout wrap class="user-profile-username-layout">
-          <v-flex grow class="user-profile-username">
+        <v-layout align-center wrap class="user-profile-username-layout">
+          <v-flex shrink class="user-profile-username">
             {{ user.username }}
+          </v-flex>
+          <v-flex mx-3 mr-5 shrink class="user-profile-reputation">
+            {{ user.reputation }}
+            <v-icon>
+              mdi-star
+            </v-icon>
           </v-flex>
           <v-layout align-center shrink v-if="isLoggedInUser">            
             <v-btn
@@ -83,15 +89,9 @@
           <v-flex pt-1 class="user-profile-joined" shrink>
             {{ joinedOn }}
           </v-flex>
-          <v-flex shrink class="user-profile-reputation">
-            {{ user.reputation }}
-            <v-icon>
-              mdi-star
-            </v-icon>
-          </v-flex>
         </v-layout>
         <v-layout class="user-profile-description-layout">
-          <v-flex class="user-profile-description">
+          <v-flex shrink class="user-profile-description">
             <div v-if="!editing">
               {{ user.description }}
             </div>
@@ -286,7 +286,11 @@ import validations from '@/functions/validations'
     .user-profile-reputation {
       font-size: 30px;
       font-weight: 400;
-      margin: 0 5% 0 0;
+      height: max-content;
+      padding: 2px;
+      border-radius: 30px;
+      border: 2px solid $primary;
+      // margin: 0 5% 0 0;
       align-items: center;
       display: flex;
       i {
