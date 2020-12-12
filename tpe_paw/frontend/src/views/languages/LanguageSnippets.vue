@@ -1,10 +1,10 @@
 <template>
   <v-container>
-    <v-layout>
+    <v-layout justify-center align-center>
       <v-flex class="view-title" v-cloak>
         {{ $t('languages.languageSnippets', { langName: language.name}) }}
       </v-flex>
-      <v-flex v-if="isAdmin" ml-auto>
+      <v-flex class="title-delete-btn" v-if="isAdmin" ml-5 shrink>
         <v-btn @click="deleting = true" icon>
           <v-icon>mdi-delete</v-icon>
         </v-btn>
@@ -47,7 +47,7 @@ export default {
           .then(r => { 
             this.deleting = false
             this.$router.push({
-              name: 'languages'
+              name: 'languages-main'
             })
           })
       }
