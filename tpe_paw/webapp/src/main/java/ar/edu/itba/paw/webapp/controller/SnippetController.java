@@ -130,6 +130,7 @@ public class SnippetController {
             return buildErrorResponse("error.403.snippet.restore", Response.Status.UNAUTHORIZED, snippet.getId());
         }
         if ( user.getUsername().compareTo(snippet.getOwner().getUsername()) != 0) {
+            // Same message only 401 vs 403
             return buildErrorResponse("error.403.snippet.restore", Response.Status.FORBIDDEN, snippet.getId());
         } else {
             if (!this.snippetService.deleteOrRestoreSnippet(snippet, user.getId(), false)) {

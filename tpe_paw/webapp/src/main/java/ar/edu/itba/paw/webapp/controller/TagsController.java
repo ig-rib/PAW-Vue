@@ -202,15 +202,7 @@ public class TagsController {
     @PreAuthorize("hasRole('ADMIN')")
     @Path("tags/{tagId}")
     public Response deleteTag(@PathParam(value="tagId") long tagId) {
-        Long userId = loginAuthentication.getLoggedInUser().map(User::getId).orElse(null);
-
-        if (userId != null  && roleService.isAdmin(userId)){
-            this.tagService.removeTag(tagId);
-            LOGGER.debug("Admin deleted tag with id {}", tagId);
-        } else {
-            LOGGER.warn("No user logged in or logged in user not admin but attempting to delete tag {}", tagId);
-            return Response.status(HttpStatus.UNAUTHORIZED.value()).build();
-        }
+        this.tagService.removeTag(tagId);
         return Response.ok().build();
     }
 }
