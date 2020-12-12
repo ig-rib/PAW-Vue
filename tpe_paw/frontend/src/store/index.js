@@ -101,6 +101,14 @@ const store = new Vuex.Store({
         message
       })
     },
+    snackWarning ({ commit }, payload) {
+      const message = payload || i18n.t('snackbar.warning.defaultMessage')
+      commit('setSnackbar', {
+        show: true,
+        color: 'yellow',
+        message
+      })
+    },
     hideSnackbar ({ commit }) {
       commit('setSnackbar', {
         show: false,

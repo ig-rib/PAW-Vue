@@ -170,7 +170,7 @@
                     <v-icon>{{`mdi-flag${snippet.flagged ? '' : '-outline'}`}}</v-icon>
                   </v-btn>
                   <!-- REPORT -->
-                  <v-btn :ripple="false" :class="`fav-btn ${snippet.reported ? 'color-sandybrown' : '' }`" class="report-btn" v-else :disabled="reporting" @click="report" icon>
+                  <v-btn :ripple="false" :class="`fav-btn ${getReportColor()}`" class="report-btn" v-else :disabled="reporting" @click="report" icon>
                     <v-icon>{{`mdi-alert-octagon${snippet.reported ? '' : '-outline'}`}}</v-icon>
                   </v-btn>
                 </v-flex>
@@ -345,8 +345,11 @@ export default {
     },
     report () {
       this.reporting = true
-      if (this.snippet.reported) {
+      if (this.snippet.reported && !this.snippet.reportedDismissed) {
         this.unreportDialog = true;
+      } else if(this.snippet.reported && this.snippet.reportedDismissed){
+        this.reporting = false
+        this.$store.dispatch('snackWarning', this.$t('snippets.snippetDetail.report.alreadyReported'))
       } else {
         this.reportDialog = true
       }
@@ -386,6 +389,17 @@ export default {
       this.reportDialog = false
       this.unreportDialog = false
       this.reporting = false
+    },
+    getReportColor(){
+      if(!this.snippet.reported){
+        return 'color-sandybrown'
+      }
+      else if(this.snippet.reportedDismissed){
+        return 'color-yellow'
+      }
+      else{
+        return ''
+      }
     },
     deleteSnippet () {
       this.deleting = true
@@ -639,6 +653,10 @@ export default {
       .report-btn:hover, .color-sandybrown {
         color: sandybrown;
       }
+      .color-yellow {
+        color: #ffcc00;
+      }
+
       .flag-btn:hover {
         color: red;
       }
