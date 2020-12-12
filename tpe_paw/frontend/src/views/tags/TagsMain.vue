@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <v-layout class="view-title-layout">
       <v-flex shrink class="view-title">
         {{ $t('tags.title') }}
@@ -28,10 +28,10 @@
     </v-layout>
     <v-layout v-else wrap justify-center>
       <v-flex my-2
-        :class="`lg3 md4 sm4 ${ $vuetify.breakpoint.lgAndUp ? 'px-2' : 'mx-2' }`"
+        :class="`lg3 md4 sm6 xs12 ${ $vuetify.breakpoint.lgAndUp ? 'px-2' : 'mx-2' }`"
         v-for="tag in tags"
         :key="tag.id">
-        <!-- <v-container> -->
+        <!-- <div> -->
 
         <v-card elevation="1"
           class="card-chip"
@@ -59,6 +59,11 @@
               </p>
               </v-btn>
             </v-flex>
+            <v-flex shrink class="justify-center" v-if="tag.snippetsUsingIsEmpty">
+              <v-icon>
+                mdi-alpha-e-circle
+              </v-icon>
+            </v-flex>
             <v-flex v-if="isAdmin" shrink>
               <v-btn icon @click="openDialog(tag)">
                 <v-icon>
@@ -69,7 +74,7 @@
             </v-flex>
           </v-layout>            
         </v-card>
-        <!-- </v-container> -->
+        <!-- </div> -->
       </v-flex>
     </v-layout>
 
@@ -96,7 +101,7 @@
             </v-layout>
           </v-card>
     </v-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script>

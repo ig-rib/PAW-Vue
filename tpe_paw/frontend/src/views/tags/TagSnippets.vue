@@ -25,7 +25,6 @@
                 <v-btn rounded outlined color="red" @click="deleting=false">{{ $t('admin.cancel') }}</v-btn>
               </v-flex>
             </v-layout>
-
           </v-card>
         </v-dialog>
   </v-container>

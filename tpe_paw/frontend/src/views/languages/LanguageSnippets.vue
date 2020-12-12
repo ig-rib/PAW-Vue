@@ -11,14 +11,18 @@
       </v-flex>
     </v-layout>
     <snippet-grid ref="languageSnippets"></snippet-grid>
-    <v-dialog v-model="deleting">
-      <v-card>
-        <v-card-title>{{ $t('admin.confirmDeletion') }}</v-card-title>
-        <v-card-text>{{ $t('admin.languageDeletionDisclaimer') }}</v-card-text>
-        <v-card-actions>
-          <v-btn @click="deleteLanguage">{{ $t('admin.confirm') }}</v-btn>
-          <v-btn @click="deleting = false">{{ $t('admin.cancel') }}</v-btn>
-        </v-card-actions>
+    <v-dialog content-class="delete-dialog" v-model="deleting">
+      <v-card class="dialog-card">
+        <v-card-title class="justify-center">{{ $t('admin.confirmDeletion') }}</v-card-title>
+        <v-card-subtitle class="justify-center dialog-subtitle">{{ $t('admin.languageDeletionDisclaimer', {langName: language.name}) }}</v-card-subtitle>
+        <v-layout px-3 pb-5 justify-center>
+          <v-flex shrink mr-2>
+            <v-btn rounded outlined color="#2286c3" @click="deleteLanguage">{{ $t('admin.confirm') }}</v-btn>
+          </v-flex>
+          <v-flex shrink>
+            <v-btn rounded outlined color="red" @click="deleting = false">{{ $t('admin.cancel') }}</v-btn>
+          </v-flex>
+        </v-layout>
       </v-card>
     </v-dialog>
   </v-container>

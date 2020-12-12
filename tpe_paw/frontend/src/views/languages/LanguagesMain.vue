@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <v-layout class="view-title-layout">
       <v-flex shrink class="view-title">
         {{$t('languages.title')}}
@@ -29,7 +29,7 @@
       </v-layout>
       <v-layout v-else wrap justify-center>
         <v-flex my-2
-          :class="`lg3 md4 sm4 ${ $vuetify.breakpoint.lgAndUp ? 'px-2' : 'mx-2' } px-2`"
+          :class="`lg3 md4 sm6 xs12 ${ $vuetify.breakpoint.lgAndUp ? 'px-2' : 'mx-2' } px-2`"
           v-for="lang in languages"
           :key="lang.id">
           <div>
@@ -38,9 +38,21 @@
                 <v-flex px-2 class="tag-name-flex">
                   {{ lang.name }}
                 </v-flex>
+                <v-flex v-if="lang.snippetsUsingIsEmpty" shrink ml-auto>
+                  <v-icon>
+                    mdi-alpha-e-circle
+                  </v-icon>
+                </v-flex>
               <!-- <v-chip @click="goToLanguageSnippets(lang)" class="ma-2 language-chip" label>
                 {{ lang.name }}
               </v-chip> -->
+              <v-flex v-if="isAdmin" shrink>
+                <v-btn icon @click="openDeleteDialog(lang)">
+                  <v-icon>
+                    mdi-delete
+                  </v-icon>
+                </v-btn>
+              </v-flex>
               </v-layout>
             </v-card>
           </div>
@@ -57,8 +69,22 @@
         :total-visible="pagination.visible"
       ></v-pagination>
     </v-layout>
+    <v-dialog content-class="delete-dialog" v-model="deleting">
+      <v-card class="dialog-card">
+        <v-card-title class="justify-center">{{ $t('admin.confirmDeletion') }}</v-card-title>
+        <v-card-subtitle class="justify-center dialog-subtitle">{{ $t('admin.languageDeletionDisclaimer', {langName: deletingLanguage.name}) }}</v-card-subtitle>
+        <v-layout px-3 pb-5 justify-center>
+          <v-flex shrink mr-2>
+            <v-btn rounded outlined color="#2286c3" @click="deleteLanguage">{{ $t('admin.confirm') }}</v-btn>
+          </v-flex>
+          <v-flex shrink>
+            <v-btn rounded outlined color="red" @click="deleting = false">{{ $t('admin.cancel') }}</v-btn>
+          </v-flex>
+        </v-layout>
+      </v-card>
+    </v-dialog>
     
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -77,7 +103,9 @@ export default {
           length: 1,
           visible: 7
       },
-      status: 'l'
+      status: 'l',
+      deleting: false,
+      deletingLanguage: {}
     }
   },
   methods: {
@@ -127,19 +155,40 @@ export default {
         },
         selectedLang: lang
       })
+    },
+    openDeleteDialog (lang) {
+      this.deletingLanguage = lang
+      this.deleting = true
+      event.stopPropagation()
+    },
+    deleteLanguage () {
+      languages.deleteLanguage(this.deletingLanguage.id)
+        .then(r => {
+          this.deleting = false
+          this.deletingLanguage = {}
+          this.refreshLanguages()
+        })
+    },
+    refreshLanguages () {
+      const queryParams = this.$route.query
+      languages.searchLanguages(queryParams)
+        .then(response => {
+          this.pagination.page = parseInt(queryParams.page) || 1
+          this.handleSearchResponse(response)
+        })
+        .catch(error => { 
+            console.log(error)
+            this.status = 'e'
+            })
+    }
+  },
+  computed: {
+    isAdmin () {
+      return this.$store.getters.user.admin
     }
   },
   mounted () {
-    const queryParams = this.$route.query
-    languages.searchLanguages(queryParams)
-      .then(response => {
-        this.pagination.page = parseInt(queryParams.page) || 1
-        this.handleSearchResponse(response)
-      })
-      .catch(error => { 
-          console.log(error)
-          this.status = 'e'
-          })
+    this.refreshLanguages()
     this.$on('searchResults', r => this.handleSearchResponse(r))
   }
 }
