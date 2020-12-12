@@ -11,7 +11,7 @@
         sm12>
         <!-- <explore-pad v-if="$vuetify.breakpoint.mdAndUp"
           @searchResults="updateResults"></explore-pad> -->
-        <v-btn @click="showExplorePad = !showExplorePad">
+        <v-btn rounded outlined color="primary" @click="showExplorePad = !showExplorePad">
           {{ $t('explore.showFilters') }}
         </v-btn>
       </v-flex>

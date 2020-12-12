@@ -17,6 +17,9 @@
       <template slot="afterList" v-if="hasNext">
         <v-layout justify-center py-2>
           <v-btn
+            rounded
+            outlined
+            color="primary"
             @click="loadMore">
             {{ $t('components.shared.pagination.loadMore')}}
           </v-btn>

@@ -198,7 +198,7 @@
         </v-flex>
       </v-layout>
       <v-layout justify-end mt-5 mb-2>
-        <v-btn class="explore-btn" @click="exploreSearch">
+        <v-btn rounded outlined color="primary" class="explore-btn" @click="exploreSearch">
           {{ $t('explore.explore') }}
         </v-btn>
       </v-layout>

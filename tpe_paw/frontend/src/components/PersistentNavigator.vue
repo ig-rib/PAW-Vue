@@ -187,6 +187,7 @@
             <v-btn 
               class="create-snippet-btn"
               rounded
+              color="accent"
               :ripple="false"
               v-if="$vuetify.breakpoint.lgAndUp"
               :to="{ name: 'create-snippet' }">
@@ -648,7 +649,8 @@ export default {
     // color: $primary;
   }
   .create-snippet-btn {
-    background-color: $secondary;
+    // background-color: $primary;
+    color: white;
   }
   #search-bar-flex {
     & > .layout, .v-card {

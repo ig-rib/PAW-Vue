@@ -46,7 +46,7 @@
           {{ $t('error.grid.snippets') }}
         </v-flex>
         <v-flex my-2>
-          <v-btn @click="tryLoadingAgain">{{ $t('error.grid.tryAgain') }}</v-btn>
+          <v-btn rounded outlined color="primary" @click="tryLoadingAgain">{{ $t('error.grid.tryAgain') }}</v-btn>
         </v-flex>
       </v-layout>
       <!-- <v-layout v-else justify-center row   wrap>

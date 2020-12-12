@@ -31,7 +31,11 @@
             ></v-date-picker>
           </v-flex>
           <v-flex py-2>
-            <v-btn @click="clearDate">{{ $t('components.tfDatePicker.clearDate') }}</v-btn>
+            <v-btn
+              rounded
+              outlined
+              color="primary"
+              @click="clearDate">{{ $t('components.tfDatePicker.clearDate') }}</v-btn>
           </v-flex>
         </v-layout>
       </v-card>
