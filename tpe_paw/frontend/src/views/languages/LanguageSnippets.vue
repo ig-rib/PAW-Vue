@@ -64,13 +64,15 @@ export default {
     methods: {
       deleteLanguage () {
         languages.deleteLanguage(this.$route.params.id)
-          // TODO handle responses accordingly
           .then(r => { 
             this.deleting = false
+            this.$store.dispatch('snackSuccess', this.$t('languages.successDelete'))
             this.$router.push({
               name: 'languages-main'
             })
           })
+         .catch(e => this.$store.dispatch('snackError', this.$t('languages.errorDelete')))
+
       }
     },
     computed: {

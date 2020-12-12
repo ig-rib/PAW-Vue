@@ -198,17 +198,13 @@ export default {
     },
     deleteTag () {
       tagService.deleteTag(this.deletingTag.id)
-        // TODO handle responses accordingly
         .then(r => { 
           this.deleting = false
           this.deletingTag = {}
-          // this.$router.push({
-          //   name: 'tags'
-          // })
+          this.$store.dispatch('snackSuccess', this.$t('tags.successDelete'))
           this.refreshTags()
         })
-        // .finally(() => {
-        // })
+        .catch(e => this.$store.dispatch('snackError', this.$t('tags.errorDelete')))
     },
     refreshTags () {
       const queryParams = this.$route.query

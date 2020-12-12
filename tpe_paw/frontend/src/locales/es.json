@@ -44,7 +44,9 @@
       "languageDeleted": {
         "title": "Este lenguaje fue borrado por el administrador",
         "message": "El uso de lenguajes borrados no está disponible para snippets nuevos y los mismos no apareceran en la lista de lenguajes."
-      }
+      },
+      "successDelete": "Successfully deleted language",
+      "errorDelete": "Error while deleting language"
     },
     "tags": {
       "title": "Tags",
@@ -55,7 +57,9 @@
       "showOnlyFollowing": "Mostrar seguidos",
       "tagSnippets": "Snippets para el tag {tagName}",
       "errorFollow": "Error al seguir tag, intente mas tarde",
-      "errorUnfollow": "Error al dejar de seguir tag, intente mas tarde"
+      "errorUnfollow": "Error al dejar de seguir tag, intente mas tarde",
+      "successDelete": "Tag borrado satisfactoriamente",
+      "errorDelete": "Error al borrar tag"
 
     },
     "snippets": {

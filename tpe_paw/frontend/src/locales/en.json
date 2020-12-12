@@ -44,7 +44,9 @@
     "languageDeleted": {
       "title": "This language has been deleted by the administrator",
       "message": "Deleted languages are not available for use in new snippets and do not appear in the languages list."
-    }
+    },
+    "successDelete": "Successfully deleted language",
+    "errorDelete": "Error while deleting language"
   },
   "tags": {
     "title": "Tags",
@@ -55,7 +57,9 @@
     "showOnlyFollowing": "Show following",
     "tagSnippets": "Snippets for tag {tagName}",
     "errorFollow": "Error while following tag, try again later",
-    "errorUnfollow": "Error while unfollowing tag, try again later"
+    "errorUnfollow": "Error while unfollowing tag, try again later",
+    "successDelete": "Successfully deleted tag",
+    "errorDelete": "Error while deleting tag"
   },
   "snippets": {
     "createSnippet": {
