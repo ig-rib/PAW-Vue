@@ -80,7 +80,7 @@
         </v-flex>
 
         <!-- Search bar -->
-        <v-flex id="search-bar-flex" px-2>
+        <v-flex v-if="!inExplore" id="search-bar-flex" px-2>
           <v-layout justify-start>
             <v-flex>
               <v-card height="70%" width="100%">
@@ -157,7 +157,7 @@
             </template>
           </v-layout>
         </v-flex>
-        <v-flex shrink v-if="$store.getters.loggedIn">
+        <v-flex ml-auto shrink v-if="$store.getters.loggedIn">
           <template v-if="isAdmin">
             <v-menu offset-y>
               <template v-slot:activator="{ on }">
@@ -425,6 +425,9 @@ export default {
     },
     inRegistrationPage () {
       return this.$route.path.includes('registration')
+    },
+    inExplore () {
+      return this.$route.path.includes('explore')
     }
   },
   methods: {
@@ -549,6 +552,7 @@ export default {
       if (neww.path !== old.path) {
         this.showEmpty = false
         this.showOnlyFollowing = false
+        this.searchQuery = ''
       }
     }
   },
