@@ -4,7 +4,7 @@
       <v-flex ma-3 shrink v-if="snippet.flagged">
         <v-card class="notice-card">
           <v-layout>
-            <v-flex shrink class="notice-card-icon">
+            <v-flex ml-2 shrink class="notice-card-icon">
               <v-icon color="red">
                 mdi-flag
               </v-icon>
@@ -26,7 +26,7 @@
       <v-flex ma-3 shrink v-if="snippet.deleted">
         <v-card class="notice-card">
           <v-layout>
-            <v-flex shrink class="notice-card-icon">
+            <v-flex ml-2 shrink class="notice-card-icon">
               <v-icon color="red">
                 mdi-delete-sweep
               </v-icon>

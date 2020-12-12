@@ -40,7 +40,11 @@
     },
     "languages": {
       "title": "Lenguajes",
-      "languageSnippets": "Snippets para el lenguaje: {langName}"
+      "languageSnippets": "Snippets para el lenguaje: {langName}",
+      "languageDeleted": {
+        "title": "Este lenguaje fue borrado por el administrador",
+        "message": "El uso de lenguajes borrados no está disponible para snippets nuevos y los mismos no apareceran en la lista de lenguajes."
+      }
     },
     "tags": {
       "title": "Tags",
@@ -166,7 +170,7 @@
         "error": "Error al agregar tags, intentar mas tarde"
       },
       "addLanguages": {
-        "addLanguages": "Agregar lenaguajes",
+        "addLanguages": "Agregar Lenguajes",
         "addNewLanguages": "Agregar un lenguaje nuevo",
         "emptyListText": "Los lenguajes neuvos serán mostrados aqui",
         "placeholder": "Escribe el nombre del lenguaje nuevo aquí",

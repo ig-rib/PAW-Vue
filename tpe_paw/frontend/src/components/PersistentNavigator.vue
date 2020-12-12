@@ -278,12 +278,13 @@
             </v-layout>
         </v-list-item>
       </v-list>
-    <v-layout v-if="!$store.getters.loggedIn && !inRegistrationPage">
+    <v-divider></v-divider>
+    <v-layout my-2 v-if="!$store.getters.loggedIn && !inRegistrationPage">
       <v-flex ma-2>
         <v-btn class="white--text" color="accent" :ripple="false" @click="goToLogin">{{ $t('registration.login') }}</v-btn>
       </v-flex>
     </v-layout>
-    <v-layout v-if="$store.getters.loggedIn">
+    <v-layout my-2 v-if="$store.getters.loggedIn">
       <v-flex shrink>
         <v-btn x-large icon @click="goToProfile">
           <img v-if="!profileImageError" @error="profileImageError = true" class="navbar-profile-circle" :src="currentUser.icon"/>

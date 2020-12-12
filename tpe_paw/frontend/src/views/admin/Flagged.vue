@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <v-layout>
-      <v-flex class="view-title">
+    <v-layout class="view-title-layout">
+      <v-flex shrink class="view-title">
         {{ $t('admin.flagged') }}
       </v-flex>
     </v-layout>

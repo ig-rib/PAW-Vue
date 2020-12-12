@@ -1,11 +1,32 @@
 <template>
   <v-container>
+    <v-layout justify-center align-center column pa-5 v-if="language.deleted">
+      <v-flex ma-3 shrink>
+        <v-card class="notice-card">
+          <v-layout>
+            <v-flex ml-2 shrink class="notice-card-icon">
+              <v-icon color="red">
+                mdi-delete-sweep
+              </v-icon>
+            </v-flex>
+            <v-flex>
+              <v-card-title>
+                {{ $t('languages.languageDeleted.title') }}
+              </v-card-title>
+              <v-card-text class="notice-card-text">
+                <p>{{ $t('languages.languageDeleted.message') }}</p>
+              </v-card-text>
+            </v-flex>
+          </v-layout>
+        </v-card>
+      </v-flex>
+    </v-layout>
     <v-layout justify-center align-center>
-      <v-flex class="view-title" v-cloak>
+      <v-flex shrink class="view-title" v-cloak>
         {{ $t('languages.languageSnippets', { langName: language.name}) }}
       </v-flex>
-      <v-flex class="title-delete-btn" v-if="isAdmin" ml-5 shrink>
-        <v-btn @click="deleting = true" icon>
+      <v-flex v-if="isAdmin && !language.deleted" ml-5 shrink>
+        <v-btn class="title-delete-btn" @click="deleting = true" icon>
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </v-flex>
@@ -66,3 +87,8 @@ export default {
 }
 
 </script>
+
+<style lang="scss" scoped>
+@import '@/styles/noticeCard.scss';
+
+</style>

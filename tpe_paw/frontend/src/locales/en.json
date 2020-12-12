@@ -40,7 +40,11 @@
   },
   "languages": {
     "title": "Languages",
-    "languageSnippets": "Snippets for language {langName}"
+    "languageSnippets": "Snippets for language {langName}",
+    "languageDeleted": {
+      "title": "This language has been deleted by the administrator",
+      "message": "Deleted languages are not available for use in new snippets and do not appear in the languages list."
+    }
   },
   "tags": {
     "title": "Tags",
