@@ -39,7 +39,7 @@
           >
           <v-layout width="100%">
             <v-flex class="tag-name-flex">
-              {{ tag.name }}
+              {{ titleAbreviation(tag, 18) }}
             </v-flex>
             <v-flex shrink ml-auto>
               <v-btn
@@ -217,7 +217,24 @@ export default {
         console.log(e)
         this.status = 'e'
       })
-    }
+    },
+    titleAbreviation(tag, size){
+      let name = tag.name
+      if(tag.snippetsUsingIsEmpty){
+        size -= 3
+      }
+      if(tag.userFollowing){
+        size -=3 
+      }
+      if(this.isAdmin){
+        size -=2
+      }
+
+      if(name.length > size){
+        return name.substr(0,size-2) + '...'
+      }
+      return name
+    },
   },
   computed: {
     isAdmin () {
