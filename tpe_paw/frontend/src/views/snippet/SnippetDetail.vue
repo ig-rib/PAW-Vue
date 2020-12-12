@@ -360,6 +360,7 @@ export default {
         // TODO how to find baseURI
         baseUri: urls.localDomain + this.$route.path
       }).then(r => {
+        this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.report.success'))
         this.snippet.reported = true
       })
       .catch(e => {
@@ -373,7 +374,8 @@ export default {
     sendUnreport () {
       snippets.unreportSnippet(this.snippet.id)
           .then(r => {
-            this.snippet.reported = false
+            this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.report.successUnreport'))
+            this.snippet.reportedDismissed = true
           })
           .catch(e => {
             console.log(e.response)

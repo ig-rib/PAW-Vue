@@ -88,7 +88,9 @@
           "unreport": "Quieres anular el reporte de este snippet?",
           "confirm": "Confirmar",
           "cancel": "Cancelar",
-          "alreadyReported": "Ya reportaste y anulaste el reporte de este snippet"
+          "alreadyReported": "Ya reportaste y anulaste el reporte de este snippet",
+          "success": "Snippet reportado con éxito",
+          "successUnreport": "El snippet ya no esta mas reportado"
 
         },
         "flagged": {
