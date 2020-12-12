@@ -1,15 +1,33 @@
 <template>
   <v-container>
-    <v-layout align-center>
+    <v-layout justify-center align-center>
       <v-flex class="view-title" shrink>
         {{ $t('tags.tagSnippets', { tagName: tag.name}) }}
       </v-flex>
-      <v-flex v-if="isAdmin" ml-10 pb-5>
-        <v-layout justify-start align-center>
-          <v-btn @click="deleting = true" icon>
-          <v-icon size="60">mdi-delete</v-icon>
+      <v-flex shrink ml-5>
+        <v-btn
+          elevation="0"
+          class="title-tag-follow-btn ma-1"
+          color="primary"
+          :outlined="!tag.userFollowing"
+          @click="followBtnClick"
+          @mousedown.stop="null"
+          @click.stop="null"
+        >
+        <p v-if="tag.userFollowing" class="tag-follow-btn-txt">
+          {{ $t('tags.following') }}
+        </p>
+        <p v-else class="tag-follow-btn-txt">
+          {{ $t('tags.follow') }}
+        </p>
+        </v-btn>
+      </v-flex>
+      <v-flex ml-5 v-if="isAdmin" shrink>
+        <!-- <v-layout justify-start align-center> -->
+          <v-btn class="title-delete-btn" @click="deleting = true" icon>
+           <v-icon>mdi-delete</v-icon>
           </v-btn>
-        </v-layout>
+        <!-- </v-layout> -->
       </v-flex>
     </v-layout>
     <snippet-grid ref="tagSnippets"></snippet-grid>
@@ -48,10 +66,33 @@ export default {
           // TODO handle responses accordingly
           .then(r => { 
             this.deleting = false
-            this.$router.push({
-              name: 'tags'
+            this.$router.replace({
+              name: 'tags-main'
             })
           })
+      },
+      followBtnClick () {
+        if (this.tag.userFollowing) {
+          this.unfollowTag()
+        } else {
+          this.followTag()
+        }
+      },
+      followTag: function () {
+        tags.followTag(this.tag.id)
+          .then(
+            this.tag.userFollowing = true
+          )
+          .catch(e => this.$store.dispatch('snackError', this.$t('tags.errorFollow')))
+        event.stopPropagation()
+        },
+      unfollowTag: function () {
+        tags.unfollowTag(this.tag.id)
+          .then(
+            this.tag.userFollowing = false
+          )
+          .catch(e => this.$store.dispatch('snackError', this.$t('tags.errorUnfollow')))
+        event.stopPropagation()
       }
     },
     computed: {
@@ -71,5 +112,20 @@ export default {
 
 <style lang="scss">
 @import '@/styles/adminAdd.scss';
+.title-tag-follow-btn {
+  transition: 0.3s;
+  // font-size: 50px;
+  height: 60px;
+  border-radius: 20px !important;
+  font-weight: 500;
+  padding: 3px !important;
+}
+
+.title-tag-follow-btn-txt{
+  padding-top: 18px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 13px;
+}
 </style>
 

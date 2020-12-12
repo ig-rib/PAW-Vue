@@ -57,6 +57,8 @@ public class TagsController {
     public Response getTag(final @PathParam(value="tagId") long tagId,
                            final @Context Request request) {
         final Tag tag = tagService.findTagById(tagId).orElse(null);
+        Long userId = loginAuthentication.getLoggedInUser().map(User::getId).orElse(null);
+
         if (tag == null) {
             ErrorMessageDto errorMessageDto = new ErrorMessageDto();
             errorMessageDto.setMessage(messageSource.getMessage("error.404.tag", new Object[]{tagId}, LocaleContextHolder.getLocale()));
@@ -64,6 +66,7 @@ public class TagsController {
         }
 
         TagDto tagDto = TagDto.fromTag(tag);
+        tagDto.setUserFollowing(userId != null && tagService.userFollowsTag(userId, tag.getId()));
         CacheControl cc = new CacheControl();
         EntityTag eTag = new EntityTag(String.valueOf(tagDto.hashCode()));
         Response.ResponseBuilder builder = request.evaluatePreconditions(eTag);
