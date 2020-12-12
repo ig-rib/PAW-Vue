@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <v-layout class="view-title-layout">
       <v-flex shrink class="view-title">
         {{ $t('tags.title') }}
@@ -26,7 +26,7 @@
         indeterminate>
       </v-progress-circular>
     </v-layout>
-    <v-layout v-else wrap justify-center>
+    <v-layout v-else-if="status === '' && hasTags" wrap justify-center>
       <v-flex my-2
         :class="`lg3 md4 sm6 xs12 ${ $vuetify.breakpoint.lgAndUp ? 'px-2' : 'mx-2' }`"
         v-for="tag in tags"
@@ -77,10 +77,14 @@
         <!-- </div> -->
       </v-flex>
     </v-layout>
-
+    <v-layout align-center justify-center py-10 v-if="status === '' && !hasTags">
+      <v-flex shrink class="no-snippets-text">
+        {{ $t('tags.noTagsInHere') }}
+      </v-flex>
+    </v-layout>
     <v-layout justify-center my-10 class="text-center">
       <v-pagination
-        v-if="status === ''"
+        v-if="status === '' && hasTags"
         v-model="pagination.page"
         @input="paginationChange"
         :length="pagination.length" 
@@ -101,7 +105,7 @@
             </v-layout>
           </v-card>
     </v-dialog>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -239,6 +243,9 @@ export default {
   computed: {
     isAdmin () {
       return this.$store.getters.user.admin
+    },
+    hasTags () {
+      return this.tags != null && this.tags.length > 0
     }
   },
   mounted () {

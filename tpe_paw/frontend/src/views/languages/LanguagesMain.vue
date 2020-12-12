@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <v-layout class="view-title-layout">
       <v-flex shrink class="view-title">
         {{$t('languages.title')}}
@@ -27,7 +27,7 @@
           indeterminate>
         </v-progress-circular>
       </v-layout>
-      <v-layout v-else wrap justify-center>
+      <v-layout v-else-if="status === '' && hasLanguages" wrap justify-center>
         <v-flex my-2
           :class="`lg3 md4 sm6 xs12 ${ $vuetify.breakpoint.lgAndUp ? 'px-2' : 'mx-2' } px-2`"
           v-for="lang in languages"
@@ -59,8 +59,12 @@
         </v-flex>
       </v-layout>
     </div>
-
-    <v-layout justify-center my-10 class="text-center">
+    <v-layout align-center justify-center py-10 v-if="status === '' && !hasLanguages">
+      <v-flex shrink class="no-snippets-text">
+        {{ $t('languages.noLanguagesInHere') }}
+      </v-flex>
+    </v-layout>
+    <v-layout v-if="hasLanguages" justify-center my-10 class="text-center">
       <v-pagination
         v-if="status === ''"
         v-model="pagination.page"
@@ -84,7 +88,7 @@
       </v-card>
     </v-dialog>
     
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -194,6 +198,9 @@ export default {
   computed: {
     isAdmin () {
       return this.$store.getters.user.admin
+    },
+    hasLanguages () {
+      return this.languages != null && this.languages.length > 0
     }
   },
   mounted () {

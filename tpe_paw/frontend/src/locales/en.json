@@ -46,7 +46,8 @@
       "message": "Deleted languages are not available for use in new snippets and do not appear in the languages list."
     },
     "successDelete": "Successfully deleted language",
-    "errorDelete": "Error while deleting language"
+    "errorDelete": "Error while deleting language",
+    "noLanguagesInHere": "No languages in here"
   },
   "tags": {
     "title": "Tags",
@@ -59,7 +60,8 @@
     "errorFollow": "Error while following tag, try again later",
     "errorUnfollow": "Error while unfollowing tag, try again later",
     "successDelete": "Successfully deleted tag",
-    "errorDelete": "Error while deleting tag"
+    "errorDelete": "Error while deleting tag",
+    "noTagsInHere": "No tags in here"
   },
   "snippets": {
     "createSnippet": {

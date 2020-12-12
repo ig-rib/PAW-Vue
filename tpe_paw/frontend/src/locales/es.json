@@ -46,7 +46,8 @@
         "message": "El uso de lenguajes borrados no está disponible para snippets nuevos y los mismos no apareceran en la lista de lenguajes."
       },
       "successDelete": "Successfully deleted language",
-      "errorDelete": "Error while deleting language"
+      "errorDelete": "Error while deleting language",
+      "noLanguagesInHere": "No hay lenguajes aquí"
     },
     "tags": {
       "title": "Tags",
@@ -59,8 +60,8 @@
       "errorFollow": "Error al seguir tag, intente mas tarde",
       "errorUnfollow": "Error al dejar de seguir tag, intente mas tarde",
       "successDelete": "Tag borrado satisfactoriamente",
-      "errorDelete": "Error al borrar tag"
-
+      "errorDelete": "Error al borrar tag",
+      "noTagsInHere": "No hay tags aquí"
     },
     "snippets": {
       "createSnippet": {
