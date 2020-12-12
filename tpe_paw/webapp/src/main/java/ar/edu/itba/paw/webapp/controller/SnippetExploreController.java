@@ -88,11 +88,15 @@ public class SnippetExploreController {
                                       final @QueryParam("langId") List<Long> langIds,
                                       final @QueryParam("tagId") List<Long> tagIds,
                                       @Size(max=50)
-                                      final @QueryParam("uname") String username,
+                                      final @QueryParam("uname") @DefaultValue("") String username,
                                       @Size(max=50)
-                                      final @QueryParam("title") String title,
+                                      final @QueryParam("title") @DefaultValue("") String title,
                                       final @QueryParam("field") String field,
                                       final @QueryParam("includeFlagged") @DefaultValue("false") Boolean includeFlagged) {
+
+        String escapedTitle = title.replaceAll("%", "\\\\%");
+        String escapedUsername = username.replaceAll("%", "\\\\%");
+
 
         Instant minInstant = null;
         Instant maxInstant = null;
@@ -113,7 +117,7 @@ public class SnippetExploreController {
                 minRep, maxRep,
                 minVotes, maxVotes,
                 langIds, tagIds,
-                title, username,
+                escapedTitle, escapedUsername,
                 ordersMap.getOrDefault(sort, SnippetDao.Orders.NO), typesMap.getOrDefault(field, SnippetDao.Types.ALL), includeFlagged, page, SNIPPET_PAGE_SIZE)
                 .stream()
                 .map(sn -> SnippetDto.fromSnippet(sn, uriInfo, loginAuthentication.getLoggedInUser().orElse(null)))
@@ -123,7 +127,7 @@ public class SnippetExploreController {
                 minRep, maxRep,
                 minVotes, maxVotes,
                 langIds, tagIds,
-                title, username,
+                escapedTitle, escapedUsername,
                 includeFlagged);
         int pageCount = (snippetCount/SNIPPET_PAGE_SIZE) + ((snippetCount % SNIPPET_PAGE_SIZE == 0) ? 0 : 1);
 

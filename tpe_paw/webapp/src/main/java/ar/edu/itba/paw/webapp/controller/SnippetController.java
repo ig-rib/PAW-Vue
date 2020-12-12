@@ -42,17 +42,20 @@ public class SnippetController {
 
     @GET
     @Path("/")
-    public Response searchInHome(final @QueryParam("q") String query,
+    public Response searchInHome(final @QueryParam("q")  @DefaultValue("") String query,
                                  final @QueryParam("t") String type,
                                  final @QueryParam("uid") String userId,
                                  final @QueryParam("s") String sort,
                                  final @QueryParam("page") @DefaultValue("1") int page,
                                  final @Context Request request) {
-        List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.HOME, sort, null, null, page)
+
+        String escapedQuery = query.replaceAll("%", "\\\\%");
+
+        List<SnippetDto> snippets = searchHelper.findByCriteria(type, escapedQuery, SnippetDao.Locations.HOME, sort, null, null, page)
                 .stream()
                 .map(sn -> SnippetDto.fromSnippet(sn, uriInfo, loginAuthentication.getLoggedInUser().orElse(null)))
                 .collect(Collectors.toList());
-        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.HOME, null, null);
+        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, escapedQuery, SnippetDao.Locations.HOME, null, null);
 
         return searchHelper.getResponse(query, type, userId, sort, page, snippets, totalSnippetCount, uriInfo);
     }
@@ -140,18 +143,20 @@ public class SnippetController {
     // Needed for admin to search snippets flagged by him/herself
     @GET
     @Path("/flagged")
-    public Response searchInFlagged(final @QueryParam("q") String query,
+    public Response searchInFlagged(final @QueryParam("q")  @DefaultValue("") String query,
                                     final @QueryParam("t") String type,
                                     final @QueryParam("uid") String userId,
                                     final @QueryParam("s") String sort,
                                     final @QueryParam("page") @DefaultValue("1") int page,
                                     final @Context Request request) {
 
-        List<SnippetDto> snippets = searchHelper.findByCriteria(type, query, SnippetDao.Locations.FLAGGED, sort, null, null, page)
+        String escapedQuery = query.replaceAll("%", "\\\\%");
+
+        List<SnippetDto> snippets = searchHelper.findByCriteria(type, escapedQuery, SnippetDao.Locations.FLAGGED, sort, null, null, page)
                 .stream()
                 .map(sn -> SnippetDto.fromSnippet(sn, uriInfo, loginAuthentication.getLoggedInUser().orElse(null)))
                 .collect(Collectors.toList());
-        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, query, SnippetDao.Locations.FLAGGED, null, null);
+        int totalSnippetCount = searchHelper.getSnippetByCriteriaCount(type, escapedQuery, SnippetDao.Locations.FLAGGED, null, null);
         return searchHelper.getResponse(query, type, userId, sort, page, snippets, totalSnippetCount, uriInfo);
     }
 
