@@ -496,6 +496,9 @@ export default {
     readableDate () {
       const theDate = new Date(this.snippet.dateCreated)
       return this.$t('snippets.snippetDetail.postingDateTime', { year: theDate.getFullYear(), month: theDate.getMonth() + 1, day: theDate.getDate(), time: `${theDate.getHours()}:${theDate.getMinutes()}` })
+    },
+    userIsOwner () {
+      return this.$store.getters.loggedIn && parseInt(this.$store.getters.user.id) === parseInt(this.snippet.id)
     }
   },
   mounted () {

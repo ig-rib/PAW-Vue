@@ -14,7 +14,6 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 
@@ -221,10 +220,18 @@ public class UserController {
             errorMessageDto.setMessage(messageSource.getMessage("error.404.user", new Object[]{loginAuthentication.getLoggedInUsername()}, LocaleContextHolder.getLocale()));
             return Response.status(Response.Status.NOT_FOUND).entity(errorMessageDto).build();
         }
+
         byte[] icon = user.getIcon();
-        Response.ResponseBuilder builder;
-        builder = Response.ok(icon);
-        return builder.build();
+
+        // Checking eTag for this
+        CacheControl cc = new CacheControl();
+        EntityTag eTag = new EntityTag(String.valueOf(Arrays.hashCode(icon)));
+        Response.ResponseBuilder builder = request.evaluatePreconditions(eTag);
+        if (builder == null) {
+            builder = Response.ok(icon);
+            builder.tag(eTag);
+        }
+        return builder.cacheControl(cc).build();
     }
 
     @PUT
