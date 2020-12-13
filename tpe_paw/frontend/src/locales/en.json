@@ -108,7 +108,7 @@
       "snippetRestored": "Successfully restored snippet",
       "snippetFlagged": "Succesfully flagged snippet",
       "snippetUnflagged": "Sucecesfully unflagged snippet",
-      "copiedToClipboard": "Code copied to clipboard!",
+      "copiedToClipboard": "Code copied to clipboard!"
     },
     "postingDate": "{month}/{day}/{year}"
   },
