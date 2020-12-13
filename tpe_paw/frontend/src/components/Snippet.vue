@@ -13,10 +13,14 @@
           <v-layout class="user-language-layout" dense>
               <v-flex class="username-date-flex" dense>
                 <v-list-item two-line>
-                  <v-avatar class="mr-2">
-                    <img v-if="!error" @error="error = true" :src="owner.icon"/>
+                  <v-flex shrink mr-2 class="snippet-owner-icon-flex">
+                    <img
+                      class="owner-image"
+                      height="100%"
+                      width="auto"
+                    v-if="!error" @error="error = true" :src="owner.icon"/>
                     <v-icon v-else size="50">mdi-account-circle</v-icon>
-                  </v-avatar>
+                  </v-flex>
                   <v-list-item-content> 
                     <v-list-item-title class="username-text headline mb-1">{{ owner.username }}</v-list-item-title>
                     <v-list-item-subtitle>{{ standardDate }}</v-list-item-subtitle>
@@ -304,6 +308,11 @@ export default {
     // -webkit-line-clamp: 5;
     // -webkit-box-orient: vertical;
   }
-
+  .snippet-owner-icon-flex {
+    height: 50px;
+    width: 50px;
+    border-radius: 100%;
+    overflow: hidden;
+  }
 }
 </style>

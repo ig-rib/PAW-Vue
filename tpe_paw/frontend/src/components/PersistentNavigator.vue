@@ -206,8 +206,8 @@
             </v-flex>
           </v-layout>
           <v-layout v-if="$store.getters.loggedIn">
-            <v-flex shrink v-if="!isAdmin">
-              <v-btn x-large icon @click="goToProfile">
+            <v-flex class="navbar-profile-flex" pl-2 shrink v-if="!isAdmin">
+              <v-btn class="navbar-profile-btn" x-large icon @click="goToProfile">
                 <img v-if="!profileImageError" @error="profileImageError = true" class="navbar-profile-circle" :src="$store.getters.user.icon"/>
                 <v-icon v-else>mdi-account-circle</v-icon>
               </v-btn>
@@ -285,9 +285,9 @@
         <v-btn class="white--text" color="accent" :ripple="false" @click="goToLogin">{{ $t('registration.login') }}</v-btn>
       </v-flex>
     </v-layout>
-    <v-layout my-2 v-if="$store.getters.loggedIn">
-      <v-flex shrink>
-        <v-btn x-large icon @click="goToProfile">
+    <v-layout pl-2 my-2 v-if="$store.getters.loggedIn">
+      <v-flex class="navbar-profile-flex" shrink>
+        <v-btn class="navbar-profile-btn" x-large icon @click="goToProfile">
           <img v-if="!profileImageError" @error="profileImageError = true" class="navbar-profile-circle" :src="$store.getters.user.icon"/>
           <v-icon v-else>mdi-account-circle</v-icon>  
         </v-btn>
@@ -595,11 +595,19 @@ export default {
       align-items: center;
     }
   }
-  .navbar-profile-circle {
-    width: 40px;
-    height: 40px;
-    position: relative;
+  .navbar-profile-flex {
+    display: flex;
+    align-items: center;
+  }
+  .navbar-profile-btn {
     overflow: hidden;
+    height: 40px;
+    width: 40px;
+  }
+  .navbar-profile-circle {
+    width: 15%;
+    height: auto;
+    position: relative;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
@@ -625,7 +633,7 @@ export default {
     font-weight: 400;
     font-size: 24px !important;
     letter-spacing: 0;
-    color: $primary;
+    // color: $primary;
     background: transparent;
   }
   .nav-search-text-field {
