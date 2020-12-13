@@ -185,7 +185,7 @@ export default {
       this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.copiedToClipboard'))
     },
     titleAbreviation (name, size) {
-      if (name.length > size) {
+      if (name != null && name.length > size) {
         const newName = name.substr(0, size - 2) + '...'
         return newName
       }

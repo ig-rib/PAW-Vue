@@ -215,6 +215,14 @@ import validations from '@/functions/validations'
         this.$router.push({
           name: 'send-verification-code'
         })
+      },
+      updateUserData () {
+        user.getUser(this.$route.params.id)
+        .then(r => {
+          this.user = r.data
+          this.oldDescription = this.description = this.user.description
+          this.isAdmin = r.data.admin
+        })
       }
     },
     computed: {
@@ -260,13 +268,14 @@ import validations from '@/functions/validations'
           name: 'active-snippets'
         })
       }
-      user.getUser(this.$route.params.id)
-        .then(r => {
-          this.user = r.data
-          this.oldDescription = this.description = this.user.description
-          this.isAdmin = r.data.admin
-        })
+      this.updateUserData()
       this.$on('searchResults', (r) => this.$refs.userProfileRouterView.$emit('searchResults', r))
+    },
+    watch: {
+      $route: function (newR, oldR) {
+        this.updateUserData()
+        this.$refs.userProfileRouterView.$emit('updated')
+      }
     }
   }
 </script>

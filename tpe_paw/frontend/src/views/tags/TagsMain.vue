@@ -38,7 +38,7 @@
           @click="goToTagSnippets(tag.id)"
           >
           <v-layout width="100%">
-            <v-flex class="tag-name-flex">
+            <v-flex v-cloak class="tag-name-flex">
               {{ titleAbreviation(tag, 18) }}
             </v-flex>
             <v-flex shrink ml-auto>
