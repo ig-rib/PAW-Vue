@@ -1,6 +1,6 @@
 <template>
   <v-container id="admin-add-container">
-    <v-layout justify-center pt-10>
+    <v-layout v-if="isAdmin" justify-center pt-10>
       <v-flex lg5 md6 sm7>
         <v-card class="admin-add-card" min-width="max-content" min-height="max-content">
           <v-container class="admin-add-inner-container" px-5 py-5>
@@ -67,16 +67,22 @@
         </v-card>
       </v-flex>
     </v-layout>
+    <error v-else>
+    </error>
   </v-container>
 </template>
 
 <script>
 import languages from '@/services/languages.js'
 import validations from '@/functions/validations'
+import Error from '@/views/error/Error.vue'
 
 export default {
   title () {
     return this.$t('titles.addLanguages')
+  },
+  components: {
+    error: Error
   },
   data () {
     return {
@@ -118,6 +124,14 @@ export default {
     },
     hasNewLanguages () {
       return this.newLanguages.length > 0
+    },
+    isAdmin () {
+      return this.$store.getters.user != null && this.$store.getters.user.admin
+    }
+  },
+  mounted () {
+    if (this.isAdmin) {
+      this.$router.replace({ name: 'error' })
     }
   }
 }

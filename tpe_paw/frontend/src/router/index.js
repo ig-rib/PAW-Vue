@@ -174,7 +174,7 @@ const routes = [
             component: Upvoted
           },
           {
-            path: 'current-user/flagged',
+            path: 'admin/flagged',
             name: 'flagged',
             component: Flagged
           },
