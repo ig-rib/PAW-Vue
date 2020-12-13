@@ -295,9 +295,14 @@ export default {
   .snippet-description {
     font-weight: 300;
     margin-bottom: 2%;
-    max-height: 100px;
-    overflow-y: hidden;
+    // max-height: 100px;
+    // overflow-y: hidden;
+    // text-overflow: ellipsis;
     max-width: 100%;
+    // overflow: hidden;
+    // display: -webkit-box;
+    // -webkit-line-clamp: 5;
+    // -webkit-box-orient: vertical;
   }
 
 }

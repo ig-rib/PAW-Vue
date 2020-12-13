@@ -240,7 +240,7 @@ import validations from '@/functions/validations'
       },
       joinedOn () {
         const dat = new Date(this.user.dateJoined)
-        return this.$t('user.profile.joined', { day: dat.getDay(), month: dat.getMonth(), year: dat.getFullYear() })
+        return this.$t('user.profile.joined', { day: dat.getDay(), month: dat.getMonth() + 1, year: dat.getFullYear() })
       }
     },
     mounted () {
