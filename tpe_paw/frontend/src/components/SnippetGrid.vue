@@ -174,15 +174,16 @@ export default {
       this.handleSearchResponse(r)
     })
     this.$on('updated', () => {
-      searchService.searchInLocation(this.$route, queryParams)
-        .then(r => {
-          this.pagination.page = parseInt(queryParams.page) || 1
-          this.handleSearchResponse(r)
-        })
-        .catch(error => { 
-          console.log(error)
-          this.status = 'e'
-          })
+      // searchService.searchInLocation(this.$route, queryParams)
+      //   .then(r => {
+      //     this.pagination.page = parseInt(queryParams.page) || 1
+      //     this.handleSearchResponse(r)
+      //   })
+      //   .catch(error => { 
+      //     console.log(error)
+      //     this.status = 'e'
+      //     })
+      this.reloadData()
     })
   }
 }
