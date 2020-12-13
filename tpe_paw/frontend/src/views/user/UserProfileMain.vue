@@ -25,7 +25,7 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <v-layout justify-center py-10 mt-4>
+    <v-layout v-if="infoStatus === ''" justify-center py-10 mt-4>
       <v-flex shrink>
         <div v-if="!editing">
           <v-img
@@ -127,6 +127,9 @@
         </v-layout>
       </v-flex>
     </v-layout>
+    <v-layout class="user-info-loading-layout" justify-center align-center v-else-if="infoStatus === 'l'">
+      <v-progress-circular indeterminate :size="70" color="primary"></v-progress-circular>
+    </v-layout>
     <v-divider></v-divider>
     <v-layout v-if="!editing">
       <v-tabs class="justify-center user-profile-active-toggle" v-if="isLoggedInUser">
@@ -165,7 +168,8 @@ import validations from '@/functions/validations'
         user: () => {},
         hasPhotoPreview: false,
         isAdmin: false,
-        error_image: false
+        error_image: false,
+        infoStatus: 'l'
       }
     },
     methods: {
@@ -207,6 +211,7 @@ import validations from '@/functions/validations'
         })
         .finally(() => {
           this.$refs.userProfileRouterView.$emit('updated')
+          this.updateUserData()
           this.editing = false
           this.hasPhotoPreview = false
         })
@@ -217,11 +222,13 @@ import validations from '@/functions/validations'
         })
       },
       updateUserData () {
+        this.infoStatus = 'l'
         user.getUser(this.$route.params.id)
         .then(r => {
           this.user = r.data
           this.oldDescription = this.description = this.user.description
           this.isAdmin = r.data.admin
+          this.infoStatus = ''
         })
       }
     },
@@ -342,6 +349,9 @@ import validations from '@/functions/validations'
       .v-tab {
         background: #fafafa;
       }
+    }
+    .user-info-loading-layout {
+      height: 300px;
     }
   }
 </style>
