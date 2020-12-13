@@ -299,7 +299,13 @@
       "detail": {
         "copying": "Error copying code to clipboard"
       }
-    }
+    },
+    "youAreAnAdmin": "You're an Admin",
+    "adminsCantCreateSnippets": "Admins can't create snippets",
+    "youDontHaveAnAccount": "You don't have an account",
+    "mustBeAUser": "You must be a user to create snippets",
+    "login": "You can log in",
+    "goToLogin": "Go to login"
   },
   "snackbar": {
     "error": {

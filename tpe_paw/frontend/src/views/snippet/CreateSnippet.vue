@@ -6,7 +6,7 @@
       </v-flex>
     </v-layout>
     <v-layout justify-center>
-        <v-card class="snippet-create-card">
+        <v-card v-if="loggedInAndUser" class="snippet-create-card">
           <v-container px-4>
             <v-layout mt-2 mb-1> 
               <v-flex lg7 md7 sm7 xs7 class="snippit-subtitle">
@@ -87,6 +87,50 @@
             </v-layout>
           </v-container>
         </v-card>
+        <v-card width="600px" class="error-card" v-else-if="isAdmin">
+          <v-container>
+            <v-layout mb-8 mt-4 justify-center class="error-logo-layout">
+              {{ $t('error.youAreAnAdmin') }}
+            </v-layout>
+            <v-layout  my-2 justify-center class="error-title-layout">
+              <v-flex shrink>
+                {{ $t('error.adminsCantCreateSnippets') }}
+              </v-flex>
+            </v-layout>
+            <v-layout mb-2 justify-center class="error-gohome-text-layout">
+              {{ $t('error.goBackHome') }}
+            </v-layout>
+            <v-layout my-3 justify-center class="error-gohome-btn-layout">
+              <v-flex shrink>
+                <v-btn rounded outlined color="primary" @click="goHome">
+                  {{ $t('error.goHome') }}
+                </v-btn>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card>
+        <v-card width="600px" class="error-card" v-else>
+          <v-container>
+            <v-layout mb-8 mt-4 justify-center class="error-logo-layout">
+              {{ $t('error.youDontHaveAnAccount') }}
+            </v-layout>
+            <v-layout  my-2 justify-center class="error-title-layout">
+              <v-flex shrink>
+                {{ $t('error.mustBeAUser') }}
+              </v-flex>
+            </v-layout>
+            <v-layout mb-2 justify-center class="error-gohome-text-layout">
+              {{ $t('error.login') }}
+            </v-layout>
+            <v-layout my-3 justify-center class="error-gohome-btn-layout">
+              <v-flex shrink>
+                <v-btn rounded outlined color="primary" @click="goToLogin">
+                  {{ $t('error.goToLogin') }}
+                </v-btn>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card>
     </v-layout>
   </v-container>
 </template>
@@ -134,6 +178,16 @@ export default {
             this.$Progress.fail()
           }
       ).finally(() => this.$Progress.end())
+    },
+    goHome () {
+      this.$router.push({
+        name: 'feed'
+      })
+    },
+    goToLogin () {
+      this.$router.push({
+        name: 'login'
+      })
     }
   },
   computed: {
@@ -149,6 +203,12 @@ export default {
     allRulesAlright () {
       return Object.keys(this.rules).filter(rule => this.rules[rule]() !== true).length === 0 &&
         this.language != null
+    },
+    loggedInAndUser () {
+      return this.$store.getters.loggedIn && !this.$store.getters.user.admin
+    },
+    isAdmin () {
+      return this.$store.getters.loggedIn && this.$store.getters.user.admin
     }
   }
 }
@@ -156,6 +216,7 @@ export default {
 
 <style lang="scss">
 @import '@/styles/main.scss';
+@import "@/styles/error.scss";
 
   #snippet-create-container {
     .multiselect__single {

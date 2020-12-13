@@ -298,7 +298,13 @@
         "detail": {
           "copying": "Error copiando al clipboard"
         }
-      }
+      },
+      "youAreAnAdmin": "Eres un Admin",
+      "adminsCantCreateSnippets": "Los Admins no pueden crear snippets",
+      "youDontHaveAnAccount": "No tienes una cuenta",
+      "mustBeAUser": "Necesitas ser un usuario para crear snippets",
+      "login": "Puedes ingresar o registrarte",
+      "goToLogin": "Ir al login"
     },
     "snackbar": {
       "error": {
