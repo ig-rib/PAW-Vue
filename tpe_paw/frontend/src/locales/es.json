@@ -253,11 +253,15 @@
         }
       },
       "tagSelect": {
-        "selectTag": "Seleccionar un tag"
+        "selectTag": "Seleccionar un tag",
+        "errorUpdate": "Error al actualizar el set seleccionado",
+        "errorLoadMore": "Error al cargar mas tags"
       },
       "languageSelect": {
         "selectLanguage": "Seleccionar un lenguaje",
-        "notNull": "Al menos un lenguaje debe ser seleccionado"
+        "notNull": "Al menos un lenguaje debe ser seleccionado",
+        "errorUpdate": "Error al actualizar el set seleccionado",
+        "errorLoadMore": "Error al cargar mas lenguajes"
       },
       "snippetGrid": {
         "profile": {

@@ -400,7 +400,6 @@ export default {
     searchOrders () {
       return Object.values(search.constants.order)
     },
-    // TODO make name clearer
     resultType () {
       const routeName = this.$route.name
       switch (routeName) {
@@ -412,9 +411,6 @@ export default {
           return 'snippet'
       }
     },
-    // currentUser () {
-    //   return this.$store.getters.user
-    // },
     generalPathsNoFeed () {
       return this.generalPaths.filter(item => item.path.name !== 'feed')
     },
@@ -531,14 +527,10 @@ export default {
           Object.assign(params, this.$route.query)
           params.showEmpty = newVal
           this.performSearch(params)
-            .then(r => {
-              // TODO handle data
-              // this.$router.query.showEmpty = newVal
-            })
+            .then(r => {})
             .catch(e => {
-              // Restores old value,
               this.showEmpty = oldVal
-              // TODO let user know why
+              this.$store.dispatch('snackError', e.response.data.message) 
             })
         }
       }
@@ -550,14 +542,10 @@ export default {
         params.showOnlyFollowing = newVal
         params.page = 1
         this.performSearch(params)
-          .then(r => {
-            // TODO handle data
-            // this.$router.query.showOnlyFollowing = newVal
-          })
+          .then(r => {})
           .catch(e => {
-            // Restores old value,
             this.showEmpty = oldVal
-            // TODO let user know why
+            this.$store.dispatch('snackError', e.response.data.message) 
           })
       }
     },

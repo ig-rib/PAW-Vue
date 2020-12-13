@@ -65,13 +65,15 @@ export default {
     }
   },
   methods: {
-    // TODO handle all request errors
     updateSelectionSet (query) {
       this.langQuery = query
-      languages.searchLanguages({ q: query }, true).then(r => {
+      languages.searchLanguages({ q: query }, true)
+      .then(r => {
         this.languages = r.data
         this.links = parseLinks(r.headers.link)
       })
+      .catch(e => this.$store.dispatch('snackError', this.$t('components.languageSelect.errorUpdate')))
+
     },
     loadMore () {
       axiosFetcher.get(this.links.next).then(r => {
@@ -80,6 +82,7 @@ export default {
         }
         this.links = parseLinks(r.headers.link)
       })
+      .catch(e => this.$store.dispatch('snackError', this.$t('components.languageSelect.errorLoadMore')))
     }
   },
   watch: {

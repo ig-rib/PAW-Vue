@@ -254,11 +254,15 @@
       }
     },
     "tagSelect": {
-      "selectTag": "Select A Tag"
+      "selectTag": "Select A Tag",
+      "errorUpdate": "Error while updating selection set",
+      "errorLoadMore": "Error while loading more tags"
     },
     "languageSelect": {
       "selectLanguage": "Select A Language",
-      "notNull": "One language must be selected"
+      "notNull": "One language must be selected",
+      "errorUpdate": "Error while updating selection set",
+      "errorLoadMore": "Error while loading more languages"
     },
     "snippetGrid": {
       "profile": {
