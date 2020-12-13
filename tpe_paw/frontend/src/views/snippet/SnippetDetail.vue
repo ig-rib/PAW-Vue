@@ -170,7 +170,7 @@
                     <v-icon>{{`mdi-flag${snippet.flagged ? '' : '-outline'}`}}</v-icon>
                   </v-btn>
                   <!-- REPORT -->
-                  <v-btn :ripple="false" :class="`fav-btn ${getReportColor()}`" class="report-btn" v-else :disabled="reporting" @click="report" icon>
+                  <v-btn :ripple="false" :class="`fav-btn ${ snippet.reported ? 'color-sandybrown' : '' }`" class="report-btn" v-else :disabled="reporting" @click="report" icon>
                     <v-icon>{{`mdi-alert-octagon${snippet.reported ? '' : '-outline'}`}}</v-icon>
                   </v-btn>
                 </v-flex>
@@ -358,7 +358,7 @@ export default {
       snippets.reportSnippet(this.snippet.id, {
         detail: this.reportMessage,
         // TODO how to find baseURI
-        baseUri: urls.localDomain + this.$route.path
+        baseUri: urls.localDomain.replace(/\/$/, '') + this.$route.path
       }).then(r => {
         this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.report.success'))
         this.snippet.reported = true

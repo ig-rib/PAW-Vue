@@ -218,7 +218,7 @@
                 </v-flex>
               </v-layout>
             </v-flex>
-            <v-flex shrink>
+            <v-flex ml-2 shrink>
               <v-btn x-large icon @click="logout">
                 <v-icon>mdi-logout</v-icon>
               </v-btn>
@@ -304,7 +304,7 @@
           </v-flex>
         </v-layout>
       </v-flex>
-      <v-flex shrink>
+      <v-flex ml-2 shrink>
         <v-btn x-large icon @click="logout">
           <v-icon>mdi-logout</v-icon>
         </v-btn>

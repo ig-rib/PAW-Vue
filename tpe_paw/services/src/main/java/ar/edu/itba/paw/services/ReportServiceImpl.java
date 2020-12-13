@@ -32,7 +32,7 @@ public class ReportServiceImpl implements ReportService {
 
         if(result) {
             this.emailService.sendReportedEmail(
-                    baseUrl + "/snippet/" + snippet.getId(),
+                    baseUrl,
                     snippet.getTitle(),
                     snippet.getOwner().getEmail(),
                     snippet.getOwner().getUsername(),
