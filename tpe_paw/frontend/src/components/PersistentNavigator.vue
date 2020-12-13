@@ -205,12 +205,14 @@
               <v-btn class="white--text" color="accent" :ripple="false" @click="goToLogin">{{ $t('registration.login') }}</v-btn>
             </v-flex>
           </v-layout>
-          <v-layout v-if="$store.getters.loggedIn">
-            <v-flex class="navbar-profile-flex" pl-2 shrink v-if="!isAdmin">
-              <v-btn class="navbar-profile-btn" x-large icon @click="goToProfile">
-                <img v-if="!profileImageError" @error="profileImageError = true" class="navbar-profile-circle" :src="$store.getters.user.icon"/>
-                <v-icon v-else>mdi-account-circle</v-icon>
-              </v-btn>
+          <v-layout pl-2 v-if="$store.getters.loggedIn">
+            <v-flex class="navbar-profile-flex" shrink>
+              <v-layout>
+                <v-flex v-ripple class="navbar-profile-clickable-flex" @click="goToProfile">
+                  <v-img v-if="!profileImageError" @error="profileImageError = true" width="40px" height="40px" class="navbar-profile-circle" :src="$store.getters.user.icon"/>
+                  <v-icon v-else>mdi-account-circle</v-icon>  
+                </v-flex>
+              </v-layout>
             </v-flex>
             <v-flex shrink>
               <v-btn x-large icon @click="logout">
@@ -287,10 +289,12 @@
     </v-layout>
     <v-layout pl-2 my-2 v-if="$store.getters.loggedIn">
       <v-flex class="navbar-profile-flex" shrink>
-        <v-btn class="navbar-profile-btn" x-large icon @click="goToProfile">
-          <img v-if="!profileImageError" @error="profileImageError = true" class="navbar-profile-circle" :src="$store.getters.user.icon"/>
-          <v-icon v-else>mdi-account-circle</v-icon>  
-        </v-btn>
+        <v-layout>
+          <v-flex v-ripple class="navbar-profile-clickable-flex" @click="goToProfile">
+            <v-img v-if="!profileImageError" @error="profileImageError = true" width="40px" height="40px" class="navbar-profile-circle" :src="$store.getters.user.icon"/>
+            <v-icon v-else>mdi-account-circle</v-icon>  
+          </v-flex>
+        </v-layout>
       </v-flex>
       <v-flex shrink>
         <v-btn x-large icon @click="logout">
@@ -599,23 +603,22 @@ export default {
     display: flex;
     align-items: center;
   }
-  .navbar-profile-btn {
-    overflow: hidden;
-    height: 40px;
-    width: 40px;
+  .navbar-profile-clickable-flex {
+    border-radius: 100%;
+    cursor: pointer;
   }
   .navbar-profile-circle {
-    width: 15%;
-    height: auto;
-    position: relative;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -o-border-radius: 50%;
+    // width: 100%;
+    // height: auto;
+    // position: relative;
+    // -webkit-border-radius: 50%;
+    // -moz-border-radius: 50%;
+    // -ms-border-radius: 50%;
+    // -o-border-radius: 50%;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
   }
   .title-flex {
     display: flex;

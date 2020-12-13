@@ -14,10 +14,10 @@
               <v-flex class="username-date-flex" dense>
                 <v-list-item two-line>
                   <v-flex shrink mr-2 class="snippet-owner-icon-flex">
-                    <img
-                      class="owner-image"
-                      height="100%"
-                      width="auto"
+                      <!-- class="owner-image" -->
+                    <v-img
+                      height="50px"
+                      width="50px"
                     v-if="!error" @error="error = true" :src="owner.icon"/>
                     <v-icon v-else size="50">mdi-account-circle</v-icon>
                   </v-flex>
@@ -316,8 +316,8 @@ export default {
     // -webkit-box-orient: vertical;
   }
   .snippet-owner-icon-flex {
-    height: 50px;
-    width: 50px;
+    // height: 50px;
+    // width: 50px;
     border-radius: 100%;
     overflow: hidden;
   }
