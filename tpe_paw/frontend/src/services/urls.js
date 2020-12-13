@@ -68,9 +68,6 @@ const urls = {
     languages: localDomainApi + 'languages',
     language: localDomainApi + 'languages/:id',
     getLanguageSnippets: localDomainApi + 'languages/:id/snippets'
-  },
-  test: {
-    jerseyTest: localDomainApi + 'jersey-test'
   }
 }
 

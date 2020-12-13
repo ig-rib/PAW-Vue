@@ -15,7 +15,7 @@
         </v-layout>
         <v-layout my-3 justify-center class="error-gohome-btn-layout">
           <v-flex shrink>
-            <v-btn @click="goHome">
+            <v-btn rounded outlined color="primary" @click="goHome">
               {{ $t('error.goHome') }}
             </v-btn>
           </v-flex>

@@ -198,7 +198,8 @@ const routes = [
             path: 'error/:errNo',
             name: 'error',
             component: ErrorView
-          }
+          },
+          { path: '*', redirect: '/' + defaultLang + '/error/404' }
         ]
       }
     ]
