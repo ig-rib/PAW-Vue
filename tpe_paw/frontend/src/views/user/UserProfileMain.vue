@@ -25,7 +25,7 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <v-layout py-10 mt-4>
+    <v-layout justify-center py-10 mt-4>
       <v-flex shrink>
         <div v-if="!editing">
           <v-img
@@ -206,6 +206,7 @@ import validations from '@/functions/validations'
           this.$store.dispatch('snackSuccess', this.$t('user.profile.profileInfoUpdated'))
         })
         .finally(() => {
+          this.$refs.userProfileRouterView.$emit('updated')
           this.editing = false
           this.hasPhotoPreview = false
         })
