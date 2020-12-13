@@ -30,7 +30,7 @@ export default {
     }
   },
   mounted () {
-    if (this.isAdmin) {
+    if (!this.isAdmin) {
       this.$router.replace({ name: 'error' })
     }
     this.$on('searchResults', r => this.$refs.userFlaggedSnippetGrid.$emit('searchResults', r))

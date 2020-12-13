@@ -206,16 +206,16 @@
             </v-flex>
           </v-layout>
           <v-layout pl-2 v-if="$store.getters.loggedIn">
-            <v-flex class="navbar-profile-flex" shrink>
+            <v-flex v-if="!isAdmin" class="navbar-profile-flex" shrink>
               <v-layout>
-                <router-link
+                <v-flex
                   v-ripple
                   class="navbar-profile-clickable-flex"
                   :to="{ name: 'user-profile', params: { id: $store.getters.user.id } }"
                   replace>
                   <v-img v-if="!profileImageError" @error="profileImageError = true" width="40px" height="40px" class="navbar-profile-circle" :src="$store.getters.user.icon"/>
                   <v-icon v-else>mdi-account-circle</v-icon>  
-                </router-link>
+                </v-flex>
               </v-layout>
             </v-flex>
             <v-flex shrink>
@@ -292,16 +292,16 @@
       </v-flex>
     </v-layout>
     <v-layout pl-2 my-2 v-if="$store.getters.loggedIn">
-      <v-flex class="navbar-profile-flex" shrink>
+      <v-flex v-if="!isAdmin" class="navbar-profile-flex" shrink>
         <v-layout>
-          <router-link
+          <v-flex
             v-ripple
             class="navbar-profile-clickable-flex"
             :to="{ name: 'user-profile', params: { id: $store.getters.user.id } }"
             replace>
             <v-img v-if="!profileImageError" @error="profileImageError = true" width="40px" height="40px" class="navbar-profile-circle" :src="$store.getters.user.icon"/>
             <v-icon v-else>mdi-account-circle</v-icon>  
-          </router-link>
+          </v-flex>
         </v-layout>
       </v-flex>
       <v-flex shrink>
