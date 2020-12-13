@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.dao.SnippetDao;
 import ar.edu.itba.paw.interfaces.service.*;
+import ar.edu.itba.paw.models.Report;
 import ar.edu.itba.paw.models.Snippet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.Vote;
@@ -75,9 +76,11 @@ public class SnippetController {
         User loggedInUser = this.loginAuthentication.getLoggedInUser().orElse(null);
         if (loggedInUser != null) {
             Vote vote = voteService.getVote(loggedInUser.getId(), snippet.getId()).orElse(null);
-            boolean reported = reportService.getReport(loggedInUser.getId(), snippet.getId()).isPresent();
+            Report report = reportService.getReport(loggedInUser.getId(), snippet.getId()).orElse(null);
+            boolean reported = report != null;
+            boolean reportedDismissed = report != null && report.isOwnerDismissed();
             boolean favorite = loggedInUser.getFavorites().contains(snippet);
-            snippetDto = SnippetDto.fromSnippetWithDetail(snippet, uriInfo, voteService.getVoteBalance(snippet.getId()), vote, reported, favorite);
+            snippetDto = SnippetDto.fromSnippetWithDetail(snippet, uriInfo, voteService.getVoteBalance(snippet.getId()), vote, reported, favorite, reportedDismissed);
         } else {
             snippetDto = SnippetDto.fromSnippet(snippet, uriInfo);
         }
@@ -130,6 +133,7 @@ public class SnippetController {
             return buildErrorResponse("error.403.snippet.restore", Response.Status.UNAUTHORIZED, snippet.getId());
         }
         if ( user.getUsername().compareTo(snippet.getOwner().getUsername()) != 0) {
+            // Same message only 401 vs 403
             return buildErrorResponse("error.403.snippet.restore", Response.Status.FORBIDDEN, snippet.getId());
         } else {
             if (!this.snippetService.deleteOrRestoreSnippet(snippet, user.getId(), false)) {

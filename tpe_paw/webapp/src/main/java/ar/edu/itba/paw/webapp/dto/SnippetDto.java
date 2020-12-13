@@ -4,13 +4,11 @@ import ar.edu.itba.paw.models.Snippet;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.Vote;
 
-import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class SnippetDto {
@@ -29,6 +27,7 @@ public class SnippetDto {
     // User-specific section
     private boolean isFavorite;
     private boolean isReported;
+    private boolean reportedDismissed;
     private VoteDto vote;
 
     public static SnippetDto fromSnippet(Snippet snippet, UriInfo uriInfo){
@@ -55,12 +54,13 @@ public class SnippetDto {
         return dto;
     }
 
-    public static SnippetDto fromSnippetWithDetail(Snippet snippet, UriInfo uriInfo, long score, Vote vote, boolean reported, boolean favorite) {
+    public static SnippetDto fromSnippetWithDetail(Snippet snippet, UriInfo uriInfo, long score, Vote vote, boolean reported, boolean favorite, boolean reportedDismissed) {
         SnippetDto dto = SnippetDto.fromSnippet(snippet, uriInfo);
         dto.score = score;
         if (vote != null)
             dto.vote = VoteDto.fromVote(vote);
         dto.isReported = reported;
+        dto.reportedDismissed = reportedDismissed;
         dto.isFavorite = favorite;
         return dto;
     }
@@ -177,7 +177,14 @@ public class SnippetDto {
         this.language = language;
     }
 
-//    @Override
+    public boolean isReportedDismissed() {
+        return reportedDismissed;
+    }
+
+    public void setReportedDismissed(boolean reportedDismissed) {
+        this.reportedDismissed = reportedDismissed;
+    }
+    //    @Override
 //    public int hashCode() {
 //        int sum = this.id.hashCode();
 //        sum += 19 * new Boolean(this.isFavorite).hashCode();
@@ -207,6 +214,7 @@ public class SnippetDto {
                 score == that.score &&
                 isFavorite == that.isFavorite &&
                 isReported == that.isReported &&
+                reportedDismissed == that.reportedDismissed &&
                 Objects.equals(id, that.id) &&
                 Objects.equals(owner, that.owner) &&
                 Objects.equals(language, that.language) &&
@@ -220,6 +228,6 @@ public class SnippetDto {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, owner, language, code, title, description, dateCreated, flagged, deleted, tags, score, isFavorite, isReported, vote);
+        return Objects.hash(id, owner, language, code, title, description, dateCreated, flagged, deleted, tags, score, isFavorite, isReported, vote, reportedDismissed);
     }
 }

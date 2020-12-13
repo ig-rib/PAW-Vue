@@ -10,6 +10,7 @@ public class ReportDto {
     @Size(max=300)
     private String detail;
     private String baseUri;
+    private boolean ownerDismissed;
 
     public String getDetail() {
         return detail;
@@ -25,5 +26,13 @@ public class ReportDto {
 
     public void setBaseUri(String baseUri) {
         this.baseUri = baseUri;
+    }
+
+    public boolean isOwnerDismissed() {
+        return ownerDismissed;
+    }
+
+    public void setOwnerDismissed(boolean ownerDismissed) {
+        this.ownerDismissed = ownerDismissed;
     }
 }

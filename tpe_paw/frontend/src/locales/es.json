@@ -87,7 +87,11 @@
           "whatIsWrong": "Qué hay de malo con este snippet?",
           "unreport": "Quieres anular el reporte de este snippet?",
           "confirm": "Confirmar",
-          "cancel": "Cancelar"
+          "cancel": "Cancelar",
+          "alreadyReported": "Ya reportaste y anulaste el reporte de este snippet",
+          "success": "Snippet reportado con éxito",
+          "successUnreport": "El snippet ya no esta mas reportado"
+
         },
         "flagged": {
           "title": "Snippet Marcado",
@@ -301,6 +305,9 @@
       },
       "success": {
         "defaultMessage": "Acción realizada de forma exitosa"
+      },
+      "warning": {
+        "defaultMessage": "No puedes realizar esa acción"
       },
       "hide": "ocultar"
     },
