@@ -43,10 +43,10 @@ export default {
       set () {
         this.$store.dispatch('hideSnackbar')
       }
-    },
-    language () {
-      return navigator.language
-    }
+    }//,
+//    language () {
+//      return navigator.language
+//    }
     // rememberMe () {
     //   return window.localStorage.getItem('keepSignedIn')
     // },
