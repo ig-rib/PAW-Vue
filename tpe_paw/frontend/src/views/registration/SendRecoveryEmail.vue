@@ -65,12 +65,10 @@ export default {
   methods: {
     sendRecoveryEmail () {
       registration.sendRecoveryEmail(this.email)
-        // TODO send to success page
-        // or move to success tab
         .then(r => {
           this.sent = true
         })
-        .catch(e => e)
+        .catch(e => this.$store.dispatch('snackError', this.$t('registration.errorEmail')))
         .finally(() => {
           this.email = ''
         })

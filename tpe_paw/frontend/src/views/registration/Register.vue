@@ -130,7 +130,6 @@ export default {
         nonexistingEmail: () => !this.emailExists || this.$t('validations.emailExists')
       }
     },
-    // TODO check if worth it to create external function
     allRulesAlright () {
       return Object.keys(this.rules).filter(rule => this.rules[rule]() !== true).length === 0 && !this.usernameExists && !this.emailExists
     },

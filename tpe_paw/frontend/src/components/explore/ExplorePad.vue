@@ -254,7 +254,6 @@ export default {
       if (this.exploreParams.tags != null && this.exploreParams.tags.length !== 0) {
         queryParams.tagId = this.exploreParams.tags.map(tag => tag.id)
       }
-      // TODO handle results
       this.$router.replace({
         query: queryParams
       })

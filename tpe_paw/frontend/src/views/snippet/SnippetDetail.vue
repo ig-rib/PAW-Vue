@@ -357,7 +357,6 @@ export default {
     sendReport () {
       snippets.reportSnippet(this.snippet.id, {
         detail: this.reportMessage,
-        // TODO how to find baseURI
         baseUri: urls.localDomain.replace(/\/$/, '') + this.$route.path
       }).then(r => {
         this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.report.success'))
@@ -434,16 +433,7 @@ export default {
       })
     },
     copiedToClipboard () {
-      // TODO eventually remove commented code
-      // const codeToCopy = document.querySelector('#code-textarea')
-      // codeToCopy.select()
-      // try {
-      //   document.execCommand('copy')
-      //   this.clearSelection()
       this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.copiedToClipboard'))
-      // } catch (exc) {
-      //   this.$store.dispatch('snackError', this.$t('error.snippet.detail.copying'))
-      // }
     },
     clearSelection () {
       let sel;
@@ -499,7 +489,6 @@ export default {
     }
   },
   mounted () {
-    // TODO add catch statements
     this.loading = true
     snippets.getSnippet(this.$route.params.id)
       .then(snippetResponse => {
@@ -517,6 +506,7 @@ export default {
         this.owner = responses.pop().data
         this.tags = responses.map(r => r.data)
       })
+      .catch(e => this.$store.dispatch('snackError', this.$t('snippets.snippetDetail.errorLoading')))
       .finally(() => {
         this.loading = false
       })

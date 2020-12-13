@@ -90,7 +90,8 @@
           "cancel": "Cancelar",
           "alreadyReported": "Ya reportaste y anulaste el reporte de este snippet",
           "success": "Snippet reportado con éxito",
-          "successUnreport": "El snippet ya no esta mas reportado"
+          "successUnreport": "El snippet ya no esta mas reportado",
+          "errorLoading": "Error al cargar snippet"
 
         },
         "flagged": {
@@ -224,7 +225,10 @@
       "enterCode": "Ingresar el código que has recibido en el mail",
       "successfulVerification": "Verificamos tu cuenta satisfactoriamente!",
       "successfullyResetPassword": "Contraseña cambiada con éxito. Puedes iniciar sesión.",
-      "keepMeSignedIn": "Recordarme"
+      "keepMeSignedIn": "Recordarme",
+      "errorEmail": "Error while sending recovery email",
+      "errorVerification": "Error while verifying your account",
+      "errorResetPassword": "Error while verifying your password"
     },
     "validations": {
       "invalidPassword": "La contraseña debe tener mas de 8 caracteres",

@@ -46,9 +46,7 @@ export default {
           this.$store.dispatch('snackSuccess', this.$t('registration.successfullyResetPassword'))
           this.$router.push({ name: 'login' })
         })
-        .catch(e => {
-          this.$store.dispatch('snackError', e.data)
-        })
+        .catch(e => this.$store.dispatch('snackError', this.$t('registration.errorResetPassword')))
         .finally(() => {
           this.blankFields()
         })
