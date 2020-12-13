@@ -42,18 +42,14 @@ const routes = [
     redirect: deployRoute + '/registration/reset-password'
   },
   {
-    path: deployRoute + '/',
+    path: deployRoute,
     name: 'nothing',
-    redirect: {
-      name: 'feed'
-    },
+    redirect: deployRoute + '/feed',
     component: Nothing,
     children: [
       {
         path: '',
-        redirect: {
-          name: 'feed'
-        },
+        redirect: deployRoute + '/feed',
         component: PersistentNavigator,
         children: [
           {
@@ -196,12 +192,12 @@ const routes = [
             path: 'error/:errNo',
             name: 'error',
             component: ErrorView
-          },
-          { path: '*', redirect: deployRoute + '/error/404' }
+          }
         ]
       }
     ]
-  }
+  },
+  { path: deployRoute + '/*', redirect: deployRoute + '/error/404' }
 ]
 
 const router = new VueRouter({

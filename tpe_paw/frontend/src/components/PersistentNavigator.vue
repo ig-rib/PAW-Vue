@@ -563,8 +563,8 @@ export default {
     },
     $route: function (neww, old) {
       if (neww.path !== old.path) {
-        this.showEmpty = false
-        this.showOnlyFollowing = false
+        this.showEmpty = this.$route.query.showEmpty || false
+        this.showOnlyFollowing = this.$route.query.showOnlyFollowing || false
         this.searchQuery = ''
       }
     }
