@@ -234,9 +234,6 @@ public class SnippetController {
             @PathParam(value="id") long id,
             @Valid ReportDto reportDto
     ) {
-        //TODO: Check from where we gonna obtain the base url of the report.
-        // Getting the url of the server
-        //final String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
         Snippet snippet = snippetService.findSnippetById(id).orElse(null);
         if(snippet == null){
             return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
@@ -305,7 +302,8 @@ public class SnippetController {
     @PUT
     @Path(value="/{id}/flag")
     public Response flagSnippet(
-            @PathParam(value="id") long id
+            @PathParam(value="id") long id,
+            String baseUri
     ) {
         User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
 
@@ -317,12 +315,9 @@ public class SnippetController {
                 return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
             }
 
-            // Getting the url of the server
-            //TODO: Check how to handle baseUrl
-            //final String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
             try {
                 // Updating the flagged variable of snippet
-                this.snippetService.updateFlagged(snippet, snippet.getOwner(), true, "");
+                this.snippetService.updateFlagged(snippet, snippet.getOwner(), true, baseUri    );
             } catch (Exception e) {
                 LOGGER.error(e.getMessage() + "Failed to flag snippet {}", snippet.getId());
                 return buildErrorResponse("error.500", Response.Status.INTERNAL_SERVER_ERROR, null);
@@ -336,7 +331,8 @@ public class SnippetController {
     @DELETE
     @Path(value="/{id}/flag")
     public Response unflagSnippet(
-            @PathParam(value="id") long id
+            @PathParam(value="id") long id,
+            String baseUri
     ) {
         User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
 
@@ -348,12 +344,9 @@ public class SnippetController {
                 return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
             }
 
-            // Getting the url of the server
-            //TODO: Check how to handle baseUrl
-            //final String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
             try {
                 // Updating the flagged variable of snippet
-                this.snippetService.updateFlagged(snippet, snippet.getOwner(), false, "");
+                this.snippetService.updateFlagged(snippet, snippet.getOwner(), false, baseUri);
             } catch (Exception e) {
                 LOGGER.error(e.getMessage() + "Failed to flag snippet {}", snippet.getId());
                 return buildErrorResponse("error.500", Response.Status.INTERNAL_SERVER_ERROR, null);

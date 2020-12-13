@@ -326,15 +326,18 @@ export default {
       this.flagging = true
       let promise = {}
       if (this.snippet.flagged) {
-        promise = snippets.unflagSnippet(this.snippet.id)
+        promise = snippets.unflagSnippet(this.snippet.id, {
+          baseUri: urls.mailBaseUrl + this.$route.path
+        })
       } else {
-        promise = snippets.flagSnippet(this.snippet.id)
+        promise = snippets.flagSnippet(this.snippet.id,{
+          baseUri: urls.mailBaseUrl + this.$route.path
+        }
+        )
       }
       promise.then(r => { 
         this.snippet.flagged = !this.snippet.flagged 
         this.owner.reputation += this.snippet.flagged ? -10 : 10
-      })
-      .finally(() => { 
         this.flagging = false
         if (this.snippet.flagged) {
           this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.snippetFlagged')) 
@@ -342,6 +345,7 @@ export default {
           this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.snippetUnflagged'))
         }
       })
+      .catch(e => e)
     },
     report () {
       this.reporting = true
@@ -357,8 +361,7 @@ export default {
     sendReport () {
       snippets.reportSnippet(this.snippet.id, {
         detail: this.reportMessage,
-        // TODO how to find baseURI
-        baseUri: urls.localDomain.replace(/\/$/, '') + this.$route.path
+        baseUri: urls.mailBaseUrl + this.$route.path
       }).then(r => {
         this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.report.success'))
         this.snippet.reported = true
@@ -434,16 +437,7 @@ export default {
       })
     },
     copiedToClipboard () {
-      // TODO eventually remove commented code
-      // const codeToCopy = document.querySelector('#code-textarea')
-      // codeToCopy.select()
-      // try {
-      //   document.execCommand('copy')
-      //   this.clearSelection()
       this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.copiedToClipboard'))
-      // } catch (exc) {
-      //   this.$store.dispatch('snackError', this.$t('error.snippet.detail.copying'))
-      // }
     },
     clearSelection () {
       let sel;
@@ -502,7 +496,6 @@ export default {
     }
   },
   mounted () {
-    // TODO add catch statements
     this.loading = true
     snippets.getSnippet(this.$route.params.id)
       .then(snippetResponse => {
@@ -520,6 +513,7 @@ export default {
         this.owner = responses.pop().data
         this.tags = responses.map(r => r.data)
       })
+      .catch(e => this.$store.dispatch('snackError', this.$t('snippets.snippetDetail.errorLoading')))
       .finally(() => {
         this.loading = false
       })
@@ -543,8 +537,7 @@ export default {
 
 <style lang="scss">
 @import '~vuetify/src/styles/settings/_variables';
-@import '@/styles/noticeCard.scss';
-  
+@import '@/styles/noticeCard.scss';  
   .report-dialog {
     max-width: 600px;
     .dialog-card {

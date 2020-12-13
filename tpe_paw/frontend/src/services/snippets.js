@@ -27,17 +27,17 @@ const unfavSnippet = (id) => axiosFetcher.del(urls.snippet.favSnippet, {
   }
 })
 
-const flagSnippet = (id) => axiosFetcher.put(urls.snippet.flagSnippet, {
+const flagSnippet = (id, params) => axiosFetcher.put(urls.snippet.flagSnippet, {
   pathVariables: {
     id
   }
-})
+}, params)
 
-const unflagSnippet = (id) => axiosFetcher.del(urls.snippet.flagSnippet, {
+const unflagSnippet = (id, params) => axiosFetcher.del(urls.snippet.flagSnippet, {
   pathVariables: {
     id
   }
-})
+}, params)
 
 const reportSnippet = (id, params) => axiosFetcher.put(urls.snippet.reportSnippet, {
   pathVariables: {

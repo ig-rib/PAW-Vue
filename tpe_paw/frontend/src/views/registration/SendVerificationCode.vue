@@ -48,11 +48,8 @@ export default {
   methods: {
     sendVerificationCode () {
       registration.sendVerificationCode(this.code)
-        // TODO send to success page
-        // or move to success tab
         .then(r => {
           this.$store.dispatch('snackSuccess', this.$t('registration.successfulVerification'))
-          // TODO do not allow going back to login
           const user = this.$store.getters.user
           user.verified = true
           this.$store.dispatch('setUser', user)
@@ -60,7 +57,7 @@ export default {
             name: 'feed'
           })
         })
-        .catch(e => e)
+        .catch(e => this.$store.dispatch('snackError', this.$t('registration.errorVerification')))
         .finally(() => {
           this.code = ''
         })

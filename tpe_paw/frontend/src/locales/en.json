@@ -90,8 +90,8 @@
         "cancel": "Cancel",
         "alreadyReported": "You already reported and dismissed the report on this snippet",
         "success": "Successfully reported snippet",
-        "successUnreport": "Succesffully unreported snippet"
-
+        "successUnreport": "Succesffully unreported snippet",
+        "errorLoading": "Error while loading snippet"
       },
       "flagged": {
         "title": "Flagged Snippet",
@@ -224,8 +224,11 @@
     "mailSentInfo": "You can now visit the link we sent you and change your password.",
     "enterCode": "Enter the code you received on your email.",
     "successfulVerification": "Successfully verified account!",
-    "successfullyResetPassword": " Successfully reseted password. Now you can login",
-    "keepMeSignedIn": "Keep me signed in"
+    "successfullyResetPassword": "Successfully reseted password. Now you can login",
+    "keepMeSignedIn": "Keep me signed in",
+    "errorEmail": "Error while sending recovery email",
+    "errorVerification": "Error while verifying your account",
+    "errorResetPassword": "Error while verifying your password"
   },
   "validations": {
     "invalidPassword": "Password must be at least 8 characters long",
@@ -254,11 +257,15 @@
       }
     },
     "tagSelect": {
-      "selectTag": "Select A Tag"
+      "selectTag": "Select A Tag",
+      "errorUpdate": "Error while updating selection set",
+      "errorLoadMore": "Error while loading more tags"
     },
     "languageSelect": {
       "selectLanguage": "Select A Language",
-      "notNull": "One language must be selected"
+      "notNull": "One language must be selected",
+      "errorUpdate": "Error while updating selection set",
+      "errorLoadMore": "Error while loading more languages"
     },
     "snippetGrid": {
       "profile": {

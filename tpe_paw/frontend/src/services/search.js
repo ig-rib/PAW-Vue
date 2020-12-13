@@ -3,9 +3,6 @@ import axiosFetcher from './axiosFetcher'
 import i18n from '@/i18n'
 import Router from '@/router'
 
-// todo move to snippets.js, rename
-// every dedicated search endpoint
-
 const constants = {
   type: {
     all: {
@@ -73,11 +70,7 @@ const searchInLocation = (route, queryParams) => {
       queryParams[key] = snippetQueryParamTemplate[key]
     }
   }
-  // // Remove the locale part of uri
-  // const resultArray = location.replace(/\/$/, '').split('/')
-  // resultArray.shift()
-  // resultArray.shift()
-  // const pathSuffix = resultArray.join('/')
+  // Remove the locale part of uri
   let url = ''
   const pathVariables = {}
   

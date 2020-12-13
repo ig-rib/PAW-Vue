@@ -56,21 +56,24 @@ export default {
     }
   },
   methods: {
-    // TODO handle all request errors
     updateSelectionSet (query) {
       this.tagQuery = query
-      tags.searchTags({ q: query }, true, false).then(r => {
+      tags.searchTags({ q: query }, true, false)
+      .then(r => {
         this.tags = r.data
         this.links = parseLinks(r.headers.link)
       })
+      .catch(e => this.$store.dispatch('snackError', this.$t('components.tagSelect.errorUpdate')))
     },
     loadMore () {
-      axiosFetcher.get(this.links.next).then(r => {
+      axiosFetcher.get(this.links.next)
+      .then(r => {
         if (r.data.length > 0) {
           this.tags.push(...r.data)
         }
         this.links = parseLinks(r.headers.link)
       })
+      .catch(e => this.$store.dispatch('snackError', this.$t('components.tagSelect.errorLoadMore')))
     }
   },
   watch: {
