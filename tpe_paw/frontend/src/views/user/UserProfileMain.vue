@@ -1,18 +1,27 @@
 <template>
   <div id="user-profile-container" v-if="!isAdmin">
     <v-layout justify-center pa-5 v-if="currentAndUnverified">
-      <v-flex shrink>
+      <v-flex ma-3 shrink>
         <v-card class="notice-card">
-          <v-card-title>
-            {{ $t('user.profile.verifyAccount.title') }}
-          </v-card-title>
-          <v-card-text class="notice-card-text">
-            <p>{{ $t('user.profile.verifyAccount.text1') }}</p>
-            <p>
-              {{ $t('user.profile.verifyAccount.text2') }}
-              <a @click="goToVerify">{{ $t('user.profile.verifyAccount.here') }}</a>
-            </p>
-          </v-card-text>
+          <v-layout>
+            <v-flex ml-2 shrink class="notice-card-icon">
+              <v-icon color="#64b5f6">
+                mdi-email-check
+              </v-icon>
+            </v-flex>
+            <v-flex>
+              <v-card-title>
+                {{ $t('user.profile.verifyAccount.title') }}
+              </v-card-title>
+              <v-card-text class="notice-card-text">
+                <p>{{ $t('user.profile.verifyAccount.text1') }}</p>
+                <p>
+                  {{ $t('user.profile.verifyAccount.text2') }}
+                  <a @click="goToVerify">{{ $t('user.profile.verifyAccount.here') }}</a>
+                </p>
+              </v-card-text>
+            </v-flex>
+          </v-layout>
         </v-card>
       </v-flex>
     </v-layout>

@@ -326,7 +326,7 @@
     "register" : "Snippit - Register",
     "resetPassword" : "Snippit - Reset Password",
     "email" : "Snippit - Recovery Email",
-    "code" : "Snippit - Verification Code",
+    "verification" : "Snippit - Verification Code",
     "create" : "Snippit - Create",
     "detail" : "Snippit - Snippet Detail",
     "tags" : "Snippit - Tags",
