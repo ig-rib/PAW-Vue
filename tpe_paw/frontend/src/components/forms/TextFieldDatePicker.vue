@@ -66,7 +66,12 @@ export default {
   },
   computed: {
     displayedDate () {
-      return this.dateValue
+      if (this.dateValue == null) {
+        return null
+      }
+      const dateArray = this.dateValue.split('-').map(x => parseInt(x))
+      const date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2])
+      return this.$t('components.tfDatePicker.datePickerTextDate', { day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear() })
     }
   }
 }

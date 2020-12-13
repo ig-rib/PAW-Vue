@@ -139,7 +139,7 @@ export default {
   computed: {
     standardDate () {
       const theDate = new Date(this.snippet.dateCreated)
-      return this.$t('snippets.postingDate', { year: theDate.getFullYear(), month: theDate.getMonth(), day: theDate.getDay() })
+      return this.$t('snippets.postingDate', { year: theDate.getFullYear(), month: theDate.getMonth() + 1, day: theDate.getDate() })
     },
     cardMaxWidthClass () {
       if (this.$vuetify.breakpoint.lgAndUp) {

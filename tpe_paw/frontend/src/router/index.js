@@ -32,19 +32,21 @@ import ErrorView from '@/views/error/Error.vue'
 Vue.use(VueRouter)
 
 const defaultLang = 'en'
+const deployRoute = ''
+// const deployRoute = '/paw-2020a-2'
 
 const routes = [
   {
-    path: '/reset-password',
+    path: deployRoute + '/reset-password',
     name: 'redirect-reset-password',
     redirect: '/' + defaultLang + '/registration/reset-password'
   },
   {
-    path: '/',
-    redirect: '/' + defaultLang + '/feed'
+    path: deployRoute + '/',
+    redirect: deployRoute + '/' + defaultLang + '/feed'
   },
   {
-    path: '/:language',
+    path: deployRoute + '/:language',
     name: 'nothing',
     redirect: {
       name: 'feed'
@@ -199,7 +201,7 @@ const routes = [
             name: 'error',
             component: ErrorView
           },
-          { path: '*', redirect: '/' + defaultLang + '/error/404' }
+          { path: '*', redirect: deployRoute + '/' + defaultLang + '/error/404' }
         ]
       }
     ]

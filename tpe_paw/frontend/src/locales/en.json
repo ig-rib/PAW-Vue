@@ -245,7 +245,8 @@
   "components": {
     "tfDatePicker": {
       "defaultLabel": "Select Date",
-      "clearDate": "Clear Date"
+      "clearDate": "Clear Date",
+      "datePickerTextDate": "{month}/{day}/{year}"
     },
     "shared": {
       "pagination": {

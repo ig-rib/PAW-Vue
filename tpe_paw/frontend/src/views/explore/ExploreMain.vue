@@ -19,7 +19,7 @@
         <snippet-grid ref="exploreSnippets"></snippet-grid>
       </v-flex>
     </v-layout >
-    <v-dialog width="450px" id="explore-pad-dialog" v-model="showExplorePad">
+    <v-dialog max-width="500px" id="explore-pad-dialog" v-model="showExplorePad">
       <v-layout>
         <v-flex>
           <explore-pad

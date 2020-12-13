@@ -488,7 +488,7 @@ export default {
     },
     readableDate () {
       const theDate = new Date(this.snippet.dateCreated)
-      return this.$t('snippets.snippetDetail.postingDateTime', { year: theDate.getFullYear(), month: theDate.getMonth() + 1, day: theDate.getDay(), time: `${theDate.getHours()}:${theDate.getMinutes()}` })
+      return this.$t('snippets.snippetDetail.postingDateTime', { year: theDate.getFullYear(), month: theDate.getMonth() + 1, day: theDate.getDate(), time: `${theDate.getHours()}:${theDate.getMinutes()}` })
     }
   },
   mounted () {
