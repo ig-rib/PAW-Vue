@@ -60,7 +60,7 @@
                       @click.stop="null"
                       @click="goToLanguageSnippets(language.id)"
                     >
-                        {{ language.name }}
+                        {{ titleAbreviation(language.name,13) }}
                     </v-btn>
                   </v-flex>
                 </v-layout>
@@ -183,6 +183,13 @@ export default {
     },
     copiedToClipboard () {
       this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.copiedToClipboard'))
+    },
+    titleAbreviation (name, size) {
+      if (name.length > size) {
+        const newName = name.substr(0, size - 2) + '...'
+        return newName
+      }
+      return name
     }
   },
   mounted () {

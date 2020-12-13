@@ -60,7 +60,7 @@
                 name: 'language-snippets',
                 params: { id: language.id }
               }" text outlined v-cloak>
-                {{ language.name }}
+                {{ titleAbreviation(language.name, 12) }}
               </v-btn>
             </v-flex>
           </v-layout>
@@ -463,6 +463,13 @@ export default {
               }
           }
       }
+    },
+    titleAbreviation (name, size) {
+      if (name.length > size) {
+        const newName = name.substr(0, size - 2) + '...'
+        return newName
+      }
+      return name
     }
   },
   computed: {
