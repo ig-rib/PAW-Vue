@@ -115,7 +115,6 @@ export default {
 @import '@/styles/adminAdd.scss';
 .title-tag-follow-btn {
   transition: 0.3s;
-  // font-size: 50px;
   height: 60px;
   border-radius: 20px !important;
   font-weight: 500;

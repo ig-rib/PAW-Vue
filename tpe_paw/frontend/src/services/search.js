@@ -105,7 +105,6 @@ const searchInLocation = (route, queryParams) => {
       break;
     case 'explore':
       queryParams.title = queryParams.q
-      // delete queryParams.q 
       Router.replace({
         query: queryParams
       })

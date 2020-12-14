@@ -83,7 +83,6 @@ const store = new Vuex.Store({
     },
     logout (/* { commit } */) {
       window.sessionStorage.clear()
-      // commit('resetState')
     },
     snackError ({ commit }, payload) {
       const message = payload || i18n.t('snackbar.error.defaultMessage')
@@ -126,9 +125,5 @@ const store = new Vuex.Store({
   modules: {
   }
 })
-
-// actionFunction = () => {
-//   store.dispatch('hideSnackbar')
-// }
 
 export default store

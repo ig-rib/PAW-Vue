@@ -21,7 +21,6 @@ export default {
   #registration-super-container {
     .registration-super-card {
       max-width: 70% !important;
-      // min-height: 500px;
       border-radius: 8px !important;
     }
   }

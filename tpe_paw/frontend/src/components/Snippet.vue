@@ -85,22 +85,9 @@
 
           <!-- Code preview -->
           <v-layout class="code-layout">
-            <!-- <v-textarea
-              no-resize
-              hide-details
-              rounded
-              class="pl-2 snippet-card-code-textarea"
-              readonly
-              filled
-              :value="snippet.code"
-            >
-              <p class="snippet-card-code-fade">a</p>
-            </v-textarea> -->
+
             <ssh-pre @click="$event.stopPropagation()" @click.stop="null" @mousedown="$event.stopPropagation()" class="snippet-card-code-textarea" language="js" @copied="copiedToClipboard()">
               {{snippet.code}}
-              <!-- <template @mousedown="$event.stopPropagation()" @click="clicked('template'); $event.stopPropagation()" v-slot:copy-button>
-                <v-btn @mousedown="$event.stopPropagation()" @click="clicked('button')" icon><v-icon>mdi-content-copy</v-icon></v-btn>
-              </template> -->
             </ssh-pre>
           </v-layout>
         <!-- </v-container> -->
@@ -245,13 +232,6 @@ export default {
     max-height: 300px;
     overflow: hidden;
     width: 100%;
-    // textarea {
-    //   overflow: hidden !important;
-    //   -webkit-user-select: none; /* Safari */        
-    //   -moz-user-select: none; /* Firefox */
-    //   -ms-user-select: none; /* IE10+/Edge */
-    //   user-select: none; /* Standard */
-    // }
     .v-ripple__container, .v-ripple__container > div {
       opacity: 0.1 !important;
       border-radius: 10px !important;
@@ -306,18 +286,9 @@ export default {
   .snippet-description {
     font-weight: 300;
     margin-bottom: 2%;
-    // max-height: 100px;
-    // overflow-y: hidden;
-    // text-overflow: ellipsis;
     max-width: 100%;
-    // overflow: hidden;
-    // display: -webkit-box;
-    // -webkit-line-clamp: 5;
-    // -webkit-box-orient: vertical;
   }
   .snippet-owner-icon-flex {
-    // height: 50px;
-    // width: 50px;
     border-radius: 100%;
     overflow: hidden;
   }
