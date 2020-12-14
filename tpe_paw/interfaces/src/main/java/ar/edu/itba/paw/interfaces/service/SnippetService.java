@@ -43,4 +43,6 @@ public interface SnippetService {
     Long createSnippet(User owner, String title, String description, String code, Instant dateCreated, Long language, Collection<Long> tags);
     void analizeSnippetsUsing(Tag tag);
     void analizeSnippetsUsing(Language language);
+
+    boolean updateSnippet(long snippetId, String newTitle, String newDescription, String newCode);
 }

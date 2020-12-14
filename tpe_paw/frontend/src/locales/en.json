@@ -88,7 +88,7 @@
         "unreport": "Do you want to unreport this snippet?",
         "confirm": "Confirm",
         "cancel": "Cancel",
-        "alreadyReported": "You already reported and dismissed the report on this snippet",
+        "alreadyReported": "You've already reported this snippet and its owner has unreported it",
         "success": "Successfully reported snippet",
         "successUnreport": "Succesffully unreported snippet",
         "successDismissedAllReports": "Successfylly dismissed all reports for this snippet",
@@ -100,6 +100,11 @@
           "dismissAllReports": "Dismiss all reports"
         }
       },
+      "edit": "Edit",
+      "done": "Save",
+      "cancel": "Cancel",
+      "successEditing": "Successfully updated snippet!",
+      "errorEditing": "Error updating snippet",
       "flagged": {
         "title": "Flagged Snippet",
         "text1": "The following snippet has been marked as incorrect by the administrator.",

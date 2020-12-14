@@ -69,4 +69,6 @@ public interface SnippetDao {
     Collection<Snippet> findSnippetByDeepCriteria(Instant dateMin, Instant dateMax, Integer repMin, Integer repMax, Integer voteMin, Integer voteMax, List<Long> languageIds, List<Long> tagIds, String title, String username, Orders order, Types type, Boolean includeFlagged, int page, int pageSize);
     int getSnippetByCriteriaCount(SnippetDao.Types type, String term, SnippetDao.Locations location, Long userId, Long resourceId);
     int getSnippetByDeepCriteriaCount(Instant dateMin, Instant dateMax, Integer repMin, Integer repMax, Integer voteMin, Integer voteMax, List<Long> languageIds, List<Long> tagIds, String title, String username, Boolean includeFlagged);
+
+    boolean updateSnippet(long snippetId, String newTitle, String newDescription, String newCode);
 }

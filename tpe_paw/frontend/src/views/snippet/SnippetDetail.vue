@@ -86,7 +86,7 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <v-layout justify-center>
+    <v-layout v-if="!editing" justify-center>
       <v-card id="snippet-detail-card" v-if="!loading">
         <v-container px-12>
           <v-layout shrink mt-5 mb-3 class="snippet-title-line">
@@ -297,6 +297,81 @@
           indeterminate></v-progress-circular>
       </v-flex>
     </v-layout>
+    <v-layout justify-center v-else>
+      <v-card px-3 min-width="500px">
+        <v-container>
+          <v-layout mt-2 mb-1> 
+              <v-flex lg7 md7 sm7 xs7 class="snippit-subtitle">
+                {{ $t('snippets.createSnippet.title') }}
+              </v-flex>
+            </v-layout>
+            <v-layout class="title-row">
+              <v-flex lg7 md7 sm7 xs7>
+                <v-text-field
+                  class="custom-label-color"
+                  outlined
+                  dense
+                  rounded
+                  :rules="[rules.title, rules.titleNotBlankWithSpaces]"
+                  v-model="editedTitle"
+                  ></v-text-field>
+              </v-flex>
+            </v-layout>
+            <v-divider></v-divider>
+            <v-layout column mt-2 class="description-line">
+              <v-flex pb-3 class="snippit-subtitle">
+                {{ $t('snippets.createSnippet.description') }}
+              </v-flex>
+              <v-flex>
+                <v-textarea
+                  outlined
+                  no-resize
+                  class="description-textarea"
+                  :rules="[rules.description]"
+                  v-model="editedDescription">
+                </v-textarea>
+              </v-flex>
+            </v-layout>
+            <v-divider></v-divider>
+            <v-layout column mt-2 class="code-line">
+              <v-flex pb-3 class="snippit-subtitle">
+                {{ $t('snippets.createSnippet.code') }}
+              </v-flex>
+              <v-flex>
+                <v-textarea
+                filled
+                outlined
+                class="code-textarea"
+                :rules="[rules.code, rules.codeNotBlankWithSpaces]"
+                v-model="editedCode"
+                ></v-textarea>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card>
+      </v-layout>
+    <v-layout align-center class="snippet-detail-edit-btns" justify-center v-if="userIsOwner">
+      <v-flex v-if="!editing" shrink>
+        <v-btn rounded outlined color="primary" @click="beginEditing">
+          {{ $t('snippets.snippetDetail.edit') }}
+        </v-btn>
+      </v-flex>
+      <v-flex shrink v-else>
+        <v-layout>
+          <v-flex justify-center align-center mx-1>
+            <v-btn rounded outlined color="red" @click="exitEdit">
+              {{ $t('snippets.snippetDetail.cancel') }}
+            </v-btn>
+          </v-flex>
+          <v-flex justify-center align-center mx-1>
+            <v-btn color="info" @click="saveEdit" :disabled="!allRulesAlright">
+              {{ $t('snippets.snippetDetail.done') }}
+              <v-icon right dark>mdi-cloud-upload</v-icon>
+            </v-btn>
+          </v-flex>
+        </v-layout>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
@@ -308,6 +383,7 @@ import urls from '@/services/urls.js'
 import validations from '@/functions/validations'
 import SshPre from 'simple-syntax-highlighter'
 import 'simple-syntax-highlighter/dist/sshpre.css'
+import helpers from '@/functions/helpers.js'
 
 export default {
   title () { return this.$t('titles.detail') },
@@ -329,7 +405,12 @@ export default {
       reportDialog: false,
       unreportDialog: false,
       reportMessage: '',
-      error_image: false
+      error_image: false,
+      editing: false,
+      editedTitle: '',
+      editedDescription: '',
+      editedCode: '',
+      owner: null
     }
   },
   methods: {
@@ -418,7 +499,7 @@ export default {
       snippets.unreportSnippet(this.snippet.id)
           .then(r => {
             this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.report.successUnreport'))
-            this.snippet.reportedDismissed = true
+            this.snippet.reported = false
           })
           .catch(e => {
             console.log(e.response)
@@ -516,6 +597,34 @@ export default {
         return newName
       }
       return name
+    },
+    beginEditing () {
+      this.editedTitle = this.snippet.title
+      this.editedDescription = this.snippet.description
+      this.editedCode = this.snippet.code
+      this.editing = true
+    },
+    exitEdit () {
+      this.editedTitle = ''
+      this.editedDescription = ''
+      this.editedCode = ''
+      this.editing = false
+    },
+    saveEdit () {
+      // Send to endpoint
+      snippets.editSnippet(this.snippet.id, {
+        title: this.editedTitle,
+        description: this.editedDescription,
+        code: this.editedCode
+      }).then(r => {
+        this.snippet.title = this.editedTitle
+        this.snippet.description = this.editedDescription
+        this.snippet.code = this.editedCode
+        this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.successEditing'))
+        this.exitEdit()
+      }).catch(e => {
+        this.$store.dispatch('snackError', this.$t('snippets.snippetDetail.errorEditing'))
+      })
     }
   },
   computed: {
@@ -536,15 +645,23 @@ export default {
     },
     rules () {
       return {
-        lengthBetween: () => validations.lengthBetween(this.reportMessage, 1, 300)
+        lengthBetween: () => validations.lengthBetween(this.reportMessage, 1, 300),
+        title: () => validations.lengthBetween(this.editedTitle, 5, 50),
+        description: () => validations.maxLength(this.editedDescription, 500),
+        code: () => validations.lengthBetween(this.editedCode, 5, 30000),
+        titleNotBlankWithSpaces: () => validations.notBlankWithSpaces(this.editedTitle),
+        codeNotBlankWithSpaces: () => validations.notBlankWithSpaces(this.editedCode)
       }
+    },
+    allRulesAlright () {
+      return Object.keys(this.rules).filter(rule => !rule.includes('lengthBetween') && this.rules[rule]() !== true).length === 0
     },
     readableDate () {
       const theDate = new Date(this.snippet.dateCreated)
       return this.$t('snippets.snippetDetail.postingDateTime', { year: theDate.getFullYear(), month: theDate.getMonth() + 1, day: theDate.getDate(), time: `${theDate.getHours()}:${theDate.getMinutes()}` })
     },
     userIsOwner () {
-      return this.$store.getters.loggedIn && parseInt(this.$store.getters.user.id) === parseInt(this.snippet.id)
+      return this.$store.getters.loggedIn && this.owner != null && parseInt(this.$store.getters.user.id) === parseInt(this.owner.id)
     }
   },
   mounted () {
@@ -589,161 +706,7 @@ export default {
 
 <style lang="scss">
 @import '~vuetify/src/styles/settings/_variables';
-@import '@/styles/noticeCard.scss';  
-  .report-dialog {
-    max-width: 600px;
-    .dialog-card {
-      border-radius: 12px !important;
-    }
-  }
-
-  .snippet-detail-progress-flex {
-    height: 500px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  #snippet-detail-card {
-    border-radius: 10px;
-    .owner-image {
-      border-radius: 40px;
-    }
-    .owner-data {
-      border: 1px solid lightgrey;
-      border-radius: 10px;
-      .owner-image-flex {
-        align-items: center;
-        justify-content: center;
-        display:flex
-      }
-      .owner-name-score-flex {
-        align-items: center;
-        justify-content: center;
-        font-weight: 500;
-        .flex {
-          max-width: 12ch !important;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-      }
-      &:before {
-        border-radius: 10px !important;
-      }
-      .v-ripple__container {
-        opacity: 0.2 !important;
-        border-radius: 10px !important;
-      }
-    }
-    .owner-data:hover {
-      cursor: pointer;
-    }
-    min-width: min-content;
-    .snippet-title-line {
-      overflow: hidden;
-      > .flex {
-        display: flex;
-        align-items: center;
-      }
-      .snippet-title {
-        font-size: 38px;
-        line-height: 1;
-      }
-    }
-    .description-line {
-      text-align: justify;
-    }
-    .divider-line {
-      flex-grow: 0;
-      margin: 0px 0px 2.5% 0px;
-    }
-    .snippet-code-layout {
-      min-height: 200px;
-      .snippet-detail-code-textarea {
-        border-radius: 10px;
-        height: 100%;
-        max-height: 500px;
-        overflow: auto;
-        div {
-          height: 100%;
-        }
-      }
-    }
-    .tags-line {
-      align-items: center;
-      max-height: 10%;
-    }
-  }
-
-  @media #{map-get($display-breakpoints, 'sm-and-up')} {
-    #snippet-detail-card > .container {
-    min-height: 650px !important;
-    max-width: 650px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  }
-  #snippet-detail-action-bar {
-    margin-top: auto !important;
-    clear: both;
-    justify-content: space-between;
-
-    .action-icons-layout {
-      background: #fefefe;
-      border: 1px solid lightgrey;
-      border-radius: 40px;
-      justify-content: space-around;
-      width: max-content;
-      padding: 0px 50px 0px 50px;
-      box-shadow: 1px 1px 3px rgba(50, 50, 50, 0.4) inset;
-      .fav-btn:hover, .color-crimson {
-        color: crimson;
-      }
-      .thumb-up-btn:hover {
-        color: green;
-      }
-      .thumb-down-btn:hover {
-        color: red;
-      }
-      .report-btn:hover, .color-sandybrown, i.color-sandybrown.v-icon.v-icon {
-        color: sandybrown !important;
-      }
-      .color-yellow {
-        color: #ffcc00;
-      }
-
-      .flag-btn:hover {
-        color: red;
-      }
-    }
-    .action-icons-layout > .flex {
-      flex-grow:0;
-      // width: max-content;
-      i, .v-btn, i:active {
-        width: 75px;
-        height: 75px;
-        font-size: 50px;
-      }
-      i:hover {
-        font-size: 60px;
-      }
-    }
-    .v-btn::before {
-      background-color: transparent;
-    }
-    .v-btn::before:hover {
-      font-size: 60px;
-    }
-  }
-  #snippet-detail-action-bar > .flex {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .snippet-score-flex {
-    display: flex;
-    align-items: center;
-  }
+@import '@/styles/noticeCard.scss';
+@import '@/styles/snippetDetail.scss';
+@import '@/styles/createSnippet.scss';
 </style>

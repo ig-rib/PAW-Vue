@@ -88,7 +88,7 @@
           "unreport": "Quieres anular el reporte de este snippet?",
           "confirm": "Confirmar",
           "cancel": "Cancelar",
-          "alreadyReported": "Ya reportaste y anulaste el reporte de este snippet",
+          "alreadyReported": "Ya reportaste el snippet y el reporte fue anulado por el dueño",
           "success": "Snippet reportado con éxito",
           "successUnreport": "El snippet ya no esta mas reportado",
           "successDismissedAllReports": "Se eliminaron todos los reportes del snippet",
@@ -100,6 +100,11 @@
             "dismissAllReports": "Eliminar reportes"
           }
         },
+        "edit": "Editar",
+        "done": "Guardar",
+        "cancel": "Cancelar",
+        "successEditing": "Snippet actualizado con éxito!",
+        "errorEditing": "Error al actualizar el snippet",
         "flagged": {
           "title": "Snippet Marcado",
           "text1": "El siguiente snippet ha sido marcado como incorrecto por el administrador.",

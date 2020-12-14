@@ -178,4 +178,10 @@ public class SnippetServiceImpl implements SnippetService {
         int amount = this.snippetDao.getAllSnippetsByLanguageCount(language.getId());
         language.setSnippetsUsingIsEmpty(amount == 0);
     }
+
+    @Override
+    @Transactional
+    public boolean updateSnippet(long snippetId, String newTitle, String newDescription, String newCode) {
+        return this.snippetDao.updateSnippet(snippetId, newTitle, newDescription, newCode);
+    }
 }
