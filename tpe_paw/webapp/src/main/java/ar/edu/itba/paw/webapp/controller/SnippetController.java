@@ -101,6 +101,15 @@ public class SnippetController {
     @Path("/{id}")
     public Response updateSnippet(final @PathParam(value="id") long id,
                                   @Valid SnippetDto snippetDto) {
+        User user = loginAuthentication.getLoggedInUser().orElse(null);
+        Snippet snippet = this.snippetService.findSnippetById(id).orElse(null);
+
+        if (snippet == null)
+            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, id);
+
+        if (user == null || !user.getId().equals(snippet.getOwner().getId()))
+            return buildErrorResponse("error.403.snippet.edit", Response.Status.FORBIDDEN, null);
+
         if (this.snippetService.updateSnippet(id, snippetDto.getTitle(), snippetDto.getDescription(), snippetDto.getCode())) {
             return Response.status(Response.Status.ACCEPTED).build();
         }
