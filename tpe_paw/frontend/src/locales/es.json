@@ -91,8 +91,14 @@
           "alreadyReported": "Ya reportaste y anulaste el reporte de este snippet",
           "success": "Snippet reportado con éxito",
           "successUnreport": "El snippet ya no esta mas reportado",
-          "errorLoading": "Error al cargar snippet"
-
+          "successDismissedAllReports": "Se eliminaron todos los reportes del snippet",
+          "errorLoading": "Error al cargar snippet",
+          "warning": {
+            "title": "Este snippet fue reportado por un usuario!",
+            "message": "Alguien te quiere avisar de algún error que encontró o de alguna sugerencia. Revisa tu email para ver el mensaje que te envió el usuario.",
+            "suggestion": "Si encuentra un error, recomendamos que borre su snippet antes que el administrador lo marque como inseguro.",
+            "dismissAllReports": "Eliminar reportes"
+          }
         },
         "flagged": {
           "title": "Snippet Marcado",

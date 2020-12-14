@@ -91,7 +91,14 @@
         "alreadyReported": "You already reported and dismissed the report on this snippet",
         "success": "Successfully reported snippet",
         "successUnreport": "Succesffully unreported snippet",
-        "errorLoading": "Error while loading snippet"
+        "successDismissedAllReports": "Successfylly dismissed all reports for this snippet",
+        "errorLoading": "Error while loading snippet",
+        "warning": {
+          "title": "This snippet was reported by a user!",
+          "message": "Someone wants to let you know of an error they found or a suggestion they may have. Check your email to read the message sent by the user.",
+          "suggestion": "If there is an error in your snippet, we recommend you edit or delete it before the administrator flags it as unsafe and harms your reputation.",
+          "dismissAllReports": "Dismiss all reports"
+        }
       },
       "flagged": {
         "title": "Flagged Snippet",

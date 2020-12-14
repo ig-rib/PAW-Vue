@@ -10,4 +10,5 @@ public interface ReportDao {
     Optional<Report> getReport(long userId, long snippetId);
     boolean isReportedAndNotDismissed(long snippetId);
     void dismissReportsForSnippet(long snippetId, long reporterId);
+    void dismissAllReportsForSnippet(long snippetId);
 }

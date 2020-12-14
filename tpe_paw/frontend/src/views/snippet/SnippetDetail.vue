@@ -1,6 +1,6 @@
 <template>
   <v-container class="snippet-detail-outer-container">
-    <v-layout justify-center align-center column pa-5 v-if="snippet.flagged || snippet.deleted">
+    <v-layout justify-center align-center column pa-5 v-if="snippet.flagged || snippet.deleted || snippet.showReportedWarning">
       <v-flex ma-3 shrink v-if="snippet.flagged">
         <v-card class="notice-card">
           <v-layout>
@@ -41,6 +41,46 @@
                   {{ $t('snippets.snippetDetail.deleted.text2') }}
                 </p>
               </v-card-text>
+            </v-flex>
+          </v-layout>
+        </v-card>
+      </v-flex>
+      <v-flex ma-3 shrink v-if="snippet.showReportedWarning">
+        <v-card class="notice-card">
+          <v-layout column>
+            <v-flex>
+              <v-layout>
+                <v-flex ml-2 shrink class="notice-card-icon">
+                  <v-icon color="#f4a460">
+                    mdi-alert-octagon
+                  </v-icon>
+                </v-flex>
+                <v-flex>
+                  <v-card-title>
+                    {{ $t('snippets.snippetDetail.report.warning.title') }}
+                  </v-card-title>
+                  <v-card-text class="notice-card-text">
+                    <p>{{ $t('snippets.snippetDetail.report.warning.message') }}</p>
+                    <p>
+                      {{ $t('snippets.snippetDetail.report.warning.suggestion') }}
+                    </p>
+                  </v-card-text>
+                </v-flex>
+              </v-layout>
+            </v-flex>
+            <v-flex>
+              <v-layout ma-2 justify-center>
+                <v-flex shrink>
+                  <v-btn
+                    rounded
+                    outlined
+                    color="#f4a460"
+                    class="color-sandybrown"
+                    @click="dismissAllReports">
+                    {{ $t('snippets.snippetDetail.report.warning.dismissAllReports') }}
+                  </v-btn>
+                </v-flex>
+              </v-layout>
             </v-flex>
           </v-layout>
         </v-card>
@@ -386,6 +426,18 @@ export default {
           })
           .finally(() => this.resetReportData())
     },
+    dismissAllReports () {
+      snippets.unreportSnippet(this.snippet.id)
+        .then(r => {
+          this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.report.successDismissedAllReports'))
+          this.snippet.showReportedWarning = false
+        })
+        .catch(e => {
+          console.log(e.response)
+          this.$store.dispatch('snackError', e.response.data.message)
+        })
+        .finally(() => this.resetReportData())
+    },
     cancelUnreport () {
       this.resetReportData()
     },
@@ -655,8 +707,8 @@ export default {
       .thumb-down-btn:hover {
         color: red;
       }
-      .report-btn:hover, .color-sandybrown {
-        color: sandybrown;
+      .report-btn:hover, .color-sandybrown, i.color-sandybrown.v-icon.v-icon {
+        color: sandybrown !important;
       }
       .color-yellow {
         color: #ffcc00;

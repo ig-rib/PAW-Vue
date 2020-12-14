@@ -80,7 +80,8 @@ public class SnippetController {
             boolean reported = report != null;
             boolean reportedDismissed = report != null && report.isOwnerDismissed();
             boolean favorite = loggedInUser.getFavorites().contains(snippet);
-            snippetDto = SnippetDto.fromSnippetWithDetail(snippet, uriInfo, voteService.getVoteBalance(snippet.getId()), vote, reported, favorite, reportedDismissed);
+            boolean showReportedWarning = this.reportService.showReportedWarning(snippet, loggedInUser);
+            snippetDto = SnippetDto.fromSnippetWithDetail(snippet, uriInfo, voteService.getVoteBalance(snippet.getId()), vote, reported, favorite, reportedDismissed, showReportedWarning);
         } else {
             snippetDto = SnippetDto.fromSnippet(snippet, uriInfo);
         }
@@ -293,9 +294,13 @@ public class SnippetController {
             return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, id);
         }
         if (user == null) {
-            return buildErrorResponse("error.401.snippet.report", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
+            return buildErrorResponse("error.401.snippet.report", Response.Status.UNAUTHORIZED, loginAuthentication.getLoggedInUsername());
         }
-        this.reportService.dismissReportsForSnippet(id, user.getId());
+        // Owner is dismissing all reports for snippet
+        if (user.getId().equals(snippet.getOwner().getId()))
+            this.reportService.dismissAllReportsForSnippet(id);
+        else
+            this.reportService.dismissReportsForSnippet(id, user.getId());
         return Response.ok().build();
     }
 

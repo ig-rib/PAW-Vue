@@ -28,6 +28,7 @@ public class SnippetDto {
     private boolean isFavorite;
     private boolean isReported;
     private boolean reportedDismissed;
+    private boolean showReportedWarning;
     private VoteDto vote;
 
     public static SnippetDto fromSnippet(Snippet snippet, UriInfo uriInfo){
@@ -54,7 +55,7 @@ public class SnippetDto {
         return dto;
     }
 
-    public static SnippetDto fromSnippetWithDetail(Snippet snippet, UriInfo uriInfo, long score, Vote vote, boolean reported, boolean favorite, boolean reportedDismissed) {
+    public static SnippetDto fromSnippetWithDetail(Snippet snippet, UriInfo uriInfo, long score, Vote vote, boolean reported, boolean favorite, boolean reportedDismissed, boolean showReportedWarning) {
         SnippetDto dto = SnippetDto.fromSnippet(snippet, uriInfo);
         dto.score = score;
         if (vote != null)
@@ -62,6 +63,7 @@ public class SnippetDto {
         dto.isReported = reported;
         dto.reportedDismissed = reportedDismissed;
         dto.isFavorite = favorite;
+        dto.showReportedWarning = showReportedWarning;
         return dto;
     }
 
@@ -184,24 +186,14 @@ public class SnippetDto {
     public void setReportedDismissed(boolean reportedDismissed) {
         this.reportedDismissed = reportedDismissed;
     }
-    //    @Override
-//    public int hashCode() {
-//        int sum = this.id.hashCode();
-//        sum += 19 * new Boolean(this.isFavorite).hashCode();
-//        sum += 43 * new Boolean(this.isReported).hashCode();
-//        sum += 23 * new Boolean(this.flagged).hashCode();
-//        sum += 17 * new Boolean(this.deleted).hashCode();
-//        sum += this.getVote() != null ? 29 * this.getVote().hashCode() : 0;
-//        sum += 31 * (this.score >= 0 ? this.score : 37 * -this.score);
-//        sum += 31 * this.dateCreated.hashCode();
-//        sum += 31 * this.description.hashCode();
-//        sum += 31 * this.title.hashCode();
-//        sum += 31 * this.code.hashCode();
-//        sum += 31 * this.language.hashCode();
-//        sum += 31 * this.owner.hashCode();
-//        sum += 31 * this.tags.hashCode();
-//        return sum;
-//    }
+
+    public boolean getShowReportedWarning() {
+        return showReportedWarning;
+    }
+
+    public void setShowReportedWarning(boolean showReportedWarning) {
+        this.showReportedWarning = showReportedWarning;
+    }
 
 
     @Override
@@ -215,6 +207,7 @@ public class SnippetDto {
                 isFavorite == that.isFavorite &&
                 isReported == that.isReported &&
                 reportedDismissed == that.reportedDismissed &&
+                showReportedWarning == that.showReportedWarning &&
                 Objects.equals(id, that.id) &&
                 Objects.equals(owner, that.owner) &&
                 Objects.equals(language, that.language) &&
@@ -228,6 +221,6 @@ public class SnippetDto {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, owner, language, code, title, description, dateCreated, flagged, deleted, tags, score, isFavorite, isReported, vote, reportedDismissed);
+        return Objects.hash(id, owner, language, code, title, description, dateCreated, flagged, deleted, tags, score, isFavorite, isReported, vote, reportedDismissed, showReportedWarning);
     }
 }

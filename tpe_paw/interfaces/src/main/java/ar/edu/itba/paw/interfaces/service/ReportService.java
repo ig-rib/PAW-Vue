@@ -15,4 +15,5 @@ public interface ReportService {
     boolean canReport(User user);
     boolean showReportedWarning(Snippet snippet, User currentUser);
     void dismissReportsForSnippet(long snippetId, long reporterId);
+    void dismissAllReportsForSnippet(long snippetId);
 }
