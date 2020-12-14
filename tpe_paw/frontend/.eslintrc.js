@@ -67,7 +67,8 @@ module.exports = {
     'no-case-declarations': 'warn',
     'brace-style': 'warn',
     'no-multi-spaces': 'warn',
-    'block-spacing': 'warn'
+    'block-spacing': 'warn',
+    'no-unused-expressions': 'warn'
   },
   overrides: [
     {

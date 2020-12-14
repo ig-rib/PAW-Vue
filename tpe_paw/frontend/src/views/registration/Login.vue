@@ -91,7 +91,6 @@ export default {
             })
           }
           user.getLoggedInUser().then(r => {
-            (r.data)
             this.$store.dispatch('setUser', r.data)
           })
           })

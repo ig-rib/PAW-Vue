@@ -103,7 +103,8 @@ export default {
         })
         .catch(error => { 
           this.status = 'e'
-          })
+          error
+        })
     },
     handleSearchResponse (r) {
       this.links = helpers.parseLinks(r.headers.link)
@@ -122,7 +123,8 @@ export default {
         })
         .catch(error => { 
           this.status = 'e'
-          })
+          error
+        })
     },
     reloadData () {
       const queryParams = this.$route.query
@@ -134,7 +136,8 @@ export default {
           })
         .catch(error => { 
             this.status = 'e'
-            })
+            error
+        })
     }
   },
   computed: {

@@ -162,6 +162,7 @@ export default {
         })
         .catch(error => { 
           this.status = 'e'
+          error
           })
     },
     followTag: function (tag) {
