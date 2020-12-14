@@ -160,6 +160,13 @@ export default {
       this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.copiedToClipboard'))
     },
     titleAbreviation (name, size) {
+      if(this.snippet.flagged){
+        size -= 3
+      }
+      if(this.snippet.deleted){
+        size -= 3
+      }
+
       if (name != null && name.length > size) {
         const newName = name.substr(0, size - 2) + '...'
         return newName
