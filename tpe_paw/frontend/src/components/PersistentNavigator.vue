@@ -167,7 +167,7 @@
                 v-on="on"
                 icon
               >
-                <v-icon>mdi-plus</v-icon>
+              <v-icon size="30">mdi-plus-circle</v-icon>
               </v-btn>
               </template>
               <v-list>
