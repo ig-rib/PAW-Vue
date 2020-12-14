@@ -359,12 +359,12 @@
       <v-flex shrink v-else>
         <v-layout>
           <v-flex justify-center align-center mx-1>
-            <v-btn rounded outlined color="red" @click="exitEdit">
+            <v-btn rounded outlined color="red" @click="exitEdit" :disabled="saving">
               {{ $t('snippets.snippetDetail.cancel') }}
             </v-btn>
           </v-flex>
           <v-flex justify-center align-center mx-1>
-            <v-btn color="info" @click="saveEdit" :disabled="!allRulesAlright">
+            <v-btn color="info" @click="saveEdit" :disabled="!allRulesAlright || saving">
               {{ $t('snippets.snippetDetail.done') }}
               <v-icon right dark>mdi-cloud-upload</v-icon>
             </v-btn>
@@ -410,7 +410,8 @@ export default {
       editedTitle: '',
       editedDescription: '',
       editedCode: '',
-      owner: null
+      owner: null,
+      saving: false
     }
   },
   methods: {
@@ -611,6 +612,7 @@ export default {
     },
     saveEdit () {
       // Send to endpoint
+      this.saving = true
       this.$Progress.start()
       snippets.editSnippet(this.snippet.id, {
         title: this.editedTitle,
@@ -627,6 +629,7 @@ export default {
         this.$Progress.fail()
       }).finally(() => {
         this.$Progress.finish()
+        this.saving = false
       })
     }
   },
