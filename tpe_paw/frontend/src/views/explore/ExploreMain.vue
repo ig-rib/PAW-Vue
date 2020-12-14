@@ -55,7 +55,6 @@ export default {
   },
   mounted () {
     this.$on('searchResults', r => {
-      console.log('explore received response')
       this.$refs.exploreSnippets.$emit('searchResults', r)
     })
   }

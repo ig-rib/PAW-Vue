@@ -40,7 +40,6 @@ export default {
   },
   methods: {
     resetPassword () {
-      console.log(this.repeatPassword)
       registration.resetPassword(this.id, this.password, this.repeatPassword, this.token)
         .then(r => {
           this.$store.dispatch('snackSuccess', this.$t('registration.successfullyResetPassword'))

@@ -381,7 +381,6 @@ export default {
             this.snippet.reportedDismissed = true
           })
           .catch(e => {
-            console.log(e.response)
             this.$store.dispatch('snackError', e.response.data.message)
           })
           .finally(() => this.resetReportData())

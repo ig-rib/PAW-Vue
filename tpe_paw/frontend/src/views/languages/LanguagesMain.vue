@@ -125,7 +125,6 @@ export default {
           this.status = ''
         })
         .catch(error => { 
-          console.log(error)
           this.status = 'e'
           })
     },
@@ -141,7 +140,6 @@ export default {
           this.status = ''
         })
         .catch(error => { 
-          console.log(error)
           this.status = 'e'
           })
     },
@@ -183,7 +181,6 @@ export default {
           this.handleSearchResponse(response)
         })
         .catch(error => { 
-            console.log(error)
             this.status = 'e'
             })
     },

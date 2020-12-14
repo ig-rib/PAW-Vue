@@ -84,7 +84,6 @@ export default {
               name: 'feed'
             })
           } else {
-            console.log(this.prevRoute)
             this.$router.push({
               name: this.prevRoute.name,
               query: this.prevRoute.query,
@@ -92,7 +91,7 @@ export default {
             })
           }
           user.getLoggedInUser().then(r => {
-            console.log(r.data)
+            (r.data)
             this.$store.dispatch('setUser', r.data)
           })
           })
