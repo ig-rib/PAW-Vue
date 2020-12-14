@@ -6,21 +6,31 @@
     <v-layout py-10 class="registration-title-layout" align-center justify-center>
       {{ $t('registration.resetPassword') }}
     </v-layout>
-    <v-text-field
-      type="password"
-      :label="$t('registration.password')"
-      outlined
-      :rules="[rules.password]"
-      v-model="password">
-    </v-text-field>
-    <v-text-field
-      type="password"
-      :label="$t('registration.repeatPassword')"
-      outlined
-      :rules="[rules.equalsPassword]"
-      v-model="repeatPassword">
-    </v-text-field>
-    <v-btn color="accent" :disabled="!allRulesAlright" @click="resetPassword">{{ $t('registration.resetPassword') }}</v-btn>
+    <v-layout class="registration-data-layout" column>
+      <v-flex>
+        <v-text-field
+          type="password"
+          :label="$t('registration.password')"
+          outlined
+          :rules="[rules.password]"
+          v-model="password">
+        </v-text-field>
+      </v-flex>
+      <v-flex>
+        <v-text-field
+          type="password"
+          :label="$t('registration.repeatPassword')"
+          outlined
+          :rules="[rules.equalsPassword]"
+          v-model="repeatPassword">
+        </v-text-field>
+      </v-flex>
+    </v-layout>
+    <v-layout mt-5 justify-center>
+      <v-flex shrink>
+        <v-btn rounded outlined color="primary" :disabled="!allRulesAlright" @click="resetPassword">{{ $t('registration.resetPassword') }}</v-btn>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
