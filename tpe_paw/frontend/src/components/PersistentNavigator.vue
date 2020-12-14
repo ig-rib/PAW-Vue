@@ -206,7 +206,7 @@
             </v-flex>
           </v-layout>
           <v-layout pl-2 v-if="$store.getters.loggedIn">
-            <v-flex v-if="!isAdmin" class="navbar-profile-flex" shrink>
+            <v-flex v-if="!isAdmin" class="navbar-profile-flex" shrink pl-1>
               <v-layout>
                 <router-link
                   v-ripple
@@ -214,7 +214,7 @@
                   :to="{ name: 'user-profile', params: { id: $store.getters.user.id } }"
                   replace>
                   <v-img v-if="!profileImageError" @error="profileImageError = true" width="40px" height="40px" class="navbar-profile-circle" :src="$store.getters.user.icon"/>
-                  <v-icon v-else>mdi-account-circle</v-icon>  
+                  <v-icon size="35" v-else>mdi-account-circle</v-icon>  
                 </router-link>
               </v-layout>
             </v-flex>
