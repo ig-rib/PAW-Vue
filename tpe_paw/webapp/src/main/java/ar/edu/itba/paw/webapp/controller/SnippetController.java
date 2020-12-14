@@ -80,7 +80,8 @@ public class SnippetController {
             boolean reported = report != null;
             boolean reportedDismissed = report != null && report.isOwnerDismissed();
             boolean favorite = loggedInUser.getFavorites().contains(snippet);
-            snippetDto = SnippetDto.fromSnippetWithDetail(snippet, uriInfo, voteService.getVoteBalance(snippet.getId()), vote, reported, favorite, reportedDismissed);
+            boolean showReportedWarning = this.reportService.showReportedWarning(snippet, loggedInUser);
+            snippetDto = SnippetDto.fromSnippetWithDetail(snippet, uriInfo, voteService.getVoteBalance(snippet.getId()), vote, reported, favorite, reportedDismissed, showReportedWarning);
         } else {
             snippetDto = SnippetDto.fromSnippet(snippet, uriInfo);
         }
