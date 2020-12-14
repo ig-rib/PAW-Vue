@@ -19,7 +19,7 @@
         </v-flex>
         <v-flex>
           <v-layout justify-center>
-            <v-btn color="accent" :disabled="validEmail" @click="sendRecoveryEmail">
+            <v-btn rounded outlined color="primary" :disabled="validEmail" @click="sendRecoveryEmail">
               {{ $t('registration.sendRecoveryEmail') }}
             </v-btn>
           </v-layout>
@@ -40,10 +40,10 @@
       <v-layout pt-10 align-center justify-center class="registration-snippit-logo">
         {{ $t('snippit') }}
       </v-layout>
-      <v-layout pt-10 class="registration-title-layout" align-center>
+      <v-layout pt-10 class="registration-title-layout" align-center justify-center>
         {{ $t('registration.recoveryEmailSent') }}
       </v-layout>
-      <v-layout py-5>
+      <v-layout class="registration-data-layout" justify-center align-center py-5>
         {{ $t('registration.mailSentInfo') }}
       </v-layout>
     </template>
