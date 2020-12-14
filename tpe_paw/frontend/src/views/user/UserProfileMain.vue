@@ -62,10 +62,17 @@
             {{ user.username }}
           </v-flex>
           <v-flex mx-5 mr-5 pa-1 shrink class="user-profile-reputation">
+            <v-chip
+              large
+              class="ma-2"
+              color="indigo darken-3"
+              outlined
+            >
             {{ user.reputation }}
             <v-icon color="#efb810">
               mdi-star
             </v-icon>
+            </v-chip>
           </v-flex>
           <v-flex>
             <v-layout align-center shrink v-if="isLoggedInUser">            
@@ -322,14 +329,6 @@ import validations from '@/functions/validations'
     }
     .user-profile-reputation {
       font-size: 30px;
-      font-weight: 400;
-      height: max-content;
-      padding: 2px;
-      border-radius: 30px;
-      background-color: $background;
-      border: 2px solid $accent;
-      align-items: center;
-      display: flex;
       i {
         font-size: 25px;
       }
