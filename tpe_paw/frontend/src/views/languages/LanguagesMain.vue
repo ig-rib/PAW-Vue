@@ -126,6 +126,7 @@ export default {
         })
         .catch(error => { 
           this.status = 'e'
+          error
           })
     },
     tryLoadingAgain () {
@@ -141,6 +142,7 @@ export default {
         })
         .catch(error => { 
           this.status = 'e'
+          error
           })
     },
     handleSearchResponse (response) {
@@ -182,6 +184,7 @@ export default {
         })
         .catch(error => { 
             this.status = 'e'
+            error
             })
     },
     titleAbreviation (name, size) {
