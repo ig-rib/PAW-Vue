@@ -293,9 +293,13 @@ public class SnippetController {
             return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, id);
         }
         if (user == null) {
-            return buildErrorResponse("error.401.snippet.report", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
+            return buildErrorResponse("error.401.snippet.report", Response.Status.UNAUTHORIZED, loginAuthentication.getLoggedInUsername());
         }
-        this.reportService.dismissReportsForSnippet(id, user.getId());
+        // Owner is dismissing all reports for snippet
+        if (user.getId().equals(snippet.getOwner().getId()))
+            this.reportService.dismissAllReportsForSnippet(id);
+        else
+            this.reportService.dismissReportsForSnippet(id, user.getId());
         return Response.ok().build();
     }
 
