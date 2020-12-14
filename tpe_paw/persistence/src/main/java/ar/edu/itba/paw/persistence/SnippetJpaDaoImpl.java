@@ -252,6 +252,19 @@ public class SnippetJpaDaoImpl implements SnippetDao {
         return nativeQuery.getResultList().size();
     }
 
+    @Override
+    public boolean updateSnippet(long snippetId, String newTitle, String newDescription, String newCode) {
+        Snippet snippet = this.findSnippetById(snippetId).orElse(null);
+        if (snippet != null) {
+            snippet.setTitle(newTitle);
+            snippet.setDescription(newDescription);
+            snippet.setCode(newCode);
+            this.em.persist(snippet);
+            return true;
+        }
+        return false;
+    }
+
     private SnippetDeepSearchQuery createDeepQuery(Instant dateMin, Instant dateMax, Integer repMin, Integer repMax, Integer voteMin, Integer voteMax, List<Long> languageIds, List<Long> tagIds, String title, String username, Orders order, Types type, Boolean includeFlagged) {
         SnippetDeepSearchQuery.Builder queryBuilder = new SnippetDeepSearchQuery.Builder();
         if (dateMin == null && dateMax == null && repMin == null && repMax == null && voteMin == null && voteMax == null && languageIds == null && tagIds == null && title == null && username == null && includeFlagged == null) {

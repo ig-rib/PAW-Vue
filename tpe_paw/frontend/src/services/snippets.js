@@ -63,6 +63,12 @@ const restoreDeletedSnippet = (id) => axiosFetcher.put(urls.snippet.restore, {
   }
 })
 
+const editSnippet = (id, params) => axiosFetcher.put(urls.snippet.snippet, {
+  pathVariables: {
+    id
+  }
+}, params)
+
 export default {
   createSnippet,
   getSnippet,
@@ -74,5 +80,6 @@ export default {
   reportSnippet,
   unreportSnippet,
   deleteSnippet,
-  restoreDeletedSnippet
+  restoreDeletedSnippet,
+  editSnippet
 }

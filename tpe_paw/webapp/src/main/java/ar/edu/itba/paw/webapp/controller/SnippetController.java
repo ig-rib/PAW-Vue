@@ -69,7 +69,7 @@ public class SnippetController {
 
         Snippet snippet = snippetService.findSnippetById(id).orElse(null);
         if(snippet == null){
-            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
+            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, id);
         }
 
         SnippetDto snippetDto = null;
@@ -97,6 +97,16 @@ public class SnippetController {
         return builder.cacheControl(cc).build();
     }
 
+    @PUT
+    @Path("/{id}")
+    public Response updateSnippet(final @PathParam(value="id") long id,
+                                  @Valid SnippetDto snippetDto) {
+        if (this.snippetService.updateSnippet(id, snippetDto.getTitle(), snippetDto.getDescription(), snippetDto.getCode())) {
+            return Response.status(Response.Status.ACCEPTED).build();
+        }
+        return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, id);
+    }
+
     @DELETE
     @Path("/{id}")
     public Response deleteSnippet(final @PathParam(value="id") long id) {
@@ -104,7 +114,7 @@ public class SnippetController {
         Snippet snippet = this.snippetService.findSnippetById(id).orElse(null);
 
         if (snippet == null) {
-            return buildErrorResponse("error.401.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
+            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, id);
         }
         if (user == null){
             // Same message only 401 vs 403
@@ -128,7 +138,7 @@ public class SnippetController {
         Snippet snippet = this.snippetService.findSnippetById(id).orElse(null);
 
         if (snippet == null) {
-            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
+            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, id);
         }
         if(user == null){
             return buildErrorResponse("error.403.snippet.restore", Response.Status.UNAUTHORIZED, snippet.getId());
@@ -181,7 +191,7 @@ public class SnippetController {
         } else {
             Snippet snippet = snippetService.findSnippetById(id).orElse(null);
             if(snippet == null){
-                return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
+                return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, id);
             }
             this.voteService.performVote(snippet.getOwner().getId(), user.getId(), id, voteDto.getSelected(), voteDto.getPositive());
             VoteResponseDto vrDto = VoteResponseDto.createVoteResponse(voteService.getVoteBalance(snippet.getId()), snippet.getOwner().getReputation(), voteService.getVote(user.getId(), snippet.getId()).orElse(null));
@@ -237,7 +247,7 @@ public class SnippetController {
     ) {
         Snippet snippet = snippetService.findSnippetById(id).orElse(null);
         if(snippet == null){
-            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
+            return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, id);
         }
         User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
 
@@ -317,7 +327,7 @@ public class SnippetController {
         } else {
             Snippet snippet = snippetService.findSnippetById(id).orElse(null);
             if(snippet == null){
-                return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
+                return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, id);
             }
 
             try {
@@ -346,7 +356,7 @@ public class SnippetController {
         } else {
             Snippet snippet = snippetService.findSnippetById(id).orElse(null);
             if(snippet == null){
-                return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, loginAuthentication.getLoggedInUsername());
+                return buildErrorResponse("error.404.snippet", Response.Status.NOT_FOUND, id);
             }
 
             try {
