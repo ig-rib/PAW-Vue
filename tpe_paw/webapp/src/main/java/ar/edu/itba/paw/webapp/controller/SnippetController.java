@@ -303,7 +303,7 @@ public class SnippetController {
     @Path(value="/{id}/flag")
     public Response flagSnippet(
             @PathParam(value="id") long id,
-            String baseUri
+            FlagDto falgDto
     ) {
         User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
 
@@ -317,7 +317,7 @@ public class SnippetController {
 
             try {
                 // Updating the flagged variable of snippet
-                this.snippetService.updateFlagged(snippet, snippet.getOwner(), true, baseUri    );
+                this.snippetService.updateFlagged(snippet, snippet.getOwner(), true, falgDto.getBaseUri());
             } catch (Exception e) {
                 LOGGER.error(e.getMessage() + "Failed to flag snippet {}", snippet.getId());
                 return buildErrorResponse("error.500", Response.Status.INTERNAL_SERVER_ERROR, null);
@@ -331,8 +331,7 @@ public class SnippetController {
     @DELETE
     @Path(value="/{id}/flag")
     public Response unflagSnippet(
-            @PathParam(value="id") long id,
-            String baseUri
+            @PathParam(value="id") long id
     ) {
         User user = userService.findUserByUsername(loginAuthentication.getLoggedInUsername()).orElse(null);
 
@@ -346,7 +345,7 @@ public class SnippetController {
 
             try {
                 // Updating the flagged variable of snippet
-                this.snippetService.updateFlagged(snippet, snippet.getOwner(), false, baseUri);
+                this.snippetService.updateFlagged(snippet, snippet.getOwner(), false, "");
             } catch (Exception e) {
                 LOGGER.error(e.getMessage() + "Failed to flag snippet {}", snippet.getId());
                 return buildErrorResponse("error.500", Response.Status.INTERNAL_SERVER_ERROR, null);
