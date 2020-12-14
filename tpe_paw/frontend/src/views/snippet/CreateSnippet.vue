@@ -177,7 +177,7 @@ export default {
             }
             this.$Progress.fail()
           }
-      ).finally(() => this.$Progress.end())
+      ).finally(() => this.$Progress.finish())
     },
     goHome () {
       this.$router.push({
