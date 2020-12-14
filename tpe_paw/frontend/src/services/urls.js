@@ -2,7 +2,7 @@
 const localDomain = 'http://localhost:8080/'
 // TODO: change before last deploy
 // const localDomain = 'http://pawserver.it.itba.edu.ar/paw-2020a-2/';
-const mailBaseUrl = 'https://pawserver.it.itba.edu.ar'
+const mailBaseUrl = 'http://pawserver.it.itba.edu.ar'
 const localDomainApi = localDomain + 'api/'
 
 const urls = {
