@@ -1,14 +1,11 @@
 <template>
   <v-container v-if="snippet != null" id="snippet-card-container">
-      <!-- min-width="300px"
-        min-height="375px" -->
       <v-card
         min-width="350px !important"
         min-height="300px"
         max-width="400px !important"
         class="snippet-card-card" 
         :class="`snippet-card-card`" @click="goToSnippetDetail">
-        <!-- <v-container class="snippet-card-inner-container"> -->
         <!-- User and language -->
           <v-layout class="user-language-layout" dense>
               <v-flex class="username-date-flex" dense>
@@ -69,12 +66,6 @@
 
           <!-- Title and description -->
           <v-layout class="title-description-layout" column>
-            <!-- <v-flex>
-              <p>{{snippet.title}}</p>
-            </v-flex>
-            <v-flex>
-              <p>{{snippet.description}}</p>
-            </v-flex> -->
             <v-list-item two-line>
               <v-list-item-content class="pa-0"> 
                 <div class="snippet-title headline mb-1">{{ snippet.title }}</div>
@@ -82,15 +73,12 @@
               </v-list-item-content>
             </v-list-item>
           </v-layout>
-
-          <!-- Code preview -->
           <v-layout class="code-layout">
 
             <ssh-pre @click="$event.stopPropagation()" @click.stop="null" @mousedown="$event.stopPropagation()" class="snippet-card-code-textarea" language="js" @copied="copiedToClipboard()">
               {{snippet.code}}
             </ssh-pre>
           </v-layout>
-        <!-- </v-container> -->
       </v-card>
   </v-container>
   
@@ -191,9 +179,6 @@ export default {
 @import '@/styles/main.scss';
 
 #snippet-card-container {
-  // max-width: 450px;
-  // max-width: 33%;
-  // margin: 5%;
   .account-circle {
     max-height: 30px;
     max-width: 30px;
