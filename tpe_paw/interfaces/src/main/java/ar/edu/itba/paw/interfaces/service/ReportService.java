@@ -14,6 +14,6 @@ public interface ReportService {
     boolean reportSnippet(User user, Snippet snippet, String reportDetail, String baseUrl);
     boolean canReport(User user);
     boolean showReportedWarning(Snippet snippet, User currentUser);
-    void dismissReportsForSnippet(long snippetId, long reporterId);
+    void deleteReportsForSnippet(long snippetId, long reporterId);
     void dismissAllReportsForSnippet(long snippetId);
 }

@@ -418,7 +418,7 @@ export default {
       snippets.unreportSnippet(this.snippet.id)
           .then(r => {
             this.$store.dispatch('snackSuccess', this.$t('snippets.snippetDetail.report.successUnreport'))
-            this.snippet.reportedDismissed = true
+            this.snippet.reported = false
           })
           .catch(e => {
             console.log(e.response)

@@ -88,7 +88,7 @@
         "unreport": "Do you want to unreport this snippet?",
         "confirm": "Confirm",
         "cancel": "Cancel",
-        "alreadyReported": "You already reported and dismissed the report on this snippet",
+        "alreadyReported": "You've already reported this snippet and its owner has unreported it",
         "success": "Successfully reported snippet",
         "successUnreport": "Succesffully unreported snippet",
         "successDismissedAllReports": "Successfylly dismissed all reports for this snippet",

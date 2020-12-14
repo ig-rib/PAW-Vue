@@ -300,7 +300,7 @@ public class SnippetController {
         if (user.getId().equals(snippet.getOwner().getId()))
             this.reportService.dismissAllReportsForSnippet(id);
         else
-            this.reportService.dismissReportsForSnippet(id, user.getId());
+            this.reportService.deleteReportsForSnippet(id, user.getId());
         return Response.ok().build();
     }
 
