@@ -544,7 +544,7 @@ export default {
         this.performSearch(params)
           .then(r => {})
           .catch(e => {
-            this.showEmpty = oldVal
+            this.showOnlyFollowing = oldVal
             this.$store.dispatch('snackError', e.response.data.message) 
           })
       }
@@ -560,7 +560,7 @@ export default {
   mounted () {
     const query = this.$store.query
     if (query != null) {
-      if (query.showEmpty === false) {
+      if (query.showEmpty !== true) {
         this.showEmpty = false
       }
       if (query.showOnlyFollowing != null) {

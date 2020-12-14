@@ -31,7 +31,8 @@ export default {
       this.$router.push({
         name: 'tags-main',
         query: {
-          showOnlyFollowing: true
+          showOnlyFollowing: true,
+          showEmpty: false
         }
       })
     }
