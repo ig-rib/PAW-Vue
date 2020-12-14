@@ -611,6 +611,7 @@ export default {
     },
     saveEdit () {
       // Send to endpoint
+      this.$Progress.start()
       snippets.editSnippet(this.snippet.id, {
         title: this.editedTitle,
         description: this.editedDescription,
@@ -623,6 +624,9 @@ export default {
         this.exitEdit()
       }).catch(e => {
         this.$store.dispatch('snackError', this.$t('snippets.snippetDetail.errorEditing'))
+        this.$Progress.fail()
+      }).finally(() => {
+        this.$Progress.finish()
       })
     }
   },
