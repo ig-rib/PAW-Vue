@@ -10,7 +10,6 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Collection;
@@ -29,6 +28,7 @@ public class UserServiceImpl implements UserService {
     public User register(String username, String password, String email, Instant dateJoined, Locale locale) {
         User user = this.userDao.createUser(username, password, email, dateJoined, locale);
         this.roleService.assignUserRole(user.getId());
+        this.registerFollowUp(user);
         return user;
     }
 
