@@ -1,4 +1,8 @@
 module.exports = {
+  //TODO: change for deploy
+  // configureWebpack: {
+  //   mode: 'production'
+  // },
   transpileDependencies: [
     'vuetify'
   ],
