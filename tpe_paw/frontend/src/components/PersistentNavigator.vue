@@ -300,7 +300,7 @@
             :to="{ name: 'user-profile', params: { id: $store.getters.user.id } }"
             replace>
             <v-img v-if="!profileImageError" @error="profileImageError = true" width="40px" height="40px" class="navbar-profile-circle" :src="$store.getters.user.icon"/>
-            <v-icon v-else>mdi-account-circle</v-icon>  
+            <v-icon size="50" v-else>mdi-account-circle</v-icon>  
           </router-link>
         </v-layout>
       </v-flex>
