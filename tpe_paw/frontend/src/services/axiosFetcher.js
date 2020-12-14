@@ -66,7 +66,6 @@ const axiosFetcher = (url = '', params = {}, method = 'get', data = {}, headers 
             Store.dispatch('snackError', i18n.t('error.unknown'))
           } else if (e.response.data.length === 1) {
             const errorObj = e.response.data[0]
-            console.log(errorObj, e.response.data)
             Store.dispatch('snackError', i18n.t('error.400.singleError', errorObj))
           } else {
             Store.dispatch('snackError', i18n.t('error.400.multipleErrors'))

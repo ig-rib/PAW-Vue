@@ -145,7 +145,7 @@ export default {
           this.status = ''
         })
         .catch(error => { 
-          console.log(error)
+          (error)
           this.status = 'e'
           })
     },
@@ -161,8 +161,8 @@ export default {
           this.status = ''
         })
         .catch(error => { 
-          console.log(error)
           this.status = 'e'
+          error
           })
     },
     followTag: function (tag) {
@@ -218,7 +218,6 @@ export default {
         this.handleSearchResponse(response)    
       })
       .catch(e => {
-        console.log(e)
         this.status = 'e'
       })
     },

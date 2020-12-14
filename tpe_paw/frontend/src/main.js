@@ -16,7 +16,6 @@ import helpers from './functions/helpers.js'
 
 import VueMasonry from 'vue-masonry-css'
 
-// import VueHighlightJS from 'vue-highlightjs'
 
 Vue.config.productionTip = false
 
@@ -41,7 +40,6 @@ Vue.use(VueProgressBar, {
   }
 })
 
-// Vue.use(VueHighlightJS)
 
 new Vue({
   i18n,

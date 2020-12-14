@@ -604,17 +604,8 @@ export default {
     cursor: pointer;
   }
   .navbar-profile-circle {
-    // width: 100%;
-    // height: auto;
-    // position: relative;
-    // -webkit-border-radius: 50%;
-    // -moz-border-radius: 50%;
-    // -ms-border-radius: 50%;
-    // -o-border-radius: 50%;
     border-radius: 50%;
-    // display: flex;
-    // align-items: center;
-    // justify-content: center;
+
   }
   .title-flex {
     display: flex;

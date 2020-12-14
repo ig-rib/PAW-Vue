@@ -43,16 +43,7 @@ export default {
       set () {
         this.$store.dispatch('hideSnackbar')
       }
-    }//,
-//    language () {
-//      return navigator.language
-//    }
-    // rememberMe () {
-    //   return window.localStorage.getItem('keepSignedIn')
-    // },
-    // token () {
-    //   return window.localStorage.getItem('token')
-    // }
+    }
   },
   methods: {
     hideSnackbar () {
@@ -72,9 +63,6 @@ export default {
         this.$store.dispatch('setUser', r.data)
       })
     }
-    // else {
-    //   window.localStorage.removeItem('token')
-    // }
   }
 }
 </script>

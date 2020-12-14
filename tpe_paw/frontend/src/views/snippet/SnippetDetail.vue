@@ -502,7 +502,6 @@ export default {
             this.snippet.reported = false
           })
           .catch(e => {
-            console.log(e.response)
             this.$store.dispatch('snackError', e.response.data.message)
           })
           .finally(() => this.resetReportData())

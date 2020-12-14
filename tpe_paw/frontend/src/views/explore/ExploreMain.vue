@@ -9,8 +9,6 @@
       <v-flex 
         :class="`explore-pad-flex justify-center`"
         sm12>
-        <!-- <explore-pad v-if="$vuetify.breakpoint.mdAndUp"
-          @searchResults="updateResults"></explore-pad> -->
         <v-btn rounded outlined color="primary" @click="showExplorePad = !showExplorePad">
           {{ $t('explore.showFilters') }}
         </v-btn>
@@ -55,7 +53,6 @@ export default {
   },
   mounted () {
     this.$on('searchResults', r => {
-      console.log('explore received response')
       this.$refs.exploreSnippets.$emit('searchResults', r)
     })
   }

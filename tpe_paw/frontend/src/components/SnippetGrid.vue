@@ -49,19 +49,6 @@
           <v-btn rounded outlined color="primary" @click="tryLoadingAgain">{{ $t('error.grid.tryAgain') }}</v-btn>
         </v-flex>
       </v-layout>
-      <!-- <v-layout v-else justify-center row   wrap>
-        <v-flex
-            class="snippet-card-flex"
-            shrink
-            v-for="snippet in snippets"
-            d-flex
-            child-flex
-            :key="snippet.id"
-          >
-          <snippet
-            :snippet="snippet"/>
-        </v-flex>
-      </v-layout> -->
         <masonry
           class="masonry-flex"
           v-else
@@ -115,9 +102,9 @@ export default {
           this.handleSearchResponse(r)
         })
         .catch(error => { 
-          console.log(error)
           this.status = 'e'
-          })
+          error
+        })
     },
     handleSearchResponse (r) {
       this.links = helpers.parseLinks(r.headers.link)
@@ -135,9 +122,9 @@ export default {
           this.handleSearchResponse(values)
         })
         .catch(error => { 
-          console.log(error)
           this.status = 'e'
-          })
+          error
+        })
     },
     reloadData () {
       const queryParams = this.$route.query
@@ -148,9 +135,9 @@ export default {
           this.handleSearchResponse(r)
           })
         .catch(error => { 
-            console.log(error)
             this.status = 'e'
-            })
+            error
+        })
     }
   },
   computed: {
@@ -174,15 +161,6 @@ export default {
       this.handleSearchResponse(r)
     })
     this.$on('updated', () => {
-      // searchService.searchInLocation(this.$route, queryParams)
-      //   .then(r => {
-      //     this.pagination.page = parseInt(queryParams.page) || 1
-      //     this.handleSearchResponse(r)
-      //   })
-      //   .catch(error => { 
-      //     console.log(error)
-      //     this.status = 'e'
-      //     })
       this.reloadData()
     })
   }
@@ -196,9 +174,6 @@ export default {
     font-weight: 300;
   }
   .masonry-flex {
-    // @media screen and (min-width: 1200px) {
-    //   min-width: 100%;
-    // }
     justify-content: center;
   }
   .masonry-flex > div {
