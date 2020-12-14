@@ -32,8 +32,8 @@ import ErrorView from '@/views/error/Error.vue'
 Vue.use(VueRouter)
 
 // TODO change before deploy
-const deployRoute = ''
-// const deployRoute = '/paw-2020a-2'
+// const deployRoute = ''
+const deployRoute = '/paw-2020a-2'
 
 const routes = [
   {

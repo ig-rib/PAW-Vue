@@ -1,8 +1,8 @@
 module.exports = {
   //TODO: change for deploy
-  // configureWebpack: {
-  //   mode: 'production'
-  // },
+  configureWebpack: {
+    mode: 'production'
+  },
   transpileDependencies: [
     'vuetify'
   ],
@@ -14,7 +14,7 @@ module.exports = {
       enableInSFC: false
     }
   },
-  publicPath: '/'
+  // publicPath: '/'
   // TODO change on deploy
-  // publicPath: '/paw-2020a-2'
+  publicPath: '/paw-2020a-2'
 }

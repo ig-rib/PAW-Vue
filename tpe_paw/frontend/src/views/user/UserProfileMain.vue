@@ -203,6 +203,7 @@ import validations from '@/functions/validations'
         this.description = this.user.description
       },
       saveChanges () {
+        this.$Progress.start()
         const params = {
           encodedPhoto: this.image64,
           description: this.description
@@ -215,12 +216,16 @@ import validations from '@/functions/validations'
           this.$emit('profilePicChanged')
           this.$store.dispatch('setUser', newUserData)
           this.$store.dispatch('snackSuccess', this.$t('user.profile.profileInfoUpdated'))
+        }).catch(e => {
+          e
+          this.$Progres.fail()
         })
         .finally(() => {
           this.$refs.userProfileRouterView.$emit('updated')
           this.updateUserData()
           this.editing = false
           this.hasPhotoPreview = false
+          this.$Progress.finish()
         })
       },
       goToVerify () {
