@@ -33,7 +33,7 @@ const flagSnippet = (id, params) => axiosFetcher.put(urls.snippet.flagSnippet, {
   }
 }, params)
 
-const unflagSnippet = (id, params) => axiosFetcher.put(urls.snippet.flagSnippet, {
+const unflagSnippet = (id, params) => axiosFetcher.del(urls.snippet.flagSnippet, {
   pathVariables: {
     id
   }

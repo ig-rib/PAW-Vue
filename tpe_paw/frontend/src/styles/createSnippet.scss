@@ -1,0 +1,41 @@
+.multiselect__single {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+  }
+  .title-row {
+    .flex {
+      display: flex;
+      align-items: center;
+    }
+  }
+  .snippet-create-card {
+    padding-right: 10px;
+    padding-left: 10px;
+    max-width: 600px;
+    min-width: 600px;
+    border-radius: 10px;
+    .custom-label-color .v-label {
+      opacity: 1;
+    }
+  }
+  .description-textarea {
+    border-radius: 10px;
+  }
+  .code-textarea {
+    border-radius: 10px;
+  }
+  .tags-line {
+    align-content: space-between;
+    .flex {
+      max-width: 100%;
+    }
+    .save-btn-flex {
+      display: flex;
+      flex: 1;
+      justify-content: flex-end;
+      align-items: center;
+    }
+  }
+  .snippit-subtitle {
+    font-size: 20px;
+  }
