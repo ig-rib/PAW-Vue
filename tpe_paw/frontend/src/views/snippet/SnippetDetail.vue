@@ -698,6 +698,13 @@ export default {
           this.resetReportData()
         }
       }
+    },
+    unreportDialog: {
+      handler: function (newVal, oldVal) {
+        if (newVal === false) {
+          this.resetReportData()
+        }
+      }
     }
   }
 }

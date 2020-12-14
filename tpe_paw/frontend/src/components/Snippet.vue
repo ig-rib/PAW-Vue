@@ -7,7 +7,7 @@
         min-height="300px"
         max-width="400px !important"
         class="snippet-card-card" 
-        :class="`${cardMaxWidthClass} snippet-card-card`" @click="goToSnippetDetail">
+        :class="`snippet-card-card`" @click="goToSnippetDetail">
         <!-- <v-container class="snippet-card-inner-container"> -->
         <!-- User and language -->
           <v-layout class="user-language-layout" dense>
