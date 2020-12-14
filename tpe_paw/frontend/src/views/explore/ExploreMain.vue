@@ -6,7 +6,8 @@
       </v-flex>
     </v-layout>
     <v-layout justify-center wrap>
-      <v-flex 
+      <v-flex
+        pb-5 
         :class="`explore-pad-flex justify-center`"
         sm12>
         <v-btn rounded outlined color="primary" @click="showExplorePad = !showExplorePad">

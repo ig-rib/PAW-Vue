@@ -1,6 +1,6 @@
 <template>
   <div class="fill-width">
-    <v-layout justify-center mb-10 class="text-center">
+    <v-layout justify-center mb-3 class="text-center">
     </v-layout>
     <v-layout column align-center justify-center py-10 v-if="snippets.length === 0 && status !== 'l' && inOwnProfileActive">
       <v-flex shrink class="no-snippets-text" mb-10>
