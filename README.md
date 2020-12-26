@@ -1,2 +1,2 @@
 # PAW-Vue
-Migration of PAW Project's front end to Vue.js
+Snippit - A website to find and share the code you need!
