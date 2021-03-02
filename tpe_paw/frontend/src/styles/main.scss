@@ -1,0 +1,66 @@
+@import './alignmentUtils.scss';
+
+$primary: #1565c0;
+$accent: #2286c3;
+$secondary: #64b5f6;
+$background: #ebfaff;
+
+.error-text {
+    color: red !important;
+    transition: 0.3s;
+}
+
+.grid-error-layout {
+    padding: 100px 0px 100px 0px;
+}
+
+.grid-progress-circle {
+    padding: 200px 0px 200px 0px;
+}
+
+.view-title-layout {
+    justify-content: center;
+}
+
+.view-title {
+    font-size: 60px;
+    font-weight: 300;
+    margin: 2% 0 3% 0;
+}
+
+.max-800 {
+    max-width: 800px !important;
+}
+
+.max-600 {
+    max-width: 600px !important;
+}
+
+.max-400 {
+    max-width: 400px !important;
+}
+
+.fill-width {
+    min-width: 100% !important;
+    width: 100% !important;
+}
+
+#footer {
+    display: flex;
+    margin-top: auto !important;
+    div {
+        padding: 5px;
+    }
+}
+
+.no-select {
+    -webkit-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.snippit-subtitle {
+    color: $primary !important;
+    font-weight: 300;
+}

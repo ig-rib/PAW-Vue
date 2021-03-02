@@ -1,0 +1,20 @@
+@import './main.scss';
+.notice-card {
+  border-radius: 10px !important;
+  width: 600px;
+}
+
+.notice-card-text {
+  > p {
+    margin: 0px;
+  }
+  font-size: 15px;
+}
+
+.notice-card-icon {
+  display: flex;
+  align-content: center;
+  i {
+    font-size: 100px !important;
+  }
+}

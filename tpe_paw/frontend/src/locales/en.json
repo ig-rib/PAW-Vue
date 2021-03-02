@@ -1,0 +1,364 @@
+{
+  "message": "hello i18n !!",
+  "snippit": "{ Snippit }",
+  "feed": {
+    "title": "Feed"
+  },
+  "explore": {
+    "explore": "Explore",
+    "padTitle": "Filters",
+    "order": {
+      "title": "Order",
+      "orderBy": "Order By",
+      "sort": "Sort"
+    },
+    "flagged": {
+      "title": "Flagged Snippets",
+      "includeFlagged": "Include Flagged Snippets"
+    },
+    "title": {
+      "title": "Title",
+      "label": "Snippet Title"
+    },
+    "language": "Languages",
+    "tag": "Tags",
+    "username": "Username",
+    "dateUploaded": "Date Uploaded",
+    "userReputation": {
+      "title": "User Reputation",
+      "label": "Reputation"
+    },
+    "snippetVotes": {
+      "title": "Snippet Votes",
+      "label": "Votes"
+    },
+    "from": "From",
+    "to": "To",
+    "min": "Min",
+    "max": "Max",
+    "showFilters": "Show Filters"
+  },
+  "languages": {
+    "title": "Languages",
+    "languageSnippets": "Snippets for language {langName}",
+    "languageDeleted": {
+      "title": "This language has been deleted by the administrator",
+      "message": "Deleted languages are not available for use in new snippets and do not appear in the languages list."
+    },
+    "successDelete": "Successfully deleted language",
+    "errorDelete": "Error while deleting language",
+    "noLanguagesInHere": "No languages in here"
+  },
+  "tags": {
+    "title": "Tags",
+    "follow": "Follow",
+    "following": "Following",
+    "search" : "Search for a tag",
+    "showEmpty": "Show empty",
+    "showOnlyFollowing": "Show following",
+    "tagSnippets": "Snippets for tag {tagName}",
+    "errorFollow": "Error while following tag, try again later",
+    "errorUnfollow": "Error while unfollowing tag, try again later",
+    "successDelete": "Successfully deleted tag",
+    "errorDelete": "Error while deleting tag",
+    "noTagsInHere": "No tags in here"
+  },
+  "snippets": {
+    "createSnippet": {
+      "createSnippet": "Create",
+      "create": "Create",
+      "title": "Title",
+      "description": "Description",
+      "code": "Code",
+      "tags": "Tags",
+      "language": "Language"
+    },
+    "feed": {
+      "title": "Snippets Feed",
+      "favorites": {
+        "title": "Favorites"
+      },
+      "following": {
+        "title": "Following"
+      }
+    },
+    "snippetDetail": {
+      "report": {
+        "whatIsWrong": "What is wrong with this snippet?",
+        "unreport": "Do you want to unreport this snippet?",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "alreadyReported": "You've already reported this snippet and its owner has unreported it",
+        "success": "Successfully reported snippet",
+        "successUnreport": "Succesffully unreported snippet",
+        "successDismissedAllReports": "Successfylly dismissed all reports for this snippet",
+        "errorLoading": "Error while loading snippet",
+        "warning": {
+          "title": "This snippet was reported by a user!",
+          "message": "Someone wants to let you know of an error they found or a suggestion they may have. Check your email to read the message sent by the user.",
+          "suggestion": "If there is an error in your snippet, we recommend you edit or delete it before the administrator flags it as unsafe and harms your reputation.",
+          "dismissAllReports": "Dismiss all reports"
+        }
+      },
+      "edit": "Edit",
+      "done": "Save",
+      "cancel": "Cancel",
+      "successEditing": "Successfully updated snippet!",
+      "errorEditing": "Error updating snippet",
+      "flagged": {
+        "title": "Flagged Snippet",
+        "text1": "The following snippet has been marked as incorrect by the administrator.",
+        "text2": "It may not work or be unsafe to use."
+      },
+      "deleted": {
+        "title": "Deleted Snippet",
+        "text1": "The following snippet has been deleted by its owner.",
+        "text2": "You wont be able to upvote or fav it."
+      },
+      "postingDateTime": "{month}/{day}/{year} at {time}",
+      "snippetDeleted": "Successfully deleted snippet",
+      "snippetRestored": "Successfully restored snippet",
+      "snippetFlagged": "Succesfully flagged snippet",
+      "snippetUnflagged": "Sucecesfully unflagged snippet",
+      "copiedToClipboard": "Code copied to clipboard!"
+    },
+    "postingDate": "{month}/{day}/{year}"
+  },
+  "navigation": {
+    "forUser": "For You"
+  },
+  "search": {
+    "showOnlyFollowing": "Show Only Following",
+    "showEmpty": "Show empty",
+    "selectType": "Type",
+    "selectOrder": "Order",
+    "type": {
+      "all": "All",
+      "tag": "Tag",
+      "title": "Title",
+      "content": "Content",
+      "username": "Username",
+      "language": "Language"
+    },
+    "order": {
+      "asc": "Ascending",
+      "desc": "Descending",
+      "no": "No specific order"
+    },
+    "searchBarHint": "Search for {objectType} here"
+  },
+  "user": {
+    "profile": {
+      "editProfile": "Edit Profile",
+      "editDescription": "Edit description",
+      "cancel": "Cancel",
+      "done": "Done",
+      "profileInfoUpdated": "Profile information updated!",
+      "admin": "Admins do not have profile",
+      "verifyAccount": {
+        "title": "Verify your account",
+        "text1": "Your email has not been verified, meaning you will not receive any emails from us.",
+        "text2": "To verify your email, click",
+        "here": "here",
+        "emailSent": "Verification email sent",
+        "emailError": "Error sending verification emails"
+      },
+      "joined": "Joined {month}/{day}/{year}"
+    },
+    "active": "Active Snippets",
+    "deleted": "Deleted Snippets",
+    "following": {
+      "title": "Snippets For Tags You Follow",
+      "following": "Following",
+      "manageFollowedTags": "Manage Followed Tags"
+    },
+    "favorites": {
+      "title": "Snippets Marked As Favorite",
+      "favorites": "Favorites"
+    },
+    "upvoted": {
+      "title": "Snippets You've Upvoted",
+      "upvoted": "Upvoted"
+    }
+  },
+  "admin": {
+    "addTags": {
+      "addTags": "Add Tags",
+      "addNewTags": "Add New Tags",
+      "emptyListText": "New tags will be shown here",
+      "placeholder": "Write a new tag name here",
+      "entered": "tags entered",
+      "success": "Successfully added new tags",
+      "error": "Error while adding tags, try again later"
+
+    },
+    "addLanguages": {
+      "addLanguages": "Add Languages",
+      "addNewLanguages": "Add New Languages",
+      "emptyListText": "New languages will be shown here",
+      "placeholder": "Write a new language name here",
+      "entered": "languages entered",
+      "success": "Successfully added new languages",
+      "error": "Error while adding languages, try again later"
+    },
+    "confirmDeletion": "Confirm Deletion",
+    "languageDeletionDisclaimer": "Are you sure you want to delete {langName} from Languages? Deleted languages will no longer be available for new snippets and will not appear in the language list unless added again by an administrator.",
+    "tagDeletionDisclaimer": "Are you sure you want to delete {tagName} from Tags? Deleted tags will be removed from all the snippets containing it and from all users following list. This action cant be undone.",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "flagged": "Flagged"
+  },
+  "registration": {
+    "username": "Username",
+    "password": "Password",
+    "profile": "Profile",
+    "logout": "Log Out",
+    "login": "Log In",
+    "email": "Email",
+    "repeatPassword": "Repeat Password",
+    "register": "Register",
+    "resetPassword": "Reset Your Password",
+    "sendRecoveryEmail": "Send",
+    "verificationCode": "Verification Code",
+    "sendVerificationCode": "Send",
+    "noAccount": "No Account?",
+    "goToRegister": "Register here",
+    "hasAccount": "Already have an account?",
+    "goToLogin": "Go to login",
+    "forgotPassword": "Forgot your password?",
+    "goToPassRecovery": "Recover your password here",
+    "knowYourPassword": "Know your password?",
+    "welcome": "Welcome To Snippit",
+    "createAccount": "Create An Account",
+    "recoverPassword": "Recover Your Password",
+    "verifyAccount": "Verify Your Account",
+    "recoveryEmailSent": "Email Sent!",
+    "mailSentInfo": "You can now visit the link we sent you and change your password.",
+    "enterCode": "Enter the code you received on your email.",
+    "successfulVerification": "Successfully verified account!",
+    "successfullyResetPassword": "Successfully reseted password. Now you can login",
+    "keepMeSignedIn": "Keep me signed in",
+    "errorEmail": "Error while sending recovery email",
+    "errorVerification": "Error while verifying your account",
+    "errorResetPassword": "Error while verifying your password"
+  },
+  "validations": {
+    "invalidPassword": "Password must be at least 8 characters long",
+    "usernameOrPasswordInvalid": "User Name Or Password Invalid",
+    "userNameExists": "User Name already exists",
+    "invalidEmail": "Invalid Email",
+    "emailExists": "Email already exists",
+    "nonMatchingPasswords": "Passwords must be equal",
+    "maxLength": "Length must be at most {maxLength}",
+    "minLength": "Length must be at least {minLength}",
+    "lengthBetween": "Length must be between {minLength} and {maxLength}",
+    "usernamePattern": "Username can only contain numbers, letters, -, _, or .",
+    "notBlankWithSpaces": "This field cannot contain only spaces",
+    "codePattern": "Code must be 6 characters long and contain only numbers",
+    "profilePhoto": "Profile photo must be at most 1MB"
+  },
+  "components": {
+    "tfDatePicker": {
+      "defaultLabel": "Select Date",
+      "clearDate": "Clear Date",
+      "datePickerTextDate": "{month}/{day}/{year}"
+    },
+    "shared": {
+      "pagination": {
+        "loadMore": "Load More"
+      }
+    },
+    "tagSelect": {
+      "selectTag": "Select A Tag",
+      "errorUpdate": "Error while updating selection set",
+      "errorLoadMore": "Error while loading more tags"
+    },
+    "languageSelect": {
+      "selectLanguage": "Select A Language",
+      "notNull": "One language must be selected",
+      "errorUpdate": "Error while updating selection set",
+      "errorLoadMore": "Error while loading more languages"
+    },
+    "snippetGrid": {
+      "profile": {
+        "noSnippetsInOwnProfileActive": "You don't have any snippets here",
+        "noSnippetsInOwnProfileDeleted": "You don't have any deleted snippets",
+        "createOne": "Create One",
+        "noSnippetsInAnotherProfile": "This user does not have any snippets"
+      },
+      "noSnippets": "No Snippets Here"
+    }
+  },
+  "error": {
+    "grid": {
+      "tags": "There's been an error loading these tags",
+      "languages": "There's been an error loading these languages",
+      "snippets": "There's been an error loading these snippets",
+      "tryAgain": "Try Again"
+    },
+    "goBackHome": "You Can Go Back Home!",
+    "goHome": "Go Home",
+    "unknown": "Unknown Error",
+    "400": {
+      "name": "Bad Request",
+      "desc": "Your request has validation errors",
+      "singleError": "Error in field {fieldName}: {errorMessage}",
+      "multipleErrors": "Multiple errors in sent request"
+    },
+    "404": {
+      "name": "Content Not Found",
+      "desc": "This Content Isn't Available Right Now"
+    },
+    "403": {
+      "name": "Forbidden",
+      "desc": "Keep Away! This content isn't meant for you!"
+    },
+    "401": "You must be logged in to perform that action",
+    "snippet": {
+      "detail": {
+        "copying": "Error copying code to clipboard"
+      }
+    },
+    "youAreAnAdmin": "You're an Admin",
+    "adminsCantCreateSnippets": "Admins can't create snippets",
+    "youDontHaveAnAccount": "You don't have an account",
+    "mustBeAUser": "You must be a user to create snippets",
+    "login": "You can log in",
+    "goToLogin": "Go to login"
+  },
+  "snackbar": {
+    "error": {
+      "defaultMessage": "There's been an error performing that action"
+    },
+    "success": {
+      "defaultMessage": "Action performed correctly"
+    },
+    "warning": {
+      "defaultMessage": "You can't perform that action"
+    },
+    "hide": "hide"
+  },
+  "titles":{
+    "addLanguages": "Snippit - Add Languages",
+    "addTags": "Snippit - Add tags",
+    "flagged": "Snippit - Flagged",
+    "error": "Snippit - Error",
+    "explore" : "Snippit -  Explore",
+    "feed" : "Snippit - Feed",
+    "languages" : "Snippit - Languages ",
+    "languagesSnippets" : "Snippit - Snippets for language",
+    "login" : "Snippit - Login",
+    "register" : "Snippit - Register",
+    "resetPassword" : "Snippit - Reset Password",
+    "email" : "Snippit - Recovery Email",
+    "verification" : "Snippit - Verification Code",
+    "create" : "Snippit - Create",
+    "detail" : "Snippit - Snippet Detail",
+    "tags" : "Snippit - Tags",
+    "tagsSnippet" : "Snippit - Snippets for tag",
+    "favorites" : "Snippit - Favs",
+    "following" : "Snippit - Following",
+    "upvoted" : "Snippit - Upvoted ",
+    "profile" : "Snippit - Profile"
+  }
+}

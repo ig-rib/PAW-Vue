@@ -1,0 +1,363 @@
+{
+    "message": "hola i18n !!",
+    "snippit": "{ Snippit }",
+    "feed": {
+      "title": "Feed"
+    },
+    "explore": {
+      "explore": "Explorar",
+      "padTitle": "Filtros",
+      "order": {
+        "title": "Orden",
+        "orderBy": "Ordenar por",
+        "sort": "Ordenar"
+      },
+      "flagged": {
+        "title": "Snippets marcados",
+        "includeFlagged": "Incluir Snippets marcados"
+      },
+      "title": {
+        "title": "Titulo",
+        "label": "Titulo del Snippet"
+      },
+      "language": "Lenguajes",
+      "tag": "Tags",
+      "username": "Usuario",
+      "dateUploaded": "Fecha de Subida",
+      "userReputation": {
+        "title": "Reputación del Usuario",
+        "label": "Reputación"
+      },
+      "snippetVotes": {
+        "title": "Votos del Snippet",
+        "label": "Votos"
+      },
+      "from": "Desde",
+      "to": "Hasta",
+      "min": "Min",
+      "max": "Max",
+      "showFilters": "Mostrar filtros"
+    },
+    "languages": {
+      "title": "Lenguajes",
+      "languageSnippets": "Snippets para el lenguaje: {langName}",
+      "languageDeleted": {
+        "title": "Este lenguaje fue borrado por el administrador",
+        "message": "El uso de lenguajes borrados no está disponible para snippets nuevos y los mismos no apareceran en la lista de lenguajes."
+      },
+      "successDelete": "Successfully deleted language",
+      "errorDelete": "Error while deleting language",
+      "noLanguagesInHere": "No hay lenguajes aquí"
+    },
+    "tags": {
+      "title": "Tags",
+      "follow": "Seguir",
+      "following": "Siguiendo",
+      "search" : "Buscar un tag",
+      "showEmpty": "Mostrar vacíos",
+      "showOnlyFollowing": "Mostrar seguidos",
+      "tagSnippets": "Snippets para el tag {tagName}",
+      "errorFollow": "Error al seguir tag, intente mas tarde",
+      "errorUnfollow": "Error al dejar de seguir tag, intente mas tarde",
+      "successDelete": "Tag borrado satisfactoriamente",
+      "errorDelete": "Error al borrar tag",
+      "noTagsInHere": "No hay tags aquí"
+    },
+    "snippets": {
+      "createSnippet": {
+        "createSnippet": "Crear",
+        "create": "Crear",
+        "title": "Título",
+        "description": "Descripción",
+        "code": "Código",
+        "tags": "Tags",
+        "language": "Languaje"
+      },
+      "feed": {
+        "title": "Snippets Feed",
+        "favorites": {
+          "title": "Favoritos"
+        },
+        "following": {
+          "title": "Siguiendo"
+        }
+      },
+      "snippetDetail": {
+        "report": {
+          "whatIsWrong": "Qué hay de malo con este snippet?",
+          "unreport": "Quieres anular el reporte de este snippet?",
+          "confirm": "Confirmar",
+          "cancel": "Cancelar",
+          "alreadyReported": "Ya reportaste el snippet y el reporte fue anulado por el dueño",
+          "success": "Snippet reportado con éxito",
+          "successUnreport": "El snippet ya no esta mas reportado",
+          "successDismissedAllReports": "Se eliminaron todos los reportes del snippet",
+          "errorLoading": "Error al cargar snippet",
+          "warning": {
+            "title": "Este snippet fue reportado por un usuario!",
+            "message": "Alguien te quiere avisar de algún error que encontró o de alguna sugerencia. Revisa tu email para ver el mensaje que te envió el usuario.",
+            "suggestion": "Si encuentra un error, recomendamos que borre su snippet antes que el administrador lo marque como inseguro.",
+            "dismissAllReports": "Eliminar reportes"
+          }
+        },
+        "edit": "Editar",
+        "done": "Guardar",
+        "cancel": "Cancelar",
+        "successEditing": "Snippet actualizado con éxito!",
+        "errorEditing": "Error al actualizar el snippet",
+        "flagged": {
+          "title": "Snippet Marcado",
+          "text1": "El siguiente snippet ha sido marcado como incorrecto por el administrador.",
+          "text2": "Puede que no funcione o sea inseguro"
+        },
+        "deleted": {
+          "title": "Snippet Borrado",
+          "text1": "El siguiente snippet ha sido borrado por su creador.",
+          "text2": "No podrás votar o guardarlo como favorito"
+        },
+        "postingDateTime": "{day}/{month}/{year} a las {time}",
+        "snippetDeleted": "Snippet borrado correctamente",
+        "snippetRestored": "Snippet restaurado correctamente",
+        "snippetFlagged": "Snippet marcado correctamente",
+        "snippetUnflagged": "Snippet desmarcado correctamente",
+        "copiedToClipboard": "Código copiado al clipboard!"
+      },
+      "postingDate": "{day}/{month}/{year}"
+    },
+    "navigation": {
+      "forUser": "Para tí"
+    },
+    "search": {
+      "showOnlyFollowing": "Mostrar solo seguidos",
+      "showEmpty": "Mostrar vacios",
+      "selectType": "Tipo",
+      "selectOrder": "Orden",
+      "type": {
+        "all": "Todos",
+        "tag": "Tag",
+        "title": "Título",
+        "content": "Contenido",
+        "username": "Usuario",
+        "language": "Languaje"
+      },
+      "order": {
+        "asc": "Ascendente",
+        "desc": "Descendente",
+        "no": "Sin orden"
+      },
+      "searchBarHint": "Buscar {objectType} aquí"
+    },
+    "user": {
+      "profile": {
+        "editProfile": "Editar perfil",
+        "editDescription": "Editar descripción",
+        "cancel": "Cancelar",
+        "done": "Listo",
+        "profileInfoUpdated": "El perfil se actualizó correctamente",
+        "admin": "Admins no tienen perfil",
+        "verifyAccount": {
+          "title": "Verificar tu cuenta",
+          "text1": "Tu email no ha sido verificado. No recibirás emails de nosotros",
+          "text2": "Para verificar tu email haz click aquí",
+          "here": "aquí",
+          "emailSent": "Email de verificación enviado",
+          "emailError": "Error en el envío del email de verificación"
+        },
+        "joined": "Se unió el {day}/{month}/{year}"
+      },
+      "active": "Snippets activos",
+      "deleted": "Snippets borrados",
+      "following": {
+        "title": "Snippets Con Tags Que Sigues",
+        "following": "Siguiendo",
+        "manageFollowedTags": "Ver Tags Seguidos"
+      },
+      "favorites": {
+        "title": "Snippets marcados como favoritos",
+        "favorites": "Favoritos"
+      },
+      "upvoted": {
+        "title": "Snippets que haz votado positivamente",
+        "upvoted": "Votos positivos"
+      }
+    },
+    "admin": {
+      "addTags": {
+        "addTags": "Agregar Tags",
+        "addNewTags": "Agregar Tags nuevos",
+        "emptyListText": "Tags nuevos seran mostrados aquí",
+        "placeholder": "Escribe un tag nuevo",
+        "entered": "tags ingresados",
+        "success": "Tags agregados existosamente",
+        "error": "Error al agregar tags, intentar mas tarde"
+      },
+      "addLanguages": {
+        "addLanguages": "Agregar Lenguajes",
+        "addNewLanguages": "Agregar un lenguaje nuevo",
+        "emptyListText": "Los lenguajes neuvos serán mostrados aqui",
+        "placeholder": "Escribe el nombre del lenguaje nuevo aquí",
+        "entered": "languajes ingresados",
+        "success": "Lenguajes agregados existosamente",
+        "error": "Error al agregar lenguajes, intentar mas tarde"
+      },
+      "confirmDeletion": "Confirmar borrado",
+      "languageDeletionDisclaimer": "Estas seguro que quiere borrar {langName} de Lenguajes? Lenguajes borrados serán quitados de todos los snippets coteniendolo y de todas las listas de usuarios que los siguen. Esta accion no se puede deshacer.",
+      "tagDeletionDisclaimer": "Estas seguro que quiere borrar  {tagName} de Tags? Tags borrados serán quitados de todos los snippets coteniendolo y de todas las listas de usuarios que los siguen. Esta acción no se puede deshacer.",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar",
+      "flagged": "Marcados"
+    },
+    "registration": {
+      "username": "Usuario",
+      "password": "Contraseña",
+      "profile": "Perfil",
+      "logout": "Log out",
+      "login": "Ingresar",
+      "email": "Email",
+      "repeatPassword": "Repetir Contraseña",
+      "register": "Registrar",
+      "resetPassword": "Resetear Contraseña",
+      "sendRecoveryEmail": "Enviar",
+      "verificationCode": "Código de verificación",
+      "sendVerificationCode": "Enviar",
+      "noAccount": "Sin cuenta?",
+      "goToRegister": "Registrar aquí",
+      "hasAccount": "Ya tienes una cuenta?",
+      "goToLogin": "Ir al login",
+      "forgotPassword": "Olvidaste tu contraseña?",
+      "goToPassRecovery": "Recuperar contraseña aquí",
+      "knowYourPassword": "Sabes tu contraseña?",
+      "welcome": "Bienvenido a Snippit",
+      "createAccount": "Crear una cuenta",
+      "recoverPassword": "Recuperar contraseña",
+      "verifyAccount": "Verificar tu cuenta",
+      "recoveryEmailSent": "Email Enviado!",
+      "mailSentInfo": "Ya puedes visitar el link y recuperar tu contraseña",
+      "enterCode": "Ingresar el código que has recibido en el mail",
+      "successfulVerification": "Verificamos tu cuenta satisfactoriamente!",
+      "successfullyResetPassword": "Contraseña cambiada con éxito. Puedes iniciar sesión.",
+      "keepMeSignedIn": "Recordarme",
+      "errorEmail": "Error while sending recovery email",
+      "errorVerification": "Error while verifying your account",
+      "errorResetPassword": "Error while verifying your password"
+    },
+    "validations": {
+      "invalidPassword": "La contraseña debe tener mas de 8 caracteres",
+      "usernameOrPasswordInvalid": "Usuario o contraseña invalidos",
+      "userNameExists": "Usuario ya existente",
+      "invalidEmail": "Email invalido",
+      "emailExists": "Email ya existente",
+      "nonMatchingPasswords": "Las contraseñas deben ser iguales",
+      "maxLength": "El largo no debe exceder {maxLength}",
+      "minLength": "El largo debe ser menor a {minLength}",
+      "lengthBetween": "El largo debe estar entre {minLength} y {maxLength}",
+      "usernamePattern": "El usuario solo puede contener números, letras, -, _, o .",
+      "notBlankWithSpaces": "Este campo solo no puede contener espacios",
+      "codePattern": "El codigo debe tener al menos 6 caracteres y no contener espacios",
+      "profilePhoto": "El tamaño de la foto de perfil no debe exceder 1MB"
+    },
+    "components": {
+      "tfDatePicker": {
+        "defaultLabel": "Elegir fecha",
+        "clearDate": "Borrar fecha",
+        "datePickerTextDate": "{day}/{month}/{year}"
+      },
+      "shared": {
+        "pagination": {
+          "loadMore": "Cargar más"
+        }
+      },
+      "tagSelect": {
+        "selectTag": "Seleccionar un tag",
+        "errorUpdate": "Error al actualizar el set seleccionado",
+        "errorLoadMore": "Error al cargar mas tags"
+      },
+      "languageSelect": {
+        "selectLanguage": "Seleccionar un lenguaje",
+        "notNull": "Al menos un lenguaje debe ser seleccionado",
+        "errorUpdate": "Error al actualizar el set seleccionado",
+        "errorLoadMore": "Error al cargar mas lenguajes"
+      },
+      "snippetGrid": {
+        "profile": {
+          "noSnippetsInOwnProfileActive": "No tienes ningun snippet",
+          "noSnippetsInOwnProfileDeleted": "No tienes ningun snippet borrado",
+          "createOne": "Crea uno",
+          "noSnippetsInAnotherProfile": "Este usuario no tiene snippets"
+        },
+        "noSnippets": "No hay snippets aquí"
+      }
+    },
+    "error": {
+      "grid": {
+        "tags": "Error cargando tags",
+        "languages": "Error cargando languajes",
+        "snippets": "Error cargando snippets",
+        "tryAgain": "Intenta nuevamente"
+      },
+      "goBackHome": "Puedes volver al Home!",
+      "goHome": "Volver al home",
+      "unknown": "Error desconocido",
+      "400": {
+        "name": "Request invalido",
+        "desc": "Tu request tiene errores de validación",
+        "singleError": "Error en el campo{fieldName}: {errorMessage}",
+        "multipleErrors": "Múltiples errores en la request"
+      },
+      "404": {
+        "name": "Contenido no encontrado",
+        "desc": "El contenido no esta disponible ahora mismo"
+      },
+      "403": {
+        "name": "Prohibido",
+        "desc": "Este contenido no es para ti!"
+      },
+      "401": "Debes iniciar sesión para realizar esa acción",
+      "snippet": {
+        "detail": {
+          "copying": "Error copiando al clipboard"
+        }
+      },
+      "youAreAnAdmin": "Eres un Admin",
+      "adminsCantCreateSnippets": "Los Admins no pueden crear snippets",
+      "youDontHaveAnAccount": "No tienes una cuenta",
+      "mustBeAUser": "Necesitas ser un usuario para crear snippets",
+      "login": "Puedes ingresar o registrarte",
+      "goToLogin": "Ir al login"
+    },
+    "snackbar": {
+      "error": {
+        "defaultMessage": "Error realizando la acción"
+      },
+      "success": {
+        "defaultMessage": "Acción realizada de forma exitosa"
+      },
+      "warning": {
+        "defaultMessage": "No puedes realizar esa acción"
+      },
+      "hide": "ocultar"
+    },
+    "titles":{
+      "addLanguages": "Snippit - Agregar lengujaes",
+      "addTags": "Snippit - Agregar tags",
+      "flagged": "Snippit - Marcados",
+      "error": "Snippit - Error",
+      "explore" : "Snippit -  Explorar",
+      "feed" : "Snippit - Feed",
+      "languages" : "Snippit - Languajes",
+      "languagesSnippets" : "Snippit - Snippets para un lenguaje",
+      "login" : "Snippit - Login",
+      "register" : "Snippit - Registrar",
+      "resetPassword" : "Snippit - Recuperar Contraseña",
+      "email" : "Snippit - Recuperar mail",
+      "verification" : "Snippit - Codigo de verificacion",
+      "create" : "Snippit - Crear",
+      "detail" : "Snippit - Snippet Detail",
+      "tags" : "Snippit - Tags",
+      "tagsSnippet" : "Snippit - Snippets para un tag",
+      "favorites" : "Snippit - Favoritoss",
+      "following" : "Snippit - Siguiendo",
+      "upvoted" : "Snippit - Votados",
+      "profile" : "Snippit - Perfil"
+    }
+  }

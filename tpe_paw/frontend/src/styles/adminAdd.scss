@@ -1,0 +1,84 @@
+@import '~vuetify/src/styles/settings/_variables';
+@import "@/styles/main.scss";;
+
+@media #{map-get($display-breakpoints, 'sm-and-down')} {
+  .admin-add-card {
+    height: 500px;
+    border-radius: 50px;
+  }
+}
+
+@media #{map-get($display-breakpoints, 'md-and-down')} {
+  .admin-add-card {
+    height: 550px;
+    border-radius: 50px;
+  }
+}
+
+@media #{map-get($display-breakpoints, 'lg-and-up')} {
+  .admin-add-card {
+    height: 600px;
+    border-radius: 50px;  
+  }
+}
+.admin-add-card{
+  border-radius: 15px !important;
+}
+
+.admin-add-inner-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  > .layout {
+    flex-grow: 0;
+  }
+}
+.admin-add-title {
+  height: 10%;
+  min-height: 10%;
+  font-size: 32px;
+  color: $primary;
+  // font-weight: 300;
+}
+.admin-add-text-field {
+  margin: 3% 0px 0px 0px;
+  height: 10%;
+  min-height: 10%;
+  > .flex {
+    max-height: 100%;
+  }
+}
+.admin-add-entity-list {
+  border: 1px solid lightgrey;
+  flex-grow: 1 !important;
+  > .v-list {
+    height: 100%;
+  }
+  overflow-y: auto;
+  margin: 2% 0px 5% 0px;
+  border-radius: 10px;
+}
+
+.list-name-flex {
+  max-width: 75%;
+}
+
+.delete-dialog {
+  max-width: 700px;
+  .dialog-card {
+    border-radius: 12px !important;
+  }
+  .dialog-subtitle{
+    margin-top: 7px;
+    font-size: 17px;
+  }
+}
+
+.title-delete-btn {
+  height: 60px !important;
+  width: 60px !important;
+  i {
+    font-size: 60px !important;
+  }
+}
+
