@@ -29,7 +29,7 @@
         <velocity.version>1.7</velocity.version>
         <commons.codec.verion>1.14</commons.codec.verion>
         <junit.version>4.12</junit.version>
-        <org.hibernate.version>5.4.1.Final</org.hibernate.version>
+        <org.hibernate.version>5.4.24.Final</org.hibernate.version>
         <org.hibernate.jpa.version>1.0.0.Final</org.hibernate.jpa.version>
         <jersey.version>3.0-SNAPSHOT</jersey.version>
         <javax.ws.rs-api.version>2.1.1</javax.ws.rs-api.version>
